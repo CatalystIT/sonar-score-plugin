@@ -13,12 +13,10 @@ import org.junit.Test;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
-import org.sonar.api.resources.Language;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.resources.Resource;
 
-import com.catalyst.sonar.score.batch.ScoreDecorator;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.google.common.collect.ImmutableList;
 
@@ -27,64 +25,7 @@ import com.google.common.collect.ImmutableList;
  *
  */
 public class ScoreDecoratorTest {
-	class MockResource extends Resource<Project> {
-
-		@Override
-		public String getName() {
-			return "";
-		}
-
-		@Override
-		public String getLongName() {
-			return "";
-		}
-
-		@Override
-		public String getDescription() {
-			return "";
-		}
-
-		@Override
-		public Language getLanguage() { 
-			return new Language() {
-
-				public String getKey() {
-					return "";
-				}
-
-				public String getName() {
-					return "";
-				}
-
-				public String[] getFileSuffixes() {
-					return new String[] {""};
-				}
-			
-			};
-			
-		}
-	
-
-		@Override
-		public String getScope() {
-			return "";
-		}
-
-		@Override
-		public String getQualifier() {
-			return "";
-		}
-
-		@Override
-		public Project getParent() {
-			return null;
-		}
-
-		@Override
-		public boolean matchFilePattern(String antPattern) {
-			return false;
-		}
-		
+	abstract class MockResource extends Resource<Project> {		
 	};
 	
 	ScoreDecorator scoreDecorator;
@@ -118,8 +59,7 @@ public class ScoreDecoratorTest {
 		utsResource = mock(MockResource.class);
 		when(utsResource.getQualifier()).thenReturn(Qualifiers.UNIT_TEST_FILE);
 	}
-		
-
+	
 	/**
 	 * Test method for {@link com.catalyst.sonar.score.batch.ScoreDecorator#usedMetrics()}.
 	 */

@@ -1,13 +1,11 @@
 /**
  * 
  */
-package com.catalyst.sonar.score;
+package com.catalyst.sonar.score.metrics;
 
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
-
-import com.catalyst.sonar.score.metrics.ScoreMetrics;
 
 import org.junit.Before;
 import org.junit.Test;
