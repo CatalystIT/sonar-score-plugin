@@ -10,9 +10,9 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.catalyst.sonar.score.ScoreMetrics;
 import com.catalyst.sonar.score.ScorePlugin;
 import com.catalyst.sonar.score.batch.ScoreDecorator;
+import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 
 /**

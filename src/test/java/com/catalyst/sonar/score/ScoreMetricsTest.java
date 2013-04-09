@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
-import com.catalyst.sonar.score.ScoreMetrics;
+import com.catalyst.sonar.score.metrics.ScoreMetrics;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class ScoreMetricsTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.ScoreMetrics#getMetrics()}.
+	 * Test method for {@link com.catalyst.sonar.score.metrics.ScoreMetrics#getMetrics()}.
 	 */
 	@Test
 	public void testGetMetrics() {

@@ -9,6 +9,7 @@ import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
 
 import com.catalyst.sonar.score.batch.ScoreDecorator;
+import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 /**
  * This class is the entry point for all extensions

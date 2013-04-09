@@ -1,5 +1,5 @@
 package com.catalyst.sonar.score.batch;
-import com.catalyst.sonar.score.ScoreMetrics;
+import com.catalyst.sonar.score.metrics.ScoreMetrics;
 
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;

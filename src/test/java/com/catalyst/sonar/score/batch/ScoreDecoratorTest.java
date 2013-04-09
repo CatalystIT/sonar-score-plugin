@@ -18,8 +18,8 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.resources.Resource;
 
-import com.catalyst.sonar.score.ScoreMetrics;
 import com.catalyst.sonar.score.batch.ScoreDecorator;
+import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.google.common.collect.ImmutableList;
 
 /**
