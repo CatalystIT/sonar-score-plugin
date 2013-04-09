@@ -31,7 +31,7 @@ public class ScoreRubyWidget extends AbstractRubyTemplate implements RubyRailsWi
 	}
 	
 	@Override
-	protected String getTemplatePath(){
+	public String getTemplatePath(){
 		return "/score/score_widget.html.erb";
 	}
 }
