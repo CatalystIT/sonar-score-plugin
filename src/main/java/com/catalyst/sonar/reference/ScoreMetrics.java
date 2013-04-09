@@ -16,19 +16,21 @@ import org.sonar.api.measures.Metrics;
  */
 public class ScoreMetrics implements Metrics {
 	
-	public static final String GENERATED_SCORE_KEY = "score_key";
-
-	public static final Metric SCORE = new Metric.Builder(GENERATED_SCORE_KEY, "Generated Score",
-			Metric.ValueType.INT)
-			.setDescription("This gives test score")
+	
+	public static final Metric POINTS = new Metric.Builder("points", "Points",
+			Metric.ValueType.FLOAT)
+			.setDescription("Score's points value")
 			.setDirection(Metric.DIRECTION_NONE)
-			.setQualitative(true)
+			.setQualitative(false)
 			.setDomain(CoreMetrics.DOMAIN_GENERAL)
 			.create();
 
+	/* getMetrics() method is defined in the Metrics interface and is used by
+	Sonar to retrieve the list of new metrics
+	 */
 	public List<Metric> getMetrics() {
 		//retrieves list of metrics
-		return Arrays.asList(SCORE);
+		return Arrays.asList(POINTS);
 	}
 
 }

@@ -17,7 +17,7 @@ public class ScoreSensor implements Sensor{
 	}
 
 	public void analyse(Project project, SensorContext context) {
-		Measure measure = new Measure(ScoreMetrics.SCORE, settings.getString(ScorePlugin.MY_PROPERTY));
+		Measure measure = new Measure(ScoreMetrics.POINTS, settings.getString(ScorePlugin.MY_PROPERTY));
 		context.saveMeasure(measure);
 	}
 

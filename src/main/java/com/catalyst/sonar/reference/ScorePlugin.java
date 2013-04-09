@@ -10,12 +10,14 @@ import org.sonar.api.SonarPlugin;
 import com.catalyst.sonar.reference.batch.ScoreDecorator;
 import com.catalyst.sonar.reference.batch.ScoreSensor;
 import com.catalyst.sonar.reference.ui.ScoreRubyWidget;
-
+/**
+ * This class is the entry point for all extensions
+ */
 @Properties({
 	  @Property(
 	    key = ScorePlugin.MY_PROPERTY,
 	    name = "Plugin Property",
-	    description = "Testing a property",
+	    description = "A property for Score's points plugin",
 	    defaultValue = "Score")})
 public class ScorePlugin extends SonarPlugin{
 	public static final String MY_PROPERTY = "sonar.score.myproperty";
@@ -23,13 +25,13 @@ public class ScorePlugin extends SonarPlugin{
 	public List getExtensions() {
 		
 		return Arrays.asList(
-		//Definitions		
+		//Definition of Score's points metric		
 		ScoreMetrics.class,
 		//batch
 		ScoreDecorator.class,
 		
 		ScoreSensor.class,
-		//ui
+		//Score's ui
 		ScoreRubyWidget.class
 		);
 		
