@@ -62,7 +62,7 @@
 				<version>1.3</version>
 				<extensions>true</extensions>
 				<configuration>
-					<pluginClass>com.catalyst.sonar.reference.ScorePlugin</pluginClass>
+					<pluginClass>com.catalyst.sonar.score.ScorePlugin</pluginClass>
 				</configuration>
 			</plugin>
 			<plugin>

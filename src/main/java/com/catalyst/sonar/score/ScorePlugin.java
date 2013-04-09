@@ -1,4 +1,4 @@
-package com.catalyst.sonar.reference;
+package com.catalyst.sonar.score;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,8 +8,8 @@ import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
 
-import com.catalyst.sonar.reference.batch.ScoreDecorator;
-import com.catalyst.sonar.reference.ui.ScoreRubyWidget;
+import com.catalyst.sonar.score.batch.ScoreDecorator;
+import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 /**
  * This class is the entry point for all extensions
  */

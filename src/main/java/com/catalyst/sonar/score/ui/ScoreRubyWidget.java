@@ -1,4 +1,4 @@
-package com.catalyst.sonar.reference.ui;
+package com.catalyst.sonar.score.ui;
 import org.sonar.api.web.AbstractRubyTemplate;
 import org.sonar.api.web.Description;
 import org.sonar.api.web.RubyRailsWidget;

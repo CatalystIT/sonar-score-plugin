@@ -10,10 +10,10 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.catalyst.sonar.reference.ScoreMetrics;
-import com.catalyst.sonar.reference.ScorePlugin;
-import com.catalyst.sonar.reference.batch.ScoreDecorator;
-import com.catalyst.sonar.reference.ui.ScoreRubyWidget;
+import com.catalyst.sonar.score.ScoreMetrics;
+import com.catalyst.sonar.score.ScorePlugin;
+import com.catalyst.sonar.score.batch.ScoreDecorator;
+import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 
 /**
  * @author JDunn
@@ -32,7 +32,7 @@ public class ScorePluginTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.reference.ScorePlugin#getExtensions()}.
+	 * Test method for {@link com.catalyst.sonar.score.ScorePlugin#getExtensions()}.
 	 */
 	@SuppressWarnings("unchecked")
 	@Test

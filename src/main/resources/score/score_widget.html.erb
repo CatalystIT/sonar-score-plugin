@@ -30,58 +30,8 @@ points=measure('points')
   </div>
  </td>
  </tr>
- <tr>
-  <td>
-  <div>
-  <p>
-	<%= format_measure('violations_density', :suffix => '  Rules compliance  ', :url => url_for_drilldown('violations_density')) -%>
-	
-   
-   </p>
-  </div>
- </td>
- </tr>
- <tr>
- <td>
- <div><p>
-	<%= format_measure('public_documented_api_density', :suffix => '  Documented.API ', :url => url_for_drilldown('public documented_api_density')) -%>
-     </p>
-  </div>
- </td>
- </tr>
- <tr>
- <td>
- 	<div>
-		<p>    
-      	
-      <%= format_measure('coverage', :suffix => '  Code coverage ', :url => url_for_drilldown('coverage')) -%>
-   		</p>
-   	</div>
- </td>
- </tr>
-  <tr>
- <td>
- 	<div>
-		<p>    
-      	
-      <%= format_measure('package_tangle_index', :suffix => '  Package Tangle Index ', :url => url_for_drilldown('package_tangle_index')) -%>
-   		</p>
-   	</div>
- </td>
- </tr>
-   <tr>
- <td>
- 	<div>
-		<p>    
-      	
-      <%= format_measure('ncloc', :suffix => '  Lines ', :url => url_for_drilldown('ncloc')) -%>
-   		</p>
-   	</div>
+ </table>
  </td>
  </tr>
  </table>
-  </td>
- </tr>
-
-</table>
 <% end %>

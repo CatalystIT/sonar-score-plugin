@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.catalyst.sonar.reference.ui.ScoreRubyWidget;
+import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 
 /**
  * @author JDunn
@@ -27,7 +27,7 @@ public class ScoreRubyWidgetTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.reference.ui.ScoreRubyWidget#getId()}.
+	 * Test method for {@link com.catalyst.sonar.score.ui.ScoreRubyWidget#getId()}.
 	 */
 	@Test
 	public void testGetId() {
@@ -35,7 +35,7 @@ public class ScoreRubyWidgetTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.reference.ui.ScoreRubyWidget#getTitle()}.
+	 * Test method for {@link com.catalyst.sonar.score.ui.ScoreRubyWidget#getTitle()}.
 	 */
 	@Test
 	public void testGetTitle() {
@@ -43,7 +43,7 @@ public class ScoreRubyWidgetTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.reference.ui.ScoreRubyWidget#getTemplatePath()}.
+	 * Test method for {@link com.catalyst.sonar.score.ui.ScoreRubyWidget#getTemplatePath()}.
 	 */
 	@Test
 	public void testGetTemplatePath() {

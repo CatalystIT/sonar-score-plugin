@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.catalyst.sonar.reference;
+package com.catalyst.sonar.score;
 
 import java.util.List;
 import java.util.Arrays;

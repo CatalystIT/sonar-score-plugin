@@ -18,8 +18,8 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.resources.Resource;
 
-import com.catalyst.sonar.reference.ScoreMetrics;
-import com.catalyst.sonar.reference.batch.ScoreDecorator;
+import com.catalyst.sonar.score.ScoreMetrics;
+import com.catalyst.sonar.score.batch.ScoreDecorator;
 import com.google.common.collect.ImmutableList;
 
 /**
@@ -121,7 +121,7 @@ public class ScoreDecoratorTest {
 		
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.reference.batch.ScoreDecorator#usedMetrics()}.
+	 * Test method for {@link com.catalyst.sonar.score.batch.ScoreDecorator#usedMetrics()}.
 	 */
 	@Test
 	public void testUsedMetrics() {
@@ -134,7 +134,7 @@ public class ScoreDecoratorTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.reference.batch.ScoreDecorator#generatedMetrics()}.
+	 * Test method for {@link com.catalyst.sonar.score.batch.ScoreDecorator#generatedMetrics()}.
 	 */
 	@Test
 	public void testGeneratedMetrics() {
@@ -142,7 +142,7 @@ public class ScoreDecoratorTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.reference.batch.ScoreDecorator#shouldExecuteOnProject(org.sonar.api.resources.Project)}.
+	 * Test method for {@link com.catalyst.sonar.score.batch.ScoreDecorator#shouldExecuteOnProject(org.sonar.api.resources.Project)}.
 	 */
 	@Test
 	public void testShouldExecuteOnProject() {
@@ -150,7 +150,7 @@ public class ScoreDecoratorTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.reference.batch.ScoreDecorator#shouldDecorateResource(org.sonar.api.resources.Resource, org.sonar.api.batch.DecoratorContext)}.
+	 * Test method for {@link com.catalyst.sonar.score.batch.ScoreDecorator#shouldDecorateResource(org.sonar.api.resources.Resource, org.sonar.api.batch.DecoratorContext)}.
 	 * Tests for when the resource is a unit test resource.  It should return false.
 	 */
 	@Test
@@ -159,7 +159,7 @@ public class ScoreDecoratorTest {
 	}
 	
 	/**
-	 * Test method for {@link com.catalyst.sonar.reference.batch.ScoreDecorator#shouldDecorateResource(org.sonar.api.resources.Resource, org.sonar.api.batch.DecoratorContext)}.
+	 * Test method for {@link com.catalyst.sonar.score.batch.ScoreDecorator#shouldDecorateResource(org.sonar.api.resources.Resource, org.sonar.api.batch.DecoratorContext)}.
 	 */
 	@Test
 	public void testShouldDecorateResource() {
@@ -167,7 +167,7 @@ public class ScoreDecoratorTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.reference.batch.ScoreDecorator#decorate(org.sonar.api.resources.Resource, org.sonar.api.batch.DecoratorContext)}.
+	 * Test method for {@link com.catalyst.sonar.score.batch.ScoreDecorator#decorate(org.sonar.api.resources.Resource, org.sonar.api.batch.DecoratorContext)}.
 	 */
 	@Test
 	public void testDecorate() {

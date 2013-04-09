@@ -1,5 +1,6 @@
-package com.catalyst.sonar.reference.batch;
-import com.catalyst.sonar.reference.ScoreMetrics;
+package com.catalyst.sonar.score.batch;
+import com.catalyst.sonar.score.ScoreMetrics;
+
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
