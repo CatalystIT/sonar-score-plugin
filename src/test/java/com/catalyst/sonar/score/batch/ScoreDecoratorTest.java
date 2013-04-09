@@ -25,8 +25,8 @@ import com.google.common.collect.ImmutableList;
  *
  */
 public class ScoreDecoratorTest {
-	abstract class MockResource extends Resource<Project> {		
-	};
+//	abstract class MockResource extends Resource<Project> {		
+//	};
 	
 	ScoreDecorator scoreDecorator;
 	Project project;
@@ -54,9 +54,9 @@ public class ScoreDecoratorTest {
 		api = mock(Measure.class);
 		coverage = mock(Measure.class);
 		tangle = mock(Measure.class);
-		resource = mock(MockResource.class);
+		resource = mock(Resource.class);
 		when(resource.getQualifier()).thenReturn("NOT_" + Qualifiers.UNIT_TEST_FILE);
-		utsResource = mock(MockResource.class);
+		utsResource = mock(Resource.class);
 		when(utsResource.getQualifier()).thenReturn(Qualifiers.UNIT_TEST_FILE);
 	}
 	
