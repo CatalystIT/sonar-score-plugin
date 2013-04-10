@@ -25,8 +25,9 @@ public class ScoreMetrics implements Metrics {
 			.setDomain(CoreMetrics.DOMAIN_GENERAL)
 			.create();
 
-	/* getMetrics() method is defined in the Metrics interface and is used by
-	Sonar to retrieve the list of new metrics
+	/**
+	 * {@inheritDoc}
+	 *  used by Sonar to retrieve the list of new metrics
 	 */
 	public List<Metric> getMetrics() {
 		//retrieves list of metrics
