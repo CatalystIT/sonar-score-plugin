@@ -17,33 +17,48 @@ import org.sonar.api.batch.DependsUpon;
 
 public class ScoreDecorator implements Decorator {
 	
- /*The points metric depends upon the non-commented lines of code, the rules compliance (violations density), unit test coverage,
- documented API, and package tangle measures to be calculated first before the points measure can be calaculated.
- */
+ /**
+  * The points metric depends upon the non-commented lines of code, the rules compliance (violations density), unit test coverage,
+  * documented API, and package tangle measures to be calculated first before the points measure can be calaculated.
+  */
  @DependsUpon
   public Collection<Metric> usedMetrics(){
   return ImmutableList.of(CoreMetrics.NCLOC, CoreMetrics.VIOLATIONS_DENSITY, CoreMetrics.PUBLIC_DOCUMENTED_API_DENSITY,
   CoreMetrics.COVERAGE, CoreMetrics.PACKAGE_TANGLE_INDEX );   
   }
-  /*The points metric is calculated after the other metrics that is depends upon are calculated first.
-  */
+  
+  /**
+   * The points metric is calculated after the other metrics that is depends upon are calculated first.
+   */
   @DependedUpon
-  public Collection<Metric> generatedMetrics() {   
-  return Arrays.asList(ScoreMetrics.POINTS);
+  public Collection<Metric> generatedMetrics() {
+	  
+	  return Arrays.asList(ScoreMetrics.POINTS);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public boolean shouldExecuteOnProject(Project project) {
-   // return !Project.AnalysisType.STATIC.equals(project.getAnalysisType());
-	return true;
+   
+	  return true;
   }
-/*returns whether or not a resource is a unit test class
-*/
+  
+  /**
+   * returns whether or not a resource is a unit test class
+   * @param resource
+   * @param context
+   * @return
+   */
   public boolean shouldDecorateResource( final Resource resource, final DecoratorContext context ) {
     return !ResourceUtils.isUnitTestClass(resource);
   }
-/*calculates the points metric and saves it to the database.  First all the necessary measures are retrieved in order to 
-calculate the points metric for a particular project.
-*/
+  
+  /**
+   * calculates the points metric and saves it to the database.  First all the necessary measures are retrieved in order to 
+   * calculate the points metric for a particular project.
+   */
+
   public void decorate( final Resource resource, final DecoratorContext context ) {
     if (shouldDecorateResource (resource, context)){
 	double lines = MeasureUtils.getValue(context.getMeasure(CoreMetrics.NCLOC),0.0);

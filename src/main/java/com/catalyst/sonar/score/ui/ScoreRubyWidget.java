@@ -9,8 +9,6 @@ import org.sonar.api.web.WidgetCategory;
 @UserRole(UserRole.USER)
 @Description("Add the point widget here!")
 @WidgetCategory("Points")
-
-
 public class ScoreRubyWidget extends AbstractRubyTemplate implements RubyRailsWidget{
 	
 	public String getId(){
