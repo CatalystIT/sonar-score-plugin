@@ -1,22 +1,20 @@
-/**
- * 
- */
 package com.catalyst.sonar.score.metrics;
-
 import java.util.List;
 import java.util.Arrays;
-
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.Metrics;
 
 /**
  * @author lsajeev
+ * Creates SCORE's Points metric
  * 
  */
 public class ScoreMetrics implements Metrics {
-	
-	
+	/**
+	 * Creates a new "Points" metric in the database setting the value type, name, short-name, description
+	 * direction, qualitative/quantitative, and domain values 
+	 */	
 	public static final Metric POINTS = new Metric.Builder("points", "Points",
 			Metric.ValueType.FLOAT)
 			.setDescription("Score's points value")
@@ -24,13 +22,11 @@ public class ScoreMetrics implements Metrics {
 			.setQualitative(false)
 			.setDomain(CoreMetrics.DOMAIN_GENERAL)
 			.create();
-
+	
 	/**
-	 * {@inheritDoc}
-	 *  used by Sonar to retrieve the list of new metrics
+	 * Retrieves a list of specified metrics
 	 */
 	public List<Metric> getMetrics() {
-		//retrieves list of metrics
 		return Arrays.asList(POINTS);
 	}
 

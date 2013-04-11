@@ -12,7 +12,8 @@ import com.catalyst.sonar.score.batch.ScoreDecorator;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 /**
- * This class is the entry point for all extensions
+ * Creates a property in the database with the key, name, description and default value set
+ * for the SCORE property 
  */
 @Properties({
 	  @Property(
@@ -20,18 +21,31 @@ import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 	    name = "Plugin Property",
 	    description = "A property for Score's points plugin",
 	    defaultValue = "Score")})
+
+/**
+ * This class is the entry point for the SCORE extension/plugin
+ */
 public class ScorePlugin extends SonarPlugin{
 	public static final String MY_PROPERTY = "sonar.score.myproperty";
+	/**
+	 * returns a list of the various classes used to create the SCORE extension/plugin
+	 */	
 	@SuppressWarnings({ "unchecked"})
 	public List<Class<? extends Extension>> getExtensions() {
 		
 		return Arrays.asList(
-		//Definition of Score's points metric		
+		/*
+		 * Definition of Score's points metric		
+		 */
 		ScoreMetrics.class,
-		//batch
+		/*
+		 * the decorator class (batch)
+		 */
 		ScoreDecorator.class,
 		
-		//Score's ui
+		/*
+		 * Score's ui
+		 */
 		ScoreRubyWidget.class
 		);
 		
