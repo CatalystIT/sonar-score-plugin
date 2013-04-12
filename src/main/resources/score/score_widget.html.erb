@@ -27,13 +27,13 @@ points=measure('points')
  <td valign="top" nowrap="">
  <table>
  <tr><td>
-	<h2>Points - <%= @project.long_name -%></h2>
+	<h1> <%= @project.long_name -%></h1>
 </td>
  </tr>
  <tr>
  <td>
   <div><p style="a.color:#994411; font-family:Comic Sans MS; font-size:1.5em; font-weight:bold">
-	<%= format_measure('points', :suffix => ' Points value', :url =>url_for_drilldown('points'))-%>
+	<%= format_measure('points', :suffix => ' Points ', :url =>url_for_drilldown('points'))-%>
    
    </p>
   </div>
