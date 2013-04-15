@@ -16,7 +16,7 @@ import org.sonar.api.web.Filter;
  */
 public class ProjectGroup {
 	
-	private Set<String> tags;
+	private final Set<String> tags;
 	
 	private Filter filter;
 	
@@ -41,6 +41,22 @@ public class ProjectGroup {
 	 */
 	public boolean remove(String tag) {
 		return tags.remove(tag);
+	}
+	
+	/**
+	 * Removes a tag from the tags set.
+	 * @param tag
+	 * @return
+	 */
+	public boolean contains(String tag) {
+		return tags.contains(tag);
+	}
+
+	/**
+	 * @return the tags
+	 */
+	public Set<String> getTags() {
+		return tags;
 	}
 
 	/**
