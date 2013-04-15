@@ -17,8 +17,7 @@
 		<dependency>
 			<groupId>org.codehaus.sonar</groupId>
 			<artifactId>sonar-plugin-api</artifactId>
-			<version>${sonar.buildVersion}</version>
-			<scope>provided</scope>
+			<version>3.5.1</version>
 		</dependency>
 
 		<!-- unit tests -->
@@ -51,6 +50,11 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>1.9.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-core</artifactId>
+			<version>3.5.1</version>
 		</dependency>
 	</dependencies>
 
