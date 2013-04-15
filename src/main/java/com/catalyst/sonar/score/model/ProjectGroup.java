@@ -3,7 +3,6 @@
  */
 package com.catalyst.sonar.score.model;
 
-import java.io.Serializable;
 import java.util.Set;
 import java.util.HashSet;
 import org.sonar.api.web.Filter;

@@ -22,7 +22,7 @@ public abstract class Entity implements Serializable {
 	 */
 	protected String fileName() {
 		String className =  this.getClass().getName();
-		className = className.substring(className.lastIndexOf(".") + 1);
+		className = className.substring(className.lastIndexOf('.') + 1);
 		return name + className;
 	}
 
