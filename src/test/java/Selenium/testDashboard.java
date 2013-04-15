@@ -24,12 +24,17 @@ public class testDashboard {
 	private static final String SONAR_DASHBOARD_INDEX_1_STRING = "";
 	private static final String SONAR_HOME_PAGE_TITLE = "Sonar";
 	
-	   // Waiting 15 seconds for an element to be present on the page, checking
-	   // for its presence once every 1 second.
-	   Wait<WebDriver> customWait = new FluentWait<WebDriver>(driver)
-	       .withTimeout(15L, TimeUnit.SECONDS)
-	       .pollingEvery(1, TimeUnit.SECONDS)
-	       .ignoring(NoSuchElementException.class);
+   // Wait 15 seconds for an element to be present on the page, checking
+   // for its presence once every 1 second.
+   Wait<WebDriver> customWait = new FluentWait<WebDriver>(driver)
+       .withTimeout(15L, TimeUnit.SECONDS)
+       .pollingEvery(1, TimeUnit.SECONDS)
+       .ignoring(NoSuchElementException.class);
+   
+   public void login(){
+	   WebElement loginLink = customWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Log in")));
+	   loginLink.click();
+   }
 	
 	@BeforeClass
 	public static void setup() {
@@ -37,14 +42,14 @@ public class testDashboard {
 		driver.manage().window().maximize();
 	}
 
-	@Before
+//	@Before
 	public void beforetest() {
 		driver.navigate().to(SONAR_HOME_PAGE_URL);
 		
 		// wait for the title tag to load in the page
 		WebElement title = customWait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("title")));
 		
-		// if the title is not Sonar, try the other url
+		// if the title is not "Sonar", try the other url
 		if (!title.getText().equals(SONAR_HOME_PAGE_TITLE)){
 			driver.navigate().to(SONAR_HOME_PAGE_URL2);
 		}
@@ -52,8 +57,9 @@ public class testDashboard {
 		driver.findElement(By.cssSelector(SONAR_DASHBOARD_INDEX_1_CSS)).click();
 	}
 
-	@Test
+//	@Test
 	public void test() {
+		login();
 		//fail("Not yet implemented");
 	}
 
