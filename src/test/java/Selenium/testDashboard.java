@@ -45,7 +45,7 @@ public class testDashboard {
 		WebElement title = customWait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("title")));
 		
 		// if the title is not Sonar, try the other url
-		if (title.getText() != SONAR_HOME_PAGE_TITLE){
+		if (!title.getText().equals(SONAR_HOME_PAGE_TITLE)){
 			driver.navigate().to(SONAR_HOME_PAGE_URL2);
 		}
 		
