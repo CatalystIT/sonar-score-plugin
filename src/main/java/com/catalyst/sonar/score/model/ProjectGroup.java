@@ -3,6 +3,7 @@
  */
 package com.catalyst.sonar.score.model;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.HashSet;
 import org.sonar.api.web.Filter;
@@ -14,14 +15,15 @@ import org.sonar.api.web.Filter;
  * They are grouped together either by tags, by a filter, or by both.
  *
  */
-public class ProjectGroup {
+public class ProjectGroup extends Entity {
 	
 	private final Set<String> tags;
 	
 	private Filter filter;
 	
-	public ProjectGroup() {
-		tags = new HashSet<String>();
+	public ProjectGroup(String name) {
+		setName(name);
+		this.tags = new HashSet<String>();
 		this.filter = null;
 	}
 	
@@ -72,5 +74,10 @@ public class ProjectGroup {
 	public void setFilter(Filter filter) {
 		this.filter = filter;
 	}
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 }

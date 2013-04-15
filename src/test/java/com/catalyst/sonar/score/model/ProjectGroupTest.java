@@ -18,6 +18,8 @@ import org.sonar.api.web.Filter;
 public class ProjectGroupTest {
 	public static final String TAG1 = "Happy";
 	public static final String TAG2 = "Sad";
+	public static final String NAME1 = "EmotiveProjects";
+	public static final String NAME2 = "DullProjects";
 	
 	private ProjectGroup group;
 	private Filter filter;
@@ -27,7 +29,7 @@ public class ProjectGroupTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		group = new ProjectGroup();
+		group = new ProjectGroup(NAME1);
 	}
 
 	/**
@@ -35,6 +37,7 @@ public class ProjectGroupTest {
 	 */
 	@Test
 	public void testProjectGroup() {
+		assertEquals(NAME1, group.getName());
 		assertNotNull(group.getTags());
 		assertTrue(group.getTags() instanceof HashSet);
 		assertNull(group.getFilter());
@@ -78,6 +81,26 @@ public class ProjectGroupTest {
 		assertFalse(group.contains(TAG2));
 	}
 
+	/**
+	 * Test method for {@link com.catalyst.sonar.score.model.ProjectGroup#getName()}.
+	 */
+	@Test
+	public void testGetName() {
+		assertEquals(NAME1, group.getName());
+		group.setName(NAME2);
+		assertEquals(NAME2, group.getName());
+	}
+
+	/**
+	 * Test method for {@link com.catalyst.sonar.score.model.ProjectGroup#setName(java.lang.String)}.
+	 */
+	@Test
+	public void testSetName() {
+		assertEquals(NAME1, group.getName());
+		group.setName(NAME2);
+		assertEquals(NAME2, group.getName());
+	}
+	
 	/**
 	 * Test method for {@link com.catalyst.sonar.score.model.ProjectGroup#getFilter()}.
 	 */
