@@ -18,7 +18,7 @@ public class ProjectGroup extends Entity {
 	
 	private final Set<String> tags;
 	
-	private Filter filter;
+	private transient Filter filter;
 	
 	/**
 	 * constructs the ProjectGroup, sets the name, sets filter to null and instantiates tags.
@@ -77,6 +77,9 @@ public class ProjectGroup extends Entity {
 	public void setFilter(Filter filter) {
 		this.filter = filter;
 	}
+	
+	
+	
 	
 	/**
 	 * 

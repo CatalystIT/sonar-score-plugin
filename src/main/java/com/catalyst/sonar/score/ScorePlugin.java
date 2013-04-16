@@ -17,16 +17,18 @@ import com.catalyst.sonar.score.ui.ScoreRubyWidget;
  */
 @Properties({
 	  @Property(
-	    key = ScorePlugin.MY_PROPERTY,
-	    name = "Plugin Property",
-	    description = "A property for Score's points plugin",
-	    defaultValue = "Score")})
+	    key = ScorePlugin.PROJECT_TAG,
+	    name = "Project Tag",
+	    description = "Provide a tag for your project",
+	    defaultValue = "misc",
+	    project = true,
+	    multiValues = true)})
 
 /**
  * This class is the entry point for the SCORE extension/plugin
  */
 public class ScorePlugin extends SonarPlugin{
-	public static final String MY_PROPERTY = "sonar.score.myproperty";
+	public static final String PROJECT_TAG = "sonar.score.tag";
 	/**
 	 * returns a list of the various classes used to create the SCORE extension/plugin
 	 */	
