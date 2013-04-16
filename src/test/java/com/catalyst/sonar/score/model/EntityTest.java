@@ -30,7 +30,7 @@ public class EntityTest {
 	 */
 	@Test
 	public void testFileName() {
-		assertEquals(NAME + "ProjectGroup", group.fileName());
+		assertEquals(NAME + ".ProjectGroup", group.fileName());
 	}
 
 	/**
