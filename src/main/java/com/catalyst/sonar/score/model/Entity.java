@@ -17,16 +17,23 @@ public abstract class Entity implements Serializable {
 	private String name;
 	
 	/**
+	 * constructs the Entity and sets the name.
+	 * @param name
+	 */
+	public Entity(String name) {
+		this.name = name;
+	}
+	
+	/**
 	 * returns a String concatenating name + the classname.
 	 * @return
 	 */
-	protected String fileName() {
+	public String fileName() {
 		String className =  this.getClass().getName();
 		className = className.substring(className.lastIndexOf('.') + 1);
-		return name + className;
+		return name + "." + className;
 	}
-
-
+	
 	/**
 	 * @return the name
 	 */

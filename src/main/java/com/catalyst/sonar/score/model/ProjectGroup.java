@@ -20,8 +20,12 @@ public class ProjectGroup extends Entity {
 	
 	private Filter filter;
 	
+	/**
+	 * constructs the ProjectGroup, sets the name, sets filter to null and instantiates tags.
+	 * @param name
+	 */
 	public ProjectGroup(String name) {
-		setName(name);
+		super(name);
 		this.tags = new HashSet<String>();
 		this.filter = null;
 	}
