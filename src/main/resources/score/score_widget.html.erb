@@ -3,38 +3,41 @@ points=measure('points')
  if ( points )
 %>
 
-<table class="width100" border="0">
+<table id="score_table_container" style="table-layout: fixed; width: 100%" border="0">
 <tr>
 <td valign="top" width="25%">
-<div class="dashbox">    
+<div class="dashbox"> 
      <p>
-	<span class="big">
-		<img src="/images/profiles/projects/<%= @project.id -%>.png" onerror="this.src='/images/profiles/projects/default.png'" max-width="200" height="100"/>
+	<span class="big" id="score_image">
+		<img src="/images/profiles/projects/<%= @project.id -%>.png" onerror="this.src='/images/profiles/projects/default.png'" height="100" max-width="200"/>
 	    	
 	</span>
      </p>
-      <form action="/SonarScore/src/main/resources/score/score_widget.html.erb" method="post">
-		<p>
-			Choose your logo:<br>
-			<input type="file" name="uploaded_image" size="15">
-		</p>
-		<div>
-	  <input type="submit" value="Upload">
-	  </div>
-	</form>
-     </div>
+     <form action="score_widget.html.erb" method="post">
+
+<p>
+Choose your icon:<br>
+<input type="file" name="datasize" size="15">
+</p>
+<div>
+<input type="submit" value="Upload">
+</div>
+</form>
+  </div>
  </td> 
  <td valign="top" nowrap="">
- <table>
- <tr><td>
+ <table id="score_table_1">
+ <tr><th scope="col" style="word-wrap: break-word">
 	<h1> <%= @project.long_name -%></h1>
-</td>
+</th>
  </tr>
- <tr>
+<tr>
  <td>
-  <div><p style="a.color:#994411; font-family:Comic Sans MS; font-size:1.5em; font-weight:bold">
+  <div id= "score_points">
+  <p style="a.color:#994411; font-family:Comic Sans MS; font-size:1.5em; font-weight:bold">
+  <span id="score_points">
 	<%= format_measure('points', :suffix => ' Points ', :url =>url_for_drilldown('points'))-%>
-   
+  </span> 
    </p>
   </div>
  </td>
