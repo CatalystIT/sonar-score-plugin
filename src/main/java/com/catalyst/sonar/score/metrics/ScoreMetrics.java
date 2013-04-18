@@ -12,11 +12,12 @@ import org.sonar.api.measures.Metrics;
  */
 public class ScoreMetrics implements Metrics {
 	/**
-	 * Creates a new "Points" metric in the database setting the value type, name, short-name, description
+	 * Creates a new "Points" metric in the database setting the value type (value calculated as
+	 * a double, but saved as an integer), name, short-name, description
 	 * direction, qualitative/quantitative, and domain values 
 	 */	
 	public static final Metric POINTS = new Metric.Builder("points", "Points",
-			Metric.ValueType.FLOAT)
+			Metric.ValueType.INT)
 			.setDescription("Score's points value")
 			.setDirection(Metric.DIRECTION_NONE)
 			.setQualitative(false)
