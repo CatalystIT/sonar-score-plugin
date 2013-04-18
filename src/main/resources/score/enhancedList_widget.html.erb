@@ -43,8 +43,7 @@
     					if (children[j].href) {
     						href = children[j].href;
     						
-    						console.log(href);
-    					}
+    						    					}
     				}
 			}
 			//extract the project id number from the href
@@ -52,6 +51,7 @@
 			projectId = href.substring(++beginning);
 			
 			//checks to see if there is an existing image for the project
+			
 			function file_exists (url) {
 			// Returns true if filename exists and false if it does not exist 
 			var req = this.window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();
@@ -79,7 +79,7 @@
 	             		
               }
       	}
-      	//set both flags to true so the searchs for the img tag and href will stop
+      	//set both flags to true so both searches for the img tag and href will stop
       	flag = true;
         hrefFlag = true;
 
@@ -87,9 +87,8 @@
        
       
       var readyStateCheckInterval = setInterval(function() {
-     
+     //if the document is ready and the search for hrefs and imgs is over, then set the new image
     if ((document.readyState === "complete") && (flag != true)) {
-        //set the new image
         changeImage();             
         clearInterval(readyStateCheckInterval);
     }
