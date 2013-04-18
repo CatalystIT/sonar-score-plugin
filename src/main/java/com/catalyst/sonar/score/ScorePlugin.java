@@ -2,15 +2,15 @@ package com.catalyst.sonar.score;
 
 import java.util.Arrays;
 import java.util.List;
-
 import org.sonar.api.Extension;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
-
 import com.catalyst.sonar.score.batch.ScoreDecorator;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
+import com.catalyst.sonar.score.ui.EnhancedListFilter;
+
 /**
  * Creates a property in the database with the key, name, description and default value set
  * for the SCORE property 
@@ -48,7 +48,9 @@ public class ScorePlugin extends SonarPlugin{
 		/*
 		 * Score's ui
 		 */
-		ScoreRubyWidget.class
+		ScoreRubyWidget.class, EnhancedListFilter.class
+		
+		
 		);
 		
 	}
