@@ -2,46 +2,6 @@
 points=measure('points')
  if ( points )
 %>
-  <script type="text/javascript">
-    var url = "";
-    document.getElementById("project_image").src= readCookie("imageUrl");
-	document.getElementById("submit").onclick = function () {
-    url = document.getElementById("url").value;
-    createCookie("imageUrl", url, 300);
-    document.getElementById("project_image").src= readCookie("imageUrl");
-    };
-
-    function createCookie(name, value, days) {
-	// name is the name of the cookie/vairable eg "token". Value is the token itself, days is the number of days until this token expires (automatically deletes itself). -1 for days deletes the coopkies if it exists
-	if (days) {
-		var date = new Date();
-		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-		var expires = "; expires=" + date.toGMTString();
-	} else
-		var expires = "";
-	document.cookie = name + "=" + value + expires + "; path=/";
-}
-
-	function readCookie(name) {
-	// name is which cookie you want to read - returns the value of specified cookie
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for ( var i = 0; i < ca.length; i++) {
-		var c = ca[i];
-		while (c.charAt(0) == ' ')
-			c = c.substring(1, c.length);
-		if (c.indexOf(nameEQ) == 0)
-			return c.substring(nameEQ.length, c.length);
-	}
-	return null;
-}
-	
-	function eraseCookie(name) {
-	// deletes the cookie by calling createCookie and setting the number of days to -1)
-	createCookie(name, "", -1);
-}
-    
-  </script>
 <table id="score_table_container" style="table-layout: fixed; width: 100%" border="0">
 <tr>
 <td valign="top" width="50%" style="word-wrap: normal">
@@ -54,8 +14,16 @@ points=measure('points')
      </p>
     
 
-	<input type= "text" name= "url" id= "url">
-	<input type= "button" value= "Upload" id= "submit">
+	 <form action="score_widget.html.erb" method="post">
+
+	<p>
+		Choose your icon:<br>
+		<input type="file" name="datasize" size="15">
+	</p>
+	<div>
+		<input type="submit" value="Upload">
+	</div>
+	</form>
 
 	
  </div>
