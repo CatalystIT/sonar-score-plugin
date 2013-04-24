@@ -14,6 +14,7 @@ import com.catalyst.sonar.score.batch.ScoreDecorator;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.EnhancedListFilter;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
+import com.catalyst.sonar.score.ui.ProjectComparisonWidget;
 
 /**
  * @author JDunn
@@ -42,7 +43,8 @@ public class ScorePluginTest {
 						ScoreMetrics.class,
 						ScoreDecorator.class,
 						ScoreRubyWidget.class,
-						EnhancedListFilter.class
+						EnhancedListFilter.class,
+						ProjectComparisonWidget.class
 		));
 	}
 

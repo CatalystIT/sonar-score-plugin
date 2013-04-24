@@ -10,6 +10,7 @@ import com.catalyst.sonar.score.batch.ScoreDecorator;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 import com.catalyst.sonar.score.ui.EnhancedListFilter;
+import com.catalyst.sonar.score.ui.ProjectComparisonWidget;
 
 /**
  * Creates a property in the database with the key, name, description and default value set
@@ -17,18 +18,17 @@ import com.catalyst.sonar.score.ui.EnhancedListFilter;
  */
 @Properties({
 	  @Property(
-	    key = ScorePlugin.PROJECT_TAG,
-	    name = "Project Tag",
-	    description = "Provide a tag for your project",
-	    defaultValue = "misc",
-	    project = true,
-	    multiValues = true)})
+	    key = ScorePlugin.PROJECT_GROUP,
+	    name = "Project Group",
+	    description = "Specify the project group of your project.",
+	    project = true,	    
+	    global = false)})
 
 /**
  * This class is the entry point for the SCORE extension/plugin
  */
 public class ScorePlugin extends SonarPlugin{
-	public static final String PROJECT_TAG = "sonar.score.tag";
+	public static final String PROJECT_GROUP = "sonar.score.projectGroup";
 	/**
 	 * returns a list of the various classes used to create the SCORE extension/plugin
 	 */	
@@ -46,9 +46,9 @@ public class ScorePlugin extends SonarPlugin{
 		ScoreDecorator.class,
 		
 		/*
-		 * Score's ui
+		 * Score's ui/widget's
 		 */
-		ScoreRubyWidget.class, EnhancedListFilter.class
+		ScoreRubyWidget.class, EnhancedListFilter.class, ProjectComparisonWidget.class
 		
 		
 		);
