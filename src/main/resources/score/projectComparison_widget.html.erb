@@ -1,11 +1,28 @@
 <%
   
    property_id = widget_properties['groupId']
+   properties = Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"})
+   projectGroup = nil
    
    
   
 %>
 <h1> This is the comparison widget</h1>
 <p> property:  <%= widget_properties['groupId'] -%></p>
+<p><%=Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"})[0].resource_id-%></p>
+ 
+<% for @Property in properties %>
+<% if (@Property.resource_id == @project.id)%>
+<% projectGroup = @Property %>
+<% end %>
+<% end %>
+
+
+<% for @Property in Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"}) %>
+<% if (true)%>
+<p><%= @Property.resource_id -%></p>
+<% end %>
+<% end %>
+
 
 
