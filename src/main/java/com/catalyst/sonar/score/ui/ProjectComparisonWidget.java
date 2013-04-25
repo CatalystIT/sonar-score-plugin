@@ -16,7 +16,7 @@ import org.sonar.api.web.WidgetScope;
 
 @UserRole(UserRole.USER)
 @Description("Compares point values for projeccts in the same project group.")
-@WidgetCategory("Points")
+@WidgetCategory("Score")
 @WidgetScope(GLOBAL)
 
 /**

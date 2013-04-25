@@ -1,8 +1,19 @@
 <%
   
    property_id = widget_properties['groupId']
+   
+   #finds all the properties for the sonar.score.projectGroup property
    properties = Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"})
+   
+   #variable that holds the project group name
    projectGroup = nil
+   
+   #array that holds projects
+   projects = Project.find(:all, :conditions => {:scope => "PRJ"})
+   
+   #variable that holds the project name
+   projectName = nil
+   
    
    
   
@@ -11,19 +22,30 @@
 <p> Group Name:  <%= widget_properties['groupId'] -%></p><br>
 <p> Resource ids: </p>
 
- 
+<!--Loops through the properties array that contains all the groups of projects for the 
+sonar.score.projectGroup property.  If the resourceId is equal to the project that has been selected
+then set the projectGroup variable to the @Property variable. 
+-->
 <% for @Property in properties %>
 <% if (@Property.resource_id == @project.id)%>
 <% projectGroup = @Property %>
 <% end %>
 <% end %>
 
-
+<!--Retrieve all the resource ids for the projectGroup name -->
 <% for @Property in Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"}) %>
 <% if (@Property.value == projectGroup.value )%>
 <p><%= @Property.resource_id -%></p>
+	<!--Loop through all the projects and if the project id = the resource id then print the name -->
+	<% for @Project in projects %>
+	<% if (@Project.id == @Property.resource_id)%>
+	<% projectName = @Project %>
+	<p><%= @Project.name -%></p>
 <% end %>
 <% end %>
+<% end %>
+<% end %>
+
 
 
 

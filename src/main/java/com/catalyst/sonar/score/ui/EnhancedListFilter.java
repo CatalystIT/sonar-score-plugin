@@ -20,7 +20,7 @@ import static org.sonar.api.web.WidgetScope.GLOBAL;
 
 @UserRole(UserRole.USER)
 @Description("Displays the result of a pre-configured measure filter as a list with the project logo.")
-@WidgetCategory({"Filters","Points"})
+@WidgetCategory({"Filters","Score"})
 @WidgetScope(GLOBAL)
 
 /**

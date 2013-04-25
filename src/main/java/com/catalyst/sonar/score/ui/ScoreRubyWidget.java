@@ -11,8 +11,8 @@ import org.sonar.api.web.WidgetCategory;
  * @WidgetCategory:  Creates a new category called "Points" on Sonar when configuring widgets
  */
 @UserRole(UserRole.USER)
-@Description("Add the point widget here!")
-@WidgetCategory("Points")
+@Description("Calculate the points earned for a project.")
+@WidgetCategory("Score")
 
 /**
  * @author - Team Build Meister
