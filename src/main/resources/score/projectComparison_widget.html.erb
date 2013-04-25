@@ -14,7 +14,18 @@
    #variable that holds the project name
    projectName = nil
    
+   #finds all the metrics
+   metric = Metric.find(:all, :conditions =>{:name =>"points"})
    
+   #variable that holds the snapshotId
+   snapShotId = nil
+   
+   #finds all "islast" snapshots 
+   snapshots = Snapshot.find(:all, :conditions =>{:islast => "1"})
+   
+      
+   #variable that holds the points value
+   pointsValue = nil
    
   
 %>
@@ -36,16 +47,35 @@ then set the projectGroup variable to the @Property variable.
 <% for @Property in Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"}) %>
 <% if (@Property.value == projectGroup.value )%>
 <p><%= @Property.resource_id -%></p>
-	<!--Loop through all the projects and if the project id = the resource id then print the name -->
+	
+	<!--Loop through all the projects and if the project id = the resource id then print the project name -->
 	<% for @Project in projects %>
 	<% if (@Project.id == @Property.resource_id)%>
 	<% projectName = @Project %>
 	<p><%= @Project.name -%></p>
-<% end %>
-<% end %>
-<% end %>
-<% end %>
+	
+	<!--Loop through all the snapshots and if the project id = the resource id then print the snapshot id -->
+	<% for @Snapshot in snapshots %>
+	<% if (@Project.id == @Snapshot.project_id)%>
+	<% snapshotId = @Snapshot %>
+	
+	
+	<!--Loop through all the project measures for the points measure
+	 and if the snapshot id for the project equals the snapshot id from the snapshot table then print the points value for 
+	 that project -->
+	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => metric}) %>
+	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
+	<% pointsValue = @ProjectMeasure %>
+	<p><%= @ProjectMeasure.value.to_i -%></p>
 
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
 
 
 
