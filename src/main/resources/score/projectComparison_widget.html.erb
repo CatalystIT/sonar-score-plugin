@@ -31,7 +31,12 @@
 %>
 <h1> This is the comparison widget</h1><br>
 <p> Group Name:  <%= widget_properties['groupId'] -%></p><br>
-<p> Resource ids: </p>
+<table border="1">
+  <tr>
+    <th>Project Id</th>
+    <th>Project Name</th>
+    <th>Points</th>
+  </tr>
 
 <!--Loops through the properties array that contains all the groups of projects for the 
 sonar.score.projectGroup property.  If the resourceId is equal to the project that has been selected
@@ -46,13 +51,17 @@ then set the projectGroup variable to the @Property variable.
 <!--Retrieve all the resource ids for the projectGroup name -->
 <% for @Property in Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"}) %>
 <% if (@Property.value == projectGroup.value )%>
-<p><%= @Property.resource_id -%></p>
+<tr>
+<td><%= @Property.resource_id -%></td>
+
 	
 	<!--Loop through all the projects and if the project id = the resource id then print the project name -->
 	<% for @Project in projects %>
 	<% if (@Project.id == @Property.resource_id)%>
 	<% projectName = @Project %>
-	<p><%= @Project.name -%></p>
+	
+	<td><%= @Project.name -%></td>
+	
 	
 	<!--Loop through all the snapshots and if the project id = the resource id then print the snapshot id -->
 	<% for @Snapshot in snapshots %>
@@ -66,7 +75,9 @@ then set the projectGroup variable to the @Property variable.
 	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => metric}) %>
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% pointsValue = @ProjectMeasure %>
-	<p><%= @ProjectMeasure.value.to_i -%></p>
+
+	<td><%= @ProjectMeasure.value.to_i -%></td>
+	</tr>
 
 <% end %>
 <% end %>
@@ -76,6 +87,7 @@ then set the projectGroup variable to the @Property variable.
 <% end %>
 <% end %>
 <% end %>
-
+  
+</table>
 
 
