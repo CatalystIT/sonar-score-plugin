@@ -29,14 +29,17 @@
    
   
 %>
-<h1> This is the comparison widget</h1><br>
-<p> Group Name:  <%= widget_properties['groupId'] -%></p><br>
-<table border="1">
-  <tr>
-    <th>Project Id</th>
-    <th>Project Name</th>
-    <th>Points</th>
+
+<div class = "widget-title"><%= widget_properties['groupId'] -%></div><br>
+<div border:2px solid>
+<table class ="data" style="table-layout: fixed; width: 50%" border="0" >
+<thead>
+  <tr valign ="top">
+    <th><b>Project Id</th>
+    <th><b>Name</th>
+    <th><b>Points</th>
   </tr>
+  </thead>
 
 <!--Loops through the properties array that contains all the groups of projects for the 
 sonar.score.projectGroup property.  If the resourceId is equal to the project that has been selected
@@ -51,7 +54,8 @@ then set the projectGroup variable to the @Property variable.
 <!--Retrieve all the resource ids for the projectGroup name -->
 <% for @Property in Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"}) %>
 <% if (@Property.value == projectGroup.value )%>
-<tr>
+<tr class="<%= cycle('even', 'odd') -%>">
+
 <td><%= @Property.resource_id -%></td>
 
 	
@@ -89,5 +93,6 @@ then set the projectGroup variable to the @Property variable.
 <% end %>
   
 </table>
+</div>
 
 
