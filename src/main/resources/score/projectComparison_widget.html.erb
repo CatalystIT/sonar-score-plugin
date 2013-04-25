@@ -31,11 +31,10 @@
 %>
 
 <div class = "widget-title"><%= widget_properties['groupId'] -%></div><br>
-<div border:2px solid>
 <table class ="data" style="table-layout: fixed; width: 50%" border="0" >
 <thead>
   <tr valign ="top">
-    <th><b>Project Id</th>
+    <th></th>
     <th><b>Name</th>
     <th><b>Points</th>
   </tr>
@@ -56,7 +55,10 @@ then set the projectGroup variable to the @Property variable.
 <% if (@Property.value == projectGroup.value )%>
 <tr class="<%= cycle('even', 'odd') -%>">
 
-<td><%= @Property.resource_id -%></td>
+
+<td>
+<span><img alt height = "16" id= "project_image" src="/images/profiles/projects/<%= @Property.resource_id -%>.png" onerror="this.src='/images/profiles/projects/default.png'" />
+</span>
 
 	
 	<!--Loop through all the projects and if the project id = the resource id then print the project name -->
@@ -93,6 +95,6 @@ then set the projectGroup variable to the @Property variable.
 <% end %>
   
 </table>
-</div>
+
 
 
