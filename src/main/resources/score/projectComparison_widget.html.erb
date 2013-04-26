@@ -30,16 +30,6 @@
   
 %>
 
-<div class = "widget-title"><%= widget_properties['groupId'] -%></div><br>
-<table class ="data" style="width: 50%" border="0" >
-<thead>
-  <tr valign ="top">
-    <th></th>
-    <th><b>Name</th>
-    <th><b>Points</th>
-  </tr>
-  </thead>
-
 <!--Loops through the properties array that contains all the groups of projects for the 
 sonar.score.projectGroup property.  If the resourceId is equal to the project that has been selected
 then set the projectGroup variable to the @Property variable. 
@@ -49,6 +39,18 @@ then set the projectGroup variable to the @Property variable.
 <% projectGroup = @Property %>
 <% end %>
 <% end %>
+
+<!--If the project selected is a member of a group...proceed -->
+<% if (projectGroup != nil )%>
+<h1 style="color:#4B9FD5" ><%= widget_properties['groupId'] -%></h1><br>
+<table class ="data" style="width: 50%" border="0" >
+<thead>
+  <tr valign ="top">
+    <th></th>
+    <th><b>Name</th>
+    <th><b>Points</th>
+  </tr>
+  </thead>
 
 <!--Retrieve all the resource ids for the projectGroup name -->
 <% for @Property in Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"}) %>
@@ -62,11 +64,10 @@ then set the projectGroup variable to the @Property variable.
 	<!--Loop through all the projects and if the project id = the resource id then print the project name -->
 	<% for @Project in projects %>
 	<% if (@Project.id == @Property.resource_id)%>
-	<% projectName = @Project %>
-	
+	<% projectName = @Project %>	
 	<td><%= @Project.name -%></td>
-	
-	
+	 
+		
 	<!--Loop through all the snapshots and if the project id = the resource id then print the snapshot id -->
 	<% for @Snapshot in snapshots %>
 	<% if (@Project.id == @Snapshot.project_id)%>
@@ -76,11 +77,13 @@ then set the projectGroup variable to the @Property variable.
 	<!--Loop through all the project measures for the points measure
 	 and if the snapshot id for the project equals the snapshot id from the snapshot table then print the points value for 
 	 that project -->
+	
 	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => metric}) %>
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% pointsValue = @ProjectMeasure %>
-
-	<td><%= @ProjectMeasure.value.to_i -%></td>
+	
+	<!--drill down on each project's points -->
+	<td><%= format_measure( pointsValue, :suffix => '', :url =>url_for_drilldown( pointsValue ))-%>
 	</tr>
 
 <% end %>
@@ -91,8 +94,16 @@ then set the projectGroup variable to the @Property variable.
 <% end %>
 <% end %>
 <% end %>
-  
+
 </table>
 
 
+<% end %>
+
+<!--The project that is selected must be a member of a group.  If they're not...an error message 
+is returned -->
+<% if (projectGroup == nil )%>
+<div class = "widget-title"><%= widget_properties['groupId'] -%></div><br>
+<p><%=@project.long_name -%> is not a member of any group.</p>
+<% end %>
 
