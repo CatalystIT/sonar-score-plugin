@@ -31,7 +31,7 @@
 %>
 
 <div class = "widget-title"><%= widget_properties['groupId'] -%></div><br>
-<table class ="data" style="table-layout: fixed; width: 50%" border="0" >
+<table class ="data" style="width: 50%" border="0" >
 <thead>
   <tr valign ="top">
     <th></th>
@@ -54,10 +54,8 @@ then set the projectGroup variable to the @Property variable.
 <% for @Property in Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"}) %>
 <% if (@Property.value == projectGroup.value )%>
 <tr class="<%= cycle('even', 'odd') -%>">
-
-
-<td>
-<span><img alt height = "16" id= "project_image" src="/images/profiles/projects/<%= @Property.resource_id -%>.png" onerror="this.src='/images/profiles/projects/default.png'" />
+<td width="10%">
+<span><img alt height = "20" src="/images/profiles/projects/<%= @Property.resource_id -%>.png" onerror="this.src='/images/profiles/projects/default.png'" />
 </span>
 
 	
