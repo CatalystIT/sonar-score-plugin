@@ -14,8 +14,11 @@
    #variable that holds the project name
    projectName = nil
    
-   #finds all the metrics
-   metric = Metric.find(:all, :conditions =>{:name =>"points"})
+   #finds needed metrics
+   pointsMetric = Metric.find(:all, :conditions =>{:name =>"points"})
+   coverageMetric = Metric.find(:all, :conditions =>{:name =>"coverage"})
+   rulesComplianceMetric = Metric.find(:all, :conditions =>{:name =>"violations_density"})
+   
    
    #variable that holds the snapshotId
    snapShotId = nil
@@ -24,8 +27,10 @@
    snapshots = Snapshot.find(:all, :conditions =>{:islast => "1"})
    
       
-   #variable that holds the points value
+   #variable that holds metric values
    pointsValue = nil
+   coverageValue = nil
+   rulesComplianceValue = nil
    
   
 %>
@@ -43,12 +48,15 @@ then set the projectGroup variable to the @Property variable.
 <!--If the project selected is a member of a group...proceed -->
 <% if (projectGroup != nil )%>
 <h1 style="color:#4B9FD5" ><%= widget_properties['groupId'] -%></h1><br>
-<table class ="data" style="width: 50%" border="0" >
+<table class ="data" style="width: 50%" border="0" table-format >
+
 <thead>
   <tr valign ="top">
     <th></th>
     <th><b>Name</th>
     <th><b>Points</th>
+    <th><b>Coverage</th>
+    <th><b>Rules Compliance</th>
   </tr>
   </thead>
 
@@ -74,16 +82,29 @@ then set the projectGroup variable to the @Property variable.
 	<% snapshotId = @Snapshot %>
 	
 	
-	<!--Loop through all the project measures for the points measure
-	 and if the snapshot id for the project equals the snapshot id from the snapshot table then print the points value for 
-	 that project -->
+	<!--Loop through all the project measures and if the snapshot id for the project 
+	 equals the snapshot id from the snapshot table then retrieve
+	 metric values for all the projects in the group -->
 	
-	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => metric}) %>
+	<!--points value-->
+	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => pointsMetric}) %>
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% pointsValue = @ProjectMeasure %>
 	
+	<!--coverage value-->
+	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => coverageMetric}) %>	
+	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
+	<% coverageValue = @ProjectMeasure %>
+	
+	<!--rules compliance value -->
+	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => rulesComplianceMetric}) %>	
+	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
+	<% rulesComplianceValue = @ProjectMeasure %>
+	
 	<!--drill down on each project's points -->
 	<td><%= format_measure( pointsValue, :suffix => '', :url =>url_for_drilldown( pointsValue ))-%>
+	<td><%= format_measure( coverageValue, :suffix => '', :url =>url_for_drilldown( coverageValue ))-%>
+	<td><%= format_measure( rulesComplianceValue, :suffix => '', :url =>url_for_drilldown( rulesComplianceValue ))-%>
 	</tr>
 
 <% end %>
@@ -94,7 +115,10 @@ then set the projectGroup variable to the @Property variable.
 <% end %>
 <% end %>
 <% end %>
-
+<% end %>
+<% end %>
+<% end %>
+<% end %>
 </table>
 
 
