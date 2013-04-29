@@ -5,6 +5,7 @@ package com.catalyst.sonar.score.batch;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static com.catalyst.sonar.score.batch.ScoreDecorator.*;
 
 import java.util.Arrays;
 
@@ -121,7 +122,7 @@ public class ScoreDecoratorTest {
 		when(api.getValue()).thenReturn(80.0);
 		when(coverage.getValue()).thenReturn(88.0);
 		when(tangle.getValue()).thenReturn(0.0);
-		double points = Math.round((1000.0 *(95.0/100) * (80.0/100) * (88.0/100)) - (0.0*100));
+		double points = Math.round((1000.0 *(95.0/PERCENT) * (80.0/PERCENT) * (88.0/PERCENT)) - (0.0*MAGNIFY_PACKAGE_TANGLE));
 		when(mockContext.saveMeasure(ScoreMetrics.POINTS, points)).thenReturn(mockContext);
 		scoreDecorator.decorate(resource, mockContext);
 		verify(mockContext).saveMeasure(ScoreMetrics.POINTS, points);
@@ -135,7 +136,6 @@ public class ScoreDecoratorTest {
  */
 	@Test
 public void testDecorateWithNegativePoints(){
-	double lowestPoints = 0.0;
 	
 	when(mockContext.getMeasure(CoreMetrics.NCLOC)).thenReturn(ncloc);
 	when(mockContext.getMeasure(CoreMetrics.VIOLATIONS_DENSITY)).thenReturn(violations);
@@ -149,7 +149,7 @@ public void testDecorateWithNegativePoints(){
 	when(tangle.getValue()).thenReturn(500.0);
 	//points calculated in the getPointsValue method is -49,331 but will return zero
 	//because points be negative.  
-	assertEquals((int)scoreDecorator.getPointsValue(mockContext),(int)lowestPoints);
+	assertEquals((int)scoreDecorator.getPointsValue(mockContext),(int)LOWEST_POINTS);
 }
 
 }
