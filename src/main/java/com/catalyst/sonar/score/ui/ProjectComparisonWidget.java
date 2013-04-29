@@ -19,10 +19,6 @@ import org.sonar.api.web.WidgetPropertyType;
  * Sets up the Enhanced Filter List widget's properties with keys, types and default values
  * 
  */
-@WidgetProperties({
-	 @WidgetProperty(key = ProjectComparisonWidget.PROJECT_COMPARISON_GROUP, type = WidgetPropertyType.STRING, optional = false)
-	 
-})
 
 public class ProjectComparisonWidget extends AbstractRubyTemplate implements RubyRailsWidget{
 	public static final String PROJECT_COMPARISON_GROUP = "groupId";
