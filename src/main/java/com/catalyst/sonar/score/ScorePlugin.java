@@ -46,7 +46,7 @@ public class ScorePlugin extends SonarPlugin{
 		ScoreDecorator.class,
 		
 		/*
-		 * Score's ui/widget's
+		 * Score's ui/widgets
 		 */
 		ScoreRubyWidget.class, EnhancedListFilter.class, ProjectComparisonWidget.class
 		
