@@ -12,7 +12,7 @@ import org.sonar.api.web.WidgetPropertyType;
 
 
 @UserRole(UserRole.USER)
-@Description("Compares point values for projeccts in the same project group.")
+@Description("Compares point values for projects in the same project group.")
 @WidgetCategory("Score")
 
 /**
@@ -28,7 +28,7 @@ public class ProjectComparisonWidget extends AbstractRubyTemplate implements Rub
 		 * represents the "widget_key" in the widgets table
 		 */
 	  public String getId() {
-	    return "projectComparsion";
+	    return "projectComparison";
 	  }
 	/**
 	 * returns the widget's title
