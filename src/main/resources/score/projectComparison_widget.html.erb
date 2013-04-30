@@ -1,7 +1,5 @@
 <%
   
-   property_id = widget_properties['groupId']
-   
    #finds all the properties for the sonar.score.projectGroup property
    properties = Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"})
    
@@ -18,21 +16,15 @@
    pointsMetric = Metric.find(:all, :conditions =>{:name =>"points"})
    coverageMetric = Metric.find(:all, :conditions =>{:name =>"coverage"})
    rulesComplianceMetric = Metric.find(:all, :conditions =>{:name =>"violations_density"})
-   
+   docApiMetric = Metric.find(:all, :conditions =>{:name =>"public_documented_api_density"})   
    
    #variable that holds the snapshotId
    snapShotId = nil
    
    #finds all "islast" snapshots 
    snapshots = Snapshot.find(:all, :conditions =>{:islast => "1"})
-   
-      
-   #variable that holds metric values
-   pointsValue = nil
-   coverageValue = nil
-   rulesComplianceValue = nil
-   
   
+  	  
 %>
 
 <!--Loops through the properties array that contains all the groups of projects for the 
@@ -47,25 +39,26 @@ then set the projectGroup variable to the @Property variable.
 
 <!--If the project selected is a member of a group...proceed -->
 <% if (projectGroup != nil )%>
-<h1 style="color:#4B9FD5" ><%= widget_properties['groupId'] -%></h1><br>
-<table class ="data" style="width: 50%" border="0" table-format >
+<h1 style="color:#4B9FD5" ><%=projectGroup.value -%></h1><br>
 
+<table class ="data" style="table-layout: fixed; width: 100%"  border="0" >
 <thead>
   <tr valign ="top">
-    <th></th>
-    <th><b>Name</th>
-    <th><b>Points</th>
-    <th><b>Coverage</th>
-    <th><b>Rules Compliance</th>
-  </tr>
+    <th align="right" width = "50"></th>
+    <th align="left">Name</th>
+    <th class="right">Points</th>
+    <th class="right">Coverage</th>
+    <th class="right">Rules Compliance</th>
+    <th class="right">Documented API </th>
+  </tr> 
   </thead>
 
 <!--Retrieve all the resource ids for the projectGroup name -->
 <% for @Property in Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"}) %>
 <% if (@Property.value == projectGroup.value )%>
 <tr class="<%= cycle('even', 'odd') -%>">
-<td width="10%">
-<span><img alt height = "20" src="/images/profiles/projects/<%= @Property.resource_id -%>.png" onerror="this.src='/images/profiles/projects/default.png'" />
+<td align="right" width = "50">
+<span><img alt height = "16" src="/images/profiles/projects/<%= @Property.resource_id -%>.png" onerror="this.src='/images/profiles/projects/default.png'" />
 </span>
 
 	
@@ -73,10 +66,10 @@ then set the projectGroup variable to the @Property variable.
 	<% for @Project in projects %>
 	<% if (@Project.id == @Property.resource_id)%>
 	<% projectName = @Project %>	
-	<td><%= @Project.name -%></td>
+	<td align="left"><%= @Project.name -%></td>
 	 
 		
-	<!--Loop through all the snapshots and if the project id = the resource id then print the snapshot id -->
+	<!--Loop through all the snapshots and if the project id = the resource id then set the snapshot id variable -->
 	<% for @Snapshot in snapshots %>
 	<% if (@Project.id == @Snapshot.project_id)%>
 	<% snapshotId = @Snapshot %>
@@ -89,22 +82,28 @@ then set the projectGroup variable to the @Property variable.
 	<!--points value-->
 	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => pointsMetric}) %>
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
-	<% pointsValue = @ProjectMeasure %>
+	<% pointsName = @ProjectMeasure.short_name %>
+	<td align="right"><%= @ProjectMeasure.value.to_i -%></td>
+	
 	
 	<!--coverage value-->
 	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => coverageMetric}) %>	
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% coverageValue = @ProjectMeasure %>
+	<td align="right"><%= @ProjectMeasure.value -%>%</td>
 	
 	<!--rules compliance value -->
 	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => rulesComplianceMetric}) %>	
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% rulesComplianceValue = @ProjectMeasure %>
+	<td align="right"><%= @ProjectMeasure.value -%>%</td>
 	
-	<!--drill down on each project's points -->
-	<td><%= format_measure( pointsValue, :suffix => '', :url =>url_for_drilldown( pointsValue ))-%>
-	<td><%= format_measure( coverageValue, :suffix => '', :url =>url_for_drilldown( coverageValue ))-%>
-	<td><%= format_measure( rulesComplianceValue, :suffix => '', :url =>url_for_drilldown( rulesComplianceValue ))-%>
+	<!--documented API value -->
+	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => docApiMetric}) %>	
+	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
+	<% documentedApiValue = @ProjectMeasure %>
+	<td align="right"><%= @ProjectMeasure.value -%>%</td>
+		
 	</tr>
 
 <% end %>
@@ -119,10 +118,11 @@ then set the projectGroup variable to the @Property variable.
 <% end %>
 <% end %>
 <% end %>
-</table>
-
-
 <% end %>
+<% end %>
+</table>
+<% end %>
+
 
 <!--The project that is selected must be a member of a group.  If they're not...an error message 
 is returned -->
@@ -130,4 +130,6 @@ is returned -->
 <div class = "widget-title"><%= widget_properties['groupId'] -%></div><br>
 <p><%=@project.long_name -%> is not a member of any group.</p>
 <% end %>
+ 
+
 

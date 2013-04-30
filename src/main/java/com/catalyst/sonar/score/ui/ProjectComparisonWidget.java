@@ -6,6 +6,7 @@ import org.sonar.api.web.RubyRailsWidget;
 import org.sonar.api.web.UserRole;
 import org.sonar.api.web.WidgetCategory;
 
+
 /**
  * Sets up the Enhanced Filter List widget's properties with keys, types and default values
  * 
