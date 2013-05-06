@@ -5,7 +5,6 @@ package com.catalyst.sonar.score.batch;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import static com.catalyst.sonar.score.batch.ScoreDecorator.*;
 
 import java.util.Arrays;
 
