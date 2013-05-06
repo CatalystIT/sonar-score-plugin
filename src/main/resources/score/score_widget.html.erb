@@ -6,31 +6,24 @@ points=measure('points')
 <tr>
 <td valign="top" width="50%" style="word-wrap: normal">
 <div class="dashbox"> 
+	<!-- The uploaded project image/icon gets displayed here and if the project does not have an image/icon then the default image/icon is displayed -->
      <p>
 	<span class="big" id="score_image">
-		<img id= "project_image" src="/images/profiles/projects/<%= @project.id -%>.png" onerror="this.src='/images/profiles/projects/default.png'" height="100" max-width="200"/>
-	    	
+		<img id= "project_image" src="/images/display?project_id=<%= @project.id -%>" onerror="this.src='/images/profiles/projects/default.png'" height="100" max-width="200"/>
 	</span>
      </p>
     
-
-	 <form action="score_widget.html.erb" method="post">
-
-	<p>
-		Choose your icon:<br>
-		<input type="file" name="datasize" size="15">
-	</p>
-	<div>
-		<input type="submit" value="Upload">
-	</div>
-	</form>
-
-	
+	<!-- The image selected is uploaded and saved in the images folder as the project image/icon -->
+	<% form_for :image,:url =>{:controller => "images",:action => "create",:method => :post, :project_id => @project.id}, :html => {:multipart => true} do %>
+	<%= file_field :image,:uploadedfile %><br/>
+	<%= submit_tag "Upload" %>
+	<% end %> 
  </div>
- </td> 
+ </td>
  <td valign="top" nowrap="">
  <table id="score_table_1">
  <tr><th scope="col" style="word-wrap: break-word">
+ <!-- Displays project name -->
 	<h1> <%= @project.long_name -%></h1>
 </th>
  </tr>
@@ -38,6 +31,7 @@ points=measure('points')
  <td>
   <div id= "score_points">
   <p style="a.color:#994411; font-family:Comic Sans MS; font-size:1.5em; font-weight:bold">
+  <!-- Displays points -->
   <span id="score_points">
 	<%= format_measure('points', :suffix => ' Points ', :url =>url_for_drilldown('points'))-%>
   </span> 

@@ -61,7 +61,7 @@ then set the projectGroup variable to the @Property variable.
 <% if (@Property.value == projectGroup.value )%>
 <tr class="<%= cycle('even', 'odd') -%>">
 <td id = "image" align="right" width = "50" >
-<span><img alt height = "16" src="/images/profiles/projects/<%= @Property.resource_id -%>.png" onerror="this.src='/images/profiles/projects/default.png'" />
+<span><img alt height = "16" src="/images/display?project_id=<%= @Property.resource_id -%>" onerror="this.src='/images/profiles/projects/default.png'" />
 </span>
 
 	
