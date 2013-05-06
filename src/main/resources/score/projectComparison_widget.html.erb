@@ -23,8 +23,10 @@
    
    #finds all "islast" snapshots 
    snapshots = Snapshot.find(:all, :conditions =>{:islast => "1"})
+   
+   projectName = nil
+   projectImage = nil
   
-  	  
 %>
 
 <!--Loops through the properties array that contains all the groups of projects for the 
@@ -41,23 +43,24 @@ then set the projectGroup variable to the @Property variable.
 <% if (projectGroup != nil )%>
 <h1 style="color:#4B9FD5" ><%=projectGroup.value -%></h1><br>
 
-<table class ="data" style="table-layout: fixed; width: 100%"  border="0" >
-<thead>
+<table id = "metricsTable" class ="data" style="table-layout: fixed; width: 100%"  border="0" >
+<thead> 
   <tr valign ="top">
     <th align="right" width = "50"></th>
     <th align="left">Name</th>
-    <th class="right">Points</th>
-    <th class="right">Coverage</th>
-    <th class="right">Rules Compliance</th>
-    <th class="right">Documented API </th>
-  </tr> 
+    <th class="right" onclick="retrieveTitle(this); showBargraphTable()" id="points" style = "text-decoration:underline; cursor: pointer" >Points</th>
+    <th class="right" onclick="retrieveTitle(this); showBargraphTable()" id="coverage" style = "text-decoration:underline; cursor: pointer" >Coverage</th>
+    <th class="right" onclick="retrieveTitle(this); showBargraphTable()" id="rules" style = "text-decoration:underline; cursor: pointer">Rules Compliance</th>
+    <th class="right" onclick="retrieveTitle(this); showBargraphTable()" id="docApi" style = "text-decoration:underline; cursor: pointer">Documented API </th>
+  </tr>    
   </thead>
+  <tbody id = "tableBody" >
 
 <!--Retrieve all the resource ids for the projectGroup name -->
 <% for @Property in Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"}) %>
 <% if (@Property.value == projectGroup.value )%>
 <tr class="<%= cycle('even', 'odd') -%>">
-<td align="right" width = "50">
+<td id = "image" align="right" width = "50" >
 <span><img alt height = "16" src="/images/profiles/projects/<%= @Property.resource_id -%>.png" onerror="this.src='/images/profiles/projects/default.png'" />
 </span>
 
@@ -65,8 +68,9 @@ then set the projectGroup variable to the @Property variable.
 	<!--Loop through all the projects and if the project id = the resource id then print the project name -->
 	<% for @Project in projects %>
 	<% if (@Project.id == @Property.resource_id)%>
-	<% projectName = @Project %>	
-	<td align="left"><%= @Project.name -%></td>
+	<% projectName = @Project.kee %>
+	<% projectImage = @Project.id %>	
+	<td id = "name" ><%= @Project.name -%></td>
 	 
 		
 	<!--Loop through all the snapshots and if the project id = the resource id then set the snapshot id variable -->
@@ -83,28 +87,30 @@ then set the projectGroup variable to the @Property variable.
 	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => pointsMetric}) %>
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% pointsName = @ProjectMeasure.short_name %>
-	<td align="right"><%= @ProjectMeasure.value.to_i -%></td>
+	<% pointsValue = number_with_delimiter(@ProjectMeasure.value.to_i, :delimiter => ',') %>
+	<td id ="pointsValue" align="right"><%= pointsValue -%></td>
 	
-	
+		
 	<!--coverage value-->
 	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => coverageMetric}) %>	
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% coverageValue = @ProjectMeasure %>
-	<td align="right"><%= @ProjectMeasure.value -%>%</td>
+	<td id = "coverageValue" align="right"><%= @ProjectMeasure.value -%>%</td>
 	
 	<!--rules compliance value -->
 	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => rulesComplianceMetric}) %>	
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% rulesComplianceValue = @ProjectMeasure %>
-	<td align="right"><%= @ProjectMeasure.value -%>%</td>
+	<td align="right" id = "rulesValue"><%= @ProjectMeasure.value -%>%</td>
 	
 	<!--documented API value -->
 	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => docApiMetric}) %>	
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% documentedApiValue = @ProjectMeasure %>
-	<td align="right"><%= @ProjectMeasure.value -%>%</td>
+	<td align="right" id ="docApiValue" ><%= @ProjectMeasure.value -%>%</td>
 		
 	</tr>
+	</tbody>
 
 <% end %>
 <% end %>
@@ -124,8 +130,141 @@ then set the projectGroup variable to the @Property variable.
 <% end %>
 
 
+<br><h1 style="color:#4B9FD5; text-decoration:underline; cursor: pointer" id = "title" title = "Remove graph" onclick = "hideBargraphTable();" ></h1>
+<div id="tablespace"></div>
+<!------------------------------------ JAVASCRIPT---------------------------------------------------------------->
+<script type="text/javascript">
+<!--<script src = "/javascripts/projectComparison.js" type="text/javascript"></script>-->
+<!--hides the metrics table-->
+function hideTable(){
+	document.getElementById("metricsTable").style.visibility =  "hidden";  
+}
+
+<!--Displays the metrics table-->
+function displayTable(){
+	document.getElementById("metricsTable").style.visibility =  "visible"; 
+}
+
+<!--hides the bar graph table-->
+function hideBargraphTable(){
+	document.getElementById("tablespace").style.display =  "none";
+	document.getElementById("title").style.display =  "none";    
+}
+
+<!--shows the bar graph table-->
+function showBargraphTable(){
+	document.getElementById("tablespace").style.display =  "table";
+	document.getElementById("title").style.display =  "block";    
+}
+
+<!--Retrieves metric title and displays it under the project comparison widget table-->
+function retrieveTitle(elem){
+	//retrieves the header title
+	var metric = elem.innerHTML;
+	//retrieves the header id
+	var metricId = elem.id;
+	var drilldownTitle = document.getElementById("title");
+	drilldownTitle.innerHTML = metric;
+	//creates a new table
+	CreateTable(metricId);	
+}
+ 
+ <!--Retrieves the number of 'td' elements in the metrics table-->
+function getNumberOfElementsInTable(){
+	//retrieves the number of 'td' elements in the metrics table
+	var numberOfTdElements = document.getElementById('metricsTable').getElementsByTagName('td').length;	
+	return numberOfTdElements;
+} 
+ <!--Retrieves the number of 'th' elements in the metrics table representing the number of columns-->
+function getNumberOfColumnsInTable(){
+	//retrieves the number of 'th' elements in the metrics table
+	var numberOfThElements = document.getElementById('metricsTable').getElementsByTagName('th').length;	
+	return numberOfThElements;	
+} 
+  
+ <!--Dynamically creates the table with the selected metric, team image and team name-->
+ 
+ function CreateTable(metric){  	
+	//this is the metric's id: (coverage, points...etc. depending on what the user selected)
+	var metricValue = metric +"Value";	
+	   
+    var elements =getNumberOfElementsInTable();
+    var columns = getNumberOfColumnsInTable();
+    //variables representing if a new row needs to be created in the table and if the metric selected has been found
+    var newRow; 
+    var metricFound;
+               
+    var tablecontents = "";
+    tablecontents = "<table id = 'barGraphTable' style='table-layout: fixed; width: 50%; border: 0px' class = 'data' > " +
+    "<thead style = 'border: 0px'>" + 
+   	"<tr style = 'border: 0px'>"+
+    "<th style = 'border: 0px' align='right' width = '50'></th>" +
+    "<th style = 'border: 0px'></th>"+
+    "<th style = 'border: 0px'></th>"+    
+    "</tr>"+    
+    "</thead> " +
+    "<tbody style = 'border: 0px'> ";
+      
+   
+   
+   //go through each element for each row in the metrics table, extracting the needed information
+      for (var i = 0; i < elements; i ++){ 
+      	newRow = false;
+      	//row creation is based on the number of columns. Create a new row if the expression evaluates to true      	
+      	if ( (i + columns) % columns == 0 ){
+      	tablecontents += "<tr style = 'border: 0px'>";
+      	//new row...now looking for the next row's metric value
+      	metricFound = false;
+      	}
+   		   		
+   		//retrieve the element's id to verify what metrics need to be selected
+   		var elementId = document.getElementById('metricsTable').getElementsByTagName('td')[i].id;
+   			
+   			//retrieve the image, if the td element id is "image"
+   			if (elementId == "image"){
+   				//retrieve the element's value and add it to the new table
+   				var image = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;
+   				tablecontents += "<td style = 'border: 0px' align='right' width = '50'>" + image + "</td>";
+   				   				
+   			}
+   			//retrieve the name, if the td element id is "name"
+   			if (elementId == "name"){
+   				//retrieve the element's value and add it to the new table
+   				var projectName = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;
+   				tablecontents += "<td style = 'border: 0px' align='left'>" + projectName + "</td>";
+   				
+   				
+   				
+   			}
+   		
+   			if (elementId != "name" && elementId != "image" ){     				
+   					//if the element's id is equal to the metric category selected and the selected metric hasn't been found yet
+   					if (metricFound == false && (( elementId == metricValue)) ){
+   						var metric = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;  						
+   						tablecontents += "<td style = 'border: 0px'align='left' >" + metric + "</td>";
+   						metricFound = true; 
+   						newRow = true;  						   						
+   						}
+   						
+   			}
+   		   //if the new row property set to true, end the creation of a new row
+   		   if(newRow){
+      		tablecontents += "</tr>";
+      		
+      	} 		  		
+       }
+     
+   	tablecontents += "</tbody>";
+   	tablecontents += "</table>";
+   	document.getElementById("tablespace").innerHTML = tablecontents;    
+   
+}     
+
+</script>
+
 <!--The project that is selected must be a member of a group.  If they're not...an error message 
 is returned -->
+
 <% if (projectGroup == nil )%>
 <div class = "widget-title"><%= widget_properties['groupId'] -%></div><br>
 <p><%=@project.long_name -%> is not a member of any group.</p>
