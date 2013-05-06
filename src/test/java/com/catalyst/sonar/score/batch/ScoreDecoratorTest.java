@@ -36,7 +36,8 @@ public class ScoreDecoratorTest {
 	Resource<Project> resource;
 	Resource<Project> utsResource;
 	Measure ncloc;
-	Measure violations;
+	Measure classes;
+	Measure rulesCompliance;
 	Measure api;
 	Measure coverage;
 	Measure tangle;
@@ -51,7 +52,8 @@ public class ScoreDecoratorTest {
 		mockContext = mock(DecoratorContext.class);
 		mockContext2 = mock(DecoratorContext.class);
 		ncloc = mock(Measure.class);
-		violations = mock(Measure.class);
+		classes = mock(Measure.class);
+		rulesCompliance = mock(Measure.class);
 		api = mock(Measure.class);
 		coverage = mock(Measure.class);
 		tangle = mock(Measure.class);
@@ -126,21 +128,21 @@ public class ScoreDecoratorTest {
 	@Test
 	public void testDecorate() {
 		when(mockContext.getMeasure(CoreMetrics.NCLOC)).thenReturn(ncloc);
+		when(mockContext.getMeasure(CoreMetrics.CLASSES)).thenReturn(classes);
 		when(mockContext.getMeasure(CoreMetrics.VIOLATIONS_DENSITY))
-				.thenReturn(violations);
+				.thenReturn(rulesCompliance);
 		when(mockContext.getMeasure(CoreMetrics.PUBLIC_DOCUMENTED_API_DENSITY))
 				.thenReturn(api);
 		when(mockContext.getMeasure(CoreMetrics.COVERAGE)).thenReturn(coverage);
 		when(mockContext.getMeasure(CoreMetrics.PACKAGE_TANGLE_INDEX))
 				.thenReturn(tangle);
 		when(ncloc.getValue()).thenReturn(1000.0);
-		when(violations.getValue()).thenReturn(95.0);
+		when(classes.getValue()).thenReturn(20.0);
+		when(rulesCompliance.getValue()).thenReturn(95.0);
 		when(api.getValue()).thenReturn(80.0);
 		when(coverage.getValue()).thenReturn(88.0);
 		when(tangle.getValue()).thenReturn(0.0);
-		double points = Math.round((1000.0 * (95.0 / PERCENT)
-				* (80.0 / PERCENT) * (88.0 / PERCENT))
-				- (0.0 * MAGNIFY_PACKAGE_TANGLE));
+		double points = PointsCalculator.calculateTotalPoints(20, 1000, 95, 80, 88, 0);
 		when(mockContext.saveMeasure(ScoreMetrics.POINTS, points)).thenReturn(
 				mockContext);
 		scoreDecorator.decorate(resource, mockContext);
@@ -148,33 +150,6 @@ public class ScoreDecoratorTest {
 		scoreDecorator.decorate(utsResource, mockContext2);
 		verify(mockContext2, never()).saveMeasure(ScoreMetrics.POINTS, points);
 
-	}
-
-	/**
-	 * Testing that a point's value cannot be negative. The lowest score
-	 * possible is zero.
-	 */
-	@Test
-	public void testDecorateWithNegativePoints() {
-
-		when(mockContext.getMeasure(CoreMetrics.NCLOC)).thenReturn(ncloc);
-		when(mockContext.getMeasure(CoreMetrics.VIOLATIONS_DENSITY))
-				.thenReturn(violations);
-		when(mockContext.getMeasure(CoreMetrics.PUBLIC_DOCUMENTED_API_DENSITY))
-				.thenReturn(api);
-		when(mockContext.getMeasure(CoreMetrics.COVERAGE)).thenReturn(coverage);
-		when(mockContext.getMeasure(CoreMetrics.PACKAGE_TANGLE_INDEX))
-				.thenReturn(tangle);
-		when(ncloc.getValue()).thenReturn(1000.0);
-		when(violations.getValue()).thenReturn(95.0);
-		when(api.getValue()).thenReturn(80.0);
-		when(coverage.getValue()).thenReturn(88.0);
-		when(tangle.getValue()).thenReturn(500.0);
-		// points calculated in the getPointsValue method is -49,331 but will
-		// return zero
-		// because points be negative.
-		assertEquals((int) scoreDecorator.getPointsValue(mockContext),
-				(int) LOWEST_POINTS);
 	}
 
 }

@@ -20,9 +20,6 @@ import org.sonar.api.batch.DependsUpon;
  *
  */
 public class ScoreDecorator implements Decorator {
-	public static final int LOWEST_POINTS = 0;
-	public static final double PERCENT = 100.0;
-	public static final double MAGNIFY_PACKAGE_TANGLE = 100.0;
 	
 	/**
 	 * @DependsUpon: The points metric depends upon the non-commented lines of code, the rules compliance 
@@ -99,6 +96,8 @@ public class ScoreDecorator implements Decorator {
 	 * @returns the points value
 	 */
 	public double getPointsValue(final DecoratorContext context) {
+		double classes = MeasureUtils.getValue(
+				context.getMeasure(CoreMetrics.CLASSES), 0.0);
 		double lines = MeasureUtils.getValue(
 				context.getMeasure(CoreMetrics.NCLOC), 0.0);
 		double rulesComplexity = MeasureUtils.getValue(
@@ -110,17 +109,7 @@ public class ScoreDecorator implements Decorator {
 				context.getMeasure(CoreMetrics.COVERAGE), 0.0);
 		double packageTangle = MeasureUtils.getValue(
 				context.getMeasure(CoreMetrics.PACKAGE_TANGLE_INDEX), 0.0);
-
-		// SCORE's points algorithm
-		double value = Math.round((lines * (rulesComplexity / PERCENT)
-				* (docAPI / PERCENT) * (coverage / PERCENT))
-				- (packageTangle * MAGNIFY_PACKAGE_TANGLE));
-
-		// Preventing negative points. Points cannot go below zero.
-		if (value < LOWEST_POINTS) {
-			value = LOWEST_POINTS;
-		}
-		return value;
+		return PointsCalculator.calculateTotalPoints(classes, lines, rulesComplexity, docAPI, coverage, packageTangle);
 	}
-
+	
 }
