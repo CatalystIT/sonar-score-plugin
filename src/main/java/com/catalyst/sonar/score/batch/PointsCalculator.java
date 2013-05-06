@@ -9,15 +9,13 @@ import org.sonar.api.BatchExtension;
  * @author JDunn
  *
  */
-public class PointsCalculator implements BatchExtension {
+public abstract class PointsCalculator implements BatchExtension {
 	
 	public static final int LOWEST_POINTS = 0;
 	public static final double PERCENT = 100.0;
 	public static final double MAGNIFY_PACKAGE_TANGLE = 100.0;
 	
-	/**
-	 * The following constants give weight to the lines of code in each class in brackets.
-	 */
+	// The following constants give weight to the lines of code in each class in brackets.
 	public static final double FACTOR1 = 3;
 	public static final double BRACKET1 = 30;
 	public static final double FACTOR2 = 2;
