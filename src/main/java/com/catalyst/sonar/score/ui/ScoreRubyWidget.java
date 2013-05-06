@@ -4,6 +4,10 @@ import org.sonar.api.web.Description;
 import org.sonar.api.web.RubyRailsWidget;
 import org.sonar.api.web.UserRole;
 import org.sonar.api.web.WidgetCategory;
+/**
+ * @author - Team Build Meister
+ * Class that retrieves the Points Widget id, title and ruby template path
+ */
 
 /**
  * @UserRole:  Assigns the user role to "User" on Sonar
@@ -13,12 +17,6 @@ import org.sonar.api.web.WidgetCategory;
 @UserRole(UserRole.USER)
 @Description("Calculate the points earned for a project.")
 @WidgetCategory("Score")
-
-/**
- * @author - Team Build Meister
- * Class that retrieves the Points Widget id, title and ruby template path
-  */
-
 public class ScoreRubyWidget extends AbstractRubyTemplate implements RubyRailsWidget{
 	/**
 	 * retrieves the widget id
