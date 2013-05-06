@@ -122,7 +122,8 @@ public class PointsCalculatorTest {
 	public void testCalculateTotalPointsNegativeTurnsToZero() {
 		lines = 3000;
 		classes = 20;
-		packageTangle = 100;//should produce negative score
+		//should produce negative score
+		packageTangle = 100;
 		assertEquals(0,
 				Math.round(calculateTotalPoints(
 						classes, lines, rulesCompliance,
