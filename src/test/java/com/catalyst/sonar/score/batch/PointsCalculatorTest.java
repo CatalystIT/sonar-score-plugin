@@ -128,5 +128,16 @@ public class PointsCalculatorTest {
 						classes, lines, rulesCompliance,
 						docAPI, coverage, packageTangle)));
 	}
+	
+	/**
+	 * tests the PointsCalculator class.
+	 */
+	@Test
+	public void testPointsCalculator() {
+		PointsCalculator testCalc = new PointsCalculator() {
+			
+		};
+		assertTrue(testCalc instanceof PointsCalculator);
+	}
 
 }
