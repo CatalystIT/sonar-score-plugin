@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.catalyst.sonar.score.batch.ScoreDecorator;
+import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.EnhancedListFilter;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
@@ -42,6 +43,7 @@ public class ScorePluginTest {
 				Arrays.asList(
 						ScoreMetrics.class,
 						ScoreDecorator.class,
+						PointsCalculator.class,
 						ScoreRubyWidget.class,
 						EnhancedListFilter.class,
 						ProjectComparisonWidget.class

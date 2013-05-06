@@ -3,11 +3,13 @@
  */
 package com.catalyst.sonar.score.batch;
 
+import org.sonar.api.BatchExtension;
+
 /**
  * @author JDunn
  *
  */
-public class PointsCalculator {
+public class PointsCalculator implements BatchExtension {
 	
 	public static final int LOWEST_POINTS = 0;
 	public static final double PERCENT = 100.0;
