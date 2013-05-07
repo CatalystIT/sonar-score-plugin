@@ -19,7 +19,7 @@ import org.sonar.api.batch.DependsUpon;
  * @author Team Build Meister
  *
  */
-public class ScoreDecorator implements Decorator {
+public class PointsDecorator implements Decorator {
 	
 	/**
 	 * @DependsUpon: The points metric depends upon the non-commented lines of code, the rules compliance 

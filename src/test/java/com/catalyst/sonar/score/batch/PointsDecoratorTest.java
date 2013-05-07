@@ -24,11 +24,11 @@ import com.google.common.collect.ImmutableList;
  * @author JDunn
  * 
  */
-public class ScoreDecoratorTest {
+public class PointsDecoratorTest {
 	// abstract class MockResource extends Resource<Project> {
 	// };
 
-	ScoreDecorator scoreDecorator;
+	PointsDecorator scoreDecorator;
 	Project project;
 	DecoratorContext mockContext;
 	DecoratorContext mockContext2;
@@ -46,7 +46,7 @@ public class ScoreDecoratorTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		scoreDecorator = new ScoreDecorator();
+		scoreDecorator = new PointsDecorator();
 		project = new Project("test");
 		mockContext = mock(DecoratorContext.class);
 		mockContext2 = mock(DecoratorContext.class);
@@ -65,7 +65,7 @@ public class ScoreDecoratorTest {
 
 	/**
 	 * Test method for
-	 * {@link com.catalyst.sonar.score.batch.ScoreDecorator#usedMetrics()}.
+	 * {@link com.catalyst.sonar.score.batch.PointsDecorator#usedMetrics()}.
 	 */
 	@Test
 	public void testUsedMetrics() {
@@ -77,7 +77,7 @@ public class ScoreDecoratorTest {
 
 	/**
 	 * Test method for
-	 * {@link com.catalyst.sonar.score.batch.ScoreDecorator#generatedMetrics()}.
+	 * {@link com.catalyst.sonar.score.batch.PointsDecorator#generatedMetrics()}.
 	 */
 	@Test
 	public void testGeneratedMetrics() {
@@ -87,7 +87,7 @@ public class ScoreDecoratorTest {
 
 	/**
 	 * Test method for
-	 * {@link com.catalyst.sonar.score.batch.ScoreDecorator#shouldExecuteOnProject(org.sonar.api.resources.Project)}
+	 * {@link com.catalyst.sonar.score.batch.PointsDecorator#shouldExecuteOnProject(org.sonar.api.resources.Project)}
 	 * .
 	 */
 	@Test
@@ -97,7 +97,7 @@ public class ScoreDecoratorTest {
 
 	/**
 	 * Test method for
-	 * {@link com.catalyst.sonar.score.batch.ScoreDecorator#shouldDecorateResource(org.sonar.api.resources.Resource, org.sonar.api.batch.DecoratorContext)}
+	 * {@link com.catalyst.sonar.score.batch.PointsDecorator#shouldDecorateResource(org.sonar.api.resources.Resource, org.sonar.api.batch.DecoratorContext)}
 	 * . Tests for when the resource is a unit test resource. It should return
 	 * false.
 	 */
@@ -109,7 +109,7 @@ public class ScoreDecoratorTest {
 
 	/**
 	 * Test method for
-	 * {@link com.catalyst.sonar.score.batch.ScoreDecorator#shouldDecorateResource(org.sonar.api.resources.Resource, org.sonar.api.batch.DecoratorContext)}
+	 * {@link com.catalyst.sonar.score.batch.PointsDecorator#shouldDecorateResource(org.sonar.api.resources.Resource, org.sonar.api.batch.DecoratorContext)}
 	 * .
 	 */
 	@Test
@@ -121,7 +121,7 @@ public class ScoreDecoratorTest {
 
 	/**
 	 * Test method for
-	 * {@link com.catalyst.sonar.score.batch.ScoreDecorator#decorate(org.sonar.api.resources.Resource, org.sonar.api.batch.DecoratorContext)}
+	 * {@link com.catalyst.sonar.score.batch.PointsDecorator#decorate(org.sonar.api.resources.Resource, org.sonar.api.batch.DecoratorContext)}
 	 * .
 	 */
 	@Test
