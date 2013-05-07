@@ -8,7 +8,7 @@ import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
 
 import com.catalyst.sonar.score.batch.PointsCalculator;
-import com.catalyst.sonar.score.batch.ScoreDecorator;
+import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 import com.catalyst.sonar.score.ui.EnhancedListFilter;
@@ -45,7 +45,7 @@ public class ScorePlugin extends SonarPlugin{
 		/*
 		 * the decorator class (batch)
 		 */
-		ScoreDecorator.class, PointsCalculator.class,
+		PointsDecorator.class, PointsCalculator.class,
 		
 		/*
 		 * Score's ui/widgets
