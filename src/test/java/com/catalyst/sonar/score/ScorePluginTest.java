@@ -10,7 +10,7 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.catalyst.sonar.score.batch.ScoreDecorator;
+import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.EnhancedListFilter;
@@ -42,7 +42,7 @@ public class ScorePluginTest {
 		assertEquals(scorePlugin.getExtensions(),
 				Arrays.asList(
 						ScoreMetrics.class,
-						ScoreDecorator.class,
+						PointsDecorator.class,
 						PointsCalculator.class,
 						ScoreRubyWidget.class,
 						EnhancedListFilter.class,
