@@ -32,16 +32,20 @@ public abstract class PointsCalculator implements BatchExtension {
 	 */
 	public static double calculateBasePoints(double lines, double classes) {
 		double basePoints = 0;
-		if (lines <= classes*BRACKET1) {//average lines per class 0 to 30
+		if (lines <= classes*BRACKET1) {
+			//average lines per class 0 to 30
 			basePoints = lines*FACTOR1;
-		} else if (lines <= classes*BRACKET2) {//average lines per class 31 to 60
+		} else if (lines <= classes*BRACKET2) {
+			//average lines per class 31 to 60
 			basePoints = classes*BRACKET1*FACTOR1;
 			basePoints += (lines-FACTOR1)*FACTOR2;
-		} else if (lines <= classes*BRACKET3) {//average lines per class 61 to 90
+		} else if (lines <= classes*BRACKET3) {
+			//average lines per class 61 to 90
 			basePoints = classes*BRACKET1*FACTOR1;
 			basePoints += classes*(BRACKET2-BRACKET1)*FACTOR2;
 			basePoints += classes*(lines-BRACKET2)*FACTOR3;
-		} else {//average lines per class > 90
+		} else {
+			//average lines per class > 90
 			basePoints = classes*BRACKET1*FACTOR1;
 			basePoints += classes*(BRACKET2-BRACKET1)*FACTOR2;
 			basePoints += classes*(BRACKET3-BRACKET2)*FACTOR3;
