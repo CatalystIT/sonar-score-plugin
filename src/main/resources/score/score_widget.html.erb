@@ -9,7 +9,7 @@ points=measure('points')
 	<!-- The uploaded project image/icon gets displayed here and if the project does not have an image/icon then the default image/icon is displayed -->
      <p>
 	<span class="big" id="score_image">
-		<img id= "project_image" src="/images/display?project_id=<%= @project.id -%>" onerror="this.src='/images/profiles/projects/default.png'" height="100" max-width="200"/>
+		<img id= "project_image" style ="height:100px; max-width:150px" src="/images/display?project_id=<%= @project.id -%>" onerror="this.src='/images/profiles/projects/default.png'" />
 	</span>
      </p>
     
@@ -22,7 +22,7 @@ points=measure('points')
  </td>
  <td valign="top" nowrap="">
  <table id="score_table_1">
- <tr><th scope="col" style="word-wrap: break-word">
+ <tr><th scope="col" style="word-wrap: break-word" width= "50%">
  <!-- Displays project name -->
 	<h1> <%= @project.long_name -%></h1>
 </th>
