@@ -254,8 +254,8 @@ function showBars(metric, scale, noOfRows){
  				document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+shortName+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
  	 		}else{
  	 			projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;
- 	 			shortName = " ";
- 	 			document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+shortName+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
+ 	 			//shortName = "&nbsp;";
+ 	 			document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>&nbsp;</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
  	 	 	}
  		}
  	}
