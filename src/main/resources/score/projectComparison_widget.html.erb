@@ -26,7 +26,7 @@
    
    projectName = nil
    projectImage = nil
-  
+    
 %>
 
 <!--Loops through the properties array that contains all the groups of projects for the 
@@ -43,15 +43,15 @@ then set the projectGroup variable to the @Property variable.
 <% if (projectGroup != nil )%>
 <h1 style="color:#4B9FD5" ><%=projectGroup.value -%></h1><br>
 
-<table id = "metricsTable" class ="data" style="table-layout: fixed; width: 100%"  border="0" >
+<table id = "metricsTable" class ="data" style = "table-layout:auto; width:100%" >
 <thead> 
   <tr valign ="top">
     <th align="right" width = "50"></th>
-    <th align="left">Name</th>
-    <th class="right" onclick="retrieveTitle(this); showBargraphTable()" id="points" style = "text-decoration:underline; cursor: pointer" >Points</th>
-    <th class="right" onclick="retrieveTitle(this); showBargraphTable()" id="coverage" style = "text-decoration:underline; cursor: pointer" >Coverage</th>
-    <th class="right" onclick="retrieveTitle(this); showBargraphTable()" id="rules" style = "text-decoration:underline; cursor: pointer">Rules Compliance</th>
-    <th class="right" onclick="retrieveTitle(this); showBargraphTable()" id="docApi" style = "text-decoration:underline; cursor: pointer">Documented API </th>
+    <th align="left" nowrap="" style = "width:40%">Name</th>
+    <th class="right" onclick="retrieveTitle(this); showBargraphTable();" id="points" title = "Points" style = "text-decoration:underline; cursor: pointer; width:15%" nowrap="">Points</th>
+    <th class="right" onclick="retrieveTitle(this); showBargraphTable();" id="coverage" title = "Coverage" style = "text-decoration:underline; cursor: pointer;width:15%" nowrap="">Coverage</th>
+    <th class="right" onclick="retrieveTitle(this); showBargraphTable();" id="rules" title = "Rules Compliance" style = "text-decoration:underline; cursor: pointer;width:15%" >Rules Compliance</th>
+    <th class="right" onclick="retrieveTitle(this); showBargraphTable();" id="docApi" title = "Documented API" style = "text-decoration:underline; cursor: pointer;width:15%"  >Documented API </th>
   </tr>    
   </thead>
   <tbody id = "tableBody" >
@@ -61,16 +61,15 @@ then set the projectGroup variable to the @Property variable.
 <% if (@Property.value == projectGroup.value )%>
 <tr class="<%= cycle('even', 'odd') -%>">
 <td id = "image" align="right" width = "50" >
-<span><img alt height = "16" src="/images/display?project_id=<%= @Property.resource_id -%>" onerror="this.src='/images/profiles/projects/default.png'" />
+<span><img alt height = "16" title width = '16' src="/images/display?project_id=<%= @Property.resource_id -%>" onerror="this.src='/images/profiles/projects/default.png'" />
 </span>
 
-	
 	<!--Loop through all the projects and if the project id = the resource id then print the project name -->
 	<% for @Project in projects %>
 	<% if (@Project.id == @Property.resource_id)%>
 	<% projectName = @Project.kee %>
 	<% projectImage = @Project.id %>	
-	<td id = "name" ><%= @Project.name -%></td>
+	<td id = "name" class = "projectNames" nowrap=""><span class = "nameWidthClass" ><%= @Project.name -%></span><span></span></td>
 	 
 		
 	<!--Loop through all the snapshots and if the project id = the resource id then set the snapshot id variable -->
@@ -88,30 +87,30 @@ then set the projectGroup variable to the @Property variable.
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% pointsName = @ProjectMeasure.short_name %>
 	<% pointsValue = number_with_delimiter(@ProjectMeasure.value.to_i, :delimiter => ',') %>
-	<td id ="pointsValue" align="right"><%= pointsValue -%></td>
+	<td id ="pointsValue" class="pointsValue" align="right" nowrap=""><%= pointsValue -%></td>
 	
 		
 	<!--coverage value-->
 	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => coverageMetric}) %>	
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% coverageValue = @ProjectMeasure %>
-	<td id = "coverageValue" align="right"><%= @ProjectMeasure.value -%>%</td>
+	<td id = "coverageValue" align="right" nowrap=""><%= @ProjectMeasure.value -%>%</td>
 	
 	<!--rules compliance value -->
 	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => rulesComplianceMetric}) %>	
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% rulesComplianceValue = @ProjectMeasure %>
-	<td align="right" id = "rulesValue"><%= @ProjectMeasure.value -%>%</td>
+	<td align="right" id = "rulesValue" nowrap=""><%= @ProjectMeasure.value -%>%</td>
 	
 	<!--documented API value -->
 	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => docApiMetric}) %>	
 	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
 	<% documentedApiValue = @ProjectMeasure %>
-	<td align="right" id ="docApiValue" ><%= @ProjectMeasure.value -%>%</td>
-		
+	<td align="right" id ="docApiValue" nowrap="" ><%= @ProjectMeasure.value -%>%</td>
+	
 	</tr>
 	</tbody>
-
+	
 <% end %>
 <% end %>
 <% end %>
@@ -130,14 +129,19 @@ then set the projectGroup variable to the @Property variable.
 <% end %>
 
 
-<br><h1 style="color:#4B9FD5; text-decoration:underline; cursor: pointer" id = "title" title = "Remove graph" onclick = "hideBargraphTable();" ></h1>
+<br><h1 style="color:#4B9FD5; text-decoration:underline; cursor: pointer" id = "title" title = "Remove graph" onclick = "hideBargraphTable();" ></h1><br>
+
 <div id="tablespace"></div>
+
 <!------------------------------------ JAVASCRIPT---------------------------------------------------------------->
-<script type="text/javascript">
+
 <!--<script src = "/javascripts/projectComparison.js" type="text/javascript"></script>-->
+<script type="text/javascript">
+
 <!--hides the metrics table-->
 function hideTable(){
-	document.getElementById("metricsTable").style.visibility =  "hidden";  
+	document.getElementById("metricsTable").style.visibility =  "hidden"; 
+	
 }
 
 <!--Displays the metrics table-->
@@ -148,25 +152,31 @@ function displayTable(){
 <!--hides the bar graph table-->
 function hideBargraphTable(){
 	document.getElementById("tablespace").style.display =  "none";
-	document.getElementById("title").style.display =  "none";    
+	document.getElementById("title").style.display =  "none"; 
+		
 }
 
 <!--shows the bar graph table-->
 function showBargraphTable(){
 	document.getElementById("tablespace").style.display =  "table";
-	document.getElementById("title").style.display =  "block";    
+	document.getElementById("title").style.display =  "inline";
+	
+	 
 }
 
 <!--Retrieves metric title and displays it under the project comparison widget table-->
 function retrieveTitle(elem){
+	 
 	//retrieves the header title
 	var metric = elem.innerHTML;
 	//retrieves the header id
 	var metricId = elem.id;
 	var drilldownTitle = document.getElementById("title");
 	drilldownTitle.innerHTML = metric;
-	//creates a new table
-	CreateTable(metricId);	
+	
+	//creates a new table 
+	createTable(metricId);
+			
 }
  
  <!--Retrieves the number of 'td' elements in the metrics table-->
@@ -175,27 +185,153 @@ function getNumberOfElementsInTable(){
 	var numberOfTdElements = document.getElementById('metricsTable').getElementsByTagName('td').length;	
 	return numberOfTdElements;
 } 
+
  <!--Retrieves the number of 'th' elements in the metrics table representing the number of columns-->
 function getNumberOfColumnsInTable(){
 	//retrieves the number of 'th' elements in the metrics table
 	var numberOfThElements = document.getElementById('metricsTable').getElementsByTagName('th').length;	
 	return numberOfThElements;	
-} 
+}
+<!--Removes commas and percentage signs from a string-->
+function removeCommasOrPercentage(metricString) {
+    var metricValueAsNumber = 0;
+    	if(metricString.indexOf(',') != -1){  			
+  			metricValueAsNumber= metricString.replace(/,/g,'');  			
+		}
+	
+		if(metricString.indexOf('%') != -1){
+			metricValueAsNumber = (metricString.replace(/%/g,'')) * 100 ;
+		  }
+   
+    return metricValueAsNumber;
+}
+
+<!--Retrieves the largest metric value from the metric selected in order to calculate the bar graph scale-->
+function getBarGraphScale(metricsArray){
+	var tableWidth = document.getElementById("metricsTable").offsetWidth;
+	var barGraphWidth = tableWidth/2.5;
+	largestNumber= Math.max.apply(Math, metricsArray);
+	var scale = barGraphWidth/largestNumber;
+	return scale; 
+}
   
- <!--Dynamically creates the table with the selected metric, team image and team name-->
+<!--Creates the bars from the metric the user selects-->
+function showBars(metric, scale, noOfRows){  
+ 	for(var i = 0; i < noOfRows; i++ ){
+ 	 	//retrieves the name element
+ 	 	var previousElement = document.getElementById("name" + [i]);
+ 	 	//retrieves the project name
+ 		var names = document.getElementById("name" + [i]).innerHTML;
+ 		//retrieves the metric value
+ 		var metricValue = document.getElementById(metric + [i]).innerHTML;
+ 		//calculates the bar graph width 
+ 		var barWidth = removeCommasOrPercentage(metricValue) * scale;
+ 		//retrieves the width of the span that holds the project name to compare the its size to the  width of the bar
+ 		//so the name is not larger than the bar
+ 		var nameWidth = getNameWidth(barWidth, i);
+ 		//creates a span id if needed later
+ 		var spanId = "span" + i;
+ 		//alternates color row based on the row number
+ 		var color = getColor(i);
+ 		
+ 		//creates a bar graph based on the project's metric's bar width, creates the bar and displays the project name on top of the bar and the metric value at the end (to the right) of the bar
+ 		//a tool tip with the project's name if the metric value (bar width) is less than the length of the project's name
+ 		
+ 		previousElement.innerHTML = "<span style='display:inline-block; overflow: hidden; width:10px'></span><span id = "+spanId+" style = 'display: inline-block; overflow: hidden; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+names+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
+ 	 	var goodName = getNameWidths(i);
+ 	 	if(!goodName){
+ 	 		var projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;
+ 				var shortName = truncateName(projectName);
+ 				document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+shortName+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
+ 	 	}
+ 	}
+ 	// getNameWidths(noOfRows);
+ 	  	
+}
+
+<!--Truncates the project name to the first three letters of the name and adds (...).  A user may hover over the shortened name to see the full name-->
+function truncateName( projectName ){
+	var newName;
+	newName= projectName.substring(0, 3) + '...';
+	return newName;
+}
+
+<!--Calculates the width of the span that holds the project name, returns true if the name span is less than the bar width span-->
+function getNameWidth(barWidth, row){
+		//try this:
+		var nameWidthTest = document.getElementById("metricsTable").offsetWidth;		
+		var barWidthSmaller = false;
+		var span = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass');
+		//calculates the width of the name span
+		var leftWidth = parseInt(span[row].offsetLeft + " left");
+		var nextSiblingWidth = parseInt(span[row].nextSibling.offsetLeft);
+		var calculatedNameWidth = nextSiblingWidth - leftWidth;
+		//alert("bar width is:  " + barWidth + " and name width is:  " + calculatedNameWidth);
+		
+		if ( calculatedNameWidth < barWidth ){
+			barWidthSmaller = true;
+			}
+			return barWidthSmaller;			
+}
+
+function getNameWidths( i ){
+	var nameWidthSmallerThanBar = false;
+	
+	//for ( var i = 0; i < rows; i++){
+	var barWidthTest = document.getElementById("span" + i).offsetWidth;
+	var nameWidthTest = document.getElementById("nameId" + i).offsetWidth;
+		//alert("This is the bar width:  " + barWidthTest + " and this is the name width:  " + nameWidthTest );
+		if ( nameWidthTest < barWidthTest){
+			nameWidthSmallerThanBar = true;
+		}
+	//}
+	return nameWidthSmallerThanBar;
+}
+
+<!--Alternates row colors between blue, red and yellow-->
+function getColor( row ){
+	var rowColor;
+	
+	if ( row%3 == 0 || (row == 0)){
+		rowColor = "#CAE3F2";//returns blue		
+	}else if ( (row - 1) == 0 || ((row -1)%3)==0 ){
+		rowColor = "#e9a1a1"; //returns red
+	}else{	 
+	  rowColor = "#FFF6BF"; //returns yellow
+	}
+	return rowColor;
+
+}
  
- function CreateTable(metric){  	
+ <!--Dynamically creates the table with the selected metric, team image and team name--> 
+  function createTable(metric){ 
+  	showBargraphTable();
 	//this is the metric's id: (coverage, points...etc. depending on what the user selected)
 	var metricValue = metric +"Value";	
-	   
+	//once createTable function is complete and the bars are created...this variable is used to pass the 
+	//metric selected value along
+	var idName = metric;   
+    
     var elements =getNumberOfElementsInTable();
     var columns = getNumberOfColumnsInTable();
+    var noOfRows = elements/columns;
     //variables representing if a new row needs to be created in the table and if the metric selected has been found
     var newRow; 
     var metricFound;
-               
+    
+    //variables holding the table's data elements
+    var image;
+    var metric;
+    var metricAsNumber;
+    var projectName;
+    
+    //array to hold metric values 
+    var metricArray = new Array();   
+                            
+    //create a new table depending on what metric the user selected
     var tablecontents = "";
-    tablecontents = "<table id = 'barGraphTable' style='table-layout: fixed; width: 50%; border: 0px' class = 'data' > " +
+    tablecontents = "<table id = 'barGraphTable' style='table-layout: auto; width: 100%'  border='0'> " +
+    
     "<thead style = 'border: 0px'>" + 
    	"<tr style = 'border: 0px'>"+
     "<th style = 'border: 0px' align='right' width = '50'></th>" +
@@ -203,36 +339,42 @@ function getNumberOfColumnsInTable(){
     "<th style = 'border: 0px'></th>"+    
     "</tr>"+    
     "</thead> " +
-    "<tbody style = 'border: 0px'> ";
-      
-   
-   
+    "<tbody style = 'border: 0px'> ";      
+     
    //go through each element for each row in the metrics table, extracting the needed information
+   	var idGenerator = 0;
+   	var imageIdGenerator = 0;
+   	var nameIdGenerator = 0;
+   	var divGenerator = 0;
+   	var count = 0;
+   	
       for (var i = 0; i < elements; i ++){ 
       	newRow = false;
       	//row creation is based on the number of columns. Create a new row if the expression evaluates to true      	
       	if ( (i + columns) % columns == 0 ){
-      	tablecontents += "<tr style = 'border: 0px'>";
+      	tablecontents += "<tr style = 'border: 0px' width= '450px' >";
       	//new row...now looking for the next row's metric value
       	metricFound = false;
       	}
    		   		
    		//retrieve the element's id to verify what metrics need to be selected
-   		var elementId = document.getElementById('metricsTable').getElementsByTagName('td')[i].id;
+   		var elementId = document.getElementById('metricsTable').getElementsByTagName('td')[i].id;   			
    			
    			//retrieve the image, if the td element id is "image"
    			if (elementId == "image"){
    				//retrieve the element's value and add it to the new table
-   				var image = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;
-   				tablecontents += "<td style = 'border: 0px' align='right' width = '50'>" + image + "</td>";
+   				image = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;   				
+   				var imageIdGenerator = "image" + count;
+   				tablecontents += "<td id = '" + imageIdGenerator + "'style = 'border: 0px' align='right' width = '50'>" + image + "</td>";
    				   				
    			}
    			//retrieve the name, if the td element id is "name"
    			if (elementId == "name"){
    				//retrieve the element's value and add it to the new table
-   				var projectName = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;
-   				tablecontents += "<td style = 'border: 0px' align='left'>" + projectName + "</td>";
-   				
+   				 projectName = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;
+   				 nameIdGenerator = "name" + count;
+   				 var nameId = "nameId" + count;
+   				 tablecontents += "<td id = '" + nameIdGenerator + "'style = 'border: 0px' align='left'><span id ='" + nameId + "'>  " + projectName + "</span></td>";
    				
    				
    			}
@@ -240,24 +382,36 @@ function getNumberOfColumnsInTable(){
    			if (elementId != "name" && elementId != "image" ){     				
    					//if the element's id is equal to the metric category selected and the selected metric hasn't been found yet
    					if (metricFound == false && (( elementId == metricValue)) ){
-   						var metric = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;  						
-   						tablecontents += "<td style = 'border: 0px'align='left' >" + metric + "</td>";
-   						metricFound = true; 
-   						newRow = true;  						   						
+   						 metric = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;
+   						 metricAsNumber = parseInt(removeCommasOrPercentage(metric)); 
+   						 metricArray.push(metricAsNumber);
+   						 idGenerator = idName + count;
+   						 divGenerator = "div" + count;
+   							    						    						 
+   					     tablecontents += "<td style = 'display: none' id = '" + idGenerator + "'nowrap='' align='left' >" + metric + "</td>";
+   					  	 
+   					  	 metricFound = true; 
+   						 newRow = true;  
+   						 count++					   						
    						}
    						
    			}
    		   //if the new row property set to true, end the creation of a new row
    		   if(newRow){
-      		tablecontents += "</tr>";
-      		
-      	} 		  		
+      		 tablecontents += "</tr>";    		 
+      	 	 
+      		          
+      		} 		
+      	    		 		
        }
      
    	tablecontents += "</tbody>";
    	tablecontents += "</table>";
-   	document.getElementById("tablespace").innerHTML = tablecontents;    
-   
+   	document.getElementById("tablespace").innerHTML = tablecontents; 
+    var scale = getBarGraphScale(metricArray);
+    showBars( idName, scale, noOfRows );
+    
+        
 }     
 
 </script>
