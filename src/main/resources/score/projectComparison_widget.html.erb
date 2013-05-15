@@ -254,7 +254,8 @@ function showBars(metric, scale, noOfRows){
  				document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+shortName+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
  	 		}else{
  	 			projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;
- 	 			document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';></span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
+ 	 			shortName = " ";
+ 	 			document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+shortName+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
  	 	 	}
  		}
  	}
@@ -346,7 +347,7 @@ function getColor( row ){
    				//retrieve the element's value and add it to the new table
    				image = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;   				
    				var imageIdGenerator = "image" + count;
-   				tablecontents += "<td id = '" + imageIdGenerator + "'style = 'border: 0px' align='right' width = '50'>" + image + "</td>";
+   				tablecontents += "<td id = '" + imageIdGenerator + "'style = 'border: 0px' align='right'>" + image + "</td>";
    				   				
    			}
    			//retrieve the name, if the td element id is "name"
