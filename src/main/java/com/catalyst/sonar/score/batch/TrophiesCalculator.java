@@ -6,21 +6,14 @@ package com.catalyst.sonar.score.batch;
  * 
  */
 public class TrophiesCalculator {
-	public static final int LOWEST_TROPHY_POINTS = 0;
-	public static final double BASE_TROPHY_POINTS = 500.0;
+	//TODO work in progress
 	public static final double VALUE = 90.0;
 
-	public static double calculateTrophyPoints(double earnedPoints) {
-		double trophyPoints = 0;
-		double points = earnedPoints;
-		trophyPoints = Math.round(points / BASE_TROPHY_POINTS);
-
-		if (trophyPoints <= LOWEST_TROPHY_POINTS) {
-			trophyPoints = LOWEST_TROPHY_POINTS;
-		}
-		return trophyPoints;
-	}
-
+	/**
+	 * checks if the metrics value is above 90% and adds trophy points
+	 * @param points
+	 * @return
+	 */
 	public static double calculateConsistentTrophyPoints(double points) {
 		double consistentPoints = points;
 		double trophyPoints = 0;

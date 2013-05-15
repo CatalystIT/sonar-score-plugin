@@ -38,7 +38,7 @@ import com.catalyst.sonar.score.ui.TrophyWidget;
 	  @Property(
 	    key = ScorePlugin.TROPHY,
 	    name = "Trophy",
-	    description = " Specify the number of trophies earned.",
+	    description = " Specify the trophies earned.",
 	    project = false,
 	    global = true,
 	    multiValues = true)})
