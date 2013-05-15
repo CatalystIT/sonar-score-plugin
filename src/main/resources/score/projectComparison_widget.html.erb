@@ -217,6 +217,8 @@ function getBarGraphScale(metricsArray){
   
 <!--Creates the bars from the metric the user selects-->
 function showBars(metric, scale, noOfRows){  
+ 	var projectName;
+ 	var shortName;
  	for(var i = 0; i < noOfRows; i++ ){
  	 	//retrieves the name element
  	 	var previousElement = document.getElementById("name" + [i]);
@@ -234,16 +236,27 @@ function showBars(metric, scale, noOfRows){
  		//creates a bar graph based on the project's metric's bar width, creates the bar and displays the project name on top of the bar and the metric value at the end (to the right) of the bar
  		//a tool tip with the project's name appears if the metric value (bar width) is less than the length of the project's name
  		
- 		//create a bar based on the metric value.  Used to calculate the name width
+ 		//create a bar based on the metric value.  Used to calculate the name width.
  		previousElement.innerHTML = "<span style='display:inline-block; overflow: hidden; width:10px'></span><span id = "+spanId+" style = 'display: inline-block; overflow: hidden; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+names+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
+ 	 	
  	 	//if the name width is greater than the bar width, truncate the project name and put in a tool tip so the user may view the whole project name
- 	 	//without the name overflowing the smaller bar width
- 	 	var goodName = getNameWidths(i);
- 	 	if(!goodName){
- 	 		var projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;
- 				var shortName = truncateName(projectName);
+ 	 	//if the bar is greater than 50px wide, else...eliminate the name in the bar all together (keep the tool tip with the name though)
+ 	 	var limitedBarWidth = 50; 	 	
+ 	 	var projectNameWidth = document.getElementById("nameId" + i).offsetWidth;
+ 	 	var projectBarWidth = document.getElementById("span" + i).offsetWidth;
+ 	 	
+ 	 	
+ 	 	if( projectNameWidth > projectBarWidth ){
+ 	 		if (projectNameWidth > limitedBarWidth ){
+ 	 			projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;
+ 				shortName = truncateName(projectName);
  				document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+shortName+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
- 	 	}
+ 	 		}else{
+ 	 			projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;
+ 	 			shortName = "";
+ 	 			document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+shortName+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
+ 	 	 	}
+ 		}
  	}
  	
  	  	
@@ -256,17 +269,6 @@ function truncateName( projectName ){
 	return newName;
 }
 
-<!--If the bar width is less than the name width...return false, otherwise return true-->
-function getNameWidths( i ){
-	var nameWidthSmallerThanBar = false;
-	//retrieve bar width and name width
-	var barWidthTest = document.getElementById("span" + i).offsetWidth;
-	var nameWidthTest = document.getElementById("nameId" + i).offsetWidth;
-	if ( nameWidthTest < barWidthTest){
-			nameWidthSmallerThanBar = true;
-		}
-	return nameWidthSmallerThanBar;
-}
 
 <!--Alternates row colors between blue, red and yellow-->
 function getColor( row ){
