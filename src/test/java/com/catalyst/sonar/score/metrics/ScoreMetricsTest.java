@@ -31,7 +31,7 @@ public class ScoreMetricsTest {
 	 */
 	@Test
 	public void testGetMetrics() {
-		assertEquals(scoreMetrics.getMetrics(), Arrays.asList(ScoreMetrics.POINTS));
+		assertEquals(scoreMetrics.getMetrics(), Arrays.asList(ScoreMetrics.POINTS, ScoreMetrics.TROPHY_POINTS));
 	}
 
 }

@@ -3,19 +3,22 @@
  */
 package com.catalyst.sonar.score;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.batch.PointsCalculator;
+import com.catalyst.sonar.score.batch.PointsDecorator;
+import com.catalyst.sonar.score.batch.TrophiesDecorator;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.EnhancedListFilter;
-import com.catalyst.sonar.score.ui.ScoreRubyWidget;
+import com.catalyst.sonar.score.ui.ImageUploadPage;
 import com.catalyst.sonar.score.ui.ProjectComparisonWidget;
+import com.catalyst.sonar.score.ui.ScoreRubyWidget;
+import com.catalyst.sonar.score.ui.TrophyWidget;
 
 /**
  * @author JDunn
@@ -44,9 +47,14 @@ public class ScorePluginTest {
 						ScoreMetrics.class,
 						PointsDecorator.class,
 						PointsCalculator.class,
+						TrophiesDecorator.class,
 						ScoreRubyWidget.class,
 						EnhancedListFilter.class,
-						ProjectComparisonWidget.class
+						ProjectComparisonWidget.class,
+						TrophyWidget.class,
+						ImageUploadPage.class
+						
+						
 		));
 	}
 
