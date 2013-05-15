@@ -43,6 +43,7 @@ then set the projectGroup variable to the @Property variable.
 <% if (projectGroup != nil )%>
 <h1 style="color:#4B9FD5" ><%=projectGroup.value -%></h1><br>
 
+<div id="metricTableSpace">
 <table id = "metricsTable" class ="data" style = "table-layout:auto; width:100%" >
 <thead> 
   <tr valign ="top">
@@ -126,6 +127,7 @@ then set the projectGroup variable to the @Property variable.
 <% end %>
 <% end %>
 </table>
+</div>
 <% end %>
 
 
@@ -245,7 +247,6 @@ function showBars(metric, scale, noOfRows){
  	 	var projectNameWidth = document.getElementById("nameId" + i).offsetWidth;
  	 	var projectBarWidth = document.getElementById("span" + i).offsetWidth;
  	 	
- 	 	
  	 	if( projectNameWidth > projectBarWidth ){
  	 		if (projectNameWidth > limitedBarWidth ){
  	 			projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;
@@ -253,8 +254,7 @@ function showBars(metric, scale, noOfRows){
  				document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+shortName+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
  	 		}else{
  	 			projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;
- 	 			shortName = "";
- 	 			document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+shortName+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
+ 	 			document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';></span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
  	 	 	}
  		}
  	}
@@ -268,7 +268,6 @@ function truncateName( projectName ){
 	newName= projectName.substring(0, 3) + '...';
 	return newName;
 }
-
 
 <!--Alternates row colors between blue, red and yellow-->
 function getColor( row ){
