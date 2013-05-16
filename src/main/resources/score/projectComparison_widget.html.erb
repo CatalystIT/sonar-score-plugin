@@ -196,14 +196,14 @@ function getNumberOfColumnsInTable(){
 }
 <!--Removes commas and percentage signs from a string-->
 function removeCommasOrPercentage(metricString) {
-    var metricValueAsNumber = 0;
+    var metricValueAsNumber;
     	if(metricString.indexOf(',') != -1){  			
   			metricValueAsNumber= metricString.replace(/,/g,'');  			
-		}
-	
-		if(metricString.indexOf('%') != -1){
+		}else if(metricString.indexOf('%') != -1){
 			metricValueAsNumber = (metricString.replace(/%/g,'')) * 100 ;
-		  }
+		}else{
+			metricValueAsNumber = metricString;
+		}
    
     return metricValueAsNumber;
 }
@@ -211,6 +211,7 @@ function removeCommasOrPercentage(metricString) {
 <!--Retrieves the largest metric value from the metric selected in order to calculate the bar graph scale-->
 function getBarGraphScale(metricsArray){
 	var tableWidth = document.getElementById("metricsTable").offsetWidth;
+	//the bar graph width is about 40% of the table width
 	var barGraphWidth = tableWidth/2.5;
 	largestNumber= Math.max.apply(Math, metricsArray);
 	var scale = barGraphWidth/largestNumber;
@@ -230,7 +231,7 @@ function showBars(metric, scale, noOfRows){
  		var metricValue = document.getElementById(metric + [i]).innerHTML;
  		//calculates the bar graph width 
  		var barWidth = removeCommasOrPercentage(metricValue) * scale;
- 		//creates a span id if needed later
+ 		//creates a span id to use to retrieve the project bar width
  		var spanId = "span" + i;
  		//alternates color row based on the row number
  		var color = getColor(i);
@@ -242,25 +243,27 @@ function showBars(metric, scale, noOfRows){
  		previousElement.innerHTML = "<span style='display:inline-block; overflow: hidden; width:10px'></span><span id = "+spanId+" style = 'display: inline-block; overflow: hidden; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+names+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
  	 	
  	 	//if the name width is greater than the bar width, truncate the project name and put in a tool tip so the user may view the whole project name
- 	 	//if the bar is greater than 50px wide, else...eliminate the name in the bar all together (keep the tool tip with the name though)
- 	 	var limitedBarWidth = 50; 	 	
+ 	 	//if the truncated project name is greater than the bar width, eliminate the name in the bar all together (keep the tool tip with the name though)
+ 	 	 	 	
  	 	var projectNameWidth = document.getElementById("nameId" + i).offsetWidth;
  	 	var projectBarWidth = document.getElementById("span" + i).offsetWidth;
+ 	 	var truncatedNameWidth = document.getElementById("trunkName" + i).offsetWidth;
  	 	
  	 	if( projectNameWidth > projectBarWidth ){
- 	 		if (projectNameWidth > limitedBarWidth ){
- 	 			projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;
- 				shortName = truncateName(projectName);
- 				document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+shortName+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
- 	 		}else{
- 	 			projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;
- 	 			//shortName = "&nbsp;";
- 	 			document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>&nbsp;</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
- 	 	 	}
+ 	 		//if the project name is greater than the bar width, truncate the project name (name...);
+ 	 		projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;
+ 	 		shortName = truncateName(projectName);
+ 	 		//create a bar based on the metric value and put down the truncated name
+ 	 		document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+shortName+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
+ 	 			//if the bar is less than the limited bar width, take out the shortened name and just leave the tool tip
+ 	 			if (projectBarWidth < truncatedNameWidth){
+ 	 				document.getElementById("name" + i).innerHTML = "<span style='display:inline-block; overflow:hidden; width:10px'></span><span id = "+spanId+" title = '"+projectName+"'  style = 'display: inline-block; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>&nbsp;</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
+ 	 			}
+ 	 		}
+ 	 		
+ 	 		
  		}
- 	}
  	
- 	  	
 }
 
 <!--Truncates the project name to the first three letters of the name and adds (...).  A user may hover over the shortened name to see the full name-->
@@ -354,10 +357,17 @@ function getColor( row ){
    			if (elementId == "name"){
    				//retrieve the element's value and add it to the new table
    				 projectName = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;
+   				 //used to calculate the width of the project's truncated name to compare with selected metric's bar width
+   				 var nameWithSpanTags = document.getElementById('metricsTable').getElementsByTagName('td')[i];   				 
+ 	 	         var correctName = nameWithSpanTags.getElementsByTagName('span')[0].innerHTML;   				 
+   				 var shortName = truncateName (correctName);   				 
+   				
    				 nameIdGenerator = "name" + count;
+   				 var truncatedNameId = "trunkName" + count;
    				 var nameId = "nameId" + count;
    				 tablecontents += "<td id = '" + nameIdGenerator + "'style = 'border: 0px' align='left'><span id ='" + nameId + "'>  " + projectName + "</span></td>";
-   				   				
+   				 //hidden td to use for calculating the project's truncated project's name width
+   				 tablecontents += "<td style = 'visibility: hidden' id = '" + truncatedNameId + "'nowrap='' align='left' >" + shortName + "</td>";  				
    			}
    			//retrieve the correct metric values
    			if (elementId != "name" && elementId != "image" ){     				
@@ -366,7 +376,7 @@ function getColor( row ){
    						 metric = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;
    						 metricAsNumber = parseInt(removeCommasOrPercentage(metric)); 
    						 metricArray.push(metricAsNumber);
-   						 idGenerator = idName + count;
+   						 idGenerator = idName + count;   			
    						 divGenerator = "div" + count;   							    						    						 
    					     tablecontents += "<td style = 'display: none' id = '" + idGenerator + "'nowrap='' align='left' >" + metric + "</td>";
    					  	  metricFound = true; 
