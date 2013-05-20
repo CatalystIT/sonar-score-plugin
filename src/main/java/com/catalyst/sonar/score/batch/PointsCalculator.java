@@ -38,7 +38,7 @@ public class PointsCalculator implements BatchExtension {
 		} else if (lines <= classes*BRACKET2) {
 			//average lines per class 31 to 60
 			basePoints = classes*BRACKET1*FACTOR1;
-			basePoints += (lines-FACTOR1)*FACTOR2;
+			basePoints += (lines-BRACKET1)*FACTOR2;
 		} else if (lines <= classes*BRACKET3) {
 			//average lines per class 61 to 90
 			basePoints = classes*BRACKET1*FACTOR1;

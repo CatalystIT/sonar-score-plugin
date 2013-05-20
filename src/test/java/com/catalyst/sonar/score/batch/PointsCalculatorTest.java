@@ -54,9 +54,9 @@ public class PointsCalculatorTest {
 	public void testCalculateBasePoints2() {
 		long basePoints = 0;
 		for(lines = BRACKET1 + 1; lines <= BRACKET2; lines++) {
-			basePoints = Math.round(classes*BRACKET1*FACTOR1);
-			basePoints += (lines-FACTOR1)*FACTOR2;
-			assertEquals(basePoints, Math.round(calculateBasePoints(lines, classes)));
+			basePoints = (int)(classes*BRACKET1*FACTOR1);
+			basePoints += (lines-BRACKET1)*FACTOR2;
+			assertEquals(basePoints, (int)(calculateBasePoints(lines, classes)));
 		}
 	}
 	
@@ -139,6 +139,11 @@ public class PointsCalculatorTest {
 			
 		};
 		assertTrue(testCalc instanceof PointsCalculator);
+	}
+	
+	@Test
+	public void test1() {
+		assertEquals(360, (int)calculateTotalPoints(2.0, 300.0, 100.0, 100.0, 100.0, 0.0));
 	}
 
 }
