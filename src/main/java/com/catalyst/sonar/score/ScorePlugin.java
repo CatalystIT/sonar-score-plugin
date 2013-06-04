@@ -38,7 +38,8 @@ import com.catalyst.sonar.score.ui.TrophyWidget;
 	  @Property(
 	    key = ScorePlugin.TROPHY,
 	    name = "Trophy",
-	    description = " Specify the trophies earned.",
+	    description = " The trophies awarded need to be specified in the following format - TrophyName{MetricName;Amount;Time} e.g.GreatCode{Coverage;90%;10d}. To take more than one metric into account for a particular trophy, add another value with the same TrophyName. e.g.GreatCode{Violations;50;2w}." +
+	    		"Time can be denoted using 'd' for days and 'w for weeks.",
 	    project = false,
 	    global = true,
 	    multiValues = true)})
