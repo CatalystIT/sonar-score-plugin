@@ -76,6 +76,11 @@
 			<artifactId>sonar-core</artifactId>
 			<version>3.5.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-ws-client</artifactId>
+			<version>3.4.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
