@@ -39,8 +39,8 @@ public class Criteria {
 	 * 
 	 * @param requiredAmt2
 	 */
-	public void setRequiredAmt(double requiredAmt2) {
-		this.requiredAmt = requiredAmt2;
+	public void setRequiredAmt(double requiredAmtTwo) {
+		this.requiredAmt = requiredAmtTwo;
 	}
 
 	/**
