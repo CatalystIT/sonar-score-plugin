@@ -25,15 +25,10 @@ public class TrophySet extends HashSet<Trophy> {
 	public boolean add(Trophy trophy) {
 		//The method super.add(trophy) will run as part of the boolean expression.
 		//Thus, if the expression returns false, super.add returned true and the trophy was added.
-		if(!super.add(trophy)) {
-			TrophySet deepCopy = deepCopy();
-			for (Trophy trophyInDeepCopyOfSet : deepCopy) {
-				if(trophyInDeepCopyOfSet.equals(trophy)) {
-					for(Criteria criteria : trophy.getCriteria()) {
-						this.get(trophyInDeepCopyOfSet).getCriteria().add(criteria);
-					}
-				}
-			}			
+		if(!super.add(trophy)) {			
+			for(Criteria criteria : trophy.getCriteria()) {
+				this.get(trophy).getCriteria().add(criteria);
+			}						
 		}		
 		return true;
 	}
@@ -46,13 +41,5 @@ public class TrophySet extends HashSet<Trophy> {
 			}
 		}
 		return trophyToReturn;
-	}
-	
-	public TrophySet deepCopy() {
-		TrophySet trophySet = new TrophySet();
-		for(Trophy trophy : this) {
-			trophySet.add(new Trophy(trophy.getName(), trophy.getCriteria()));
-		}
-		return trophySet;
 	}
 }
