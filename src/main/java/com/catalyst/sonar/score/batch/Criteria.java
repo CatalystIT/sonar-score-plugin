@@ -35,7 +35,7 @@ public class Criteria {
 	}
 
 	/**
-	 * setter fro required amt
+	 * setter for required amt
 	 * 
 	 * @param requiredAmt2
 	 */
