@@ -6,15 +6,9 @@ package com.catalyst.sonar.score.batch;
 import java.util.HashSet;
 
 /**
- * @author James
- * extends HashSet<Trophy>, overriding the add() method.
+ * TrophySet extends HashSet<Trophy>, overriding the add() method and adding a get() method.
  */
 public class TrophySet extends HashSet<Trophy> {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6220028023304257059L;
 
 	/**
 	 * if a Trophy with the same name is in the TrophySet, it adds the criteria of the Trophy argument
@@ -33,6 +27,12 @@ public class TrophySet extends HashSet<Trophy> {
 		return true;
 	}
 	
+	/**
+	 * Gets a Trophy from the TrophySet that is meaningfully equal to the Trophy argument;
+	 * that is, a Trophy with the same name.  If there is no such Trophy, null is returned.
+	 * @param trophy
+	 * @return
+	 */
 	public Trophy get(Trophy trophy) {
 		Trophy trophyToReturn = null;
 		for(Trophy trophyInSet : this) {
@@ -42,4 +42,10 @@ public class TrophySet extends HashSet<Trophy> {
 		}
 		return trophyToReturn;
 	}
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6220028023304257059L;
 }
+
