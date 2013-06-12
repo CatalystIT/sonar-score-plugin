@@ -1,11 +1,10 @@
-/**
- * 
- */
 package com.catalyst.sonar.score.batch;
 
-import static org.junit.Assert.*;
-import junit.framework.Assert;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,22 +20,27 @@ public class CriteriaTest {
 	String testMetricOne = "Coverage";
 	double testRequiredAmtOne = 90;
 	int testDaysOne = 4;
+	//criteria 2
 	Criteria testCriteriaTwo;
 	String testMetricTwo = "Coverage";
 	double testRequiredAmtTwo = 90;
 	int testDaysTwo = 4;
+	//criteria 3
 	Criteria testCriteriaThree;
 	String testMetricThree = "Violation";
 	double testRequiredAmtThree = 10;
 	int testDaysThree = 14;
+	//criteria 4
 	Criteria testCriteriaFour;
 	String testMetricFour;
 	double testRequiredAmtFour;
 	int testDaysFour;
+	//Criteria 5
 	Criteria testCriteriaFive;
 	String testMetricFive = "Violation";
 	double testRequiredAmtFive;
 	int testDaysFive = 14;
+	//Criteria 6
 	Criteria testCriteriaSix;
 	String testMetricSix = "Coverage";
 	double testRequiredAmtSix = 0;;
@@ -116,7 +120,7 @@ public class CriteriaTest {
 	 * tests criteria does not equal to null
 	 */
 	@Test
-	public void testNotEqualsIfCriteriaNull() {
+	public void testIfCriteriaNull() {
 		assertNotSame(testCriteriaOne, testCriteriaFour);
 	}
 
