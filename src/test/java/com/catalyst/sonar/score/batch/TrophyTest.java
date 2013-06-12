@@ -83,6 +83,9 @@ public class TrophyTest{
 		assertEquals("TrophyOne", testTrophy.getTrophyName());
 	}
 
+	/**
+	 * tests if Criteria can be added to the list
+	 */
 	@Test
 	public void testAddCriteria() {
 		assertEquals(testList.size(), 0);
@@ -90,57 +93,89 @@ public class TrophyTest{
 		testList.add(testCriteriaTwo);
 		assertEquals(testList.size(), 2);
 	}
+	
+	/**
+	 * tests getter for Criteria 
+	 */
 
 	@Test
 	public void testGetCriteria() {
 		assertEquals("1",1,  testTrophy.getCriteria().size());
 	}
 
+	/**
+	 * tests if trophy objects are equal
+	 */
 	@Test
 	public void testTrophyEquals() {
 		assertTrue(testTrophy.equals(testTrophyCopy));
 		
 	}
 	
+	/**
+	 * tests if trophy objects are not equal 
+	 */
 	@Test
 	public void testTrophyNotEquals() {
 		assertFalse(testTrophy.equals(testTrophyOne));
 	}
 	
+	/**
+	 * tests if a trophy object is null 
+	 */
 	@Test
 	public void testTrophyEqualsNull() {
 		assertNull(testTrophyFour);
 		
 	}
 
+	/**
+	 * tests if trophy object's name is null
+	 */	
 	@Test
 	public void testTrophyNameEqualsToNull() {
 	assertNull(testTrophyTwo.getTrophyName());
 		
 	}
 	
+	/**
+	 * tests if trophy object has a name and is not null
+	 */
 	@Test
-	public void testTrophyNameNotEqualsToNull() {
+	public void testTrophyNameNotEqualToNull() {
 	assertNotNull(testTrophy.getTrophyName());
 		
 	}
+	
+	/**
+	 * tests if trophy name is not equal to the trophy object's trophy name
+	 */
 	@Test
 	public void testTrophyNameNotEquals() {
 		assertFalse(trophy.equals(testTrophyThree.getTrophyName()));
 		
 	}
 	
+	/**
+	 * tests if trophy name is equal to trophy object's trophy name
+	 */
 	@Test
 	public void testTrophyNameEquals() {
 		assertTrue(trophy.equals(testTrophy.getTrophyName()));
 		
 	}
 
+	/**
+	 * tests if the haschCode of two trophyObjects are equal
+	 */
 	@Test
 	public void testHashCodeIsEqual(){
 		assertEquals("Expected same as actual", testTrophy.hashCode(), testTrophyCopy.hashCode());
 	}
 
+	/**
+	 * tests if the hashCode of two objects are not equal 
+	 */
 	@Test
 	public void testHashCodeIsNotEqual(){
 		Assert.assertNotEquals(testTrophy.hashCode(), testTrophyThree.hashCode());
