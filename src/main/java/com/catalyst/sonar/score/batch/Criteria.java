@@ -84,31 +84,39 @@ public class Criteria {
 	 */
 	@Override
 	public boolean equals(Object obj){
-		if(this == obj)
+		if(this == obj){
 			return true;
-		if(obj == null)
+		}	
+		if(obj == null){
 			return false;
-		if(!getClass().equals(obj.getClass()))
+		}
+		if(!getClass().equals(obj.getClass())){
 			return false;
+		}
 		Criteria criteria = (Criteria) obj;
 		if(metric == null){
-			if(criteria.metric != null)
+			if(criteria.metric != null){
 				return false;
-			else if(!metric.equals(criteria.metric))
+			}
+			else if(!metric.equals(criteria.metric)){
 				return false;
+			}
 		}
 		if(requiredAmt == null){
-			if(!(criteria.requiredAmt == null))
+			if(!(criteria.requiredAmt == null)){
 				return false;
-			else if(!(requiredAmt == criteria.requiredAmt))
+			}
+			else if(!(requiredAmt == criteria.requiredAmt)){
 				return false;
-				
+			}
 		}
 		if(days == null){
-			if(!(criteria.days == null))
+			if(!(criteria.days == null)){
 				return false;
-			else if (!(days == criteria.days))
+			}
+			else if (!(days == criteria.days)){
 				return false;
+			}
 		}
 		return true;
 	}
@@ -120,7 +128,6 @@ public class Criteria {
 	public int hashCode(){
 		final int prime = 31;
 		int hash = 1;
-		
 		hash+= (prime * hash + ((metric == null) ? 0 : metric.hashCode()));
 		hash+= (prime * hash + ((requiredAmt == null) ? 0 : requiredAmt.hashCode()));
 		hash+= (prime * hash + ((days == null) ? 0 : days.hashCode()));

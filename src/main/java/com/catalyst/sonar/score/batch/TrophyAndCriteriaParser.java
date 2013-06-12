@@ -77,11 +77,9 @@ public class TrophyAndCriteriaParser {
 				trophies.add(trophy);
 			}
 		} catch (IndexOutOfBoundsException ie) {
-			ie.printStackTrace();
-			System.out.println("Inside IndexOutOfBoundException");
+			ie.getMessage();
 		} catch (NullPointerException npe) {
-			npe.printStackTrace();
-			System.out.println("InsideNullPointerException");
+			npe.getMessage();
 		}
 
 		return trophies;
@@ -140,12 +138,12 @@ public class TrophyAndCriteriaParser {
 							days = secondNum;
 						}
 					} catch (NumberFormatException nfe) {
-						nfe.printStackTrace();
+						nfe.getMessage();
 					}
 				}
 			}
 		} catch (IllegalArgumentException iae) {
-			iae.printStackTrace();
+			iae.getMessage();
 		}
 
 		return new Criteria(metric, requiredAmt, days);

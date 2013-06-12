@@ -70,7 +70,7 @@ public class TrophiesDecorator implements Decorator {
 	}
 
 	/**
-	 * Persist the trophy property if it doesn't already exist for a partiular
+	 * Persist the trophy property if it doesn't already exist for a particular
 	 * project
 	 */
 	public void persistPropterty() {
@@ -108,10 +108,7 @@ public class TrophiesDecorator implements Decorator {
 	 * returns analysis type of the project
 	 */
 	public boolean shouldExecuteOnProject(Project project) {
-		// TODO
-		// !Project.AnalysisType.STATIC.equals(project.getAnalysisType())||
-		// !Project.AnalysisType.DYNAMIC.equals(project.getAnalysisType());
-
+		
 		return true;
 	}
 
@@ -168,8 +165,6 @@ public class TrophiesDecorator implements Decorator {
 		double docApi = MeasureUtils.getValue(
 				context.getMeasure(CoreMetrics.PUBLIC_DOCUMENTED_API_DENSITY),
 				0.0);
-		double packageTangle = MeasureUtils.getValue(
-				context.getMeasure(CoreMetrics.PACKAGE_TANGLE_INDEX), 0.0);
 		if (points == codeCoverage) {
 			trophyPoints = TrophiesCalculator
 					.calculateConsistentTrophyPoints(codeCoverage);
