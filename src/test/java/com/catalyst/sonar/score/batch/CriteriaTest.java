@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,61 +15,60 @@ import org.junit.Test;
  * 
  */
 public class CriteriaTest {
+	//testCriteria
 	Criteria testCriteria;
-	Criteria testCriteriaOne;
-	Criteria CopyOfTestCriteriaOne;
-	String testMetricOne = "Coverage";
-	double testRequiredAmtOne = 90;
-	int testDaysOne = 4;
-	//criteria 2
-	Criteria testCriteriaTwo;
-	String testMetricTwo = "Coverage";
-	double testRequiredAmtTwo = 90;
-	int testDaysTwo = 4;
-	//criteria 3
-	Criteria testCriteriaThree;
-	String testMetricThree = "Violation";
-	double testRequiredAmtThree = 10;
-	int testDaysThree = 14;
-	//criteria 4
-	Criteria testCriteriaFour;
-	String testMetricFour;
-	double testRequiredAmtFour;
-	int testDaysFour;
-	//Criteria 5
-	Criteria testCriteriaFive;
-	String testMetricFive = "Violation";
-	double testRequiredAmtFive;
-	int testDaysFive = 14;
-	//Criteria 6
-	Criteria testCriteriaSix;
-	String testMetricSix = "Coverage";
-	double testRequiredAmtSix = 0;;
-	int testDaysSix;
-
+	String testMetric = "Coverage";
+	double testRequiredAmt = 90;
+	int testDays = 4;
+	//testCriteria with same name
+	Criteria testCriteriaSame = testCriteria;
+	String testMetricSame = "Coverage";
+	double testRequiredAmtSame = 90;
+	int testDaysSame= 4;
+	//testCriteria with different name
+	Criteria testCriteriaDifferentName;
+	String testMetricDifferent = "Violation";
+	double testRequiredAmtDifferent = 10;
+	int testDaysDifferent = 14;
+	//testCriteria null
+	Criteria testCriteriaNull;
+	//testCriteria with null metric
+	Criteria testCriteriaWithMetricNull;
+	String testMetricNull= null;
+	double testRequiredAmtNotNull = 90;
+	int testDaysNotNull = 4;
+	//testCriteria with null requiredAmt
+	Criteria testCriteriaWithReqdAmtZero;
+	String testMetricNotNull = "Coverage";
+	double testRequiredAmtNull = 0;
+	int testDaysNotNullWithReqdAmtNull = 4;
+	//testCriteria with null days
+		Criteria testCriteriaWithDaysZero;
+		String testMetricNotNullWithDaysNull = "Coverage";
+		double testRequiredAmtNotNullWithDaysNull = 90;
+		int testDaysNull = 0;
+		
 	/**
 	 * 
 	 * @throws Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-
 		testCriteria = new Criteria();
-		testCriteriaOne = new Criteria(testMetricOne, testRequiredAmtOne,
-				testDaysOne);
-		testCriteriaTwo = new Criteria(testMetricTwo, testRequiredAmtTwo,
-				testDaysTwo);
-		testCriteriaThree = new Criteria(testMetricThree, testRequiredAmtThree,
-				testDaysThree);
-		testCriteriaFour = new Criteria(testMetricFour, testRequiredAmtFour,
-				testDaysFour);
-		testCriteriaFive = new Criteria(testMetricFive, testRequiredAmtFive,
-				testDaysFive);
-		testCriteriaSix = new Criteria(testMetricSix, testRequiredAmtSix,
-				testDaysSix);
-		CopyOfTestCriteriaOne = new Criteria(testMetricOne, testRequiredAmtOne,
-				testDaysOne);
-
+		testCriteria.setMetric(testMetric);
+		testCriteria.setRequiredAmt(testRequiredAmt);
+		testCriteria.setDays(testDays);
+		testCriteriaSame = new Criteria(testMetric, testRequiredAmt,
+				testDays);
+		testCriteriaDifferentName = new Criteria(testMetricDifferent,  testRequiredAmtDifferent,
+				testDaysDifferent);
+		testCriteriaWithMetricNull = new Criteria(testMetricNull, testRequiredAmtNotNull,
+				testDaysNotNull);
+		testCriteriaWithReqdAmtZero = new Criteria(testMetricNotNull, testRequiredAmtNull,
+				testDaysNotNullWithReqdAmtNull);
+		testCriteriaWithDaysZero = new Criteria(testMetricNotNullWithDaysNull, testRequiredAmtNotNullWithDaysNull ,
+				testDaysNull);
+		
 	}
 
 	/**
@@ -102,9 +102,8 @@ public class CriteriaTest {
 	 * tests if two criteria are equal
 	 */
 	@Test
-	public void testEquals() {
-		assertEquals("Expected same as actual", testCriteriaOne,
-				testCriteriaTwo);
+	public void testIfCriteriaEquals() {
+		assertTrue(testCriteria.equals(testCriteriaSame));
 
 	}
 
@@ -112,8 +111,8 @@ public class CriteriaTest {
 	 * tests if two criteria are not equal
 	 */
 	@Test
-	public void testNotEquals() {
-		assertNotSame(testCriteriaOne, testCriteriaThree);
+	public void testIfCriteriaNotEquals() {
+		assertFalse(testCriteria.equals(testCriteriaDifferentName));
 	}
 
 	/**
@@ -121,22 +120,58 @@ public class CriteriaTest {
 	 */
 	@Test
 	public void testIfCriteriaNull() {
-		assertNotSame(testCriteriaOne, testCriteriaFour);
+		assertFalse(testCriteria.equals(testCriteriaNull));
 	}
-
 	/**
-	 * Tests if requiredAmt value zero in one criteria is not equal to another criteria with requiredAmt > 0
+	 * tests if metric value of one criteria is null
+	 */
+	@Test
+	public void testNotEqualsIfMetricIsNull() {
+		assertFalse(testCriteria.getMetric().equals(testCriteriaWithMetricNull.getMetric()));
+	}
+	/**
+	 * tests if metric values of both criteria are not equal 
+	 */
+	@Test
+	public void testNotEqualsIfMetricIsDifferent() {
+		assertFalse(testCriteria.getMetric().equals(testCriteriaDifferentName.getMetric()));
+	}
+	/**
+	 * Tests if requiredAmt value = 0 in one criteria is not equal to another criteria with requiredAmt > 0
 	 */
 	@Test
 	public void testNotEqualsIfRequiredAmtisZero() {
-		assertNotSame(testCriteriaOne, testCriteriaSix);
+		assertFalse(testCriteria.getRequiredAmt().equals(testCriteriaWithReqdAmtZero.getRequiredAmt()));
+	}
+	
+	/**
+	 * Tests if requiredAmt values in both criteria are different 
+	 */
+	@Test
+	public void testNotEqualsIfRequiredAmtisDifferent() {
+		assertFalse(testCriteria.getRequiredAmt().equals(testCriteriaDifferentName.getRequiredAmt()));
+	}
+	/**
+	 * Tests if requiredAmt value = 0 in one criteria is not equal to another criteria with requiredAmt > 0
+	 */
+	@Test
+	public void testNotEqualsIfDaysZero() {
+		assertFalse(testCriteria.getDays().equals(testCriteriaWithDaysZero.getDays()));
+	}
+	
+	/**
+	 * Tests if requiredAmt values in both criteria are different 
+	 */
+	@Test
+	public void testNotEqualsIfDaysDifferent() {
+		assertFalse(testCriteria.equals(testCriteriaDifferentName));
 	}
 	/**
 	 * Tests if hashcode of one Criteria equals hashCode of another criteria
 	 */
 	@Test
 	public void testHashCode() {
-		assertTrue(testCriteriaOne.hashCode() == testCriteriaTwo.hashCode());
+		assertTrue(testCriteria.hashCode() == testCriteriaSame.hashCode());
 
 	}
 
@@ -145,27 +180,36 @@ public class CriteriaTest {
 	 */
 	@Test
 	public void testHashCodeNotSame() {
-		assertFalse(testCriteriaOne.hashCode() == testCriteriaThree.hashCode());
+		assertFalse(testCriteria.hashCode() == testCriteriaDifferentName.hashCode());
 
 	}
 
 	/**
-	 * tests hashcode where criteria is null
+	 * tests hashcodes not equal where metric is null
 	 */
 	@Test
-	public void testHashCodeNull() {
+	public void testHashCodeNullIfMetricNull() {
 
-		assertFalse(testCriteriaOne.hashCode() == testCriteriaFour.hashCode());
+		assertFalse(testCriteria.hashCode() == testCriteriaWithMetricNull.hashCode());
 
 	}
 
 	/**
-	 * Tests hashcode when requiredAmt is zero
+	 * Tests hashcodes not equal when requiredAmt is zero
 	 */
 	@Test
 	public void testHashCodeifRequiredAmtIsZero() {
 
-		assertFalse(testCriteriaOne.hashCode() == testCriteriaFive.hashCode());
+		assertFalse(testCriteria.hashCode() == testCriteriaWithReqdAmtZero.hashCode());
+
+	}
+	/**
+	 * Tests hashcodes not equal when int days is zero
+	 */
+	@Test
+	public void testHashCodeifDaysIsZero() {
+
+		assertFalse(testCriteria.hashCode() == testCriteriaWithDaysZero.hashCode());
 
 	}
 
