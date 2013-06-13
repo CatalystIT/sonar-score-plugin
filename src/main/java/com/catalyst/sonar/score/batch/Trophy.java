@@ -7,7 +7,7 @@ import java.util.List;
 public class Trophy {
 	
 	private String trophyName;
-	public List<Criteria> criteriaList   = new ArrayList<Criteria>();
+	private List<Criteria> criteriaList   = new ArrayList<Criteria>();
 	
 	public Trophy(){
 		//no args constructor

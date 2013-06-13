@@ -1,8 +1,6 @@
 package com.catalyst.sonar.score.batch;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.sonar.api.config.Settings;
@@ -18,7 +16,7 @@ public class TrophyAndCriteriaParser {
 	private Property property;
 	private Settings settings;
 	private static final String GLOBALPROPERTYKEY = "sonar.score.Trophy";
-	public static HashMap<String, String> testMap = new HashMap<String, String>();
+	private static Map<String, String> testMap = new HashMap<String, String>();
 	// Regular Expressions
 	private static String regExpOne = "[\\;%}]";
 	private static String regExpTwo = "^[a-zA-Z]+$";
