@@ -2,11 +2,12 @@ package com.catalyst.sonar.score.batch;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Trophy {
 	
 	private String trophyName;
-	public ArrayList<Criteria> criteriaList = new ArrayList<Criteria>();
+	public List<Criteria> criteriaList   = new ArrayList<Criteria>();
 	
 	public Trophy(){
 		//no args constructor
@@ -35,10 +36,10 @@ public class Trophy {
 			if(trophy.trophyName != null){
 				return false;
 			}	
-			else if(!trophyName.equals(trophy.trophyName)){
-				return false;
-			}	
 		}
+		else if(!trophyName.equals(trophy.trophyName)){
+			return false;
+		}	
 		
 		return true;
 		
@@ -77,7 +78,7 @@ public class Trophy {
 	 * Gets list of Criteria
 	 * @return
 	 */
-	protected ArrayList<Criteria> getCriteria() {
+	protected List<Criteria> getCriteria() {
 		return criteriaList;
 	}
 
