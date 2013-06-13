@@ -17,52 +17,53 @@ import org.junit.Test;
  * 
  */
 public class TrophyTest {
-
+	//Trophy One
 	Trophy testTrophy;
-	Trophy testTrophyCopy = testTrophy;
-	Trophy testTrophyOne;
-	Trophy testTrophyTwo;
-	Trophy testTrophyThree;
-	Trophy testTrophyFour;
+	String trophyName = "Great Code";
 	Criteria testCriteria;
-	Criteria testCriteriaOne;
-	Criteria testCriteriaTwo;
-	Criteria testCriteriaThree;
+	//Trophy with same name
+	Trophy testTrophySameName = testTrophy;
+	String trophyNameSame = "Great Code";
+	Criteria testCriteriaSame = testCriteria;
+	//Trophy with different name
+	Trophy testTrophyDifferentName;
+	String trophyNameDifferent = "No Violation";
+	Criteria testCriteriaDifferent;
+	//Trophy with null trophyName
+	Trophy testTrophyWithNameNull;
+	String trophyNameNull;
+	Criteria testCriteriaForNameNull;
+	
+	//Null Trophy
+	Trophy testTrophyNull;
+	
 	List<Criteria> testList = new ArrayList<Criteria>();
 	// trophyName
-	String trophy = "Great Code";
-	String trophyOne = "Great Code";
-	String trophyTwo = null;
-	String trophyThree = "No Violation";
-	String trophyFour = "PointsTrophy";
-	// criteria values
-	String testMetric = "Violation";
-	double testRequiredAmt = 10;
-	int testDays = 14;
-	String testMetricOne = "Coverage";
-	double testRequiredAmtOne = 90;
-	int testDaysOne = 4;
-	String testMetricTwo = "Coverage";
-	double testRequiredAmtTwo = 90;
-	int testDaysTwo = 4;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
+		//TrophyOne
 		testTrophy = new Trophy();
-		testTrophy.setTrophyName(trophy);
-		testCriteriaOne = new Criteria();
-		testTrophy.addCriteria(testCriteriaOne);
-		Criteria testCriteriaCopy = testCriteriaOne;
-		testTrophyCopy = new Trophy(trophyOne);
-		testTrophyCopy.addCriteria(testCriteriaCopy);
-		testCriteriaTwo = new Criteria();
-		testTrophyThree = new Trophy(trophyThree);
-		testTrophyThree.addCriteria(testCriteriaThree);
-		testTrophyTwo = new Trophy(trophyTwo);
-
+		testTrophy.setTrophyName(trophyName);
+		testCriteria = new Criteria();
+		testTrophy.addCriteria(testCriteria);
+		//Trophy with same name
+		testTrophySameName = new Trophy();
+		testTrophySameName = new Trophy(trophyNameSame);
+		testCriteriaSame = new Criteria();
+		testTrophySameName.addCriteria(testCriteriaSame);
+		// Trophy with different name
+		testTrophyDifferentName = new Trophy();
+		testTrophyDifferentName.setTrophyName(trophyNameDifferent);
+		testCriteriaDifferent = new Criteria();
+		testTrophyDifferentName.addCriteria(testCriteriaDifferent);
+		// Trophy with name null
+		testTrophyWithNameNull = new Trophy();
+		testCriteriaForNameNull = new Criteria();
+		testTrophyWithNameNull.addCriteria(testCriteriaForNameNull);
 	}
 
 	/**
@@ -79,10 +80,10 @@ public class TrophyTest {
 	 */
 	@Test
 	public void testAddCriteria() {
-		assertEquals(testList.size(), 0);
+		assertEquals(0, testList.size());
 		testList.add(testCriteria);
-		testList.add(testCriteriaTwo);
-		assertEquals(testList.size(), 2);
+		testList.add(testCriteriaDifferent);
+		assertEquals(2, testList.size());
 	}
 
 	/**
@@ -99,16 +100,8 @@ public class TrophyTest {
 	 */
 	@Test
 	public void testTrophyEquals() {
-		assertTrue(testTrophy.equals(testTrophyCopy));
+		assertTrue(testTrophy.equals(testTrophySameName));
 
-	}
-
-	/**
-	 * tests if trophy objects are not equal
-	 */
-	@Test
-	public void testTrophyNotEquals() {
-		assertFalse(testTrophy.equals(testTrophyOne));
 	}
 
 	/**
@@ -116,26 +109,25 @@ public class TrophyTest {
 	 */
 	@Test
 	public void testTrophyEqualsNull() {
-		assertNull(testTrophyFour);
+		assertFalse(testTrophy.equals(testTrophyNull));
 
 	}
 
 	/**
-	 * tests if trophy object's name is null
+	 * tests if trophy objects are not the same
+	 */
+	@Test
+	public void testTrophyNotEquals() {
+		assertFalse(testTrophy.equals(testTrophyDifferentName));
+	}
+
+	
+	/**
+	 * tests if a trophy object's name is null
 	 */
 	@Test
 	public void testTrophyNameEqualsToNull() {
-		assertNull(testTrophyTwo.getTrophyName());
-
-	}
-
-	/**
-	 * tests if trophy object has a name and is not null
-	 */
-	@Test
-	public void testTrophyNameNotEqualToNull() {
-		assertNotNull(testTrophy.getTrophyName());
-
+		Assert.assertFalse(testTrophy.getTrophyName().equals(testTrophyWithNameNull.getTrophyName()));
 	}
 
 	/**
@@ -143,7 +135,7 @@ public class TrophyTest {
 	 */
 	@Test
 	public void testTrophyNameNotEquals() {
-		assertFalse(trophy.equals(testTrophyThree.getTrophyName()));
+		assertFalse(testTrophy.getTrophyName().equals(testTrophyDifferentName.getTrophyName()));
 
 	}
 
@@ -152,7 +144,7 @@ public class TrophyTest {
 	 */
 	@Test
 	public void testTrophyNameEquals() {
-		assertTrue(trophy.equals(testTrophy.getTrophyName()));
+		assertEquals(testTrophy.getTrophyName(), testTrophySameName.getTrophyName());
 
 	}
 
@@ -161,8 +153,7 @@ public class TrophyTest {
 	 */
 	@Test
 	public void testHashCodeIsEqual() {
-		assertEquals("Expected same as actual", testTrophy.hashCode(),
-				testTrophyCopy.hashCode());
+		assertEquals(testTrophy.hashCode(), testTrophySameName.hashCode());
 	}
 
 	/**
@@ -170,10 +161,16 @@ public class TrophyTest {
 	 */
 	@Test
 	public void testHashCodeIsNotEqual() {
-		Assert.assertNotEquals(testTrophy.hashCode(),
-				testTrophyThree.hashCode());
+		Assert.assertNotEquals(testTrophy.hashCode(), testTrophyDifferentName.hashCode());
 	}
 
+	/**
+	 * tests if the hashCode of one object is null
+	 */
+	@Test
+	public void testHashCodeIsNotEqualIfOneTrophyNameIsNull() {
+		Assert.assertNotEquals(testTrophy.hashCode(), testTrophyWithNameNull.hashCode());
+	}
 	/**
 	 * @throws java.lang.Exception
 	 */
