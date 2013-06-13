@@ -98,25 +98,26 @@ public class Criteria {
 			if(criteria.metric != null){
 				return false;
 			}
-			else if(!metric.equals(criteria.metric)){
+		}
+		else if(!metric.equals(criteria.metric)){
+				return false;
+		}
+		if(requiredAmt == 0){
+			if(criteria.requiredAmt != 0){
 				return false;
 			}
 		}
-		if(requiredAmt == null){
-			if(!(criteria.requiredAmt == null)){
+		else if(!requiredAmt.equals(criteria.requiredAmt)){
 				return false;
-			}
-			else if(!(requiredAmt == criteria.requiredAmt)){
+			
+		}
+		if(days == 0){
+			if(criteria.days != 0){
 				return false;
 			}
 		}
-		if(days == null){
-			if(!(criteria.days == null)){
+		else if (!(days == criteria.days)){
 				return false;
-			}
-			else if (!(days == criteria.days)){
-				return false;
-			}
 		}
 		return true;
 	}
