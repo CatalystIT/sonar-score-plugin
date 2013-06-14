@@ -11,6 +11,10 @@ import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
 import com.catalyst.sonar.score.batch.points.*;
+import com.catalyst.sonar.score.batch.trophies.Criteria;
+import com.catalyst.sonar.score.batch.trophies.Trophy;
+import com.catalyst.sonar.score.batch.trophies.TrophyAndCriteriaParser;
+import com.catalyst.sonar.score.batch.trophies.TrophySet;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.EnhancedListFilter;
 import com.catalyst.sonar.score.ui.ImageUploadPage;
@@ -66,7 +70,9 @@ public class ScorePlugin extends SonarPlugin{
 		// Score's ui/widgets
 		ScoreRubyWidget.class, EnhancedListFilter.class, ProjectComparisonWidget.class, TrophyWidget.class, ImageUploadPage.class,
 		
-		MetricBrackets.class, MetricBracketsParser.class, InvalidNumberOfDoublesException.class
+		MetricBrackets.class, MetricBracketsParser.class, InvalidNumberOfDoublesException.class, 
+		
+		Criteria.class, Trophy.class, TrophyAndCriteriaParser.class, TrophySet.class
 		
 		
 		);
