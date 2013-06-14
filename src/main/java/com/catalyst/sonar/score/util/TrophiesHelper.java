@@ -356,6 +356,22 @@ public class TrophiesHelper {
 		return trophyExists;
 	}
 
+	/**
+	 * used for unit testing
+	 * @param mockSettings
+	 */
+	public void setSettings(Settings mockSettings) {
+		settings = mockSettings;
+		
+	}
+
+	/**
+	 * used for unit testing
+	 * @return
+	 */
+	public Settings getSettings(){
+		return settings;
+	}
 	
 	
 }

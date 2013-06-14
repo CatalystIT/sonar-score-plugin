@@ -47,7 +47,7 @@ public class DateUtility {
 	 * @param date
 	 * @returns a date time value into a long
 	 */
-	private long getDateAsLong (Date date){
+	public long getDateAsLong (Date date){
 		long dateAsLong = 0l;
 		//convert date time to a long
 		dateAsLong = date.getTime();
