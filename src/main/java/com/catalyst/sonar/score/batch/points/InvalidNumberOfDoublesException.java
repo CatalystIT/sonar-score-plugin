@@ -3,6 +3,8 @@
  */
 package com.catalyst.sonar.score.batch.points;
 
+import org.sonar.api.BatchExtension;
+
 /**
  * InvalidNumberOfDoublesException extends IllegalArgumentException, and has a special constructor
  * {@link com.catalyst.sonar.score.batch.points.InvalidNumberOfDoublesException#makeDetailMessage(java.lang.String, int)},
@@ -11,7 +13,7 @@ package com.catalyst.sonar.score.batch.points;
  * {@link com.catalyst.sonar.score.batch.points.MetricBracketsParser#parseDoubles()}.
  *
  */
-public class InvalidNumberOfDoublesException extends IllegalArgumentException {
+public class InvalidNumberOfDoublesException extends IllegalArgumentException implements BatchExtension {
 	
 	protected static final String INDIVISIBLE_MESSAGE =
 			"The number of doubles parsed from the metricBracketsString is not divisible by " + MetricBracketsParser.DIVISOR + ".";

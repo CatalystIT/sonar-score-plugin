@@ -6,6 +6,8 @@ package com.catalyst.sonar.score.batch.points;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.sonar.api.BatchExtension;
+
 /**
  * The MetricBracketsParser class contains a String metricBracketsString,
  * and a methods to parse the metricBracketsString into a two-dimensional double array
@@ -13,7 +15,7 @@ import java.util.regex.Pattern;
  * by an instance of {@link com.catalyst.sonar.score.batch.points.MetricBrackets}.
  *
  */
-public class MetricBracketsParser {
+public class MetricBracketsParser implements BatchExtension {
 	
 	public static final int DIVISOR = MetricBrackets.EXPECTED_LENGTH;
 	public static final Pattern DECIMAL = Pattern.compile("[0-9]\\d*(\\.\\d+)?|\\.\\d+?");
