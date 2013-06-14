@@ -24,6 +24,14 @@ public class MetricBracketsParser implements BatchExtension {
 	private Matcher matcher;
 	
 	/**
+	 * Default Constructor, necessary for the SCORE plugin to work,
+	 * calls this(String metricBracketsString) and passes in an empty String.
+	 */
+	public MetricBracketsParser() {
+		this("");
+	}
+	
+	/**
 	 * Constructs a MetricBracketsParser, setting the metricBracketsString
 	 * to equal the String argument, and instantiates the matcher
 	 * from the Pattern DECIMAL with the metricBracketsString.

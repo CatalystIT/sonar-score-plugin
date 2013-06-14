@@ -24,6 +24,13 @@ public class InvalidNumberOfDoublesException extends IllegalArgumentException im
 	protected static final String LINE = "\n";
 	
 	/**
+	 * Default Constructor, necessary for the SCORE plugin to work, calls super().
+	 */
+	public InvalidNumberOfDoublesException() {
+		super();
+	}
+	
+	/**
 	 * Constructs a InvalidNumberOfDoublesException with a detailMessage containing the metricBracketsString and the numberOfDoubles.
 	 * @param metricBracketsString
 	 * @param numberOfDoubles

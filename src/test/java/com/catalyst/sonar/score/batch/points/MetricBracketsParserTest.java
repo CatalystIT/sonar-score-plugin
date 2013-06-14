@@ -34,10 +34,19 @@ public class MetricBracketsParserTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.batch.points.MetricBracketsParser#MetricBracketsParser(java.lang.String)}.
+	 * Test method for {@link com.catalyst.sonar.score.batch.points.MetricBracketsParser#MetricBracketsParser()}.
 	 */
 	@Test
 	public void testMetricBracketsParser() {
+		testParser = new MetricBracketsParser();
+		assertEquals(MetricBracketsParser.DECIMAL.matcher("").toString(), testParser.resetMatcher().toString());
+	}
+
+	/**
+	 * Test method for {@link com.catalyst.sonar.score.batch.points.MetricBracketsParser#MetricBracketsParser(java.lang.String)}.
+	 */
+	@Test
+	public void testMetricBracketsParserString() {
 		assertEquals(MetricBracketsParser.DECIMAL.matcher(BRACKETS_STRING).toString(), testParser.resetMatcher().toString());
 	}
 

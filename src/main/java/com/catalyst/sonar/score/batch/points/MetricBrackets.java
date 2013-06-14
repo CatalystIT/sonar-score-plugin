@@ -19,9 +19,7 @@ import org.sonar.api.BatchExtension;
  */
 public class MetricBrackets implements BatchExtension {
 	
-	public static final double[][] PACKAGE_BRACKETS = {{6,1}, {4,0.5}, {10,0.1}};
-	public static final double[] CLASS_BRACKETS = {0, 4, 6, 11};
-	public static final double[] LINE_BRACKETS = {0, 25, 50, 75};
+	public static final double[][] EMPTY_BRACKETS = {};
 	
 	public static final int NUMBER_IN_BRACKET = 0;
 	public static final int WEIGHT_OF_BRACKET = 1;
@@ -30,7 +28,14 @@ public class MetricBrackets implements BatchExtension {
 	
 	private final double[][] metricBrackets;
 	
-	
+	/**
+	 * Default Constructor, necessary for the SCORE plugin to work,
+	 * calls this(double[][] metricBrackets) and passes in EMPTY_BRACKETS.
+	 */
+	public MetricBrackets() {
+		this(EMPTY_BRACKETS);
+	}
+
 	/**
 	 * Constructs a new MetricBrackets and sets the MetricBrackets field to the double[][] argument. 
 	 * If the double[][] argument is null, or if any of its internal double[]s do not have a length
@@ -47,7 +52,6 @@ public class MetricBrackets implements BatchExtension {
 			throw new IllegalArgumentException(NOT_TWO_IN_LENGTH_MESSAGE + arraysNotTwoInLength);
 		}
 	}
-	
 	/**
 	 * Constructs a new MetricBrackets and sets the MetricBrackets field
 	 * by parsing the String argument with a MetricBracketsParser.

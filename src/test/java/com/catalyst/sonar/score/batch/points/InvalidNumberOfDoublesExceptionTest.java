@@ -33,6 +33,15 @@ public class InvalidNumberOfDoublesExceptionTest {
 	 */
 	@Test
 	public void testInvalidNumberOfDoublesException() {
+		testException = new InvalidNumberOfDoublesException();
+		assertEquals(null, testException.getMessage());
+	}
+	
+	/**
+	 * Test method for {@link com.catalyst.sonar.score.batch.points.InvalidNumberOfDoublesException#InvalidNumberOfDoublesException(java.lang.String, int)}.
+	 */
+	@Test
+	public void testInvalidNumberOfDoublesExceptionString() {
 		assertEquals(makeDetailMessage(TEST_STRING, TEST_PLURAL_INT), testException.getMessage());
 	}
 	

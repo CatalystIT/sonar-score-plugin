@@ -35,6 +35,15 @@ public class MetricBracketsTest {
 	}
 
 	/**
+	 * Test method for {@link com.catalyst.sonar.score.batch.points.MetricBrackets#MetricBrackets()}.
+	 */
+	@Test
+	public void testMetricBracketsDouble() {
+		testBrackets = new MetricBrackets();
+		assertEquals(Arrays.deepToString(MetricBrackets.EMPTY_BRACKETS), testBrackets.toString());
+	}
+	
+	/**
 	 * Test method for {@link com.catalyst.sonar.score.batch.points.MetricBrackets#MetricBrackets(double[][])}.
 	 */
 	@Test
