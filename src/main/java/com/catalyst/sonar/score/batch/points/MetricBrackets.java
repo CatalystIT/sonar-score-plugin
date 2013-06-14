@@ -4,8 +4,6 @@
 package com.catalyst.sonar.score.batch.points;
 
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.sonar.api.BatchExtension;
 
@@ -28,7 +26,6 @@ public class MetricBrackets implements BatchExtension {
 	public static final int NUMBER_IN_BRACKET = 0;
 	public static final int WEIGHT_OF_BRACKET = 1;
 	public static final int EXPECTED_LENGTH = 2;
-	public static final Pattern DECIMAL = Pattern.compile("[0-9]\\d*(\\.\\d+)?|\\.\\d+?");
 	public static final String NOT_TWO_IN_LENGTH_MESSAGE = "\nThe following internal doubles[] do not have a length of exactly two: ";
 	
 	private final double[][] metricBrackets;
@@ -38,12 +35,11 @@ public class MetricBrackets implements BatchExtension {
 	 * Constructs a new MetricBrackets and sets the MetricBrackets field to the double[][] argument.
 	 * If any internal double[] is not exactly two in length, an IllegalArgumentException is thrown.
 	 * @param metricBrackets
-	 * @throws IllegalArgumentException
 	 */
-	public MetricBrackets(double[][] metricBrackets) throws IllegalArgumentException {
+	public MetricBrackets(double[][] metricBrackets) {
 		this.metricBrackets = metricBrackets;
 		String arraysNotTwoInLength = arraysIncorrectLength();
-		if(arraysNotTwoInLength != "") {
+		if(!arraysNotTwoInLength.isEmpty()) {
 			throw new IllegalArgumentException(NOT_TWO_IN_LENGTH_MESSAGE + arraysNotTwoInLength);
 		}
 	}
@@ -51,7 +47,7 @@ public class MetricBrackets implements BatchExtension {
 	/**
 	 * Constructs a new MetricBrackets and sets the MetricBrackets field
 	 * by parsing the String argument with a MetricBracketsParser.
-	 * If any internal double[] is not exactly two in length, an IllegalArgumentException is thrown.
+	 * If any internal double[] is not exactly two in length, an InvalidNumberOfDoublesException is thrown.
 	 * @param metricBracketsString
 	 */
 	public MetricBrackets(String metricBracketsString) throws InvalidNumberOfDoublesException {
@@ -102,14 +98,14 @@ public class MetricBrackets implements BatchExtension {
 	 * If there are no such internal arrays, an empty String is returned.
 	 * @return
 	 */
-	protected String arraysIncorrectLength() {
+	protected final String arraysIncorrectLength() {
 		String arraysNotTwoInLength = "";
 		for (int index = 0; index < metricBrackets.length; index++) {
 			if(metricBrackets[index].length != EXPECTED_LENGTH) {
 				arraysNotTwoInLength += "\n" + Arrays.toString(metricBrackets[index]) + " (at index " + index + "); ";
 			}
 		}
-		if (arraysNotTwoInLength != "") {
+		if (!arraysNotTwoInLength.isEmpty()) {
 			//Replaces "; " at the end of the string with "."
 			arraysNotTwoInLength = arraysNotTwoInLength.substring(0, arraysNotTwoInLength.lastIndexOf(';')) + '.';
 		}

@@ -3,7 +3,6 @@
  */
 package com.catalyst.sonar.score.batch.points;
 
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +16,7 @@ import java.util.regex.Pattern;
 public class MetricBracketsParser {
 	
 	public static final int DIVISOR = MetricBrackets.EXPECTED_LENGTH;
-	public static final Pattern DECIMAL = Pattern.compile("[0-9]\\d*(\\.\\d+)?");
+	public static final Pattern DECIMAL = Pattern.compile("[0-9]\\d*(\\.\\d+)?|\\.\\d+?");
 	
 	private final String metricBracketsString;
 	private Matcher matcher;
@@ -66,22 +65,20 @@ public class MetricBracketsParser {
 	public double[][] parseMetricBrackets() {
 		double[] doubles = parseDoubles();
 		double[][] metricBrackets = new double[doubles.length / DIVISOR][DIVISOR];
-		int doublesIndex = 0;
-		for(int index = 0; index < metricBrackets.length; index ++) {
-			for(int secondIndex = 0; secondIndex < DIVISOR; secondIndex++) {
-				metricBrackets[index][secondIndex] = doubles[doublesIndex];
-				doublesIndex++;
-			}
+		for(int doublesIndex = 0; doublesIndex < doubles.length; doublesIndex+=DIVISOR) {
+			double[] bracket = new double[DIVISOR];
+			System.arraycopy(doubles, doublesIndex, bracket, 0, DIVISOR);
+			metricBrackets[doublesIndex / DIVISOR] = bracket;
 		}
 		return metricBrackets;
 	}
 	
 	/**
 	 * Parses the metricBraketsString into a single-dimension double array.
+	 * If the number of doubles in the array is odd, an InvalidNumberOfDoublesException is thrown.
 	 * @return
-	 * @throws IllegalArgumentException
 	 */
-	public double[] parseDoubles() throws InvalidNumberOfDoublesException {
+	public double[] parseDoubles() {
 		int numberOfDoubles = numberOfDoubles();
 		if(numberOfDoubles % DIVISOR != 0) {
 			throw new InvalidNumberOfDoublesException(metricBracketsString, numberOfDoubles);

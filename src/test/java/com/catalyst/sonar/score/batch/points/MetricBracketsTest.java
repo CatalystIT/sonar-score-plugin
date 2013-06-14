@@ -19,18 +19,18 @@ public class MetricBracketsTest {
 	
 	public static final double[][] BRACKETS = {{5, 1}, {5, 0.5}, {10, 0.1}};
 	public static final double[][] BRACKETS_ODD = {{1}, {5, 0.5}, {10, 0.1}};
-	public static final String BRACKETS_STRING = "asdf5fdsa.1d5.000jkasjkg0.5s10.0d0.1";
-	public static final String BRACKETS_STRING_ODD = "afdsa.1d5.000jkasjkg0.5s10.0.1";
+	public static final String BRACKETS_STRING = "asdf5fdsa1d5.000jkasjkg0.5s10.0d.1";
+	public static final String BRACKETS_STRING_ODD = "afdsa1d5.000jkasjkg0.5s10.0.1";
 	public static final double TWENTY = 20;
 	public static final double TWENTY_RESULT = 8.5;
-	private MetricBrackets metricBrackets;
+	private MetricBrackets testBrackets;
 	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		metricBrackets = new MetricBrackets(BRACKETS_STRING);
+		testBrackets = new MetricBrackets(BRACKETS_STRING);
 	}
 
 	/**
@@ -38,8 +38,8 @@ public class MetricBracketsTest {
 	 */
 	@Test
 	public void testMetricBracketsDoubleArrayArray() {
-		metricBrackets = new MetricBrackets(BRACKETS);
-		assertEquals(Arrays.deepToString(BRACKETS), metricBrackets.toString());
+		testBrackets = new MetricBrackets(BRACKETS);
+		assertEquals(Arrays.deepToString(BRACKETS), testBrackets.toString());
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class MetricBracketsTest {
 	 */
 	@Test(expected=IllegalArgumentException.class)
 	public void testMetricBracketsDoubleArrayArrayThrowsIllegalArgumentException() {
-		metricBrackets = new MetricBrackets(BRACKETS_ODD);
+		testBrackets = new MetricBrackets(BRACKETS_ODD);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class MetricBracketsTest {
 	 */
 	@Test
 	public void testMetricBracketsString() {
-		assertEquals(Arrays.deepToString(BRACKETS), metricBrackets.toString());
+		assertEquals(Arrays.deepToString(BRACKETS), testBrackets.toString());
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class MetricBracketsTest {
 	 */
 	@Test(expected=InvalidNumberOfDoublesException.class)
 	public void testMetricBracketsStringThrowsInvalidNumberOfDoublesException() {
-		metricBrackets = new MetricBrackets(BRACKETS_STRING_ODD);
+		testBrackets = new MetricBrackets(BRACKETS_STRING_ODD);
 	}
 
 	/**
@@ -71,8 +71,8 @@ public class MetricBracketsTest {
 	 */
 	@Test
 	public void testMetricFactor() {
-		assertEquals(new Double(TWENTY_RESULT), new Double(metricBrackets.metricFactor(TWENTY)));
-		assertEquals(new Double(0), new Double(metricBrackets.metricFactor(0)));
+		assertEquals(new Double(TWENTY_RESULT), new Double(testBrackets.metricFactor(TWENTY)));
+		assertEquals(new Double(0), new Double(testBrackets.metricFactor(0)));
 	}
 
 	/**
@@ -96,11 +96,11 @@ public class MetricBracketsTest {
 	 */
 	@Test
 	public void testArraysIncorrectLength() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-		assertEquals("", metricBrackets.arraysIncorrectLength());
+		assertEquals("", testBrackets.arraysIncorrectLength());
 		Field field = MetricBrackets.class.getDeclaredField("metricBrackets");
 		field.setAccessible(true);
-		field.set(metricBrackets, (Object) BRACKETS_ODD);
-		assertNotEquals("", metricBrackets.arraysIncorrectLength());
+		field.set(testBrackets, (Object) BRACKETS_ODD);
+		assertNotEquals("", testBrackets.arraysIncorrectLength());
 	}
 
 }

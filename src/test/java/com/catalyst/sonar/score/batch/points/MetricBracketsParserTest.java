@@ -18,7 +18,6 @@ import org.junit.Test;
 public class MetricBracketsParserTest {
 	private static final int BRACKETS_STRING_NUMBER_OF_DOUBLES = 4;
 	private static final int BRACKETS_STRING_INDEX_OF_FIRST_MATCH = 5;
-	private static final int BRACKETS_STRING_ODD_NUMBER_OF_DOUBLES = 3;
 	private static final String BRACKETS_STRING = "hjsdf1als9.8asdfj7.4asdf3";
 	private static final double[] DOUBLES = {1.0, 9.8, 7.4, 3.0};
 	private static final double[][] BRACKETS = {{1.0, 9.8}, {7.4, 3.0}};
