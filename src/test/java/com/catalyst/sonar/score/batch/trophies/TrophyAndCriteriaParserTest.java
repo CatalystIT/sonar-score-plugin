@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.catalyst.sonar.score.batch;
+package com.catalyst.sonar.score.batch.trophies;
 import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
 
@@ -17,6 +17,10 @@ import org.mockito.Mockito;
 import org.mockito.stubbing.OngoingStubbing;
 import org.sonar.api.Property;
 import org.sonar.api.config.Settings;
+
+import com.catalyst.sonar.score.batch.trophies.Criteria;
+import com.catalyst.sonar.score.batch.trophies.Trophy;
+import com.catalyst.sonar.score.batch.trophies.TrophyAndCriteriaParser;
 
 /**
  * @author lsajeev

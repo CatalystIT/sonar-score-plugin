@@ -1,4 +1,4 @@
-package com.catalyst.sonar.score.batch;
+package com.catalyst.sonar.score.batch.trophies;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +12,10 @@ import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.catalyst.sonar.score.batch.trophies.Criteria;
+import com.catalyst.sonar.score.batch.trophies.Trophy;
+import com.catalyst.sonar.score.batch.trophies.TrophySet;
 
 public class TestTrophySet {
 	

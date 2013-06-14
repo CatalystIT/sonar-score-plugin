@@ -1,4 +1,4 @@
-package com.catalyst.sonar.score.batch;
+package com.catalyst.sonar.score.batch.trophies;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -9,6 +9,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.catalyst.sonar.score.batch.trophies.Criteria;
 
 /**
  * @author lsajeev
