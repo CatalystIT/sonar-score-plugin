@@ -6,7 +6,7 @@
 	projects = Project.find(:all, :conditions =>  {:scope => 'PRJ'})
 	
 %>
-<!-- Loops through the properties of sonar.score.ProjectTrophy and checks if the projectId matches the resource id -->
+<!-- Loops through the properties of sonar.score.projectTrophy and checks if the projectId matches the resource id -->
 <% for @Property in properties %>
 <% if(@Property.resource_id == @project.id)%>
 	<% projectTrophy = @Property %>
@@ -29,7 +29,7 @@
 		var strings = [];
 		while(value.length>0){
 			//find the position of "," in the string
-			var valNumber = value.indexOf(",");
+			var valNumber = value.indexOf(";");
 			//if you find a comma, then extract the string from the beginning to the comma
 			if(valNumber != -1){
 				var first = value.substring(0, valNumber);
