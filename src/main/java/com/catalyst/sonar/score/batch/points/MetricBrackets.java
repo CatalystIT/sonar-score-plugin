@@ -32,12 +32,16 @@ public class MetricBrackets implements BatchExtension {
 	
 	
 	/**
-	 * Constructs a new MetricBrackets and sets the MetricBrackets field to the double[][] argument.
-	 * If any internal double[] is not exactly two in length, an IllegalArgumentException is thrown.
+	 * Constructs a new MetricBrackets and sets the MetricBrackets field to the double[][] argument. 
+	 * If the double[][] argument is null, or if any of its internal double[]s do not have a length
+	 * of exactly two, an IllegalArgumentException is thrown.
 	 * @param metricBrackets
 	 */
 	public MetricBrackets(double[][] metricBrackets) {
-		this.metricBrackets = metricBrackets;
+		if(metricBrackets == null) {
+			throw new IllegalArgumentException("The double[][] argument must not be null.");
+		}
+		this.metricBrackets = Arrays.copyOf(metricBrackets, metricBrackets.length);
 		String arraysNotTwoInLength = arraysIncorrectLength();
 		if(!arraysNotTwoInLength.isEmpty()) {
 			throw new IllegalArgumentException(NOT_TWO_IN_LENGTH_MESSAGE + arraysNotTwoInLength);

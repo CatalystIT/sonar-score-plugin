@@ -19,6 +19,7 @@ public class MetricBracketsTest {
 	
 	public static final double[][] BRACKETS = {{5, 1}, {5, 0.5}, {10, 0.1}};
 	public static final double[][] BRACKETS_ODD = {{1}, {5, 0.5}, {10, 0.1}};
+	public static final double[][] BRACKETS_NULL = null;
 	public static final String BRACKETS_STRING = "asdf5fdsa1d5.000jkasjkg0.5s10.0d.1";
 	public static final String BRACKETS_STRING_ODD = "afdsa1d5.000jkasjkg0.5s10.0.1";
 	public static final double TWENTY = 20;
@@ -46,8 +47,16 @@ public class MetricBracketsTest {
 	 * Test method for {@link com.catalyst.sonar.score.batch.points.MetricBrackets#MetricBrackets(double[][])}.
 	 */
 	@Test(expected=IllegalArgumentException.class)
-	public void testMetricBracketsDoubleArrayArrayThrowsIllegalArgumentException() {
+	public void testMetricBracketsDoubleArrayArrayThrowsIllegalArgumentExceptionBracketsOdd() {
 		testBrackets = new MetricBrackets(BRACKETS_ODD);
+	}
+	
+	/**
+	 * Test method for {@link com.catalyst.sonar.score.batch.points.MetricBrackets#MetricBrackets(double[][])}.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testMetricBracketsDoubleArrayArrayThrowsIllegalArgumentExceptionBracketsNull() {
+		testBrackets = new MetricBrackets(BRACKETS_NULL);
 	}
 
 	/**
