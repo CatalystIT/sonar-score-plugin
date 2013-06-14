@@ -29,7 +29,8 @@ public class PointsDecorator implements Decorator {
 	 */
 	@DependsUpon
 	public Collection<Metric> usedMetrics(){
-		return ImmutableList.of(CoreMetrics.NCLOC, CoreMetrics.VIOLATIONS_DENSITY, CoreMetrics.PUBLIC_DOCUMENTED_API_DENSITY,
+		return ImmutableList.of(CoreMetrics.PACKAGES, CoreMetrics.CLASSES, CoreMetrics.NCLOC,
+				CoreMetrics.VIOLATIONS_DENSITY, CoreMetrics.PUBLIC_DOCUMENTED_API_DENSITY,
 				CoreMetrics.COVERAGE, CoreMetrics.PACKAGE_TANGLE_INDEX );   
 	}
   
@@ -96,11 +97,13 @@ public class PointsDecorator implements Decorator {
 	 * @returns the points value
 	 */
 	public double getPointsValue(final DecoratorContext context) {
+		double packages = MeasureUtils.getValue(
+				context.getMeasure(CoreMetrics.PACKAGES), 0.0);
 		double classes = MeasureUtils.getValue(
 				context.getMeasure(CoreMetrics.CLASSES), 0.0);
-		double lines = MeasureUtils.getValue(
+		double ncloc = MeasureUtils.getValue(
 				context.getMeasure(CoreMetrics.NCLOC), 0.0);
-		double rulesComplexity = MeasureUtils.getValue(
+		double rulesCompliance = MeasureUtils.getValue(
 				context.getMeasure(CoreMetrics.VIOLATIONS_DENSITY), 0.0);
 		double docAPI = MeasureUtils.getValue(
 				context.getMeasure(CoreMetrics.PUBLIC_DOCUMENTED_API_DENSITY),
@@ -109,7 +112,9 @@ public class PointsDecorator implements Decorator {
 				context.getMeasure(CoreMetrics.COVERAGE), 0.0);
 		double packageTangle = MeasureUtils.getValue(
 				context.getMeasure(CoreMetrics.PACKAGE_TANGLE_INDEX), 0.0);
-		return PointsCalculator.calculateTotalPoints(classes, lines, rulesComplexity, docAPI, coverage, packageTangle);
+		return PointsCalculator.calculateTotalPoints(packages, classes, ncloc, rulesCompliance, docAPI, coverage, packageTangle);
+				//PointsCalculator.calculateBasePoints(lines, classes);
+				//.calculateTotalPoints(classes, lines, rulesComplexity, docAPI, coverage, packageTangle);
 	}
 	
 }

@@ -15,80 +15,33 @@ import org.junit.Test;
  */
 public class PointsCalculatorTest {
 	
-	private double lines;
-	private double classes;
-	private double rulesCompliance;
-	private double docAPI;
-	private double coverage;
-	private double packageTangle;
+	private static final double packages = 10;
+	private static final double classes = 100;
+	private static final double ncloc = 3000;
+	private static final double rulesCompliance = 80;
+	private static final double docAPI = 80;
+	private static final double coverage = 80;
+	private static final double packageTangle = 0;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		lines = 0;
-		classes = 1;
-		rulesCompliance = 98;
-		docAPI = 78;
-		coverage = 63;
-		packageTangle = 0;
+
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.batch.PointsCalculator#calculateBasePoints(double, double)};
-	 * lines per class <= BRACKET1.
+	 * Test method for {@link com.catalyst.sonar.score.batch.PointsCalculator#calculateBasePoints(double, double, double)};
 	 */
 	@Test
-	public void testCalculateBasePoints1() {
-		for(lines = 0; lines <= BRACKET1; lines++) {			
-			assertEquals(Math.round(lines*FACTOR1), Math.round(calculateBasePoints(lines, classes)));
-		}
-	}
-	
-	/**
-	 * Test method for {@link com.catalyst.sonar.score.batch.PointsCalculator#calculateBasePoints(double, double)};
-	 * BRACKET1 < lines per class <= BRACKET2.
-	 */
-	@Test
-	public void testCalculateBasePoints2() {
-		long basePoints = 0;
-		for(lines = BRACKET1 + 1; lines <= BRACKET2; lines++) {
-			basePoints = (int)(classes*BRACKET1*FACTOR1);
-			basePoints += (lines-BRACKET1)*FACTOR2;
-			assertEquals(basePoints, (int)(calculateBasePoints(lines, classes)));
-		}
-	}
-	
-	/**
-	 * Test method for {@link com.catalyst.sonar.score.batch.PointsCalculator#calculateBasePoints(double, double)};
-	 * BRACKET2 < lines per class <= BRACKET3.
-	 */
-	@Test
-	public void testCalculateBasePoints3() {
-		long basePoints = 0;
-		for(lines = BRACKET2 + 1; lines <= BRACKET3; lines++) {
-			basePoints = Math.round(classes*BRACKET1*FACTOR1);
-			basePoints += classes*(BRACKET2-BRACKET1)*FACTOR2;
-			basePoints += classes*(lines-BRACKET2)*FACTOR3;
-			assertEquals(basePoints, Math.round(calculateBasePoints(lines, classes)));
-		}
-	}
-	
-	/**
-	 * Test method for {@link com.catalyst.sonar.score.batch.PointsCalculator#calculateBasePoints(double, double)};
-	 * BRACKET3 < lines per class <= BRACKET4.
-	 */
-	@Test
-	public void testCalculateBasePoints4() {
-		long basePoints = 0;
-		lines = BRACKET3 + 1;
-		basePoints = Math.round(classes*BRACKET1*FACTOR1);
-		basePoints += classes*(BRACKET2-BRACKET1)*FACTOR2;
-		basePoints += classes*(BRACKET3-BRACKET2)*FACTOR3;
-		basePoints += classes*(lines-BRACKET3)*FACTOR4;
-		assertEquals(basePoints, Math.round(calculateBasePoints(lines, classes)));
-		
+	public void testCalculateBasePoints() {
+		double packageFactor = PACKAGE_BRACKET.metricFactor(packages);
+		double classFactor = CLASS_BRACKET.metricFactor(classes);
+		double nclocFactor = NCLOC_BRACKET.metricFactor(ncloc);
+		Double expected = new Double(packageFactor*classFactor*nclocFactor);
+		Double actual = new Double(calculateBasePoints(packages, classes, ncloc));
+		assertEquals(expected, actual);
 	}
 
 	/**
@@ -96,22 +49,21 @@ public class PointsCalculatorTest {
 	 */
 	@Test
 	public void testCalculateTotalPoints() {
-		lines = 3000;
-		classes = 20;
-		packageTangle = 0;
-		long totalPoints = Math.round(
+		Double expected = new Double(
+				Math.round(
 				(
-						calculateBasePoints(lines, classes) 
+						calculateBasePoints(packages, ncloc, classes) 
 						* (rulesCompliance / PERCENT)
 						* (docAPI / PERCENT)
 						* (coverage / PERCENT)
 				)
 				- (packageTangle * MAGNIFY_PACKAGE_TANGLE)
+			)
 			);
-		assertEquals(totalPoints,
-				Math.round(calculateTotalPoints(
-						classes, lines, rulesCompliance,
-						docAPI, coverage, packageTangle)));
+		Double actual = new Double(calculateTotalPoints(packages,
+				classes, ncloc, rulesCompliance,
+				docAPI, coverage, packageTangle));
+		assertEquals(expected, actual);
 	}
 	
 	/**
@@ -120,14 +72,13 @@ public class PointsCalculatorTest {
 	 */
 	@Test
 	public void testCalculateTotalPointsNegativeTurnsToZero() {
-		lines = 3000;
-		classes = 20;
 		//should produce negative score
-		packageTangle = 100;
-		assertEquals(0,
-				Math.round(calculateTotalPoints(
-						classes, lines, rulesCompliance,
-						docAPI, coverage, packageTangle)));
+		double packageTangleBad = 100;
+		Double expected = new Double(0);
+		Double actual = new Double(calculateTotalPoints(packages,
+				classes, ncloc, rulesCompliance,
+				docAPI, coverage, packageTangleBad));
+		assertEquals(expected, actual);
 	}
 	
 	/**
@@ -139,11 +90,6 @@ public class PointsCalculatorTest {
 			
 		};
 		assertTrue(testCalc instanceof PointsCalculator);
-	}
-	
-	@Test
-	public void test1() {
-		assertEquals(360, (int)calculateTotalPoints(2.0, 300.0, 100.0, 100.0, 100.0, 0.0));
 	}
 
 }
