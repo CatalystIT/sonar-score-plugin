@@ -79,7 +79,7 @@ public class Trophy {
 	 * Gets list of Criteria
 	 * @return
 	 */
-	public List<Criteria> getCriteria() {
+	protected List<Criteria> getCriteria() {
 		return criteriaList;
 	}
 
