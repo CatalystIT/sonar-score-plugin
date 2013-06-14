@@ -2,23 +2,21 @@ package com.catalyst.sonar.score.batch;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.configuration.Property;
+
+import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.google.common.collect.ImmutableList;
-
 import org.sonar.api.config.Settings;
 
 /**
@@ -28,18 +26,20 @@ import org.sonar.api.config.Settings;
  * @author Team Build Meister
  * 
  */
-public class TrophiesDecorator implements Decorator {
+public class TrophiesDecorator<PastSnapshotFinderByDays> implements Decorator {
 
 	private final DatabaseSession session;
-	private Property newProperty;
 	private Project project;
 	private Settings settings;
+	private AwardTrophies awardTrophies;
+
 
 	public TrophiesDecorator(DatabaseSession session, Project project,
 			Settings settings) {
 		this.session = session;
 		this.project = project;
 		this.settings = settings;
+		
 
 	}
 
@@ -69,46 +69,15 @@ public class TrophiesDecorator implements Decorator {
 		return Arrays.asList(ScoreMetrics.TROPHY_POINTS);
 	}
 
-	/**
-	 * Persist the trophy property if it doesn't already exist for a particular
-	 * project
-	 */
-	public void persistPropterty() {
-		int projectId = project.getId();
-		newProperty = new Property("sonar.score.TestTrophyPersistence",
-				"You've earned a trophy!", projectId);
-		if (!trophyPropertyExists("sonar.score.TestTrophyPersistence")) {
-			session.save(newProperty);
-		}
-
-	}
-
-	/**
-	 * Check to make sure the trophy doesn't exist for a given project before
-	 * persisting the trophy property.
-	 * 
-	 * @param propertyKey
-	 * @returns true if the property exists for the given project
-	 */
-	public boolean trophyPropertyExists(String propertyKey) {
-		boolean trophyExists = false;
-		Map<String, String> allProperties = new HashMap<String, String>();
-		allProperties = settings.getProperties();
-		for (Map.Entry<String, String> entry : allProperties.entrySet()) {
-			String key = entry.getKey();
-			if (key.equals(propertyKey)) {
-				trophyExists = true;
-			}
-		}
-
-		return trophyExists;
-	}
-
+	
 	/**
 	 * returns analysis type of the project
 	 */
 	public boolean shouldExecuteOnProject(Project project) {
-		
+		// TODO
+		// !Project.AnalysisType.STATIC.equals(project.getAnalysisType())||
+		// !Project.AnalysisType.DYNAMIC.equals(project.getAnalysisType());
+
 		return true;
 	}
 
@@ -116,7 +85,7 @@ public class TrophiesDecorator implements Decorator {
 	 * 
 	 * @param resource
 	 * @param context
-	 * @return checks if resource is a unit class
+	 * @return checks if resource is a unit test class
 	 */
 	public boolean shouldDecorateResource(final Resource resource,
 			final DecoratorContext context) {
@@ -134,51 +103,23 @@ public class TrophiesDecorator implements Decorator {
 		return ResourceUtils.isProject(resource);
 	}
 
+	
+
 	/**
-	 * Decorates a project's resources. Retrieves the amount of points earned
-	 * for a trophy and saves the value to the database. If the resource's scope
-	 * of the project is "PRJ" then the trophy propert is persisted.
+	 * This method is called when build is scheduled for a given project
 	 */
 	public void decorate(final Resource resource, DecoratorContext context) {
-		// if the resource is not a unit test class
-		if (shouldDecorateResource(resource, context)) {
-			double value = getEarnedTrophyPoints(context);
-			context.saveMeasure(ScoreMetrics.TROPHY_POINTS, value);
+		awardTrophies = new AwardTrophies (session, project, settings);
+				
+		/*
+		 * if the resource is a project award any earned trophies
+		 */
+		if (shouldCheckTrophyStatusForResource(resource)
+				&& shouldDecorateResource(resource, context)) {
+			awardTrophies.awardTrophies(context, resource);
 
 		}
-		// if the resource is a project then persist the property, otherwise do
-		// not persist the trophy property
-		if (shouldCheckTrophyStatusForResource(resource)) {
-			persistPropterty();
-		}
-	}
-
-	public double getEarnedTrophyPoints(final DecoratorContext context) {
-		double trophyPoints = 0;
-		double points = 0;
-		double codeCoverage = MeasureUtils.getValue(
-				context.getMeasure(CoreMetrics.COVERAGE), 0.0);
-		double linesOfCode = MeasureUtils.getValue(
-				context.getMeasure(CoreMetrics.NCLOC), 0.0);
-		double violations = MeasureUtils.getValue(
-				context.getMeasure(CoreMetrics.VIOLATIONS_DENSITY), 0.0);
-		double docApi = MeasureUtils.getValue(
-				context.getMeasure(CoreMetrics.PUBLIC_DOCUMENTED_API_DENSITY),
-				0.0);
-		if (points == codeCoverage) {
-			trophyPoints = TrophiesCalculator
-					.calculateConsistentTrophyPoints(codeCoverage);
-		} else if (points == linesOfCode) {
-			trophyPoints = TrophiesCalculator
-					.calculateConsistentTrophyPoints(linesOfCode);
-		} else if (points == violations) {
-			trophyPoints = TrophiesCalculator
-					.calculateConsistentTrophyPoints(violations);
-		} else if (points == docApi) {
-			trophyPoints = TrophiesCalculator
-					.calculateConsistentTrophyPoints(docApi);
-		}
-		return trophyPoints;
 
 	}
+
 }

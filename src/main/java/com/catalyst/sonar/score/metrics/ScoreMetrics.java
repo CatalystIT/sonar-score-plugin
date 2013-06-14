@@ -19,7 +19,7 @@ public class ScoreMetrics implements Metrics {
 	public static final Metric POINTS = new Metric.Builder("points", "Points",
 			Metric.ValueType.INT)
 			.setDescription("Score's points value")
-			.setDirection(Metric.DIRECTION_NONE)
+			.setDirection(Metric.DIRECTION_BETTER)
 			.setQualitative(false)
 			.setDomain(CoreMetrics.DOMAIN_GENERAL)
 			.create();
@@ -36,7 +36,7 @@ public class ScoreMetrics implements Metrics {
 	/**
 	 * Retrieves a list of specified metrics
 	 */
-	public List<Metric> getMetrics() {
+	public List<Metric> getMetrics() { 
 		return Arrays.asList(POINTS, TROPHY_POINTS);
 	}
 
