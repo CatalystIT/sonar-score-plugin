@@ -17,7 +17,7 @@ import com.catalyst.sonar.score.batch.trophies.Criteria;
 import com.catalyst.sonar.score.batch.trophies.Trophy;
 import com.catalyst.sonar.score.batch.trophies.TrophySet;
 
-public class TestTrophySet {
+public class TrophySetTest {
 	
 	TrophySet testTrophySet;
 	Trophy testTrophy;
