@@ -28,6 +28,7 @@ public class AwardTrophies {
 	private TrophiesHelper trophiesHelper;
 	private Property newProperty;
 	int numberOfListsOfCriteriaPerTrophy;
+	private AwardTrophies awardTrophies;
 	
 	private String metric1 = "Lines of code"; //non-commenting lines of code (int value in the db, direction -1)
 	private double req1 = 500.00;
@@ -57,7 +58,7 @@ public class AwardTrophies {
 	private int days7 = 30;
 
 	// creating new criteria objects
-	private Criteria criteria1 = new Criteria(metric1, req1, days1);
+	private Criteria criteria1 = new Criteria(metric1, req1, days1); 
 	private Criteria criteria2 = new Criteria(metric2, req2, days2);
 	private Criteria criteria3 = new Criteria(metric3, req3, days3);
 	private Criteria criteria4 = new Criteria(metric3, req4, days4);
