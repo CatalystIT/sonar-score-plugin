@@ -243,7 +243,7 @@ public class AwardTrophies {
 		 * project hasn't earned this particular trophy, add the new trophy
 		 * name
 		 */
-		if (trophiesHelper.newTrophyForThisProject(trophyName, resource)) {
+		if (trophiesHelper.newTrophyForThisProject(trophyName)) {
 			createAnotherTrophy(trophyName, resource);
 
 			}

@@ -37,10 +37,9 @@ public class TrophiesHelper {
 	/**
 	 * This method makes sure that trophies are not awarded twice.	  
 	 * @param trophyName
-	 * @param resource
 	 * @returns true if the trophy is new for the given project(resource).
 	 */
-	public boolean newTrophyForThisProject(String trophyName, Resource resource) {
+	public boolean newTrophyForThisProject(String trophyName) {
 		boolean newTrophy = true;
 
 		Map<String, String> allProperties = new HashMap<String, String>();
@@ -103,7 +102,7 @@ public class TrophiesHelper {
 		metricsHelper = new MetricsHelper(session);
 		Metric metric = metricsHelper.findMetricByName(metricName);
 		
-			if (metric != null){
+			if (metric != null){ 
 		
 				/*
 				 * Finds the direction of the metric.  
@@ -129,7 +128,8 @@ public class TrophiesHelper {
 				}
 			}
 			
-		return criteriaMet;
+		return criteriaMet;  
+		
 	}
 
 /**
@@ -275,7 +275,7 @@ public class TrophiesHelper {
 						.compareTo(requiredAmt) ==  EQUAL_TO)) {
 					int lastIndex = entries.size() - 1;
 					goodNextValue = true;
-					while (goodNextValue) {
+					while (goodNextValue) { 
 						/*
 						 * if the value is not the last entry in the list,
 						 * retrieve the next measure value.
@@ -297,7 +297,7 @@ public class TrophiesHelper {
 							 * exit the loop
 							 */
 							
-						} else if (lastIndex == i) {
+						} else if (lastIndex == i) { 
 							nextMeasureValue = entries.get(i).getMeasureValue();
 							nextMeasureIndex = i;
 							goodNextValue = false;
@@ -356,22 +356,5 @@ public class TrophiesHelper {
 		return trophyExists;
 	}
 
-	/**
-	 * used for unit testing
-	 * @param mockSettings
-	 */
-	public void setSettings(Settings mockSettings) {
-		settings = mockSettings;
-		
-	}
-
-	/**
-	 * used for unit testing
-	 * @return
-	 */
-	public Settings getSettings(){
-		return settings;
-	}
-	
 	
 }

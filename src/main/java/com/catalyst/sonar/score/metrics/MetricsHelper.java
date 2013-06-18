@@ -28,7 +28,7 @@ public class MetricsHelper {
 			if (metric != null) {
 				metricId = metric.getId();
 			}
-		return metricId;
+		return metricId; 
 
 	}
 
