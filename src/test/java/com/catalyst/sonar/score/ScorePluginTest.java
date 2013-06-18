@@ -24,7 +24,7 @@ import com.catalyst.sonar.score.batch.trophies.TrophySet;
 import com.catalyst.sonar.score.metrics.MeasuresHelper;
 import com.catalyst.sonar.score.metrics.MetricsHelper;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
-import com.catalyst.sonar.score.ui.EnhancedListFilter;
+import com.catalyst.sonar.score.ui.EnhancedListFilterWidget;
 import com.catalyst.sonar.score.ui.ImageUploadPage;
 import com.catalyst.sonar.score.ui.ProjectComparisonWidget;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
@@ -62,7 +62,7 @@ public class ScorePluginTest {
 						PointsCalculator.class,
 						TrophiesDecorator.class,
 						ScoreRubyWidget.class,
-						EnhancedListFilter.class,
+						EnhancedListFilterWidget.class,
 						ProjectComparisonWidget.class,
 						TrophyWidget.class,
 						ImageUploadPage.class,
