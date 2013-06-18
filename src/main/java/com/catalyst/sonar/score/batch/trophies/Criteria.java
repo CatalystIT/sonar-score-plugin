@@ -1,14 +1,25 @@
 package com.catalyst.sonar.score.batch.trophies;
 
-
+/**
+ * The Criteria class defines Criteria for earning a trophy:
+ * A metric, a required amount for that metric, and a number of days
+ * that the project in question must have held the metric at the required amount.
+ * For example, to earn a particular trophy, 
+ * rules compliance may need to have been held
+ * at 90.0% for 5 days.
+ *
+ */
 public class Criteria {
 
 	private String metric;
 	private Double requiredAmt;
 	private Integer days;
 	
+	/**
+	 * Default Constructor, necessary for the SCORE plugin to work, calls super().
+	 */
 	public Criteria() {
-		// no args Constructor
+		super();
 	}
 
 	/**
@@ -19,9 +30,9 @@ public class Criteria {
 	 * @param days
 //	 */
 	public Criteria(String metric, double requiredAmt, int days) {
-		this.setMetric(metric);
-		this.setRequiredAmt(requiredAmt);
-		this.setDays(days);
+		this.metric = metric;
+		this.requiredAmt = requiredAmt;
+		this.days = days;
 	}
 
 	
@@ -94,27 +105,21 @@ public class Criteria {
 			return false;
 		}
 		Criteria criteria = (Criteria) obj;
-		if(metric == null){
-			if(criteria.metric != null){
-				return false;
-			}
+		if(metric == null  && criteria.metric != null){			
+			return false;
 		}
 		else if(!metric.equals(criteria.metric)){
 				return false;
 		}
-		if(requiredAmt == 0){
-			if(criteria.requiredAmt != 0){
-				return false;
-			}
+		if(requiredAmt == 0 && criteria.requiredAmt != 0){
+			return false;
 		}
 		else if(!requiredAmt.equals(criteria.requiredAmt)){
 				return false;
 			
 		}
-		if(days == 0){
-			if(criteria.days != 0){
-				return false;
-			}
+		if(days == 0 && criteria.days != 0){
+			return false;
 		}
 		else if (!(days == criteria.days)){
 				return false;

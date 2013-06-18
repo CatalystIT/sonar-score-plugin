@@ -58,7 +58,7 @@ public class MetricBrackets implements BatchExtension {
 	 * If any internal double[] is not exactly two in length, an InvalidNumberOfDoublesException is thrown.
 	 * @param metricBracketsString
 	 */
-	public MetricBrackets(String metricBracketsString) throws InvalidNumberOfDoublesException {
+	public MetricBrackets(String metricBracketsString) {
 		this.metricBrackets = new MetricBracketsParser(metricBracketsString).parseMetricBrackets();
 	}
 	
