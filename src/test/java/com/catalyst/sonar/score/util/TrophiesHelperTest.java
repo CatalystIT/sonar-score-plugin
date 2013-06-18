@@ -14,12 +14,16 @@ import org.junit.Test;
 import org.sonar.api.config.Settings;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.measures.Metric;
+
+import com.catalyst.sonar.score.ScorePlugin;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TrophiesHelperTest {
 	private Settings settings;
 	private Map<String, String> allProperties;
+	private Map<String, String> mostProperties;
 	private TrophiesHelper trophiesHelper;
 	private DatabaseSession mockSession;
 	private String nullMetric;
@@ -68,8 +72,6 @@ public class TrophiesHelperTest {
 	private SnapshotHistory sh12;
 	private SnapshotHistory sh13;	
 	
-	
-	
 	private BigDecimal bd15;
 	private BigDecimal bd16;
 	private BigDecimal bd17;
@@ -80,8 +82,7 @@ public class TrophiesHelperTest {
 	
 	private SnapshotHistory sh15;
 	private SnapshotHistory sh16;
-	private SnapshotHistory sh17;
-		
+	private SnapshotHistory sh17;	
 	
 	private Date date4;
 	private Date date5;
@@ -107,6 +108,7 @@ public class TrophiesHelperTest {
 	private Metric classessMetric;
 	
 	private Metric.ValueType classesType;
+	private String trophyProperty = "sonar.score.projectTrophy";
 	
 	@Before
 	public void setUp(){	 	
@@ -114,9 +116,10 @@ public class TrophiesHelperTest {
 		settings = new Settings();
 		trophiesHelper = new TrophiesHelper(settings);
 		allProperties = new HashMap<String, String>();
-		allProperties.put("sonar.core.version", "3.4.1");
-		allProperties.put("sonar.score.projectTrophy", "Trophy1");
-		settings.addProperties(allProperties);
+		mostProperties = new HashMap<String,String>();		
+		//allProperties.put("sonar.core.version", "3.4.1");
+		//allProperties.put("sonar.score.projectTrophy", "Trophy1");
+		//settings.addProperties(allProperties);
 		
 		requiredAmount = 50.0;
 		requiredAmount2= 100.0;
@@ -243,6 +246,9 @@ public class TrophiesHelperTest {
 	 */
 	@Test
 	public void testNewTrophyForThisProject() {		
+		allProperties.put("sonar.core.version", "3.4.1");
+		allProperties.put("sonar.score.projectTrophy", "Trophy1");
+		settings.addProperties(allProperties);
 		assertTrue(trophiesHelper.newTrophyForThisProject("Trophy2"));
 		assertEquals(trophiesHelper.newTrophyForThisProject("Trophy1"), false);
 	
@@ -333,5 +339,33 @@ public class TrophiesHelperTest {
 				
 	}
 	////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Testing that if the trophy property exists for a given project,
+	 * the trophyPropertyExists method returns true.
+	 */
+	@Test
+	public void testTrophyPropertyExists(){
+		allProperties.put("sonar.core.version", "3.4.1");
+		allProperties.put("sonar.score.projectTrophy", "Trophy1");
+		settings.addProperties(allProperties);
+		assertTrue(trophiesHelper.trophyPropertyExists(trophyProperty));		
+	}
+	
+	@Test
+	public void testTrophyPropertyDoesNotExist(){
+		mostProperties.put("sonar.core.version", "3.4.1");
+		mostProperties.put("sonar.score.sonar.profile.java", "Java Stuff");
+		settings.addProperties(mostProperties);
+		assertFalse(trophiesHelper.trophyPropertyExists(trophyProperty));
+	}
+
+	@Test
+	public void testTrophyPropertyDoesExistButValueFieldIsEmpty(){		
+		mostProperties.put("sonar.core.version", "3.4.1");
+		mostProperties.put("sonar.score.sonar.profile.java", "");
+		settings.addProperties(mostProperties);
+		assertFalse(trophiesHelper.trophyPropertyExists(trophyProperty));
+	
+	}
 
 }

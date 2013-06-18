@@ -335,7 +335,7 @@ public class TrophiesHelper {
 
 
 	/**
-	 * Check to make sure the trophy doesn't exist for a given project before
+	 * Check to make sure the trophy property doesn't exist for a given project before
 	 * persisting the trophy property.
 	 * 
 	 * @param propertyKey
@@ -353,7 +353,7 @@ public class TrophiesHelper {
 			}
 		}
 
-		return trophyExists;
+		return trophyExists;      
 	}
 
 	

@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.model.Snapshot;
-import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Qualifiers;
 
@@ -37,14 +35,12 @@ public class MeasuresHelper {
 
 	/**
 	 * 
-	 * @param context
 	 * @param metricName
 	 * @returns a snapshot history of build dates and measure values for a given
 	 *  project and metric to be used to compare against a trophy's
 	 *  criteria
 	 */
-	public List<SnapshotHistory> getMeasureCollection(
-			final DecoratorContext context, String metricName) {
+	public List<SnapshotHistory> getMeasureCollection(String metricName) { 
 
 		List<SnapshotHistory> entries = new ArrayList<SnapshotHistory>();
 		metricsHelper = new MetricsHelper(session);
@@ -58,7 +54,7 @@ public class MeasuresHelper {
 		 */
 		if (metricId != 0) {
 
-			List<Object[]> results = getPastMeasures(resourceKey, metricId);
+			List<Object[]> results = getPastMeasures(resourceKey, metricId); 
 
 			for (Object[] result : results) {
 				BigDecimal value = (BigDecimal) result[0];
@@ -101,5 +97,5 @@ public class MeasuresHelper {
 				.getResultList();
 	}
 
-
+	
 }

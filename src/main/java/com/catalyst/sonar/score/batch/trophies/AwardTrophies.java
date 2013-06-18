@@ -184,7 +184,7 @@ public class AwardTrophies {
 				 * Retrieve the project's measure values for the given metric				 
 				 */
 
-				snapshotHistory = measuresHelper.getMeasureCollection(context, metricName);	
+				snapshotHistory = measuresHelper.getMeasureCollection(metricName);	
 				
 
 				/*
