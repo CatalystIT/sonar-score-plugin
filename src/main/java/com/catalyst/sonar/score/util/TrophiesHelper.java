@@ -217,8 +217,7 @@ public class TrophiesHelper {
 							.getBuildDate();
 
 					daysBetweenDates = dateUtility.getDaysBetweenDates(nextMeasureValueDate,goodMeasureDate);
-					System.out.println("This is the number of days between dates:   " + daysBetweenDates);
-
+					
 					if (daysBetweenDates >= days) {
 						//the criteria has been met
 						criteriaForDegradation = true;
