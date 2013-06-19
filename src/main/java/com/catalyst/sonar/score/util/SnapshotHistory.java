@@ -9,6 +9,18 @@ import java.util.Date;
  */
 public class SnapshotHistory {
 	
+	private Date buildDate;
+	private BigDecimal measureValue;
+	
+	/**
+	 * Creates a snapshot history entry: a snapshot measure value and build date
+	 * @param measureValue - snapshot measure value of a given measure and project
+	 * @param buildDate -corresponding snapshot build date 
+	 */
+	public SnapshotHistory (BigDecimal measureValue, Date buildDate){
+		this.buildDate = buildDate;
+		this.measureValue = measureValue;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -54,18 +66,7 @@ public class SnapshotHistory {
 		}
 		return true;
 	}
-	private Date buildDate;
-	private BigDecimal measureValue;
 	
-	/**
-	 * Creates a snapshot history entry: a snapshot measure value and build date
-	 * @param measureValue - snapshot measure value of a given measure and project
-	 * @param buildDate -corresponding snapshot build date 
-	 */
-	public SnapshotHistory (BigDecimal measureValue, Date buildDate){
-		this.buildDate = buildDate;
-		this.measureValue = measureValue;
-	}
 	
 	/**
 	 * 
