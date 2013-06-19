@@ -28,7 +28,8 @@ public class AwardTrophies {
 	private TrophiesHelper trophiesHelper;
 	private Property newProperty;
 	int numberOfListsOfCriteriaPerTrophy;
-	private AwardTrophies awardTrophies;
+	private TrophyAndCriteriaParser parser;
+	private TrophySet trophySet;
 	
 	private String metric1 = "Lines of code"; //non-commenting lines of code (int value in the db, direction -1)
 	private double req1 = 500.00;
@@ -125,16 +126,11 @@ public class AwardTrophies {
 	 * 
 	 * @returns a list of all the trophies
 	 */
-	public List<Trophy> listTrophies() {
-		List<Trophy> allTrophies = new ArrayList<Trophy>();
-		allTrophies.add(trophy1);
-		allTrophies.add(trophy2);
-		allTrophies.add(trophy3);
-		allTrophies.add(trophy4);
-		allTrophies.add(trophy5);
-		allTrophies.add(trophy6);
-		allTrophies.add(trophy7);
-
+	public List<Trophy> listTrophies(Settings settings) {		
+		parser = new TrophyAndCriteriaParser();
+		String globalValues = parser.getGlobalProperty(settings);
+		trophySet = TrophyAndCriteriaParser.parseTrophies(globalValues);
+		List<Trophy> allTrophies = new ArrayList<Trophy>(trophySet);				
 		return allTrophies;
 
 	}
@@ -156,7 +152,7 @@ public class AwardTrophies {
 		int days = 0;
 				
 		/*
-		 * if the trophy property does not exist for the given project (resource),
+		 * if the trophy property does not exist for the given project (resource), 
 		 * the set up trophy method will save the property name and resource id
 		 * to the database.  
 		 */
@@ -166,7 +162,7 @@ public class AwardTrophies {
 		 * call the list trophy method to get all the trophies and then iterate
 		 * through each trophy's criteria to see if a trophy was earned.
 		 */
-		for (Trophy items : listTrophies()) {
+		for (Trophy items : listTrophies(settings)) {
 			List<Criteria> listOfCriteria = items.getCriteria();
 			//represents the number of lists of criteria per trophy
 			numberOfListsOfCriteriaPerTrophy = listOfCriteria.size();
@@ -180,11 +176,11 @@ public class AwardTrophies {
 				String metricName = criteria.getMetric();
 				requirementAmount = criteria.getRequiredAmt();
 				days = criteria.getDays();
-				
+								
 				/*
 				 * Retrieve the project's measure values for the given metric				 
 				 */
-
+				
 				snapshotHistory = measuresHelper.getMeasureCollection(metricName);	
 				
 
@@ -222,12 +218,16 @@ public class AwardTrophies {
 	 * @param resource
 	 */
 	private void setUpTrophyProperty(DecoratorContext context, Resource resource) {
+		System.out.println(resource);
+		System.out.println(resource.getId());
 		int projectId = resource.getId();
 		//create a new trophy property for the given project if it does not already exist
+		
 		if (!trophiesHelper.trophyPropertyExists(ScorePlugin.PROJECT_TROPHY)){
-			newProperty = new Property(ScorePlugin.PROJECT_TROPHY, "", projectId);
-			session.save(newProperty);
+		newProperty = new Property(ScorePlugin.PROJECT_TROPHY, "", projectId);
+		session.save(newProperty);
 		}
+		
 		
 	}
 

@@ -19,7 +19,7 @@ public class TrophyAndCriteriaParser {
 	private static final String GLOBALPROPERTYKEY = "sonar.score.Trophy";
 	// Regular Expressions
 	private static String regExpOne = "[\\;%}]";
-	private static final String REGEX_LETTERS = "^[a-zA-Z]+$";
+	private static final String REGEX_LETTERS = "^[a-zA-Z\\s]+$";
 	private static final String REGEX_NUMBERS = "^[0-9]+$";
 	private static final String REGEX_ALPHANUMERIC = "^[0-9a-zA-Z]+$";
 	private static final String REGEX_COMMA = "[\\,]";
@@ -33,7 +33,7 @@ public class TrophyAndCriteriaParser {
 	 * @param settings
 	 * @return value
 	 */
-	public String getGlobalProperty(Settings settings) {
+	public String getGlobalProperty(Settings settings) { 
 		String key = "";
 		String value = "";
 		Map<String, String> propertyMap = new HashMap<String, String>();
@@ -42,6 +42,7 @@ public class TrophyAndCriteriaParser {
 			key = entry.getKey();
 			value = entry.getValue();
 			if (key.equalsIgnoreCase(GLOBALPROPERTYKEY)) {
+				System.out.println("This is the global property value: " + value);
 				return value;
 			}
 		}
@@ -51,7 +52,7 @@ public class TrophyAndCriteriaParser {
 
 	/**
 	 * Returns a set of trophies with criteria from an array of
-	 * trophPropertyStrings
+	 * trophyPropertyStrings
 	 * 
 	 * @param trophyPropertyStringList
 	 * @return
@@ -111,6 +112,7 @@ public class TrophyAndCriteriaParser {
 		try {
 			// split the criteria string into an array of strings
 			String[] valueArray = value.split(regExpOne);
+			
 			for (String string : valueArray) {
 				if (hasOnlyLetters(string)) {
 					// metric value

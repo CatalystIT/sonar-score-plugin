@@ -45,7 +45,8 @@ public class MeasuresHelper {
 		List<SnapshotHistory> entries = new ArrayList<SnapshotHistory>();
 		metricsHelper = new MetricsHelper(session);
 		// retrieve the metric's id
-		int metricId = metricsHelper.getMetricId(metricName);		
+		int metricId = metricsHelper.getMetricId(metricName);
+		
 		resourceKey = project.getEffectiveKey();
 
 		/*
