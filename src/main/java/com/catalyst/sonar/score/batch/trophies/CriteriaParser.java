@@ -22,12 +22,12 @@ public class CriteriaParser implements BatchExtension {
 	public static final Pattern DAYS = Pattern.compile(DAYS_REGEX);
 	public static final Pattern PERIOD = Pattern.compile(PERIOD_REGEX);
 	public static final Pattern TIME = Pattern.compile(DAYS_REGEX + PERIOD_REGEX);
-	protected static final int metricIndex = 0;
-	protected static final int amountIndex = 1;
-	protected static final int timeIndex = 2;
-	protected static final int components = 3;
-	protected static final int day = 1;
-	protected static final int week = 7;
+	protected static final int METRIC_INDEX = 0;
+	protected static final int AMOUNT_INDEX = 1;
+	protected static final int TIME_INDEX = 2;
+	protected static final int COMPONENTS = 3;
+	protected static final int DAY = 1;
+	protected static final int WEEK = 7;
 	
 	private final String[] criteriaStrings;
 	private final Matcher metricMatcher;
@@ -49,15 +49,15 @@ public class CriteriaParser implements BatchExtension {
 	 * @param metricBracketsString
 	 */
 	public CriteriaParser(String criteriaString) {
-		String[] criteriaStrings = criteriaString.split(SPLITTER);
-		if(criteriaStrings.length != components || !hasValidFormat()) {
+		String[] criteriaStrs = criteriaString.split(SPLITTER);
+		if(criteriaStrs.length != COMPONENTS || !hasValidFormat()) {
 			throw new IllegalArgumentException("The format of " + criteriaString + " is invalid");
 		}
-		this.metricMatcher = DECIMAL.matcher(criteriaStrings[metricIndex]);
-		this.decimalMatcher = DECIMAL.matcher(criteriaStrings[amountIndex]);
-		this.daysMatcher = DECIMAL.matcher(criteriaStrings[timeIndex]);
-		this.periodMatcher = DECIMAL.matcher(criteriaStrings[timeIndex]);
-		this.criteriaStrings = criteriaStrings;
+		this.metricMatcher = DECIMAL.matcher(criteriaStrs[METRIC_INDEX]);
+		this.decimalMatcher = DECIMAL.matcher(criteriaStrs[AMOUNT_INDEX]);
+		this.daysMatcher = DECIMAL.matcher(criteriaStrs[TIME_INDEX]);
+		this.periodMatcher = DECIMAL.matcher(criteriaStrs[TIME_INDEX]);
+		this.criteriaStrings = criteriaStrs;
 	}
 	
 	/**
@@ -88,26 +88,26 @@ public class CriteriaParser implements BatchExtension {
 		return metricMatcher.reset().group(1);
 	}
 	
-	private final boolean hasValidFormat() {
+	private boolean hasValidFormat() {
 		return hasValidMetric() && hasValidAmount() && hasValidDays();
 	}
 	
-	private final boolean hasValidMetric() {
-		return Pattern.matches(criteriaStrings[metricIndex], METRIC.pattern());
+	private boolean hasValidMetric() {
+		return Pattern.matches(criteriaStrings[METRIC_INDEX], METRIC.pattern());
 	}
 	
-	private final boolean hasValidAmount() {
-		return Pattern.matches(criteriaStrings[amountIndex], DECIMAL.pattern());
+	private boolean hasValidAmount() {
+		return Pattern.matches(criteriaStrings[AMOUNT_INDEX], DECIMAL.pattern());
 	}
 	
 	private boolean hasValidDays() {
-		return Pattern.matches(criteriaStrings[timeIndex], DAYS.pattern());
+		return Pattern.matches(criteriaStrings[TIME_INDEX], DAYS.pattern());
 	}
 	
 	private int daysInPeriod(String period) {
 		int days = 1;
 		if (period.matches("[wW]")) {
-			days = week;
+			days = WEEK;
 		}
 		return days;
 	}
