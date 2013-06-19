@@ -59,10 +59,10 @@ public class TrophyAndCriteriaParser {
 	 */
 	public static TrophySet parseTrophies(String trophyPropertyStringList) {
 		TrophySet trophies = new TrophySet();
-		try {
-			// Split the global property string at the ',' to separate between
-			// each property
-			String[] value = trophyPropertyStringList.split(REGEX_COMMA);
+		// Split the global property string at the ',' to separate between
+		// each property
+		String[] value = trophyPropertyStringList.split(REGEX_COMMA);
+		if(trophyPropertyStringList != null  && trophyPropertyStringList.matches("\\w+\\{.+;.+;.+\\}")) {
 			for (String tPropertyString : value) {
 				// go through each property and extract the trophy name to
 				// trophy
@@ -76,10 +76,6 @@ public class TrophyAndCriteriaParser {
 				// add the trophies to the trophy set
 				trophies.add(trophy);
 			}
-		} catch (IndexOutOfBoundsException ie) {
-			ie.getMessage();
-		} catch (NullPointerException npe) {
-			npe.getMessage();
 		}
 
 		return trophies;
@@ -93,7 +89,7 @@ public class TrophyAndCriteriaParser {
 	 * @return
 	 */
 	public static Trophy extractTrophyName(String globalPropertyValue) {
-		int indexNum = globalPropertyValue.indexOf("{");
+		int indexNum = globalPropertyValue.indexOf('{');
 		String trophyName = globalPropertyValue.substring(0, indexNum);
 		return new Trophy(trophyName);
 	}
