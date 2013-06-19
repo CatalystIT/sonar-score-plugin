@@ -36,6 +36,7 @@ public class TrophiesDecoratorTest {
 	mockSession = mock(DatabaseSession.class);
 	mockSetting = mock(Settings.class);
 	mockContext = mock(DecoratorContext.class);
+	awardTrophies = mock(AwardTrophies.class);
 	mockContext2 = mock(DecoratorContext.class);
 	project = new Project("Project test");
 	resource = mock(Resource.class);
@@ -83,8 +84,7 @@ public class TrophiesDecoratorTest {
 
 	@Test
 	public void testDecorate(){
-		
-	}
+			}
 
 
 }
