@@ -8,7 +8,6 @@ import java.util.Map;
 import org.sonar.api.config.Settings;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.measures.Metric;
-import org.sonar.api.resources.Resource;
 import com.catalyst.sonar.score.ScorePlugin;
 import com.catalyst.sonar.score.metrics.MetricsHelper;
 
@@ -21,7 +20,6 @@ public class TrophiesHelper {
 	private static final int SMALLER_MEASURE_VALUE = -1;
 	private static final int BIGGER_MEASURE_VALUE = 1;
 	private Settings settings;
-	private DateUtility dateUtility;
 	private MetricsHelper metricsHelper;
 	
 	/**
