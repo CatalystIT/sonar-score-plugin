@@ -23,19 +23,34 @@ public class Criteria {
 	}
 
 	/**
-	 * Constructor with params
+	 * Constructor with standard parameters, sets the metric, required amount for the metric,
+	 * and the number of days that the metric must be held at the required amount.
 	 * 
 	 * @param metric
 	 * @param requiredAmt
 	 * @param days
-//	 */
+	 */
 	public Criteria(String metric, double requiredAmt, int days) {
 		this.metric = metric;
 		this.requiredAmt = requiredAmt;
 		this.days = days;
 	}
 
-	
+	/**
+	 * Constructor with a criteriaString parameter,
+	 * creates a CriteriaParser and uses it to set the fields.
+	 * 
+	 * @param metric
+	 * @param requiredAmt
+	 * @param days
+	 */
+	public Criteria(String criteriaString) {
+		CriteriaParser parser = new CriteriaParser(criteriaString);
+		this.metric = parser.getMetric();
+		this.requiredAmt = parser.getAmount();
+		this.days = parser.getDays();
+	}
+
 	/**
 	 * getter for required amt
 	 * 
