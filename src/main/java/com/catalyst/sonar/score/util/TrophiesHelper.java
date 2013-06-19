@@ -116,6 +116,14 @@ public class TrophiesHelper {
 				 * of the metric (whether or not a larger value is an improvement or degradation).
 				 */
 				int direction = metric.getDirection();
+				/*
+				 * If the metric's domain is 'Size' the direction should be set to 1. There are a number of metrics
+				 * with a domain of 'Size' that have a direction of -1 in the database that should have a direction
+				 * of 1.  
+				 */
+				if(metric.getDomain().equals("Size")){
+					direction = 1;
+				}
 						
 				if (direction == BIGGER_MEASURE_VALUE || direction == NO_MEANING_MEASURE_VALUE){
 					if (criteriaMetForLargerMeasureValue(entries, requiredAmt, days)){

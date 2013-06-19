@@ -69,7 +69,7 @@ public class TrophiesDecorator implements Decorator {
 	/**
 	 * This method is called when build is scheduled for a given project
 	 */
-	public void decorate(final Resource resource, DecoratorContext context) {
+	public void decorate(final Resource resource, DecoratorContext context) { 
 		awardTrophies = new AwardTrophies (session, project, settings);
 				
 		/*
@@ -77,6 +77,7 @@ public class TrophiesDecorator implements Decorator {
 		 */
 		if (shouldCheckTrophyStatusForResource(resource)
 				&& shouldDecorateResource(resource, context)) {
+			System.out.println(resource);
 			awardTrophies.awardTrophies(context, resource);
 
 		}

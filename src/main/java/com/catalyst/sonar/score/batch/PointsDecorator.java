@@ -98,7 +98,7 @@ public class PointsDecorator implements Decorator {
 	 */
 	public double getPointsValue(final DecoratorContext context) {
 		double packages = MeasureUtils.getValue(
-				context.getMeasure(CoreMetrics.PACKAGES), 0.0);
+				context.getMeasure(CoreMetrics.PACKAGES), 0.0); 
 		double classes = MeasureUtils.getValue(
 				context.getMeasure(CoreMetrics.CLASSES), 0.0);
 		double ncloc = MeasureUtils.getValue(

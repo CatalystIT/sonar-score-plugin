@@ -10,7 +10,7 @@ import com.catalyst.sonar.score.batch.points.MetricBrackets;
  * @author JDunn
  *
  */
-public class PointsCalculator implements BatchExtension {
+public class PointsCalculator implements BatchExtension { 
 	
 	public static final double PERCENT = 100;
 	public static final double MAGNIFY_PACKAGE_TANGLE = 100;
