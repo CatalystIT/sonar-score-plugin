@@ -122,7 +122,7 @@ public class TrophiesHelper {
 				 * of 1.  
 				 */
 				if(metric.getDomain().equals("Size")){
-					direction = 1;
+					direction = BIGGER_MEASURE_VALUE;
 				}
 						
 				if (direction == BIGGER_MEASURE_VALUE || direction == NO_MEANING_MEASURE_VALUE){
