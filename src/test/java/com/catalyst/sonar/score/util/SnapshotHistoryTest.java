@@ -39,25 +39,26 @@ public class SnapshotHistoryTest {
 		assertSame(measureValue, sh.getMeasureValue());
 	}
 
+	/**
+	 * Testing that when an null object is passed to the overridden
+	 * equals method, the method returns false
+	 */
 	@Test
 	public void testEqualWhenObjectIsNull(){
 		Object obj = null;
 		assertEquals(sh.equals(obj), false);
 	}
-
+	/**
+	 * Testing that when an object is passed in to the overridden equals
+	 * SnapshotHistory method and the object is not a SnapshotHistory object, but
+	 * another type of object, the method returns false
+	 */
 	@Test
 	public void testEqualWhenNotInstanceOfSnapshotHistory(){
 		String myString = "test";
 		assertEquals(sh.equals(myString), false);
 	}
-	
-	@Test
-	public void testEqualWhenInstanceOfSnapshotHistory(){
-		SnapshotHistory snapshot = new SnapshotHistory(null,null);
-		//assertEquals(sh.equals(snapshot),false); 
-	}
-
-	
+			
 	/**
 	 * If the build date is null when testing for SnapshotHistory equality, the overridden
 	 * equals method returns false
@@ -122,6 +123,37 @@ public class SnapshotHistoryTest {
 	@Test
 	public void testSnapshotObjectEquality(){
 		assertEquals(snapshot1.equals(snapshot1), true);
+	}
+
+	/**
+	 * Testing that when the build date and measure value are null,
+	 * the hash code is 961.
+	 * 
+	 */
+	@Test
+	public void testhashWhenBuildDateAndValuesNull(){
+		SnapshotHistory sh1 = new SnapshotHistory(null, null);
+		assertEquals(sh1.hashCode(),961);	
+		
+	}
+	/**
+	 * Testing that when the build date is null, but the measure value is 1,
+	 * the hash code is 992
+	 */
+	@Test
+	public void testHashWhenBuildDateNullAndMeasureValueIsOne(){
+		SnapshotHistory sh1 = new SnapshotHistory(new BigDecimal(1), null);
+		assertEquals(sh1.hashCode(),992);		
+	}
+	
+	/**
+	 * Testing that when the build date is 10/19/1993 and the measure value is null,
+	 * the hash code is 1930062035
+	 */
+	@Test
+	public void testHashWhenBuildDateNotNullButValueIsNull(){
+		SnapshotHistory sh1 = new SnapshotHistory(null, new Date (750988800000l));
+		assertEquals(sh1.hashCode(),1930062035);	
 	}
 
 }
