@@ -75,7 +75,9 @@ public class CalculationComponent implements BatchExtension {
 		public double factoredTotal() {
 			double factoredTotal = 0;
 			for(CalculationComponent component : this) {
-				factoredTotal += component.factoredAmount();
+				if(component != null) {					
+					factoredTotal += component.factoredAmount();
+				}
 			}
 			return factoredTotal;
 		}		
