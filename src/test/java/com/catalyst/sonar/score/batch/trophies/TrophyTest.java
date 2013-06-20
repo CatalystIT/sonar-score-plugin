@@ -1,13 +1,8 @@
 package com.catalyst.sonar.score.batch.trophies;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,6 +60,7 @@ public class TrophyTest {
 		testTrophyDifferentName.addCriteria(testCriteriaDifferent);
 		// Trophy with name null
 		testTrophyWithNameNull = new Trophy();
+		testTrophyWithNameNull.setTrophyName(null);
 		testCriteriaForNameNull = new Criteria();
 		testTrophyWithNameNull.addCriteria(testCriteriaForNameNull);
 	}
@@ -103,8 +99,18 @@ public class TrophyTest {
 	 */
 	@Test
 	public void testTrophyEquals() {
-		assertTrue(testTrophy.equals(testTrophySameName));
+		assertEquals(testTrophy, testTrophy);
+		assertEquals(testTrophy, testTrophySameName);
 
+	}
+	
+	/**
+	 * tests if a trophy object's name is null
+	 */
+	@Test
+	public void testTrophyEquals_trophyNameIsNull_otherTrophyIsNull() {
+		testTrophy.setTrophyName(null);
+		assertEquals(testTrophyWithNameNull, testTrophy);
 	}
 
 	/**
@@ -121,34 +127,16 @@ public class TrophyTest {
 	 */
 	@Test
 	public void testTrophyNotEquals() {
-		assertFalse(testTrophy.equals(testTrophyDifferentName));
+		assertNotEquals(testTrophy, testTrophyDifferentName);
+		assertNotEquals(testTrophy, new Object());
 	}
-
 	
 	/**
 	 * tests if a trophy object's name is null
 	 */
 	@Test
-	public void testTrophyNameEqualsToNull() {
-		Assert.assertFalse(testTrophy.getTrophyName().equals(testTrophyWithNameNull.getTrophyName()));
-	}
-
-	/**
-	 * tests if trophy name is not equal to the trophy object's trophy name
-	 */
-	@Test
-	public void testTrophyNameNotEquals() {
-		assertFalse(testTrophy.getTrophyName().equals(testTrophyDifferentName.getTrophyName()));
-
-	}
-
-	/**
-	 * tests if trophy name is equal to trophy object's trophy name
-	 */
-	@Test
-	public void testTrophyNameEquals() {
-		assertEquals(testTrophy.getTrophyName(), testTrophySameName.getTrophyName());
-
+	public void testTrophyNotEquals_trophyNameIsNull_otherTrophyIsNot() {
+		assertNotEquals(testTrophyWithNameNull, testTrophy);
 	}
 
 	/**
@@ -164,7 +152,7 @@ public class TrophyTest {
 	 */
 	@Test
 	public void testHashCodeIsNotEqual() {
-		Assert.assertNotEquals(testTrophy.hashCode(), testTrophyDifferentName.hashCode());
+		assertNotEquals(testTrophy.hashCode(), testTrophyDifferentName.hashCode());
 	}
 
 	/**
@@ -172,13 +160,6 @@ public class TrophyTest {
 	 */
 	@Test
 	public void testHashCodeIsNotEqualIfOneTrophyNameIsNull() {
-		Assert.assertNotEquals(testTrophy.hashCode(), testTrophyWithNameNull.hashCode());
+		assertNotEquals(testTrophy.hashCode(), testTrophyWithNameNull.hashCode());
 	}
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
 }

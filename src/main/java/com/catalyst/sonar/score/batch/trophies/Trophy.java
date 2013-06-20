@@ -4,22 +4,36 @@ package com.catalyst.sonar.score.batch.trophies;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * The Trophy class represents a Trophy in Sonar for projects to earn,
+ * with a name and a List of Criteria.
+ */
 public class Trophy {
+	
+	public static final String UNNAMED_TROPHY = "Unnamed Trophy";
 	
 	private String trophyName;
 	private List<Criteria> criteriaList   = new ArrayList<Criteria>();
 	
+	/**
+	 * Default Constructor, necessary for the SCORE plugin to work, calls this(UNNAMED_TROPHY).
+	 */
 	public Trophy(){
-		//no args constructor
+		this(UNNAMED_TROPHY);
 	}
 	
+	/**
+	 * Constructs a Trophy, setting the trophyName
+	 * to equal the String name argument.
+	 * @param name
+	 */
 	public Trophy(String name){
 		this.trophyName = name;
 	}
 	
 	/**
-	 * Overrides the equals method
+	 * Overrides {@link java.lang.Object#equals(java.lang.Object)},
+	 * checking for meaningful equality based on the trophyName field.
 	 */
 	@Override
 	public boolean equals(Object obj){
@@ -29,7 +43,7 @@ public class Trophy {
 		if(obj == null){
 			return false;
 		}	
-		if(!getClass().equals(obj.getClass())){
+		if(!(obj instanceof Trophy)){
 			return false;
 		}	
 		Trophy trophy = (Trophy) obj;
@@ -40,19 +54,18 @@ public class Trophy {
 		}
 		else if(!trophyName.equals(trophy.trophyName)){
 			return false;
-		}	
-		
-		return true;
-		
+		}		
+		return true;		
 	}
+	
 	/**
-	 * Overrides the hashCode
+	 * Overrides {@link java.lang.Object#hashcode()},
+	 * calculating a hashcode based on the trophyName field.
 	 */
 	@Override
 	public int hashCode(){
 		final int prime = 31;
-		int hash = 1;
-		
+		int hash = 1;		
 		hash+= (prime * hash + ((trophyName == null) ? 0 : trophyName.hashCode()));
 		return hash;
 		
@@ -90,8 +103,4 @@ public class Trophy {
 	public void addCriteria(Criteria criteria) {
 		criteriaList.add(criteria);
 	}
-
-	
-	
-
 }
