@@ -16,7 +16,6 @@ import com.catalyst.sonar.score.batch.trophies.Criteria;
 import com.catalyst.sonar.score.batch.trophies.Trophy;
 import com.catalyst.sonar.score.batch.trophies.TrophyAndCriteriaParser;
 import com.catalyst.sonar.score.batch.trophies.TrophySet;
-import com.catalyst.sonar.score.metrics.MeasuresHelper;
 import com.catalyst.sonar.score.metrics.MetricsHelper;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.EnhancedListFilterWidget;
@@ -25,6 +24,7 @@ import com.catalyst.sonar.score.ui.ProjectComparisonWidget;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 import com.catalyst.sonar.score.ui.TrophyWidget;
 import com.catalyst.sonar.score.util.DateUtility;
+import com.catalyst.sonar.score.util.MeasuresHelper;
 import com.catalyst.sonar.score.util.SnapshotHistory;
 import com.catalyst.sonar.score.util.TrophiesHelper;
 

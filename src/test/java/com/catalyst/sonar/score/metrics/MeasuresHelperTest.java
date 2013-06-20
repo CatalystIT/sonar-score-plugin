@@ -21,6 +21,8 @@ import org.sonar.api.resources.Resource;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import com.catalyst.sonar.score.util.MeasuresHelper;
 import com.catalyst.sonar.score.util.SnapshotHistory;
 
 public class MeasuresHelperTest {

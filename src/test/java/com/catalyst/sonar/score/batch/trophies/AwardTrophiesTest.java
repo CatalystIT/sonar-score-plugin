@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
-import com.catalyst.sonar.score.metrics.MeasuresHelper;
+import com.catalyst.sonar.score.util.MeasuresHelper;
 import com.catalyst.sonar.score.util.TrophiesHelper;
 
 public class AwardTrophiesTest {

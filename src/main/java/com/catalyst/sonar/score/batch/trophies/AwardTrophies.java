@@ -11,7 +11,7 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 
 import com.catalyst.sonar.score.ScorePlugin;
-import com.catalyst.sonar.score.metrics.MeasuresHelper;
+import com.catalyst.sonar.score.util.MeasuresHelper;
 import com.catalyst.sonar.score.util.SnapshotHistory;
 import com.catalyst.sonar.score.util.TrophiesHelper;
 /**
