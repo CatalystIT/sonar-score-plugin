@@ -7,11 +7,9 @@ import org.sonar.api.database.configuration.Property;
 
 
 /**
- * 
- * @author Team Build Meister
- * 
+ * TrophyAndCriteriaParser parses a String from the database
+ * into trophies with their criteria and adds them to a TrophySet. 
  */
-
 public class TrophyAndCriteriaParser {
 	private Property property;
 	private Settings settings;
