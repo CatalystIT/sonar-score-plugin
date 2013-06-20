@@ -13,6 +13,7 @@ import com.catalyst.sonar.score.metrics.MetricsHelper;
 
 public class TrophiesHelper {
 	
+	private static final int SNAPSHOT_FLOOR = 1;
 	private static final int LESS_THAN = -1;
 	private static final int EQUAL_TO = 0;
 	private static final int GREATER_THAN = 1;
@@ -165,9 +166,10 @@ public class TrophiesHelper {
 			boolean goodNextValue = false;
 			
 			/*
-			 * if the measure value is less than the required amount...a good measure has been found
+			 * if the measure value is less than the required amount and there is more than on snapshot
+			 * ...a good measure has been found
 			 */
-			if ((entries.get(i).getMeasureValue()).compareTo(requiredAmt) == LESS_THAN) { 
+			if ((entries.get(i).getMeasureValue()).compareTo(requiredAmt) == LESS_THAN && (entries.size() > SNAPSHOT_FLOOR)) { 
 				
 				goodMeasureIndex = i;
 				// once a good value is found, get the next measure value
@@ -257,57 +259,62 @@ public class TrophiesHelper {
 		Date nextMeasureValueDate;
 		int daysBetweenDates = 0;
 		/*
-		 * loop through all the values until a good value is found: a value that
+		 * if there is more than one snapshot loop through all the values until a good value is found: a value that
 		 * is greater than or equal to the required amount
 		 */
-		for (int i = 0; i < entries.size(); i++) {
+		if (entries.size() > SNAPSHOT_FLOOR){
+		for (int i = 0; i <entries.size()-1; i++) { 
 			boolean goodNextValue = false;
 			
-			if ((entries.get(i).getMeasureValue()).compareTo(requiredAmt) == GREATER_THAN
-					|| (entries.get(i).getMeasureValue())
-							.compareTo(requiredAmt) == EQUAL_TO) {
+			if ((entries.get(i).getMeasureValue()).compareTo(requiredAmt) == GREATER_THAN || (entries.get(i).getMeasureValue()).compareTo(requiredAmt) == EQUAL_TO) {
 				
 				goodMeasureIndex = i;
+				nextMeasureIndex = goodMeasureIndex + 1;
+				System.out.println("this is the good measure index: " + goodMeasureIndex + " and the good value is:" + entries.get(goodMeasureIndex).getMeasureValue());
 				// once a good value is found, get the next measure value
-				nextMeasureValue = entries.get(i++).getMeasureValue();
+				nextMeasureValue = entries.get(nextMeasureIndex).getMeasureValue();
+				System.out.println("this is the next measure value: " + nextMeasureValue + " and the index is: "+ nextMeasureIndex);
 				/*
-				 * if the next measure value is greater than the require amount,
+				 * if the next measure value is greater than the required amount,
 				 * loop through the other measure values until a value that
 				 * doesn't meet the requirement is reached.
 				 */
-				
-				if ((nextMeasureValue.compareTo(requiredAmt) == GREATER_THAN || nextMeasureValue
-						.compareTo(requiredAmt) ==  EQUAL_TO)) {
-					int lastIndex = entries.size() - 1;
+				int lastIndex = entries.size() - 1;
+					if (nextMeasureValue.compareTo(requiredAmt) == GREATER_THAN || nextMeasureValue.compareTo(requiredAmt) ==  EQUAL_TO) {
+					
+					System.out.println("this is the last index value: " + lastIndex);
+					
 					goodNextValue = true;
-					while (goodNextValue) { 
-						/*
-						 * if the value is not the last entry in the list,
-						 * retrieve the next measure value.
-						 */
-						
-						if (lastIndex != i) {
-							nextMeasureValue = entries.get(i++)
-									.getMeasureValue();
-							nextMeasureIndex = i;
-							/* if the next measure value is less than the
-							 * required amount, exit the loop
-							*/ 
-							if (nextMeasureValue.compareTo(requiredAmt) == LESS_THAN) {
-								goodNextValue = false;
-							}
+						while (goodNextValue) {   
 							/*
-							 * if the value is the last entry, set the next
-							 * measure value to the current measure value and
-							 * exit the loop
+							 * if the value is not the last entry in the list,
+							 * retrieve the next measure value.
 							 */
+						
+							if (lastIndex != nextMeasureIndex) { 
+								nextMeasureIndex += 1;
+								nextMeasureValue = entries.get(nextMeasureIndex).getMeasureValue();
+								i = nextMeasureIndex;
+								System.out.println("The next measure value is:  " + nextMeasureValue + " and the next measure index is:  " + nextMeasureIndex);
+								/* if the next measure value is less than the
+							 * required amount, exit the while loop
+							*/ 
+								if (nextMeasureValue.compareTo(requiredAmt) == LESS_THAN || (lastIndex == nextMeasureIndex) ) {								
+									goodNextValue = false;
+								}
+								/*
+								 * if the value is the last entry, set the next
+								 * measure value to the current measure value and
+								 * exit the loop
+								 */
 							
-						} else if (lastIndex == i) { 
-							nextMeasureValue = entries.get(i).getMeasureValue();
-							nextMeasureIndex = i;
-							goodNextValue = false;
+							} else {   
+								System.out.println("this is the last measure index:  " + nextMeasureIndex);
+								nextMeasureValue = entries.get(i).getMeasureValue();
+								System.out.println("this is the next measure index inside of the if (lastIndex == 1) is:  " + nextMeasureIndex);
+								goodNextValue = false;
 
-						}
+							}
 
 					}
 
@@ -324,7 +331,7 @@ public class TrophiesHelper {
 							.getBuildDate();
 					
 					daysBetweenDates = dateUtility.getDaysBetweenDates(nextMeasureValueDate,goodMeasureDate);
-
+					System.out.println("this is the days between dates:  " + daysBetweenDates);
 					if (daysBetweenDates >= days) {
 						//the criteria has been met
 						criteriaForImprovementMet = true;
@@ -334,6 +341,7 @@ public class TrophiesHelper {
 			}
 
 		}
+	 }
 
 		return criteriaForImprovementMet;
 	}

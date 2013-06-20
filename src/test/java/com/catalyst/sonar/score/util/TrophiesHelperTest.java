@@ -402,18 +402,214 @@ public class TrophiesHelperTest {
 		when(mockSession.getSingleResult(Metric.class, "name",classesName, "enabled", true)).thenReturn(classessMetric);
 		assertFalse(trophiesHelper.criteriaMet(entries2, requiredAmount3, days4, classesName, mockSession));	
 	}
-///////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Testing that when there is no build history, a trophy cannot be earned even though
+	 * the criteria amount has been met (for direction '-1');
+	 */
+	@Test
+	public void testCriteriaNotMetWhenThereIsNoBuildHistoryForDirectionNegativeOne(){
+		//no build history
+		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		
+		when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);
+		assertFalse(trophiesHelper.criteriaMet(info, requiredAmount, days4, violationsName, mockSession));
+	}
+	
+	/**
+	 * Testing that when there is only one snapshot, a trophy cannot be earned for direction '-1'
+	 * 
+	 */
+	@Test 
+	public void testCriteriaNotMetWhenThereIsOnlyOneSnapshotForDirectionNegativeOne(){
+		BigDecimal bd20= new BigDecimal (25);
+		Date date20 = new Date(1370464358000l); //6/5/2013				
+		SnapshotHistory sh20 = new SnapshotHistory(bd20,date20);
+		
+		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		//only one snapshot
+		info.add(sh20);
+				
+		when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);
+		assertFalse(trophiesHelper.criteriaMet(info, requiredAmount, days4, violationsName, mockSession));
+		
+	}
+	
+	/**
+	 * Testing that when there are no snapshots, a trophy cannot be earned for direction 1 and direction 0
+	 */
+	@Test 
+	public void testCriteriaNotMetWhenThereIsNoBuildHistoryForDirectionOneAndZero(){
+		//no build history
+		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+				
+		when(mockSession.getSingleResult(Metric.class, "name",pointsName, "enabled", true)).thenReturn(pointsMetric);
+		assertFalse(trophiesHelper.criteriaMet(info, requiredAmount, days4, pointsName, mockSession));	
+		when(mockSession.getSingleResult(Metric.class, "name",complexityName, "enabled", true)).thenReturn(pointsMetric);
+		assertFalse(trophiesHelper.criteriaMet(info,requiredAmount ,days4, complexityName, mockSession));
+	
+	}
+	
+	@Test
+	public void testCriteriaNotMetWhenThereOnlyOneSnapshotForDirectionOne(){
+		BigDecimal bd20= new BigDecimal (1000);
+		Date date20 = new Date(1370464358000l); //6/5/2013				
+		SnapshotHistory sh20 = new SnapshotHistory(bd20,date20);
+		
+		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		//only one snapshot
+		info.add(sh20);
+				
+		when(mockSession.getSingleResult(Metric.class, "name",pointsName, "enabled", true)).thenReturn(pointsMetric);
+		assertFalse(trophiesHelper.criteriaMet(info, requiredAmount, days4, pointsName, mockSession));
+	
+	}
+	
+	
+	///////////////////////////////////////////////////////////////
 	/**
 	 * Testing that when criteriaMetForLargerMeasureValue is called and only the first measure value
 	 * is met, but the other requirement measures and dates are not met,
 	 * the method returns false
 	 */
 	@Test
-	public void testCriteriaMetWhenMetricFoundAndMeasureValuesEqualRequireAmount(){
+	public void testCriteriaNotMetWhenMetricFoundAndMeasureValuesEqualRequireAmount(){
 		when(mockSession.getSingleResult(Metric.class, "name", pointsName, "enabled", true)).thenReturn(pointsMetric);
 		assertFalse(trophiesHelper.criteriaMet(entries3, requiredAmount4, days4, pointsName, mockSession));
 				
 	}
+	/**
+	 * Testing that the criteriaMet returns true for direction 1 and 0, when there is a value that doesn't meet the criteria
+	 * somewhere in the middle of the build history, but after that time the criteria values and dates have been met
+	 * and the trophy will be earned
+	 */
+	@Test
+	public void testCriteriaMetWhenMiddleBuildValueBad(){
+		BigDecimal bigDec1= new BigDecimal (1000);
+		BigDecimal bigDec2= new BigDecimal (700);
+		BigDecimal bigDec3= new BigDecimal (600);
+		BigDecimal bigDec4= new BigDecimal (300); 
+		BigDecimal bigDec5= new BigDecimal (800);
+		BigDecimal bigDec6= new BigDecimal (1200);
+		
+		Date theDate1 = new Date(1370464358000l); //6/5/2013				
+		Date theDate2 = new Date(1369945958000l); //5/30/2013
+		Date theDate3 = new Date(1367181158000l); //4/28/2013
+		Date theDate4 = new Date(1366489958000l); //4/20/2013
+		Date theDate5 = new Date(1366403558000l);//4/19/2013
+		Date theDate6 = new Date(1334867558000l);//4/19/2012		
+		
+		SnapshotHistory snapShot1 = new SnapshotHistory(bigDec1,theDate1);
+		SnapshotHistory snapShot2 = new SnapshotHistory(bigDec2,theDate2);
+		SnapshotHistory snapShot3 = new SnapshotHistory(bigDec3,theDate3); 
+		SnapshotHistory snapShot4 = new SnapshotHistory(bigDec4,theDate4);
+		SnapshotHistory snapShot5 = new SnapshotHistory(bigDec5,theDate5);
+		SnapshotHistory snapShot6 = new SnapshotHistory(bigDec6,theDate6);
+		
+		
+		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		info.add(snapShot1);
+		info.add(snapShot2);
+		info.add(snapShot3);
+		info.add(snapShot4);
+		info.add(snapShot5);
+		info.add(snapShot6);
+		int requiredAmtForOne = 500;
+		int daysForOne = 90;
+				
+		when(mockSession.getSingleResult(Metric.class, "name",pointsName, "enabled", true)).thenReturn(pointsMetric);
+		assertTrue(trophiesHelper.criteriaMet(info,requiredAmtForOne ,daysForOne, pointsName, mockSession));
+		when(mockSession.getSingleResult(Metric.class, "name",complexityName, "enabled", true)).thenReturn(pointsMetric);
+		assertTrue(trophiesHelper.criteriaMet(info,requiredAmtForOne ,daysForOne, complexityName, mockSession));
+	}
+	/**
+	 * Testing criteriaMet returns true, if the criteria is met before there is criteria that wasn't met
+	 */
+	@Test
+	public void testCriteriaMetWhenCriteriaMetAfterBadCriteria(){
+	BigDecimal bigDec1= new BigDecimal (1000);
+	BigDecimal bigDec2= new BigDecimal (700);
+	BigDecimal bigDec3= new BigDecimal (600);
+	BigDecimal bigDec4= new BigDecimal (300);
+	BigDecimal bigDec5= new BigDecimal (800);
+	BigDecimal bigDec6= new BigDecimal (1200);
+	BigDecimal bigDec7 = new BigDecimal (100);
+	
+	Date theDate1 = new Date(1370464358000l); //6/5/2013				
+	Date theDate2 = new Date(1369945958000l); //5/30/2013
+	Date theDate3 = new Date(1367181158000l); //4/28/2013
+	Date theDate4 = new Date(1366489958000l); //4/20/2013
+	Date theDate5 = new Date(1366403558000l);//4/19/2013
+	Date theDate6 = new Date(1334867558000l);//4/19/2012	
+	Date theDate7 = new Date(1327008758000l);//1/19/2012
+	
+	SnapshotHistory snapShot1 = new SnapshotHistory(bigDec1,theDate1);
+	SnapshotHistory snapShot2 = new SnapshotHistory(bigDec2,theDate2);
+	SnapshotHistory snapShot3 = new SnapshotHistory(bigDec3,theDate3);
+	SnapshotHistory snapShot4 = new SnapshotHistory(bigDec4,theDate4);
+	SnapshotHistory snapShot5 = new SnapshotHistory(bigDec5,theDate5);
+	SnapshotHistory snapShot6 = new SnapshotHistory(bigDec6,theDate6);
+	SnapshotHistory snapShot7 = new SnapshotHistory(bigDec7,theDate7);
+	
+	
+	List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+	info.add(snapShot1);
+	info.add(snapShot2);
+	info.add(snapShot3);
+	info.add(snapShot4);
+	info.add(snapShot5);
+	info.add(snapShot6);
+	info.add(snapShot7);
+	int requiredAmtForOne = 500;
+	int daysForOne = 90; 
+			
+	when(mockSession.getSingleResult(Metric.class, "name",pointsName, "enabled", true)).thenReturn(pointsMetric);
+	assertTrue(trophiesHelper.criteriaMet(info,requiredAmtForOne ,daysForOne, pointsName, mockSession));
+	when(mockSession.getSingleResult(Metric.class, "name",complexityName, "enabled", true)).thenReturn(pointsMetric);
+	assertTrue(trophiesHelper.criteriaMet(info,requiredAmtForOne ,daysForOne, complexityName, mockSession));
+	
+	}
+	
+	/**
+	 * Testing that criteriaMet returns false for direction 1 and 0 when the criteria has not been met and when
+	 * the next measure value is equal to the required amount
+	 */
+	@Test
+	public void testAgain(){
+		BigDecimal bigDec1= new BigDecimal (1000);
+		BigDecimal bigDec2= new BigDecimal (500);
+		BigDecimal bigDec3= new BigDecimal (300);
+				
+		Date theDate1 = new Date(1370464358000l); //6/5/2013				
+		Date theDate2 = new Date(1376857958000l);//02/18/2013 
+		Date theDate3 = new Date(1327008758000l);//12/19/2011 
+		
+		SnapshotHistory snapShot1 = new SnapshotHistory(bigDec1,theDate1);
+		SnapshotHistory snapShot2 = new SnapshotHistory(bigDec2,theDate2);
+		SnapshotHistory snapShot3 = new SnapshotHistory(bigDec3,theDate3);
+		
+		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		info.add(snapShot1);
+		info.add(snapShot2);
+		info.add(snapShot3); 
+				
+		int requiredAmtForOne = 500; 
+		int daysForOne = 600; 
+				
+		when(mockSession.getSingleResult(Metric.class, "name",pointsName, "enabled", true)).thenReturn(pointsMetric);
+		assertFalse(trophiesHelper.criteriaMet(info,requiredAmtForOne ,daysForOne, pointsName, mockSession));
+		when(mockSession.getSingleResult(Metric.class, "name",complexityName, "enabled", true)).thenReturn(pointsMetric);
+		assertFalse(trophiesHelper.criteriaMet(info,requiredAmtForOne ,daysForOne, complexityName, mockSession));	 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Testing that if the trophy property exists for a given project,
