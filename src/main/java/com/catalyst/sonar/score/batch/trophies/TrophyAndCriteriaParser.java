@@ -16,7 +16,7 @@ import org.sonar.api.database.configuration.Property;
 public class TrophyAndCriteriaParser {
 	private Property property;
 	private Settings settings;
-	private static final String GLOBALPROPERTYKEY = "sonar.score.Trophy";
+	public static final String GLOBALPROPERTYKEY = "sonar.score.Trophy";
 	// Regular Expressions
 	private static String regExpOne = "[\\;%}]";
 	private static final String REGEX_LETTERS = "^[a-zA-Z\\s]+$";
@@ -34,19 +34,12 @@ public class TrophyAndCriteriaParser {
 	 * @return value
 	 */
 	public String getGlobalProperty(Settings settings) { 
-		String key = "";
-		String value = "";
-		Map<String, String> propertyMap = new HashMap<String, String>();
-		propertyMap = settings.getProperties();
-		for (Map.Entry<String, String> entry : propertyMap.entrySet()) {
-			key = entry.getKey();
-			value = entry.getValue();
-			if (key.equalsIgnoreCase(GLOBALPROPERTYKEY)) {
-				return value;
-			}
+		Map<String, String> propertyMap = settings.getProperties();
+		String value = propertyMap.get(GLOBALPROPERTYKEY);
+		if (value == null) {
+			value = "";
 		}
 		return value;
-
 	}
 
 	/**
@@ -58,22 +51,22 @@ public class TrophyAndCriteriaParser {
 	 */
 	public static TrophySet parseTrophies(String trophyPropertyStringList) {
 		TrophySet trophies = new TrophySet();
-		// Split the global property string at the ',' to separate between
-		// each property
-		String[] value = trophyPropertyStringList.split(REGEX_COMMA);
-		if(trophyPropertyStringList != null  && trophyPropertyStringList.matches("\\w+\\{.+;.+;.+\\}")) {
+		if(trophyPropertyStringList != null) {
+			// Split the global property string at the ',' to separate between
+			// each property
+			String[] value = trophyPropertyStringList.split(REGEX_COMMA);
 			for (String tPropertyString : value) {
-				// go through each property and extract the trophy name to
-				// trophy
-				Trophy trophy = extractTrophyName(tPropertyString);
-				int indexNum = tPropertyString.indexOf(REGEX_CURLYBRACES);
-				String criteriaString = tPropertyString.substring(++indexNum);
-				// parse the rest of the string and get the criteria
-				Criteria criteria = parseCriteria(criteriaString);
-				// add the criteria to the trophy
-				trophy.addCriteria(criteria);
-				// add the trophies to the trophy set
-				trophies.add(trophy);
+				if(tPropertyString.matches("\\w+\\{.+;.+;.+\\}")) {
+					// go through each property and extract the trophy name to
+					// trophy
+					Trophy trophy = extractTrophyName(tPropertyString);
+					int indexNum = tPropertyString.indexOf(REGEX_CURLYBRACES);
+					String criteriaString = tPropertyString.substring(++indexNum);
+					// parse the rest of the string and get the criteria
+					Criteria criteria = parseCriteria(criteriaString);
+					trophy.addCriteria(criteria);
+					trophies.add(trophy);
+				}
 			}
 		}
 
@@ -104,46 +97,36 @@ public class TrophyAndCriteriaParser {
 		double requiredAmt = 0;
 		int days = 0;
 		String value = propertyString.trim();
-		try {
-			// split the criteria string into an array of strings
-			String[] valueArray = value.split(regExpOne);
-			
-			for (String string : valueArray) {
-				if (hasOnlyLetters(string)) {
-					// metric value
-					metric = string;
-				} else if (hasOnlyNumbers(string)) {
-					// required Amt
-					requiredAmt = parseInt(string);
-				} else if (hasAlphaNumericCharacters(string)) {
-					// extract the number from the string
-					String numOne = string.substring(0, string.length() - 1);
-					String numTwo = string.substring(string.length() - 1);
-					try {
-						// checks if the string ends with 'd' for number of days
-						if (numTwo.equalsIgnoreCase("d")) {
-							int number = parseInt(numOne);
-							days = number;
-						}
-						// checks if the string ends with 'w' for number of
-						// weeks
-						else if (numTwo.equalsIgnoreCase("w")) {
-							int secondNum = parseInt(numOne);
-							// converts the weeks to days
-							secondNum = secondNum * NUMBER_OF_DAYS;
-							days = secondNum;
-						}
-					} catch (NumberFormatException nfe) {
-						nfe.getMessage();
-					}
+		// split the criteria string into an array of strings
+		String[] valueArray = value.split(regExpOne);
+		
+		for (String string : valueArray) {
+			if (hasOnlyLetters(string)) {
+				// metric value
+				metric = string;
+			} else if (hasOnlyNumbers(string)) {
+				// required Amt
+				requiredAmt = parseDouble(string);
+			} else if (hasAlphaNumericCharacters(string)) {
+				// extract the number from the string
+				String numOne = string.substring(0, string.length() - 1);
+				String numTwo = string.substring(string.length() - 1);
+				// checks if the string ends with 'd' for number of days
+				if (numTwo.equalsIgnoreCase("d")) {
+					int number = parseInt(numOne);
+					days = number;
+				}
+				// checks if the string ends with 'w' for number of
+				// weeks
+				else if (numTwo.equalsIgnoreCase("w")) {
+					int secondNum = parseInt(numOne);
+					// converts the weeks to days
+					secondNum = secondNum * NUMBER_OF_DAYS;
+					days = secondNum;
 				}
 			}
-		} catch (IllegalArgumentException iae) {
-			iae.getMessage();
 		}
-
 		return new Criteria(metric, requiredAmt, days);
-
 	}
 
 	/**
@@ -179,12 +162,25 @@ public class TrophyAndCriteriaParser {
 	/**
 	 * parses a string to an Integer
 	 * 
-	 * @param first
+	 * @param parseThis
 	 * @return
 	 */
-	private static Integer parseInt(String first) {
-		return Integer.parseInt(first);
+	private static Double parseDouble(String parseThis) {
+		String parsed = parseThis.replaceAll("[^\\d\\.]", "");
+		return Double.parseDouble(parsed);
 	}
+
+	/**
+	 * parses a string to an Integer
+	 * 
+	 * @param parseThis
+	 * @return
+	 */
+	private static Integer parseInt(String parseThis) {
+		String parsed = parseThis.replaceAll("[\\D]", "");
+		return Integer.parseInt(parsed);
+	}
+
 
 	/**
 	 * getter for property

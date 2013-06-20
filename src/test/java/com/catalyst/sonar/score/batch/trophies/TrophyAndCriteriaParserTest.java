@@ -2,8 +2,10 @@
  * 
  */
 package com.catalyst.sonar.score.batch.trophies;
-import static org.mockito.Mockito.mock;
+import static com.catalyst.sonar.score.batch.trophies.TrophyAndCriteriaParser.*; 
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,15 +29,19 @@ import com.catalyst.sonar.score.batch.trophies.TrophyAndCriteriaParser;
  *
  */
 public class TrophyAndCriteriaParserTest {
+	
+	
 	// Property strings
 	private String GlobalPropertyKey = "sonar.score.Trophy";
 	private String testPropertyValue = "GreatCode{Coverage;90%;5d},GreatCode{Points;1000;2w},Violations{violations;10;3w}";
 	private String testString = "GreatCode{Coverage;90%;2d}";
 	private String testCriteriaStringWithDays = "Coverage;90%;2d}";
 	private String testCriteriaStringWithWeeksInput = "Points;1000;2W}";
+	private String nullString = null;
+	private String notMatch = "asf";
 	TrophyAndCriteriaParser trophyAndCriteriaParser;
 	private Property mockProperty;
-	private Settings mockSettings;
+	private Settings testSettings;
 	//trophy
 	Trophy testTrophy;
 	private String testTrophyName = "GreatCode";
@@ -57,14 +63,24 @@ public class TrophyAndCriteriaParserTest {
 	public void setUp() throws Exception {
 		trophyAndCriteriaParser = new TrophyAndCriteriaParser();
 		mockProperty = mock(Property.class);
-		mockSettings = mock(Settings.class);
-		trophyAndCriteriaParser.setSettings(mockSettings);
+		testSettings = new Settings();
+		trophyAndCriteriaParser.setSettings(testSettings);
 		//trophyAndCriteriaParser.setProperty(mockProperty);
 		testTrophy = new Trophy(testTrophyName);
 		testCriteria = new Criteria(testMetric, testReqdAmt, testDays);
 		testCriteriaWithWeeksInput = new Criteria(testMetricWithWeeksInput, testReqdAmtWithWeeksInput, testDaysWithWeeksInput);
 		//trophies
 		testTrophy.addCriteria(testCriteria);
+	}
+	
+	@Test
+	public void testGetGlobalProperty() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("hi", "hello");
+		assertEquals("", trophyAndCriteriaParser.getGlobalProperty(testSettings));
+		map.put(GLOBALPROPERTYKEY, "hi");
+		testSettings.setProperties(map);
+		assertEquals("hi", trophyAndCriteriaParser.getGlobalProperty(testSettings));
 	}
 	
 	@Test
@@ -101,12 +117,15 @@ public class TrophyAndCriteriaParserTest {
 		assertEquals(testTrophy, TrophyAndCriteriaParser.parseTrophies(testString).get(testTrophy));
 	}
 	
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
+	@Test
+	public void testParseTrophiesNullStringList(){
+		assertEquals(0, TrophyAndCriteriaParser.parseTrophies(nullString).size());
 	}
-
 	
+	@Test
+	public void testParseTrophiesStringListWithBadString(){
+		TrophySet set1 = TrophyAndCriteriaParser.parseTrophies(testPropertyValue);
+		TrophySet set2 = TrophyAndCriteriaParser.parseTrophies(testPropertyValue + "," + notMatch);
+		assertEquals(set1.size(), set2.size());
+	}
 }
