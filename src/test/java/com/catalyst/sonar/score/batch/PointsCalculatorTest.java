@@ -9,6 +9,9 @@ import static com.catalyst.sonar.score.batch.PointsCalculator.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.catalyst.sonar.score.util.CalculationComponent;
+import com.catalyst.sonar.score.util.CalculationComponent.CalculationComponentList;
+
 /**
  * @author JDunn
  *
@@ -22,13 +25,17 @@ public class PointsCalculatorTest {
 	private static final double docAPI = 80;
 	private static final double coverage = 80;
 	private static final double packageTangle = 0;
+	private CalculationComponent tangleComponent;
+	private CalculationComponentList penalties;
 
+	private PointsCalculator testCalc;
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-
+		penalties.add(tangleComponent);
+		testCalc = new PointsCalculator(penalties, null);
 	}
 
 	/**
@@ -60,7 +67,7 @@ public class PointsCalculatorTest {
 				- (packageTangle * MAGNIFY_PACKAGE_TANGLE)
 			)
 			);
-		Double actual = new Double(calculateTotalPoints(packages,
+		Double actual = new Double(testCalc.calculateTotalPoints(packages,
 				classes, ncloc, rulesCompliance,
 				docAPI, coverage, packageTangle));
 		assertEquals(expected, actual);
@@ -74,8 +81,11 @@ public class PointsCalculatorTest {
 	public void testCalculateTotalPointsNegativeTurnsToZero() {
 		//should produce negative score
 		double packageTangleBad = 100;
+		tangleComponent = new CalculationComponent(packageTangleBad, MAGNIFY_PACKAGE_TANGLE);
 		Double expected = new Double(0);
-		Double actual = new Double(calculateTotalPoints(packages,
+		penalties.clear();
+		penalties.add(tangleComponent);
+		Double actual = new Double(testCalc.calculateTotalPoints(packages,
 				classes, ncloc, rulesCompliance,
 				docAPI, coverage, packageTangleBad));
 		assertEquals(expected, actual);

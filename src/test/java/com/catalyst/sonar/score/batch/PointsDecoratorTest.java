@@ -3,6 +3,7 @@
  */
 package com.catalyst.sonar.score.batch;
 
+import static com.catalyst.sonar.score.batch.PointsCalculator.MAGNIFY_PACKAGE_TANGLE;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -18,6 +19,8 @@ import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.resources.Resource;
 
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
+import com.catalyst.sonar.score.util.CalculationComponent;
+import com.catalyst.sonar.score.util.CalculationComponent.CalculationComponentList;
 import com.google.common.collect.ImmutableList;
 
 /**
@@ -142,7 +145,10 @@ public class PointsDecoratorTest {
 		when(api.getValue()).thenReturn(80.0);
 		when(coverage.getValue()).thenReturn(88.0);
 		when(tangle.getValue()).thenReturn(0.0);
-		double points = PointsCalculator.calculateTotalPoints(5, 20, 1000, 95, 80, 88, 0);
+		CalculationComponentList componentList = new CalculationComponentList();
+		CalculationComponent tangleComponent = new CalculationComponent(tangle.getValue(), MAGNIFY_PACKAGE_TANGLE);
+		componentList.add(tangleComponent);
+		double points = new PointsCalculator(componentList , null).calculateTotalPoints(5, 20, 1000, 95, 80, 88, 0);
 		when(mockContext.saveMeasure(ScoreMetrics.POINTS, points)).thenReturn(
 				mockContext);
 		scoreDecorator.decorate(resource, mockContext);
