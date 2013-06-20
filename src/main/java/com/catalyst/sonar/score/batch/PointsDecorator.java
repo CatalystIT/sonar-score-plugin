@@ -1,5 +1,7 @@
 package com.catalyst.sonar.score.batch;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
+import com.catalyst.sonar.score.util.CalculationComponent;
+import com.catalyst.sonar.score.util.CalculationComponent.CalculationComponentList;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
@@ -20,6 +22,8 @@ import org.sonar.api.batch.DependsUpon;
  *
  */
 public class PointsDecorator implements Decorator {
+	
+	public static final double MAGNIFY_PACKAGE_TANGLE = 100;
 	
 	/**
 	 * @DependsUpon: The points metric depends upon the non-commented lines of code, the rules compliance 
@@ -112,7 +116,10 @@ public class PointsDecorator implements Decorator {
 				context.getMeasure(CoreMetrics.COVERAGE), 0.0);
 		double packageTangle = MeasureUtils.getValue(
 				context.getMeasure(CoreMetrics.PACKAGE_TANGLE_INDEX), 0.0);
-		return PointsCalculator.calculateTotalPoints(packages, classes, ncloc, rulesCompliance, docAPI, coverage, packageTangle);
+		CalculationComponentList penalties = new CalculationComponentList();
+		CalculationComponent packageTanglePenalty = new CalculationComponent(packageTangle, MAGNIFY_PACKAGE_TANGLE);
+		penalties.add(packageTanglePenalty);
+		return new PointsCalculator(penalties, null).calculateTotalPoints(packages, classes, ncloc, rulesCompliance, docAPI, coverage, packageTangle);
 				//PointsCalculator.calculateBasePoints(lines, classes);
 				//.calculateTotalPoints(classes, lines, rulesComplexity, docAPI, coverage, packageTangle);
 	}
