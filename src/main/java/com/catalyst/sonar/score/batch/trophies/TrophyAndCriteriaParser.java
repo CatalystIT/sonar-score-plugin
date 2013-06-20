@@ -1,6 +1,5 @@
 package com.catalyst.sonar.score.batch.trophies;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.sonar.api.config.Settings;
