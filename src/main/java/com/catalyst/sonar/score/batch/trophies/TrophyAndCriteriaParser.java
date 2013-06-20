@@ -42,7 +42,6 @@ public class TrophyAndCriteriaParser {
 			key = entry.getKey();
 			value = entry.getValue();
 			if (key.equalsIgnoreCase(GLOBALPROPERTYKEY)) {
-				System.out.println("This is the global property value: " + value);
 				return value;
 			}
 		}

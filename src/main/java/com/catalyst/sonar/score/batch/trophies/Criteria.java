@@ -116,10 +116,23 @@ public class Criteria {
 		if(obj == null){
 			return false;
 		}
-		if(!getClass().equals(obj.getClass())){
+		if(!(obj instanceof Criteria)){
 			return false;
 		}
 		Criteria criteria = (Criteria) obj;
+		if(!fieldsMatch(criteria)){
+				return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Called only by equals(Object o) to help reduce
+	 * the cyclomatic complexity.
+	 * @param criteria
+	 * @return
+	 */
+	private boolean fieldsMatch(Criteria criteria) {
 		if(metric == null  && criteria.metric != null){			
 			return false;
 		}

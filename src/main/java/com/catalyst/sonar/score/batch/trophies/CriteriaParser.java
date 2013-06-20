@@ -3,6 +3,7 @@
  */
 package com.catalyst.sonar.score.batch.trophies;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,13 +16,13 @@ import org.sonar.api.BatchExtension;
 public class CriteriaParser implements BatchExtension {
 	
 	public static final String SPLITTER = ";";
-	public static final Pattern DECIMAL = Pattern.compile("([0-9]\\d*(\\.\\d+)?|\\.\\d+?)");
-	public static final Pattern METRIC = Pattern.compile("\\w+.");
+	public static final Pattern DECIMAL = Pattern.compile("\\d*(\\.\\d+)?");
+	public static final Pattern METRIC = Pattern.compile("[\\w+\\s*]+");
 	public static final String DAYS_REGEX = "\\d+";
 	public static final String PERIOD_REGEX = "[dDwW]";
 	public static final Pattern DAYS = Pattern.compile(DAYS_REGEX);
 	public static final Pattern PERIOD = Pattern.compile(PERIOD_REGEX);
-	public static final Pattern TIME = Pattern.compile(DAYS_REGEX + PERIOD_REGEX);
+	public static final Pattern TIME = Pattern.compile("2d}");//DAYS_REGEX + PERIOD_REGEX + ".*");
 	protected static final int METRIC_INDEX = 0;
 	protected static final int AMOUNT_INDEX = 1;
 	protected static final int TIME_INDEX = 2;
@@ -49,15 +50,15 @@ public class CriteriaParser implements BatchExtension {
 	 * @param metricBracketsString
 	 */
 	public CriteriaParser(String criteriaString) {
-		String[] criteriaStrs = criteriaString.split(SPLITTER);
-		if(criteriaStrs.length != COMPONENTS || !hasValidFormat()) {
-			throw new IllegalArgumentException("The format of " + criteriaString + " is invalid");
+		this.criteriaStrings = criteriaString.split(SPLITTER);
+		this.metricMatcher = DECIMAL.matcher(criteriaStrings[METRIC_INDEX]);
+		this.decimalMatcher = DECIMAL.matcher(criteriaStrings[AMOUNT_INDEX]);
+		this.daysMatcher = DECIMAL.matcher(criteriaStrings[TIME_INDEX]);
+		this.periodMatcher = DECIMAL.matcher(criteriaStrings[TIME_INDEX]);
+		//System.out.println(!hasValidAmount());
+		if(criteriaStrings.length != COMPONENTS || !hasValidFormat()) {
+			throw new IllegalArgumentException("The format of " + Arrays.toString(criteriaStrings) + " is invalid");
 		}
-		this.metricMatcher = DECIMAL.matcher(criteriaStrs[METRIC_INDEX]);
-		this.decimalMatcher = DECIMAL.matcher(criteriaStrs[AMOUNT_INDEX]);
-		this.daysMatcher = DECIMAL.matcher(criteriaStrs[TIME_INDEX]);
-		this.periodMatcher = DECIMAL.matcher(criteriaStrs[TIME_INDEX]);
-		this.criteriaStrings = criteriaStrs;
 	}
 	
 	/**
@@ -89,19 +90,22 @@ public class CriteriaParser implements BatchExtension {
 	}
 	
 	private boolean hasValidFormat() {
-		return hasValidMetric() && hasValidAmount() && hasValidDays();
+		return hasValidMetric() & hasValidAmount() & hasValidDays();
 	}
 	
 	private boolean hasValidMetric() {
-		return Pattern.matches(criteriaStrings[METRIC_INDEX], METRIC.pattern());
+		System.out.println("\"" + criteriaStrings[METRIC_INDEX] + "\"\t\"" + METRIC.pattern() + "\"\t" + (getMetric() != null));//Pattern.matches(criteriaStrings[METRIC_INDEX], METRIC.pattern()));
+		return (getMetric() != null);//Pattern.matches(criteriaStrings[METRIC_INDEX], METRIC.pattern());
 	}
 	
 	private boolean hasValidAmount() {
+		System.out.println("\"" + criteriaStrings[AMOUNT_INDEX] + "\"\t\"" + DECIMAL.pattern() + "\"\t" + Pattern.matches(criteriaStrings[AMOUNT_INDEX], DECIMAL.pattern()));
 		return Pattern.matches(criteriaStrings[AMOUNT_INDEX], DECIMAL.pattern());
 	}
 	
 	private boolean hasValidDays() {
-		return Pattern.matches(criteriaStrings[TIME_INDEX], DAYS.pattern());
+		System.out.println("\"" + criteriaStrings[TIME_INDEX] + "\"\t\"" + TIME.pattern() + "\"\t" + Pattern.matches(criteriaStrings[TIME_INDEX], TIME.pattern()));
+		return Pattern.matches(criteriaStrings[TIME_INDEX], TIME.pattern());
 	}
 	
 	private int daysInPeriod(String period) {
