@@ -34,6 +34,7 @@ public class PointsCalculatorTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		penalties = new CalculationComponentList();
 		penalties.add(tangleComponent);
 		testCalc = new PointsCalculator(penalties, null);
 	}
