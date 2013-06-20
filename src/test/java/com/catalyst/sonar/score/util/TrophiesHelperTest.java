@@ -31,6 +31,7 @@ public class TrophiesHelperTest {
 	private List<SnapshotHistory> entries2 = new ArrayList<SnapshotHistory>();
 	private List<SnapshotHistory> entries3 = new ArrayList<SnapshotHistory>();
 	private List<SnapshotHistory> entries4 = new ArrayList<SnapshotHistory>();
+	private List<SnapshotHistory> smallEntries = new ArrayList<SnapshotHistory>();
 	private double requiredAmount;
 	private double requiredAmount2;
 	private double requiredAmount3;
@@ -106,7 +107,25 @@ public class TrophiesHelperTest {
 	private String classesName;
 	private String classesKey;
 	private Metric classessMetric;
+	private String violationsKey;
+	private String violationsName;
+	private Metric.ValueType violationsType;
 	
+	private BigDecimal bd20;
+	private BigDecimal bd21;
+	private BigDecimal bd22;
+	private BigDecimal bd23;
+	private Date date20;
+	private Date date21;
+	private Date date22;
+	private Date date23;	
+	private SnapshotHistory sh20;
+	private SnapshotHistory sh21;
+	private SnapshotHistory sh22;
+	private SnapshotHistory sh23;	
+	
+	private Metric violationsMetric;
+		
 	private Metric.ValueType classesType;
 	private String trophyProperty = "sonar.score.projectTrophy";
 	
@@ -204,6 +223,15 @@ public class TrophiesHelperTest {
 		classessMetric.setDirection(3);
 		classessMetric.setId(10);
 		classessMetric.setDomain("Size");
+		
+		violationsKey = "Violations";
+		violationsName = "Violations";
+		violationsType = Metric.ValueType.INT;
+		
+		violationsMetric = new Metric.Builder(violationsKey, violationsName, violationsType).create();
+		violationsMetric.setDirection(-1);
+		violationsMetric.setId(10);
+		violationsMetric.setDomain("Rules");
 			
 		bd10= new BigDecimal (500);
 		bd11= new BigDecimal (300);
@@ -238,7 +266,24 @@ public class TrophiesHelperTest {
 		entries4.add(sh15);
 		entries4.add(sh16);
 		entries4.add(sh17);
+		/////////////////////smaller values/////////////////////////
+		bd20= new BigDecimal (25);
+		bd21= new BigDecimal (20);
+		bd22= new BigDecimal (20);
+		bd23= new BigDecimal (80);
+		date20 = new Date(1370464358000l); //6/5/2013
+		date21 = new Date(1367785958000l);//5/5/2013
+		date22 = new Date(1362519158000l); //3/5/2013
+		date23 = new Date (1360099958000l); //2/15/2013
 		
+		sh20 = new SnapshotHistory(bd20,date20);
+		sh21 = new SnapshotHistory(bd21,date21);
+		sh22 = new SnapshotHistory(bd22,date22);
+		sh23 = new SnapshotHistory(bd23,date23);
+		smallEntries.add(sh20);
+		smallEntries.add(sh21);
+		smallEntries.add(sh22);
+		smallEntries.add(sh23);
 		
 	
 	}
@@ -291,17 +336,44 @@ public class TrophiesHelperTest {
 	
 	}
 
-//	/**
-//	 * Testing that when a metric with a direction of '-1' (DIRECTION.WORSE) is found and the criteria
-//	 * is met, criteriaMet returns true
-//	 */
-//	@Test
-//	public void testCriteriaMetWhenMetricFoundDirectionNegativeOne(){
-//		when(mockSession.getSingleResult(Metric.class, "name",linesName, "enabled", true)).thenReturn(linesMetric);	
-//		assertFalse(trophiesHelper.criteriaMet(entries2, requiredAmount3, days3, linesName, mockSession));
-//	}
-
-//	/**
+	/**
+    * Testing that when a metric with a direction of '-1' (DIRECTION.WORSE) is found and the criteria
+	 * is met, criteriaMet returns true
+	 */
+	@Test
+	public void testCriteriaMetWhenMetricFoundDirectionNegativeOne(){
+		when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);	
+		assertTrue(trophiesHelper.criteriaMet(entries2, requiredAmount3, days3, violationsName, mockSession));
+ }
+	
+	/**
+	 * Testing that when a metric with a direction of '-1' (DIRECTION.WORSE) is found and the criteria
+	 * is not met, criteriaMet returns false 
+	 * 
+	 */
+	@Test
+	public void testCriteriaMetFalseWhenMetricFoundDirectionNegativeOne(){
+		when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);	
+		assertFalse(trophiesHelper.criteriaMet(smallEntries, requiredAmount, 1000, violationsName, mockSession));	
+	}
+	
+	@Test
+	public void testNegative(){
+		BigDecimal bd20= new BigDecimal (25);
+		BigDecimal bd21= new BigDecimal (100);
+		Date date20 = new Date(1370464358000l); //6/5/2013
+		Date date21 = new Date(1367785958000l);//5/5/2013
+		
+		SnapshotHistory sh20 = new SnapshotHistory(bd20,date20);
+		SnapshotHistory sh21 = new SnapshotHistory(bd21,date21);
+		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		info.add(sh20);
+		info.add(sh21);
+		when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);	
+		//assertFalse(trophiesHelper.criteriaMet(info, requiredAmount, 1, violationsName, mockSession));	
+	}
+	
+	/**
 //	 * Tests that when a metric of direction '1' is found and the criteria is not met,
 //	 * criteriaMet returns false
 //	 */

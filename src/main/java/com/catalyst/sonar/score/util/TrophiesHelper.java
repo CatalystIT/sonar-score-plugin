@@ -167,7 +167,7 @@ public class TrophiesHelper {
 			/*
 			 * if the measure value is less than the required amount...a good measure has been found
 			 */
-			if ((entries.get(i).getMeasureValue()).compareTo(requiredAmt) == LESS_THAN) {
+			if ((entries.get(i).getMeasureValue()).compareTo(requiredAmt) == LESS_THAN) { 
 				
 				goodMeasureIndex = i;
 				// once a good value is found, get the next measure value

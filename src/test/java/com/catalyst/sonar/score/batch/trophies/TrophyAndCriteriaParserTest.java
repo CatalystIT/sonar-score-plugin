@@ -75,7 +75,7 @@ public class TrophyAndCriteriaParserTest {
 
 	@Test
 	public void testParseCriteriaOnMetric(){
-	//	assertEquals(testCriteria.getMetric(), TrophyAndCriteriaParser.parseCriteria(testCriteriaStringWithDays).getMetric());
+		assertEquals(testCriteria.getMetric(), TrophyAndCriteriaParser.parseCriteria(testCriteriaStringWithDays).getMetric());
 		
 	}
 	
