@@ -1,4 +1,4 @@
-package com.catalyst.sonar.score.metrics;
+package com.catalyst.sonar.score.util;
 
 import static org.junit.Assert.*;
 
