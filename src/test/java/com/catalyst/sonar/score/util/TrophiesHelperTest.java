@@ -294,7 +294,7 @@ public class TrophiesHelperTest {
 	 * for a given project the method returns false
 	 */
 	@Test
-	public void testNewTrophyForThisProject() {		
+	public void testNewTrophyForThisProject() {		 
 		allProperties.put("sonar.core.version", "3.4.1");
 		allProperties.put("sonar.score.projectTrophy", "Trophy1");
 		settings.addProperties(allProperties);
@@ -337,7 +337,7 @@ public class TrophiesHelperTest {
 	}
 
 	/**
-    * Testing that when a metric with a direction of '-1' (DIRECTION.WORSE) is found and the criteria
+     *Testing that when a metric with a direction of '-1' (DIRECTION.WORSE) is found and the criteria
 	 * is met, criteriaMet returns true
 	 */
 	@Test
@@ -357,6 +357,10 @@ public class TrophiesHelperTest {
 		assertFalse(trophiesHelper.criteriaMet(smallEntries, requiredAmount, 1000, violationsName, mockSession));	
 	}
 	
+	/**
+	 * Testing that when the criteriaMet returns false when the next measure value for a metric with a direction of -1
+	 * does not meet the criteria 
+	 */
 	@Test
 	public void testNegative(){
 		BigDecimal bd20= new BigDecimal (25);
@@ -370,19 +374,66 @@ public class TrophiesHelperTest {
 		info.add(sh20);
 		info.add(sh21);
 		when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);	
-		//assertFalse(trophiesHelper.criteriaMet(info, requiredAmount, 1, violationsName, mockSession));	
+		assertFalse(trophiesHelper.criteriaMet(info, requiredAmount, 1, violationsName, mockSession));	
+	}
+	/**
+	 * Testing that criteriaMet returns true when the last snapshot criteria is met and it is the next
+	 * measure value
+	 */
+	
+	
+	@Test
+	public void testCriteriaMetWhenNextMeasureValueIsTheLastIndex(){
+	BigDecimal bd20= new BigDecimal (25); 
+	BigDecimal bd21= new BigDecimal (24);
+	
+	Date date20 = new Date(1370464358000l); //6/5/2013
+	Date date21 = new Date(1367785958000l);//5/5/2013
+		
+	SnapshotHistory sh20 = new SnapshotHistory(bd20,date20);
+	SnapshotHistory sh21 = new SnapshotHistory(bd21,date21);
+	SnapshotHistory sh22 = new SnapshotHistory(bd22,date22);
+	List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+	info.add(sh20);
+	info.add(sh21);
+	
+	int day = 1;
+	when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);	
+	assertTrue(trophiesHelper.criteriaMet(info, requiredAmount, day, violationsName, mockSession));
 	}
 	
 	/**
-//	 * Tests that when a metric of direction '1' is found and the criteria is not met,
-//	 * criteriaMet returns false
-//	 */
-//	@Test 
-//	public void testCriteriaMetWhenMetricFoundDirectionNegativeOneRequirementNotMet(){
-//		when(mockSession.getSingleResult(Metric.class, "name",linesName, "enabled", true)).thenReturn(linesMetric);	
-//		assertFalse(trophiesHelper.criteriaMet(entries2, requiredAmount, days3, linesName, mockSession));
-//	}
-
+	 * Testing that criteriaMet returns true when criteria is met between measure values that do not
+	 * meet the criteria and the last measure value equals the required amount
+	 */
+	@Test
+	public void testCriteriaMetWhenGoodMeasureValuesInMiddleAndLastMeasureValueEqualsRequiredAmount(){
+		BigDecimal bd20= new BigDecimal (50); 
+		BigDecimal bd21= new BigDecimal (25);
+		BigDecimal bd22= new BigDecimal (25); 
+		BigDecimal bd23= new BigDecimal (50);
+		Date date20 = new Date(1370464358000l); //6/5/2013
+		Date date21 = new Date(1367785958000l);//5/5/2013
+		Date date22 = new Date(1360099958000l);//2/5/2013
+		Date date23 = new Date(1360099958000l);//2/5/2013
+		SnapshotHistory sh20 = new SnapshotHistory(bd20,date20);
+		SnapshotHistory sh21 = new SnapshotHistory(bd21,date21);
+		SnapshotHistory sh22 = new SnapshotHistory(bd22,date22);
+		SnapshotHistory sh23 = new SnapshotHistory(bd23,date23);
+		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		info.add(sh20);
+		info.add(sh21);
+		info.add(sh22);
+		info.add(sh23);
+		int day = 30;
+		when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);	
+		assertTrue(trophiesHelper.criteriaMet(info, requiredAmount, day, violationsName, mockSession));	
+	}
+	
+	
+	
+	
+	
 	
 	/**
 	 * Testing that when a metric of direction '0' is found and the criteria is not met,
