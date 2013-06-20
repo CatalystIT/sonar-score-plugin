@@ -270,10 +270,8 @@ public class TrophiesHelper {
 				
 				goodMeasureIndex = i;
 				nextMeasureIndex = goodMeasureIndex + 1;
-				System.out.println("this is the good measure index: " + goodMeasureIndex + " and the good value is:" + entries.get(goodMeasureIndex).getMeasureValue());
 				// once a good value is found, get the next measure value
 				nextMeasureValue = entries.get(nextMeasureIndex).getMeasureValue();
-				System.out.println("this is the next measure value: " + nextMeasureValue + " and the index is: "+ nextMeasureIndex);
 				/*
 				 * if the next measure value is greater than the required amount,
 				 * loop through the other measure values until a value that
@@ -281,9 +279,6 @@ public class TrophiesHelper {
 				 */
 				int lastIndex = entries.size() - 1;
 					if (nextMeasureValue.compareTo(requiredAmt) == GREATER_THAN || nextMeasureValue.compareTo(requiredAmt) ==  EQUAL_TO) {
-					
-					System.out.println("this is the last index value: " + lastIndex);
-					
 					goodNextValue = true;
 						while (goodNextValue) {   
 							/*
@@ -295,10 +290,10 @@ public class TrophiesHelper {
 								nextMeasureIndex += 1;
 								nextMeasureValue = entries.get(nextMeasureIndex).getMeasureValue();
 								i = nextMeasureIndex;
-								System.out.println("The next measure value is:  " + nextMeasureValue + " and the next measure index is:  " + nextMeasureIndex);
+								
 								/* if the next measure value is less than the
-							 * required amount, exit the while loop
-							*/ 
+								 * required amount, exit the while loop
+								 */ 
 								if (nextMeasureValue.compareTo(requiredAmt) == LESS_THAN || (lastIndex == nextMeasureIndex) ) {								
 									goodNextValue = false;
 								}
@@ -309,9 +304,7 @@ public class TrophiesHelper {
 								 */
 							
 							} else {   
-								System.out.println("this is the last measure index:  " + nextMeasureIndex);
 								nextMeasureValue = entries.get(i).getMeasureValue();
-								System.out.println("this is the next measure index inside of the if (lastIndex == 1) is:  " + nextMeasureIndex);
 								goodNextValue = false;
 
 							}
@@ -331,8 +324,7 @@ public class TrophiesHelper {
 							.getBuildDate();
 					
 					daysBetweenDates = dateUtility.getDaysBetweenDates(nextMeasureValueDate,goodMeasureDate);
-					System.out.println("this is the days between dates:  " + daysBetweenDates);
-					if (daysBetweenDates >= days) {
+						if (daysBetweenDates >= days) {
 						//the criteria has been met
 						criteriaForImprovementMet = true;
 					}
