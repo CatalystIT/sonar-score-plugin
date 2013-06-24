@@ -8,21 +8,21 @@ import org.sonar.api.web.UserRole;
 @NavigationSection({NavigationSection.RESOURCE_TAB, NavigationSection.CONFIGURATION})
 //@NavigationSection(NavigationSection.CONFIGURATION)
 //@UserRole(UserRole.ADMIN)
-public final class TrophyPage extends AbstractRubyTemplate implements RubyRailsPage{
+public final class TrophyPage implements Page{
 	
 	public String getId() {
 		    // URL of the controller
-		  // return "/trophies/index";
-		return "trophy_page";
+		   return "/trophies/index";
+		//return "trophy_page";
 	}
 	
 	public String getTitle() {
 		  return "Trophy Page";
 	}
 
-	@Override
-	protected String getTemplatePath(){
-		return "/score/trophy_page.html.erb";
-	}
+//	@Override
+//	protected String getTemplatePath(){
+//		return "/score/trophy_page.html.erb";
+//	}
 
 }
