@@ -199,7 +199,7 @@ public class AwardTrophies {
 					 * number of criteria lists there are for a given trophy, award the the trophy
 					 */
 					if (numberOfCriteriaListsMet == numberOfListsOfCriteriaPerTrophy){					
-						awardTrophy(trophyName, resource);
+						awardTrophy(trophyName, resource); 
 					}
 
 				}

@@ -135,11 +135,8 @@ public class TrophiesHelperTest {
 		settings = new Settings();
 		trophiesHelper = new TrophiesHelper(settings);
 		allProperties = new HashMap<String, String>();
-		mostProperties = new HashMap<String,String>();		
-		//allProperties.put("sonar.core.version", "3.4.1");
-		//allProperties.put("sonar.score.projectTrophy", "Trophy1");
-		//settings.addProperties(allProperties);
-		
+		mostProperties = new HashMap<String,String>();
+			
 		requiredAmount = 50.0;
 		requiredAmount2= 100.0;
 		requiredAmount3 = 1000.0;
@@ -222,12 +219,12 @@ public class TrophiesHelperTest {
 		classessMetric = new Metric.Builder(classesKey, classesName, classesType).create();
 		classessMetric.setDirection(3);
 		classessMetric.setId(10);
-		classessMetric.setDomain("Size");
+		classessMetric.setDomain("General");
 		
 		violationsKey = "Violations";
 		violationsName = "Violations";
 		violationsType = Metric.ValueType.INT;
-		
+				
 		violationsMetric = new Metric.Builder(violationsKey, violationsName, violationsType).create();
 		violationsMetric.setDirection(-1);
 		violationsMetric.setId(10);
@@ -303,6 +300,7 @@ public class TrophiesHelperTest {
 	
 	}
 
+	
 	/**
 	 * Testing that the criteria is not met when a metric cannot be found.
 	 * The criteriaMet method returns false.
@@ -356,13 +354,22 @@ public class TrophiesHelperTest {
 		when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);	
 		assertFalse(trophiesHelper.criteriaMet(smallEntries, requiredAmount, 1000, violationsName, mockSession));	
 	}
+	/**
+	 * Testing that when the domain of a metric is 'size' and the direction is negative one, the direction will
+	 * be set to 1
+	 */
+	@Test
+	public void testChangeDirection(){
+		when(mockSession.getSingleResult(Metric.class, "name",linesName, "enabled", true)).thenReturn(linesMetric);	
+		assertFalse(trophiesHelper.criteriaMet(entries2, requiredAmount3, days3, linesName, mockSession));	
+	}
 	
 	/**
 	 * Testing that when the criteriaMet returns false when the next measure value for a metric with a direction of -1
 	 * does not meet the criteria 
 	 */
 	@Test
-	public void testNegative(){
+	public void testCriteriaNotMetNextMeasureValue(){
 		BigDecimal bd20= new BigDecimal (25);
 		BigDecimal bd21= new BigDecimal (100);
 		Date date20 = new Date(1370464358000l); //6/5/2013
@@ -376,11 +383,9 @@ public class TrophiesHelperTest {
 		when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);	
 		assertFalse(trophiesHelper.criteriaMet(info, requiredAmount, 1, violationsName, mockSession));	
 	}
-	/**
-	 * Testing that criteriaMet returns true when the last snapshot criteria is met and it is the next
-	 * measure value
-	 */
 	
+	/** Testing that criteriaMet returns true when the last snapshot criteria is met and it is the next
+	 * measure value */	
 	
 	@Test
 	public void testCriteriaMetWhenNextMeasureValueIsTheLastIndex(){
@@ -429,12 +434,7 @@ public class TrophiesHelperTest {
 		when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);	
 		assertTrue(trophiesHelper.criteriaMet(info, requiredAmount, day, violationsName, mockSession));	
 	}
-	
-	
-	
-	
-	
-	
+		
 	/**
 	 * Testing that when a metric of direction '0' is found and the criteria is not met,
 	 * criteriaMet returns false.
@@ -447,13 +447,14 @@ public class TrophiesHelperTest {
 
 	/**
 	 * Testing that when a metric is found but the direction is not 0,1 or -1, criteriaMet returns false
+	 * 
 	 */
 	@Test
 	public void testCriteriaMetWhenMetricFoundButBadDirection(){
 		when(mockSession.getSingleResult(Metric.class, "name",classesName, "enabled", true)).thenReturn(classessMetric);
 		assertFalse(trophiesHelper.criteriaMet(entries2, requiredAmount3, days4, classesName, mockSession));	
 	}
-/////////////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * Testing that when there is no build history, a trophy cannot be earned even though
 	 * the criteria amount has been met (for direction '-1');
@@ -501,6 +502,10 @@ public class TrophiesHelperTest {
 	
 	}
 	
+	/**
+	 * Testing that a the criteriaMet method returns false when there is only one snapshot a measure
+	 * with direction 1
+	 */
 	@Test
 	public void testCriteriaNotMetWhenThereOnlyOneSnapshotForDirectionOne(){
 		BigDecimal bd20= new BigDecimal (1000);
@@ -516,8 +521,6 @@ public class TrophiesHelperTest {
 	
 	}
 	
-	
-	///////////////////////////////////////////////////////////////
 	/**
 	 * Testing that when criteriaMetForLargerMeasureValue is called and only the first measure value
 	 * is met, but the other requirement measures and dates are not met,
@@ -626,7 +629,7 @@ public class TrophiesHelperTest {
 	 * the next measure value is equal to the required amount
 	 */
 	@Test
-	public void testAgain(){
+	public void testCriteriaNotMetNextMeasureValueEqualToRequiredAmount(){
 		BigDecimal bigDec1= new BigDecimal (1000);
 		BigDecimal bigDec2= new BigDecimal (500);
 		BigDecimal bigDec3= new BigDecimal (300);
@@ -653,14 +656,6 @@ public class TrophiesHelperTest {
 		assertFalse(trophiesHelper.criteriaMet(info,requiredAmtForOne ,daysForOne, complexityName, mockSession));	 
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Testing that if the trophy property exists for a given project,
@@ -668,27 +663,42 @@ public class TrophiesHelperTest {
 	 */
 	@Test
 	public void testTrophyPropertyExists(){
-		allProperties.put("sonar.core.version", "3.4.1");
+		//allProperties.put("sonar.core.version", "3.4.1");
 		allProperties.put("sonar.score.projectTrophy", "Trophy1");
 		settings.addProperties(allProperties);
 		assertTrue(trophiesHelper.trophyPropertyExists(trophyProperty));		
 	}
 	
+	/**
+	 * Testing that if the trophy property does not exist, the trophyPropertyExists method returns
+	 * false
+	 */
 	@Test
 	public void testTrophyPropertyDoesNotExist(){
-		mostProperties.put("sonar.core.version", "3.4.1");
-		mostProperties.put("sonar.score.sonar.profile.java", "Java Stuff");
+		//mostProperties.put("sonar.core.version", "property info");
+		mostProperties.put("sonar.score.sonar.profile.java", "property info");
 		settings.addProperties(mostProperties);
 		assertFalse(trophiesHelper.trophyPropertyExists(trophyProperty));
 	}
 
 	@Test
 	public void testTrophyPropertyDoesExistButValueFieldIsEmpty(){		
-		mostProperties.put("sonar.core.version", "3.4.1");
-		mostProperties.put("sonar.score.sonar.profile.java", "");
+		mostProperties.put("sonar.core.version", "info");
+		//mostProperties.put("sonar.score.projectTrophy",null);
 		settings.addProperties(mostProperties);
 		assertFalse(trophiesHelper.trophyPropertyExists(trophyProperty));
 	
 	}
+
+	@Test
+	public void testTrophyPropertyDoesNotExistAndValueFieldsEmpty(){
+		
+		mostProperties.put("sonar.core.version", null);
+		mostProperties.put("sonar.otherProperty",null);
+		settings.addProperties(mostProperties);
+		//assertFalse(trophiesHelper.trophyPropertyExists(trophyProperty));
+	
+	}
+
 
 }

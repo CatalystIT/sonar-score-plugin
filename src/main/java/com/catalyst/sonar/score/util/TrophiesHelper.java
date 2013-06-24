@@ -354,11 +354,11 @@ public class TrophiesHelper {
 		boolean trophyExists = false;
 		Map<String, String> allProperties = new HashMap<String, String>();
 		allProperties = settings.getProperties();
+		
 		for (Map.Entry<String, String> entry : allProperties.entrySet()) {
 			String key = entry.getKey();
-			String value = entry.getKey();
-			if (key.equals(propertyKey) && (!value.isEmpty())) {
-				trophyExists = true;
+				if (key.equals(propertyKey)) {
+					trophyExists = true;
 			}
 		}
 

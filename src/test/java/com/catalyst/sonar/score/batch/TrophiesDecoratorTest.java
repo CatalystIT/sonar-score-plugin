@@ -22,6 +22,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
+import com.catalyst.sonar.score.metrics.ScoreMetrics;
 
 public class TrophiesDecoratorTest {
 	
@@ -30,7 +31,7 @@ public class TrophiesDecoratorTest {
 	private Settings mockSetting;
 	private AwardTrophies awardTrophies;
 	private TrophiesDecorator trophiesDecorator;
-	private Resource <Project> resource;
+	private Resource<Project> resource;
 	private Resource<Project> utsResource;
 	private DecoratorContext mockContext;
 	private DecoratorContext mockContext2;
@@ -107,19 +108,16 @@ public class TrophiesDecoratorTest {
 //		Settings settings = new Settings();
 //		TrophiesDecorator trophiesDecorator = new TrophiesDecorator(mockSession, project1, settings);
 //		trophiesDecorator.decorate(resource1, context);
+//		
 //		Property property1 = new Property("sonar.score.trophyProperty", "trophy1");
 //		Property property2 = new Property("sonar.otherProperty", "information");
 //		List<Property>theProperties = new ArrayList<Property>();
 //		theProperties.add(property1);
-//		theProperties.add(property2);
-//		
+//		theProperties.add(property2);		
 //		
 //		verify(awardTrophies).awardTrophies(context, project1);
-		
-		
-	
-	
-	
+//	
+//	}
 
 
 }

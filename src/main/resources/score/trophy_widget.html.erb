@@ -4,6 +4,29 @@
 	
 	#array that holds all projects
 	projects = Project.find(:all, :conditions =>  {:scope => 'PRJ'})
+		
+	#retrieves all the properties for the sonar.score.trophiesEarned property
+	qualifyingProjects = Project.find(:all, :conditions =>  {:scope => 'PRJ', :qualifier => 'TRK'})
+		
+	trophyProperty = nil
+	projectObject = nil	
+	project = nil		
+	
+	#current project's id: 
+	projectId = @project.id
+	
+	#current project object
+	currentProject=Project.find(projectId)
+	
+	#finds the points id:
+	pointsMetricId = Metric.find(:all, :conditions => {:name => 'points'})[0].id
+	
+	#retrieves the projects last snapshot id
+	projectsLastSnapshotId = Snapshot.find(:all, :conditions => {:project_id => @project.id, :islast => 1})[0].id
+	
+	#<% Property.set("sonar.score.projectTrophy", "", projectId )%>
+	
+		
 	
 %>
 <!-- Loops through the properties of sonar.score.projectTrophy and checks if the projectId matches the resource id -->
@@ -13,10 +36,11 @@
 <% end %>
 <% end %>
 
+
 <% if projectTrophy != nil %>
 	<div class="dashbox">
 		<h1 style="font-family: Comic Sans MS; font-size: 1.5em; font-weight: bold">
-		Trophies Earned</h1>
+		Trophies Earned </h1>
 		<div id="trophy_value" style="visibility:hidden" >
 		<%= projectTrophy.value -%>		
 	</div>
@@ -54,9 +78,12 @@
 			}
 	</script>
 	</div>	
-<% end %>		
+<% end %>
+
+
 <% if projectTrophy == nil %>
 	<div class="dashbox">
 		<h1 style="font-family: Comic Sans MS; font-size: 1.0em; font-weight: bold"> There are no trophies yet! </h1>
-	</div>		
+	</div>
+			
 <% end %>		

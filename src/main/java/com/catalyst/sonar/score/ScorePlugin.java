@@ -22,6 +22,7 @@ import com.catalyst.sonar.score.ui.EnhancedListFilterWidget;
 import com.catalyst.sonar.score.ui.ImageUploadPage;
 import com.catalyst.sonar.score.ui.ProjectComparisonWidget;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
+import com.catalyst.sonar.score.ui.TrophyPage;
 import com.catalyst.sonar.score.ui.TrophyWidget;
 import com.catalyst.sonar.score.util.DateUtility;
 import com.catalyst.sonar.score.util.MeasuresHelper;
@@ -80,7 +81,7 @@ public class ScorePlugin extends SonarPlugin{
 		
 		Criteria.class, Trophy.class, TrophyAndCriteriaParser.class, TrophySet.class,
 		
-		AwardTrophies.class, MeasuresHelper.class, MetricsHelper.class, DateUtility.class, SnapshotHistory.class, TrophiesHelper.class
+		AwardTrophies.class, MeasuresHelper.class, MetricsHelper.class, DateUtility.class, SnapshotHistory.class, TrophiesHelper.class, TrophyPage.class
 		
 		
 		);
