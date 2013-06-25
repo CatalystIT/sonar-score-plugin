@@ -82,5 +82,40 @@ public class ApiTestConstants {
 		}
         return testMetric;
 	}
+	
+	public static Object setField(Object object, String fieldName, Object value) {
+		try {
+			java.lang.reflect.Field field = Award.class.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			field.set(object, value);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+        return object;
+	}
+	
+	public static Object getField(Object object, String fieldName) {
+		Object value = null;
+		try {
+			java.lang.reflect.Field field = Award.class.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			value = field.get(object);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+        return value;
+	}
 
 }
