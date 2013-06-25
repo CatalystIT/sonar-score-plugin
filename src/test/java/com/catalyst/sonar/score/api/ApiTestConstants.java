@@ -5,6 +5,8 @@ package com.catalyst.sonar.score.api;
 
 import static org.mockito.Mockito.mock;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.sonar.api.measures.Metric;
 
 /**
@@ -43,9 +45,42 @@ public class ApiTestConstants {
 	
 	public static final Metric MOCK_METRIC_1 = mock(Metric.class);
 	public static final Metric MOCK_METRIC_2 = mock(Metric.class);
+	public static final Metric METRIC_1 = buildTestMetric("key1", "metric1", Metric.ValueType.INT);
+	public static final Metric METRIC_2 = buildTestMetric("key2", "metric2", Metric.ValueType.BOOL);
+	public static final Integer HASH_1 = 12345;
+	public static final Integer HASH_2 = 67890;
+	public static final Metric NULL_METRIC = null;
 	public static final double AMOUNT_1 = 11.1;
 	public static final double AMOUNT_2 = 22.2;
 	public static final int DAYS_1 = 7;
 	public static final int DAYS_2 = 14;
+	
+	public static Metric buildTestMetric(String key, String name, Metric.ValueType type) {
+		Metric.Builder builder = new Metric.Builder(key, name, type);
+		return buildTestMetric(builder);
+	}
+	
+	
+	public static Metric buildTestMetric(Metric.Builder builder) {
+		Metric testMetric = null;
+		try {
+			java.lang.reflect.Constructor<Metric> constructor = Metric.class.getDeclaredConstructor(Metric.Builder.class);
+			constructor.setAccessible(true);
+			testMetric = constructor.newInstance(builder);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		}
+        return testMetric;
+	}
 
 }

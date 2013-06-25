@@ -4,27 +4,21 @@
 package com.catalyst.sonar.score.api;
 
 import static org.junit.Assert.*;
+import static com.catalyst.sonar.score.api.ApiTestConstants.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author James
- *
+ * Test Class for
+ * {@link com.catalyst.sonar.score.api.Group}.
+ * @author JDunn
  */
 public class GroupTest {
 	
 	private static final String GROUP_NAME = "The Group";
 	private static final String DIFFERENT_GROUP_NAME = "Another Group";
 	private static final String DESCRIPTION = "I'm a Group!";
-	private static final String USER1_NAME = "John";
-	private static final String USER2_NAME = "Mary";
-	private static final String USER3_NAME = "James";
-	private static final String USER4_NAME = "Sarah";
-	private static final ScoreUser user1 = new ScoreUser(USER1_NAME, "Jn@Smith.com", USER1_NAME);
-	private static final ScoreUser user2 = new ScoreUser(USER2_NAME, "Ma@Smith.com", USER2_NAME);
-	private static final ScoreUser user3 = new ScoreUser(USER3_NAME, "Ja@Smith.com", USER3_NAME);
-	private static final ScoreUser user4 = new ScoreUser(USER4_NAME, "Sa@Smith.com", USER4_NAME);
 	
 	private Group<ScoreUser> testGroup;
 	private Group<ScoreUser> sameNameGroup;
@@ -42,11 +36,11 @@ public class GroupTest {
 	public void setUp() throws Exception {
 		testGroup = new Group<ScoreUser>(GROUP_NAME);
 		sameNameGroup = new Group<ScoreUser>(GROUP_NAME);
-		testGroup.add(user1);
-		testGroup.add(user2);
-		sameNameGroup.add(user3);
-		sameNameGroup.add(user4);
-		differentNameGroup = new Group<ScoreUser>(DIFFERENT_GROUP_NAME, user1, user2);
+		testGroup.add(USER1);
+		testGroup.add(USER2);
+		sameNameGroup.add(USER3);
+		sameNameGroup.add(USER4);
+		differentNameGroup = new Group<ScoreUser>(DIFFERENT_GROUP_NAME, USER1, USER2);
 		
 		referenceToTestGroup = testGroup;
 		nullNameGroup = new Group<ScoreUser>();
@@ -90,13 +84,13 @@ public class GroupTest {
 	@Test
 	public void testGroupStringMArray() {
 		assertEquals(DIFFERENT_GROUP_NAME, differentNameGroup.getName());
-		assertTrue(differentNameGroup.contains(user1));
-		assertTrue(differentNameGroup.contains(user2));
+		assertTrue(differentNameGroup.contains(USER1));
+		assertTrue(differentNameGroup.contains(USER2));
 	}
 	
 	/**
 	 * Test method for {@link com.catalyst.sonar.score.api.Group#equals(java.lang.Object)}.
-	 * Asserts that two <code>Award</code>s are equal when they are the same <code>Award</code> in memory.
+	 * Asserts that two <code>Group</code>s are equal when they are the same <code>Group</code> in memory.
 	 */
 	@Test
 	public void testEqualsObject_isSameObjectInMemory_equals() {
@@ -105,7 +99,7 @@ public class GroupTest {
 	
 	/**
 	 * Test method for {@link com.catalyst.sonar.score.api.Group#equals(java.lang.Object)}.
-	 * Asserts that two <code>Award</code>s are not equal when the <code>Object</code> is <code>null</code>.
+	 * Asserts that two <code>Group</code>s are not equal when the <code>Object</code> is <code>null</code>.
 	 */
 	@Test
 	public void testEqualsObject_isNull_notEquals() {
@@ -114,36 +108,36 @@ public class GroupTest {
 	
 	/**
 	 * Test method for {@link com.catalyst.sonar.score.api.Group#equals(java.lang.Object)}.
-	 * Asserts that two "<code>Award</code>s" are not equal when the <code>Object</code> is
-	 * not an instance of <code>Award</code>.
+	 * Asserts that two "<code>Group</code>s" are not equal when the <code>Object</code> is
+	 * not an instance of <code>Group</code>.
 	 */
 	@Test
-	public void testEqualsObject_isNotAnAward_notEquals() {
+	public void testEqualsObject_isNotAGroup_notEquals() {
 		assertNotEquals(testGroup, notAGroup);
 	}
 	
 	/**
 	 * Test method for {@link com.catalyst.sonar.score.api.Group#equals(java.lang.Object)}.
-	 * Asserts that two <code>Award</code>s are not equal when the Award has a <code>null</code>
+	 * Asserts that two <code>Group</code>s are not equal when the Group has a <code>null</code>
 	 * name and the <code>Object</code> has a non-<code>null</code> name.
 	 */
 	@Test
-	public void testEqualsObject_hasNonNullNameWhenAwardHasNullName_notEquals() {
+	public void testEqualsObject_hasNonNullNameWhenGroupHasNullName_notEquals() {
 		assertNotEquals(nullNameGroup, sameNameGroup);
 	}
 	
 	/**
 	 * Test method for {@link com.catalyst.sonar.score.api.Group#equals(java.lang.Object)}.
-	 * Asserts that two <code>Award</code>s are equal when they both have <code>null</code> names.
+	 * Asserts that two <code>Group</code>s are equal when they both have <code>null</code> names.
 	 */
 	@Test
-	public void testEqualsObject_hasNullNameWhenAwardHasNullName_notEquals() {
+	public void testEqualsObject_hasNullNameWhenGroupHasNullName_equals() {
 		assertEquals(nullNameGroup, new Group<ScoreUser>());
 	}
 	
 	/**
 	 * Test method for {@link com.catalyst.sonar.score.api.Group#equals(java.lang.Object)}.
-	 * Asserts that two <code>Award</code>s are not equal when they both have different names.
+	 * Asserts that two <code>Group</code>s are not equal when they each have different names.
 	 */
 	@Test
 	public void testEqualsObject_differentName_notEquals() {
@@ -152,7 +146,7 @@ public class GroupTest {
 	
 	/**
 	 * Test method for {@link com.catalyst.sonar.score.api.Group#equals(java.lang.Object)}.
-	 * Asserts that two <code>Award</code>s are equal when they both have the same name.
+	 * Asserts that two <code>Group</code>s are equal when they both have the same name.
 	 */
 	@Test
 	public void testEqualsObject_sameName_equals() {
