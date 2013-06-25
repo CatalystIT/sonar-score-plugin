@@ -14,28 +14,28 @@ public interface Member<E> extends ScoreEntity {
 	/**
 	 * @return the name
 	 */
-	public String getName();
+	String getName();
 	
 	/**
 	 * @param name the name to set
 	 * @return this (note: <code>this</code> will be of type super and may need to be cast)
 	 */
-	public E setName(String name);
+	E setName(String name);
 	
 	/**
 	 * @return the uniqueId
 	 */
-	public String getUniqueId();
+	String getUniqueId();
 	
 	/**
 	 * @return the description
 	 */
-	public String getDescription();
+	String getDescription();
 	
 	/**
 	 * @param description the description to set
 	 * @return this (note: <code>this</code> will be of type super and may need to be cast)
 	 */
-	public E setDescription(String description);
+	E setDescription(String description);
 
 }
