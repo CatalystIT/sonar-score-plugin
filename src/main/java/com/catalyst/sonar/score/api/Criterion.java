@@ -96,7 +96,7 @@ public class Criterion implements ScoreEntity {
 		result = prime * result + days;
 		result = prime * result + ((metric == null) ? 0 : metric.hashCode());
 		long temp = Double.doubleToLongBits(amount);
-		result = prime * result + (int) (temp ^ (temp >>> prime + 1));
+		result = prime * result + (int) (temp ^ (temp >>> (prime + 1)));
 		return result;
 	}
 
