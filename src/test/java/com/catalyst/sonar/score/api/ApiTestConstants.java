@@ -18,11 +18,21 @@ public class ApiTestConstants {
 	public static final String USER2_NAME = "Mary";
 	public static final String USER3_NAME = "James";
 	public static final String USER4_NAME = "Sarah";
+	
+	public static final String USER1_EMAIL = "Jn@Smith.com";
+	public static final String USER2_EMAIL = "Ma@Smith.com";
+	public static final String USER3_EMAIL = "Ja@Smith.com";
+	public static final String USER4_EMAIL = "Sa@Smith.com";
+	
+	public static final String USER1_LOGIN = "JnSmith";
+	public static final String USER2_LOGIN = "SaSmith";
+	public static final String USER3_LOGIN = "JaSmith";
+	public static final String USER4_LOGIN = "SaSmith";
 
-	public static final ScoreUser USER1 = new ScoreUser(USER1_NAME, "Jn@Smith.com", USER1_NAME);
-	public static final ScoreUser USER2 = new ScoreUser(USER2_NAME, "Ma@Smith.com", USER2_NAME);
-	public static final ScoreUser USER3 = new ScoreUser(USER3_NAME, "Ja@Smith.com", USER3_NAME);
-	public static final ScoreUser USER4 = new ScoreUser(USER4_NAME, "Sa@Smith.com", USER4_NAME);
+	public static final ScoreUser USER1 = new ScoreUser(USER1_NAME, USER1_EMAIL, USER1_LOGIN);
+	public static final ScoreUser USER2 = new ScoreUser(USER2_NAME, USER2_EMAIL, USER2_LOGIN);
+	public static final ScoreUser USER3 = new ScoreUser(USER3_NAME, USER3_EMAIL, USER3_LOGIN);
+	public static final ScoreUser USER4 = new ScoreUser(USER4_NAME, USER4_EMAIL, USER4_LOGIN);
 	
 	//  G R O U P S  //
 	public static final String GROUP1_NAME = "Group One";
