@@ -2,8 +2,8 @@
 	
 	<% form_for :trophy,:url =>{:controller => "trophies",:action => "create",:method => :post} do|f| %></br>
 	
-	<%= f.label :trophy_name %></br>
-	<%= f.text_field :trophy_name %></br>
+	<%= f.label :name %></br>
+	<%= f.text_field :name %></br>
 	<%= f.label :metric %></br>
 	<%= f.text_field :metric %></br>
 	<%= f.label :amount %></br>

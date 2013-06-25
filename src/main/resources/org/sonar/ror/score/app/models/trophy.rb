@@ -1,8 +1,15 @@
 class Trophy < ActiveRecord::Base
-  attr_accessor :trophy_name, :metric, :amount, :duration
+  attr_accessor :name, :metric, :amount, :duration
     
-  def saveTrophy()
-    Property.set("sonar.score.Trophy", "testing ruby")
+  def initialize(trophy=nil)
+    @name = trophy['name']
+    @metric = trophy['metric']
+    @amount = trophy['amount']
+    @duration = trophy['duration']
+  end
+  
+  def saveTrophy()    
+    Property.set("sonar.score.Trophy", @name)
     end
 
 end

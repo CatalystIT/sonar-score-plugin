@@ -7,7 +7,7 @@ class TrophiesController < ApplicationController
   end
   
   def create 
-    @trophy = Trophy.new(params[:trophy_name],params[:metric], params[:amount], params[:duration])
+    @trophy = Trophy.new(params[:trophy])
     @trophy.saveTrophy()
     redirect_to :controller => "trophies", :action => "index"
           
