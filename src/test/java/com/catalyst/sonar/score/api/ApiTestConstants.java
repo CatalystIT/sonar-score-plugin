@@ -85,7 +85,7 @@ public class ApiTestConstants {
 	
 	public static Object setField(Object object, String fieldName, Object value) {
 		try {
-			java.lang.reflect.Field field = Award.class.getDeclaredField(fieldName);
+			java.lang.reflect.Field field = object.getClass().getDeclaredField(fieldName);
 			field.setAccessible(true);
 			field.set(object, value);
 		} catch (IllegalAccessException e) {
@@ -103,7 +103,7 @@ public class ApiTestConstants {
 	public static Object getField(Object object, String fieldName) {
 		Object value = null;
 		try {
-			java.lang.reflect.Field field = Award.class.getDeclaredField(fieldName);
+			java.lang.reflect.Field field = object.getClass().getDeclaredField(fieldName);
 			field.setAccessible(true);
 			value = field.get(object);
 		} catch (IllegalAccessException e) {
