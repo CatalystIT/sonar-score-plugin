@@ -6,8 +6,9 @@ package com.catalyst.sonar.score.api;
 import java.util.Arrays;
 
 /**
+ * <code>Group</code> extends <code>SearchableHashSet</code>
+ * where the type must extend <code>Member</code>.
  * @author JDunn
- *
  */
 @SuppressWarnings("rawtypes")
 public class Group<M extends Member> extends SearchableHashSet<M> implements Member<Group> {
@@ -40,7 +41,8 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements Mem
 		addAll(Arrays.asList(members));
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Returns a <code>hashCode</code> based on the name.
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -51,7 +53,8 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements Mem
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Tests for meaningful equality based on the name.
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@SuppressWarnings("unchecked")
@@ -68,10 +71,12 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements Mem
 		}
 		Group<M> other = (Group<M>) obj;
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		return true;
 	}
 	
@@ -85,14 +90,16 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements Mem
 		return super.equals(obj);
 	}	
 
-	/* (non-Javadoc)
+	/**
+	 * Gets the name.
 	 * @see com.catalyst.sonar.score.api.Member#getName()
 	 */
 	public String getName() {
 		return name;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Sets the name.
 	 * @see com.catalyst.sonar.score.api.Member#setName(java.lang.String)
 	 */
 	public Group setName(String name) {
@@ -100,21 +107,24 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements Mem
 		return this;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Gets the uniqueId, which for a group is the same as the name.
 	 * @see com.catalyst.sonar.score.api.Member#getUniqueId()
 	 */
 	public String getUniqueId() {
 		return this.name;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Gets the description.
 	 * @see com.catalyst.sonar.score.api.Member#getDescription()
 	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Sets the description.
 	 * @see com.catalyst.sonar.score.api.Member#setDescription(java.lang.String)
 	 */
 	public Group setDescription(String description) {
