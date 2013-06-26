@@ -14,9 +14,9 @@ public abstract class Award implements ScoreEntity {
 
 	private String name;
 	private SearchableHashSet<Criterion> criteria;
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings(RAWTYPE_WARNING)
 	private Group membersToInclude;
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings(RAWTYPE_WARNING)
 	private Group membersToExclude;
 
 	/**
@@ -33,7 +33,7 @@ public abstract class Award implements ScoreEntity {
 	 * 
 	 * @param name
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings(RAWTYPE_WARNING)
 	public Award(String name) {
 		this.name = name;
 		this.criteria = new SearchableHashSet<Criterion>();
@@ -66,7 +66,7 @@ public abstract class Award implements ScoreEntity {
 	 * @param members
 	 * @return this
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ RAWTYPE_WARNING, UNCHECKED_WARNING })
 	public Award addMembersToInclude(Member... members) {
 		this.membersToInclude.addAll(Arrays.asList(members));
 		return this;
@@ -77,7 +77,7 @@ public abstract class Award implements ScoreEntity {
 	 * @param members
 	 * @return this
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ RAWTYPE_WARNING, UNCHECKED_WARNING })
 	public Award addMembersToExclude(Member... members) {
 		this.membersToExclude.addAll(Arrays.asList(members));
 		return this;
@@ -147,7 +147,7 @@ public abstract class Award implements ScoreEntity {
 	/**
 	 * @return an immutable copy of the membersToInclude
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED_WARNING)
 	public SearchableHashSet<Criterion> getMembersToInclude() {
 		return membersToInclude.immutableCopy();
 	}
@@ -155,7 +155,7 @@ public abstract class Award implements ScoreEntity {
 	/**
 	 * @return an immutable copy of the membersToExclude
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED_WARNING)
 	public SearchableHashSet<Criterion> getMembersToExclude() {
 		return membersToExclude.immutableCopy();
 	}
