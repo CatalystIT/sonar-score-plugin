@@ -4,8 +4,8 @@
 package com.catalyst.sonar.score.api;
 
 /**
- * @author James
- *
+ * {@code TitleCup} extends {@code Award} and represents a Title Cup as a unique kind of Award.
+ * @author JDunn
  */
 public class TitleCup extends Award {
 
