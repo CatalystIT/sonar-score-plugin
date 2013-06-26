@@ -7,6 +7,7 @@ import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
 
+import com.catalyst.sonar.score.api.*;
 import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
@@ -81,8 +82,12 @@ public class ScorePlugin extends SonarPlugin{
 		
 		Criteria.class, Trophy.class, TrophyAndCriteriaParser.class, TrophySet.class,
 		
-		AwardTrophies.class, MeasuresHelper.class, MetricsHelper.class, DateUtility.class, SnapshotHistory.class, TrophiesHelper.class, TrophyPage.class
+		AwardTrophies.class, MeasuresHelper.class, MetricsHelper.class, DateUtility.class, SnapshotHistory.class, TrophiesHelper.class, TrophyPage.class,
 		
+		//API
+		Award.class, AwardSet.class, Criterion.class, Group.class, Member.class,
+		ScoreEntity.class, ScoreProject.class, ScoreUser.class, SearchableHashSet.class,
+		TitleCup.class		
 		
 		);
 		
