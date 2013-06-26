@@ -4,7 +4,6 @@
 package com.catalyst.sonar.score.api;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 import static com.catalyst.sonar.score.api.ApiTestConstants.*;
 
 import org.junit.Before;
@@ -20,7 +19,6 @@ public class AwardTest {
 	private static final String DIFFERENT_AWARD_NAME = "Award Two";
 	
 	private Award testAward;
-	private SearchableHashSet<Criterion> mockSet;
 	private SearchableHashSet<Criterion> realSet;
 	private Criterion criterion1;
 	private Criterion criterion2;
@@ -40,9 +38,7 @@ public class AwardTest {
 	@Before
 	public void setUp() throws Exception {
 		testAward = new TitleCup(AWARD_NAME);
-		mockSet = mock(SearchableHashSet.class);
-		realSet = new SearchableHashSet<Criterion>();
-		setField(testAward, "criteria", mockSet);
+		realSet = (SearchableHashSet<Criterion>) getField(testAward, "criteria");
 		criterion1 = new Criterion(null, 1.1, 1);
 		criterion2 = new Criterion(null, 2.2, 2);
 		
@@ -86,15 +82,10 @@ public class AwardTest {
 
 	/**
 	 * Test method for {@link com.catalyst.sonar.score.api.Award#addCriterion(com.catalyst.sonar.score.api.Criterion)}.
-	 * Asserts that {@code testAward.addCriteria(criteria)} encapsulates calling {@code add()} on the set of Criteria within the set.
+	 * Asserts that {@code testAward.addCriteria(criteria)} adds the Criteria.
 	 */
 	@Test
 	public void testAddCriterion() {
-		when(mockSet.add(criterion1)).thenReturn(true);
-		assertTrue(testAward.addCriterion(criterion1));
-		when(mockSet.add(criterion1)).thenReturn(false);
-		assertFalse(testAward.addCriterion(criterion1));
-		setField(testAward, "criteria", realSet);
 		testAward.addCriterion(criterion1);
 		assertTrue(testAward.getCriteria().contains(criterion1));
 	}
@@ -222,8 +213,7 @@ public class AwardTest {
 	 */
 	@Test
 	public void testGetCriteria() {
-		when(mockSet.equals(mockSet)).thenReturn(true);
-		assertEquals(mockSet, getField(testAward, "criteria"));
+		assertEquals(realSet, getField(testAward, "criteria"));
 	}
 
 }
