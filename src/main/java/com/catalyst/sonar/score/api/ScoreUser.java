@@ -7,8 +7,8 @@ import org.sonar.api.database.model.User;
 
 /**
  * ScoreUser extends {@link org.sonar.api.database.model.User}, adding a description field
- * and implementing {@link com.catalyst.sonar.score.api.Member}.
- * @author James
+ * and implementing {@link com.catalyst.sonar.score.api.Member}{@code <Project>}.
+ * @author JDunn
  */
 public class ScoreUser extends User implements Member<User> {
 	
@@ -50,8 +50,8 @@ public class ScoreUser extends User implements Member<User> {
 	
 	/**
 	 * Gets the uniqueId, which for a ScoreUser is the login.
+	 * In {@link com.catalyst.sonar.score.api.ScoreUser}, calls super.getLogin().
 	 * @see com.catalyst.sonar.score.api.Member#getUniqueId()
-	 * in {@link com.catalyst.sonar.score.api.ScoreUser}, calls super.getLogin().
 	 */
 	public String getUniqueId() {
 		return super.getLogin();
