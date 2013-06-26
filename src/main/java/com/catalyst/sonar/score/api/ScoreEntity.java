@@ -14,7 +14,7 @@ import org.sonar.api.BatchExtension;
  */
 public interface ScoreEntity extends BatchExtension {
 	
-	final String RAWTYPE_WARNING = "rawtypes";
-	final String UNCHECKED_WARNING = "unchecked";
+	String RAWTYPE_WARNING = "rawtypes";
+	String UNCHECKED_WARNING = "unchecked";
 
 }
