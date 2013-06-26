@@ -63,6 +63,7 @@ import com.catalyst.sonar.score.util.TrophiesHelper;
 public class ScorePlugin extends SonarPlugin{
 	public static final String PROJECT_GROUP = "sonar.score.projectGroup";
 	public static final String PROJECT_TROPHY = "sonar.score.projectTrophy";
+	public static final String TITLECUP = "sonar.score.TitleCup";
 	public static final String TROPHY = "sonar.score.Trophy";
 	/**
 	 * returns a list of the various classes used to create the SCORE extension/plugin

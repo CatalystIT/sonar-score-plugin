@@ -10,6 +10,16 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.catalyst.sonar.score.api.Award;
+import com.catalyst.sonar.score.api.AwardSet;
+import com.catalyst.sonar.score.api.Criterion;
+import com.catalyst.sonar.score.api.Group;
+import com.catalyst.sonar.score.api.Member;
+import com.catalyst.sonar.score.api.ScoreEntity;
+import com.catalyst.sonar.score.api.ScoreProject;
+import com.catalyst.sonar.score.api.ScoreUser;
+import com.catalyst.sonar.score.api.SearchableHashSet;
+import com.catalyst.sonar.score.api.TitleCup;
 import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
@@ -80,7 +90,10 @@ public class ScorePluginTest {
 						DateUtility.class, 
 						SnapshotHistory.class, 
 						TrophiesHelper.class,
-						TrophyPage.class
+						TrophyPage.class,
+						Award.class, AwardSet.class, Criterion.class, Group.class, Member.class,
+						ScoreEntity.class, ScoreProject.class, ScoreUser.class, SearchableHashSet.class,
+						TitleCup.class
 						
 						
 						
