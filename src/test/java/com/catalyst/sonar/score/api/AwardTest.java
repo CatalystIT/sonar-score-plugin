@@ -95,7 +95,7 @@ public class AwardTest {
 		when(mockSet.add(criterion1)).thenReturn(false);
 		assertFalse(testAward.addCriterion(criterion1));
 		setField(testAward, "criteria", realSet);
-		assertTrue(testAward.addCriterion(criterion1));
+		testAward.addCriterion(criterion1);
 		assertTrue(testAward.getCriteria().contains(criterion1));
 	}
 	
@@ -221,7 +221,8 @@ public class AwardTest {
 	 * Test method for {@link com.catalyst.sonar.score.api.Award#getCriteria()}.
 	 */
 	@Test
-	public void testGetCriteriaSet() {
+	public void testGetCriteria() {
+		when(mockSet.equals(mockSet)).thenReturn(true);
 		assertEquals(mockSet, getField(testAward, "criteria"));
 	}
 
