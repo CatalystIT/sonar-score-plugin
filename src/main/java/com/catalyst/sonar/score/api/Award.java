@@ -52,35 +52,32 @@ public abstract class Award implements ScoreEntity {
 	
 	/**
 	 * Adds {@code Criteria} to the criteria.
-	 * 
 	 * @param criterion
+	 * @return this.criteria.addAll(Arrays.asList(criteria));
 	 */
-	public Award addCriteria(Criterion... criteria) {
-		this.criteria.addAll(Arrays.asList(criteria));
-		return this;
+	public boolean addCriteria(Criterion... criteria) {
+		return this.criteria.addAll(Arrays.asList(criteria));
 	}
 
 	/**
 	 * Adds Members to include from receiving the {@code Award}.
 	 * Code elsewhere should include all members by default if this list is empty.
 	 * @param members
-	 * @return this
+	 * @return this.membersToInclude.addAll(Arrays.asList(members));
 	 */
 	@SuppressWarnings({ RAWTYPE_WARNING, UNCHECKED_WARNING })
-	public Award addMembersToInclude(Member... members) {
-		this.membersToInclude.addAll(Arrays.asList(members));
-		return this;
+	public boolean addMembersToInclude(Member... members) {
+		return this.membersToInclude.addAll(Arrays.asList(members));
 	}
 
 	/**
 	 * Adds Members to exclude from receiving the {@code Award}.
 	 * @param members
-	 * @return this
+	 * @return this.membersToExclude.addAll(Arrays.asList(members));
 	 */
 	@SuppressWarnings({ RAWTYPE_WARNING, UNCHECKED_WARNING })
-	public Award addMembersToExclude(Member... members) {
-		this.membersToExclude.addAll(Arrays.asList(members));
-		return this;
+	public boolean addMembersToExclude(Member... members) {
+		return this.membersToExclude.addAll(Arrays.asList(members));
 	}
 
 	/**
@@ -147,16 +144,16 @@ public abstract class Award implements ScoreEntity {
 	/**
 	 * @return an immutable copy of the membersToInclude
 	 */
-	@SuppressWarnings(UNCHECKED_WARNING)
-	public SearchableHashSet<Criterion> getMembersToInclude() {
+	@SuppressWarnings({ RAWTYPE_WARNING, UNCHECKED_WARNING })
+	public SearchableHashSet<Member> getMembersToInclude() {
 		return membersToInclude.immutableCopy();
 	}
 	
 	/**
 	 * @return an immutable copy of the membersToExclude
 	 */
-	@SuppressWarnings(UNCHECKED_WARNING)
-	public SearchableHashSet<Criterion> getMembersToExclude() {
+	@SuppressWarnings({ RAWTYPE_WARNING, UNCHECKED_WARNING })
+	public SearchableHashSet<Member> getMembersToExclude() {
 		return membersToExclude.immutableCopy();
 	}
 
