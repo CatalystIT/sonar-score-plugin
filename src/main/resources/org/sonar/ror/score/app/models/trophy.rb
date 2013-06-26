@@ -1,5 +1,5 @@
 class Trophy < ActiveRecord::Base
-  attr_accessor :name, :metric, :amount, :duration
+  attr_accessor :name, :metric, :amount, :duration, :durationValue
     
    #initialize the variables 
   def initialize(trophy=nil)
@@ -7,6 +7,7 @@ class Trophy < ActiveRecord::Base
     @metric = trophy['metric']
     @amount = trophy['amount']
     @duration = trophy['duration']
+    @durationValue = trophy['durationValue']
     @propertyValue = "sonar.score.Trophy"
     @trophyValues
     @trophyPropertyValue
@@ -44,7 +45,7 @@ class Trophy < ActiveRecord::Base
   
   #set the global trophy property text_value correctly so the different trophies can be parsed
   def parseTrophy()
-    @name = @name + '{'+ @metric + ';' + @amount + ';' + @duration + '}'
+    @name = @name + '{'+ @metric + ';' + @amount + ';' + @duration + @durationValue +'}'
   end
   
   

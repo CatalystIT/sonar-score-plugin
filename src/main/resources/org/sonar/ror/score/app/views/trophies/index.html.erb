@@ -9,8 +9,10 @@
 	<%= f.label :amount %></br>
 	<%= f.text_field :amount %></br>
 	<%= f.label :duration %></br>
-	<%= f.text_field :duration %></br></br>
-	<%= f.submit :"Create Trophy" %>
+	<%= f.text_field :duration %>
+	<%= f.select (:durationValue, [['Days', 'd'],['Weeks', 'w']],{ :prompt => "Please select"}) %>	
+	</br></br>
+	<%= f.submit :"Create Trophy" %>	  
 	<% end %> 
 	
 	
