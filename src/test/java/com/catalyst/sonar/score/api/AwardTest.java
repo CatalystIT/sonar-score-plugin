@@ -10,8 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * Test Class for
+ * {@link com.catalyst.sonar.score.api.Award}.
  * @author JDunn
- *
  */
 public class AwardTest {
 	
