@@ -68,7 +68,7 @@ public class ScorePlugin extends SonarPlugin{
 	/**
 	 * returns a list of the various classes used to create the SCORE extension/plugin
 	 */	
-	@SuppressWarnings({ "unchecked"})
+	@SuppressWarnings({ "unchecked", "rawtypes"})
 	public List getExtensions() {
 		
 		return Arrays.asList(
