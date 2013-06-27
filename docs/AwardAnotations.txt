@@ -1,0 +1,12 @@
+Properties
+
+Criterion:
+{Metric;90.0;2w}
+
+Group to include:
+{Include {member type id}}
+
+Group to exclude:
+{Exclude {member type id}}
+
+type: user, project, usergroup, projectgroup
