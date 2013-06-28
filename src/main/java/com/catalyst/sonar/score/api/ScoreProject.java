@@ -3,45 +3,78 @@
  */
 package com.catalyst.sonar.score.api;
 
-import org.sonar.api.resources.Project;
+import java.lang.reflect.Field;
+
+import org.sonar.api.database.model.ResourceModel;
 
 /**
- * ScoreProject extends {@link org.sonar.api.resources.Project}, adding a description field
- * and implementing {@link com.catalyst.sonar.score.api.Member}{@code <Project>}.
+ * {@link ScoreProject} extends {@link ResourceModel}, adding a description
+ * field and implementing {@link Member}.
+ * 
  * @author JDunn
  */
-public class ScoreProject extends Project implements Member<Project> {
+public class ScoreProject extends ResourceModel implements Member {
 
-	/**
-	 * Calls {@code super(key)}.  It should be noted that as of this writing,
-	 * {@code super(key, branch, name)} sets the key to {@code += (":" + branch)}.
-	 * This needs to be mentioned because Sonar failed to document this.
-	 * @see {@link org.sonar.api.resources.Project#Project(String key)}
+/**
+	 * Calls {@code super()} and {@code super.setKey(key).
+	 * @see {@link ResourceModel#ResourceModel()}
+	 * @see {@link ResourceModel#setKey(String key)}
 	 * @param key
 	 */
 	public ScoreProject(String key) {
-		super(key);
-		// TODO Auto-generated constructor stub
-	}
-	
-	/**
-	 * Calls {@code super(key, branch, name)}.  It should be noted that as of this writing,
-	 * {@code super(key, branch, name)} sets the key and the name to {@code += (":" + branch)}.
-	 * This needs to be mentioned because Sonar failed to document this.
-	 * @see {@link org.sonar.api.resources.Project#Project(String key, String name, String branch)}
-	 * @param key
-	 * @param branch
-	 * @param name
-	 */
-	public ScoreProject(String key, String branch, String name) {
-		super(key, branch, name);
-		// TODO Auto-generated constructor stub
+		super();
+		super.setKey(key);
 	}
 
 	/**
-	 * Gets the uniqueId, which for a ScoreProject is the key.
-	 * In {@link com.catalyst.sonar.score.api.ScoreProject}, calls super.getKey().
-	 * @see com.catalyst.sonar.score.api.Member#getUniqueId()
+	 * Calls {@code super(scope, key, qualifier, rootId, name)}.
+	 * 
+	 * @see {@link ResourceModel#ResourceModel(String key, String name, String branch)}
+	 * @param scope
+	 * @param key
+	 * @param qualifier
+	 * @param rootId
+	 * @param name
+	 */
+	public ScoreProject(String scope, String key, String qualifier,
+			Integer rootId, String name) {
+		super(scope, key, qualifier, rootId, name);
+	}
+
+	/**
+	 * Constructs a ScoreProject with all fields set to equal the fields of the
+	 * {@link ResourceModel} argument. (Remember, {@link ResourceModel} is the
+	 * parent class of {@link ScoreProject}.
+	 * 
+	 * @param resourceModel
+	 *            the {@link ResourceModel} from which to derive the field
+	 *            values of the constructed {@link ScoreProject}
+	 */
+	public ScoreProject(ResourceModel resourceModel) {
+		super(resourceModel.getScope(), resourceModel.getKey(), resourceModel
+				.getQualifier(), resourceModel.getRootId(), resourceModel
+				.getName());
+		@SuppressWarnings("rawtypes")
+		Class parentClass = ResourceModel.class;
+		while (!parentClass.equals(Object.class)) {
+			for (Field field : ResourceModel.class.getDeclaredFields()) {
+				try {
+					field.setAccessible(true);
+					field.set(this, field.get(resourceModel));
+				} catch (IllegalAccessException e) {
+					// The caught exception should only have been thrown due to
+					// static fields.
+				}
+			}
+			parentClass = parentClass.getSuperclass();
+		}
+	}
+
+	/**
+	 * Gets the uniqueId, which for a ScoreProject is the key. In
+	 * {@link ScoreProject}, calls super.getKey().
+	 * 
+	 * @see {@link Member#getUniqueId()}
 	 */
 	public String getUniqueId() {
 		return super.getKey();

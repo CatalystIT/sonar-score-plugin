@@ -3,9 +3,9 @@ package com.catalyst.sonar.score.api;
 import java.util.Arrays;
 
 /**
- * The <code>Award</code> class represents an award in Sonar for
- * projects to earn, with a name and a <code>SearchableHashSet</code> of
- * Criteria.
+ * The {@link Award} class represents an award in Sonar for projects to earn,
+ * with a name and a {@link SearchableHashSet} of Criteria.
+ * 
  * @author JDunn
  */
 public abstract class Award implements ScoreEntity {
@@ -21,15 +21,17 @@ public abstract class Award implements ScoreEntity {
 
 	/**
 	 * Default Constructor, necessary for the SCORE plugin to work, calls
-	 * {@code this(UNNAMED_AWARD)}, preventing any fields from being {@code null}.
+	 * {@code this({@link UNNAMED_AWARD})}, preventing any fields from being
+	 * {@code null}.
 	 */
 	public Award() {
 		this(UNNAMED_AWARD);
 	}
 
 	/**
-	 * Constructs an {@code Award}, setting the name to equal the
-	 * {@code String} name argument.
+	 * Constructs an {@code Award}, setting the name to equal the {@code String}
+	 * name argument and instantiating the three other fields (which are all
+	 * instances of {@link SearchableHashSet}).
 	 * 
 	 * @param name
 	 */
@@ -42,16 +44,17 @@ public abstract class Award implements ScoreEntity {
 	}
 
 	/**
-	 * Adds a {@code Criterion} to the criteria.
+	 * Adds a {@link Criterion} to the criteria.
 	 * 
 	 * @param criterion
 	 */
 	public boolean addCriterion(Criterion criterion) {
 		return this.criteria.add(criterion);
 	}
-	
+
 	/**
 	 * Adds {@code Criteria} to the criteria.
+	 * 
 	 * @param criterion
 	 * @return this.criteria.addAll(Arrays.asList(criteria));
 	 */
@@ -60,22 +63,27 @@ public abstract class Award implements ScoreEntity {
 	}
 
 	/**
-	 * Adds Members to include from receiving the {@code Award}.
-	 * Code elsewhere should include all members by default if this list is empty.
+	 * Adds {@link Member}s to include in receiving this {@code Award}. When
+	 * using this field, to determine who should be eligible to receive this
+	 * award, implement your logic in such a way that all {@link Member}s are
+	 * included by default if the {@link SearchableHashSet} of {@link Member}s
+	 * is empty.
+	 * 
 	 * @param members
 	 * @return this.membersToInclude.addAll(Arrays.asList(members));
 	 */
-	@SuppressWarnings({ RAWTYPE_WARNING, UNCHECKED_WARNING })
+	@SuppressWarnings(UNCHECKED_WARNING)
 	public boolean addMembersToInclude(Member... members) {
 		return this.membersToInclude.addAll(Arrays.asList(members));
 	}
 
 	/**
-	 * Adds Members to exclude from receiving the {@code Award}.
+	 * Adds {@link Member}s to exclude from receiving this {@code Award}.
+	 * 
 	 * @param members
 	 * @return this.membersToExclude.addAll(Arrays.asList(members));
 	 */
-	@SuppressWarnings({ RAWTYPE_WARNING, UNCHECKED_WARNING })
+	@SuppressWarnings(UNCHECKED_WARNING)
 	public boolean addMembersToExclude(Member... members) {
 		return this.membersToExclude.addAll(Arrays.asList(members));
 	}
@@ -107,8 +115,8 @@ public abstract class Award implements ScoreEntity {
 	}
 
 	/**
-	 * Overrides {@link java.lang.Object#hashCode()}, calculating a hashCode
-	 * based on the name field.
+	 * Overrides {@link java.lang.Object#hashCode()}, calculating a
+	 * {@code hashCode} based on the name field.
 	 */
 	@Override
 	public int hashCode() {
@@ -126,7 +134,8 @@ public abstract class Award implements ScoreEntity {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 * @return this
 	 */
 	public Award setName(String name) {
@@ -136,23 +145,26 @@ public abstract class Award implements ScoreEntity {
 
 	/**
 	 * @return an immutable copy of the criteria
+	 * @see {@link SearchableHashSet#immutableCopy()}
 	 */
 	public SearchableHashSet<Criterion> getCriteria() {
 		return criteria.immutableCopy();
 	}
-	
+
 	/**
 	 * @return an immutable copy of the membersToInclude
+	 * @see {@link SearchableHashSet#immutableCopy()}
 	 */
-	@SuppressWarnings({ RAWTYPE_WARNING, UNCHECKED_WARNING })
+	@SuppressWarnings(UNCHECKED_WARNING)
 	public SearchableHashSet<Member> getMembersToInclude() {
 		return membersToInclude.immutableCopy();
 	}
-	
+
 	/**
 	 * @return an immutable copy of the membersToExclude
+	 * @see {@link SearchableHashSet#immutableCopy()}
 	 */
-	@SuppressWarnings({ RAWTYPE_WARNING, UNCHECKED_WARNING })
+	@SuppressWarnings(UNCHECKED_WARNING)
 	public SearchableHashSet<Member> getMembersToExclude() {
 		return membersToExclude.immutableCopy();
 	}

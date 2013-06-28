@@ -7,16 +7,19 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.api.database.model.ResourceModel;
 
 /**
- * Test Class for
- * {@link com.catalyst.sonar.score.api.Criterion}.
+ * Test Class for {@link com.catalyst.sonar.score.api.Criterion}.
+ * 
  * @author JDunn
  */
 public class ScoreProjectTest {
-	
+
+	private static final String SCOPE = "scope";
 	private static final String KEY = "key";
-	private static final String BRANCH = "branch";
+	private static final String QUALIFIER = "qualifier";
+	private static final Integer ROOTID = 1;
 	private static final String NAME = "name";
 	ScoreProject testProject;
 
@@ -25,35 +28,56 @@ public class ScoreProjectTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		testProject = new ScoreProject(KEY, BRANCH, NAME);
+		testProject = new ScoreProject(SCOPE, KEY, QUALIFIER, ROOTID, NAME);
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.ScoreProject#ScoreProject(java.lang.String)}.
+	 * Test method for {@link ScoreProject#ScoreProject(java.lang.String)}.
 	 * Asserts that the constructor sets the appropriate fields.
 	 */
 	@Test
 	public void testScoreProjectString() {
 		testProject = new ScoreProject(KEY);
-		assertTrue(testProject.getKey().contains(KEY));
-		assertEquals(null, testProject.getBranch());
+		assertEquals(null, testProject.getScope());
+		assertEquals(KEY, testProject.getKey());
+		assertEquals(null, testProject.getQualifier());
+		assertEquals(null, testProject.getRootId());
 		assertEquals(null, testProject.getName());
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.ScoreProject#ScoreProject(java.lang.String, java.lang.String, java.lang.String)}.
-	 * Asserts that the constructor sets the appropriate fields.
+	 * Test method for
+	 * {@link ScoreProject#ScoreProject(java.lang.String, java.lang.String, java.lang.String)}
+	 * . Asserts that the constructor sets the appropriate fields.
 	 */
 	@Test
 	public void testScoreProjectStringStringString() {
-		assertTrue(testProject.getKey().contains(KEY));
-		assertEquals(BRANCH, testProject.getBranch());
-		assertTrue(testProject.getName().contains(NAME));
+		assertEquals(SCOPE, testProject.getScope());
+		assertEquals(KEY, testProject.getKey());
+		assertEquals(QUALIFIER, testProject.getQualifier());
+		assertEquals(ROOTID, testProject.getRootId());
+		assertEquals(NAME, testProject.getName());
+	}
+	
+	/**
+	 * Test method for
+	 * {@link ScoreProject#ScoreProject(java.lang.String, java.lang.String, java.lang.String)}
+	 * . Asserts that the constructor sets the appropriate fields.
+	 */
+	@Test
+	public void testScoreProjectResourceModel() {
+		ResourceModel resourceModel = new ResourceModel(SCOPE, KEY, QUALIFIER, ROOTID, NAME);
+		testProject = new ScoreProject(resourceModel);
+		assertEquals(SCOPE, testProject.getScope());
+		assertEquals(KEY, testProject.getKey());
+		assertEquals(QUALIFIER, testProject.getQualifier());
+		assertEquals(ROOTID, testProject.getRootId());
+		assertEquals(NAME, testProject.getName());
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.ScoreProject#getUniqueId()}.
-	 * Asserts that {@code getUniqueId()} gets the key.
+	 * Test method for {@link ScoreProject#getUniqueId()}. Asserts that
+	 * {@code getUniqueId()} gets the key.
 	 */
 	@Test
 	public void testGetUniqueId() {

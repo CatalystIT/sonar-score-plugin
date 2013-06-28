@@ -10,12 +10,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test Class for
- * {@link com.catalyst.sonar.score.api.AwardSet}.
+ * Test Class for {@link AwardSet}.
+ * 
  * @author JDunn
  */
 public class AwardSetTest {
-	
+
 	AwardSet<Award> testSet;
 	Award award1 = new TitleCup("Award One");
 	Award award2 = new TitleCup("Award Two");
@@ -41,20 +41,21 @@ public class AwardSetTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.AwardSet#add(com.catalyst.sonar.score.api.Award)}.
-	 * Asserts that {@code add()} returns false if no new {@code Award} is added and no new information is added
-	 * to the {@code AwardSet}.
+	 * Test method for {@link AwardSet#add(Award)}. Asserts that {@code add()}
+	 * returns false if no new {@code Award} is added and no new information is
+	 * added to the {@code AwardSet}.
 	 */
 	@Test
 	public void testAddA_AddAwardWithSameNameAndSameFields_false() {
 		assertFalse(testSet.add(award1Copy));
 	}
-	
+
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.AwardSet#add(com.catalyst.sonar.score.api.Award)}.
-	 * Asserts that {@code add()} returns true if the  {@code Award} passed in as the argument has the same
-	 * name as an {@code Award} already in this {@code AwardSet} but also has a new {@code Criterion},
-	 * and that the {@code Award} with the same name in this {@code AwardSet} now contains the new {@code Criterion}.
+	 * Test method for {@link AwardSet#add(Award)}. Asserts that {@code add()}
+	 * returns true if the {@code Award} passed in as the argument has the same
+	 * name as an {@code Award} already in this {@code AwardSet} but also has a
+	 * new {@code Criterion}, and that the {@code Award} with the same name in
+	 * this {@code AwardSet} now contains the new {@code Criterion}.
 	 */
 	@Test
 	public void testAddA_AddAwardWithSameNameAndExtraCriterion_true() {
@@ -62,12 +63,13 @@ public class AwardSetTest {
 		assertTrue(testSet.add(award1Copy));
 		assertTrue(award1.getCriteria().contains(c1b));
 	}
-	
+
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.AwardSet#add(com.catalyst.sonar.score.api.Award)}.
-	 * Asserts that {@code add()} returns true if the  {@code Award} passed in as the argument has the same
-	 * name as an {@code Award} already in this {@code AwardSet} but also has a new {@code Member} to include,
-	 * and that the {@code Award} with the same name in this {@code AwardSet} now contains the new {@code Member}.
+	 * Test method for {@link AwardSet#add(Award)}. Asserts that {@code add()}
+	 * returns true if the {@code Award} passed in as the argument has the same
+	 * name as an {@code Award} already in this {@code AwardSet} but also has a
+	 * new {@code Member} to include, and that the {@code Award} with the same
+	 * name in this {@code AwardSet} now contains the new {@code Member}.
 	 */
 	@Test
 	public void testAddA_AddAwardWithSameNameAndExtraMemberToInclude_true() {
@@ -75,19 +77,34 @@ public class AwardSetTest {
 		assertTrue(testSet.add(award1Copy));
 		assertTrue(award1.getMembersToInclude().contains(USER2));
 	}
-	
+
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.AwardSet#add(com.catalyst.sonar.score.api.Award)}.
-	 * Asserts that {@code add()} returns true if the  {@code Award} passed in as the argument has the same
-	 * name as an {@code Award} already in this {@code AwardSet} but also has a new {@code Member} to exclude,
-	 * and that the {@code Award} with the same name in this {@code AwardSet} now contains the new {@code Member}.
+	 * Test method for {@link AwardSet#add(Award)}. Asserts that {@code add()}
+	 * returns true if the {@code Award} passed in as the argument has the same
+	 * name as an {@code Award} already in this {@code AwardSet} but also has a
+	 * new {@code Member} to exclude, and that the {@code Award} with the same
+	 * name in this {@code AwardSet} now contains the new {@code Member}.
 	 */
 	@Test
 	public void testAddA_AddAwardWithSameNameAndExtraMemberToExclude_true() {
 		award1Copy.addMembersToExclude(USER4);
 		assertTrue(testSet.add(award1Copy));
 		assertTrue(award1.getMembersToExclude().contains(USER4));
-		
+
+	}
+
+	/**
+	 * Test method for {@link AwardSet#add(Award)}. Asserts that {@code add()}
+	 * returns true if the {@code Award} passed in as the argument is not
+	 * meaningfully equal (that is, does not have an equal name) to any
+	 * {@code Award}s already in this {@code AwardSet}, and that this
+	 * {@code AwardSet} now contains the new {@code Award}.
+	 */
+	@Test
+	public void testAddA_AddAwardWithDifferentName_true() {
+		assertFalse(testSet.contains(award2));
+		assertTrue(testSet.add(award2));
+		assertTrue(testSet.contains(award2));
 	}
 
 }

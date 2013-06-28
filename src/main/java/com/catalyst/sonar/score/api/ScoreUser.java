@@ -10,7 +10,7 @@ import org.sonar.api.database.model.User;
  * and implementing {@link com.catalyst.sonar.score.api.Member}{@code <Project>}.
  * @author JDunn
  */
-public class ScoreUser extends User implements Member<User> {
+public class ScoreUser extends User implements Member {
 	
 	private String description;
 
@@ -43,9 +43,8 @@ public class ScoreUser extends User implements Member<User> {
 	 * Sets the description.
 	 * @see com.catalyst.sonar.score.api.Member#setDescription(java.lang.String)
 	 */
-	public User setDescription(String description) {
+	public void setDescription(String description) {
 		this.description = description;
-		return this;
 	}
 	
 	/**

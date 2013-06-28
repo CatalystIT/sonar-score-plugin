@@ -63,11 +63,11 @@ public class ScoreUserTest {
 
 	/**
 	 * Test method for {@link com.catalyst.sonar.score.api.ScoreUser#setDescription(java.lang.String)}.
-	 * Asserts that setter sets description and returns <code>this</code>.
+	 * Asserts that setter sets description.
 	 */
 	@Test
 	public void testSetDescription() {
-		assertEquals(testUser, testUser.setDescription(DESCRIPTION));
+		testUser.setDescription(DESCRIPTION);
 		assertEquals(DESCRIPTION, testUser.getDescription());
 	}
 

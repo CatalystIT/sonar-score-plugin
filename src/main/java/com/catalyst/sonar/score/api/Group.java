@@ -6,34 +6,40 @@ package com.catalyst.sonar.score.api;
 import java.util.Arrays;
 
 /**
- * <code>Group</code> extends <code>SearchableHashSet</code>
- * where the type must extend <code>Member</code>.
+ * <code>Group</code> extends <code>SearchableHashSet</code> where the type must
+ * extend <code>Member</code>.
+ * 
  * @author JDunn
  */
 @SuppressWarnings("rawtypes")
-public class Group<M extends Member> extends SearchableHashSet<M> implements Member<Group> {
-	
+public class Group<M extends Member> extends SearchableHashSet<M> implements
+		Member {
+
 	private String name;
 	private String description;
-	
+
 	/**
-	 * Default Constructor, necessary for the SCORE plugin to work, calls super().
+	 * Default Constructor, necessary for the SCORE plugin to work, calls
+	 * {@code super()}.
 	 */
 	public Group() {
 		super();
 	}
-	
+
 	/**
-	 * Constructs a <code>Group</code>, setting the name field with the name argument.
+	 * Constructs a {@code Group}, setting the name field with the name
+	 * argument.
+	 * 
 	 * @param name
 	 */
 	public Group(String name) {
 		this.name = name;
 	}
-	
+
 	/**
-	 * Constructs a <code>Group</code>, setting the name field with the name argument
-	 * and populating the members with the <code>Member</code> arguments.
+	 * Constructs a {@code Group}, setting the name field with the name argument
+	 * and populating the members with the {@code Member} arguments.
+	 * 
 	 * @param name
 	 */
 	public Group(String name, M... members) {
@@ -42,8 +48,9 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements Mem
 	}
 
 	/**
-	 * Returns a <code>hashCode</code> based on the name.
-	 * @see java.lang.Object#hashCode()
+	 * Returns a {@code hashCode} based on the name.
+	 * 
+	 * @see {@link Object#hashCode()}
 	 */
 	@Override
 	public int hashCode() {
@@ -55,7 +62,8 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements Mem
 
 	/**
 	 * Tests for meaningful equality based on the name.
-	 * @see java.lang.Object#equals(java.lang.Object)
+	 * 
+	 * @see {@link Object#equals(Object)}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -79,20 +87,22 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements Mem
 		}
 		return true;
 	}
-	
+
 	/**
-	 * Calls <code>super.equals(obj)</code>
-	 * @see java.util.HashSet#equals(java.lang.Object)
+	 * Calls {@code super.equals(obj)}
+	 * 
+	 * @see {@link HashSet#equals(Object)}
 	 * @param obj
 	 * @return
 	 */
 	public boolean equalsMembers(Object obj) {
 		return super.equals(obj);
-	}	
+	}
 
 	/**
 	 * Gets the name.
-	 * @see com.catalyst.sonar.score.api.Member#getName()
+	 * 
+	 * @see {@link Member#getName()}
 	 */
 	public String getName() {
 		return name;
@@ -100,7 +110,8 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements Mem
 
 	/**
 	 * Sets the name.
-	 * @see com.catalyst.sonar.score.api.Member#setName(java.lang.String)
+	 * 
+	 * @see {@link Member#setName(String)}
 	 */
 	public Group setName(String name) {
 		this.name = name;
@@ -109,7 +120,8 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements Mem
 
 	/**
 	 * Gets the uniqueId, which for a group is the same as the name.
-	 * @see com.catalyst.sonar.score.api.Member#getUniqueId()
+	 * 
+	 * @see {@link Member#getUniqueId()}
 	 */
 	public String getUniqueId() {
 		return this.name;
@@ -117,7 +129,8 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements Mem
 
 	/**
 	 * Gets the description.
-	 * @see com.catalyst.sonar.score.api.Member#getDescription()
+	 * 
+	 * @see {@link Member#getDescription()}
 	 */
 	public String getDescription() {
 		return description;
@@ -125,14 +138,12 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements Mem
 
 	/**
 	 * Sets the description.
-	 * @see com.catalyst.sonar.score.api.Member#setDescription(java.lang.String)
+	 * 
+	 * @see {@link Member#setDescription(String)}
 	 */
-	public Group setDescription(String description) {
+	public void setDescription(String description) {
 		this.description = description;
-		return this;
 	}
-
-
 
 	/**
 	 * 
