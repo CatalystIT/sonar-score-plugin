@@ -10,12 +10,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test Class for
- * {@link com.catalyst.sonar.score.api.Criterion}.
+ * Test Class for {@link Criterion}.
+ * 
  * @author JDunn
  */
 public class CriterionTest {
-	
+
 	private Criterion testCriterion;
 	private Criterion twinCriterion;
 
@@ -29,7 +29,7 @@ public class CriterionTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#hashCode()}.
+	 * Test method for {@link Criterion#hashCode()} .
 	 */
 	@Test
 	public void testHashCode() {
@@ -37,11 +37,11 @@ public class CriterionTest {
 		testCriterion.setMetric(NULL_METRIC);
 		twinCriterion.setMetric(NULL_METRIC);
 		assertEquals(testCriterion.hashCode(), twinCriterion.hashCode());
-		
+
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#Criterion()}.
+	 * Test method for {@link Criterion#Criterion()}.
 	 */
 	@Test
 	public void testCriterion() {
@@ -49,7 +49,8 @@ public class CriterionTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#Criterion(org.sonar.api.measures.Metric, double, int)}.
+	 * Test method for
+	 * {@link Criterion#Criterion(org.sonar.api.measures.Metric, double, int)} .
 	 */
 	@Test
 	public void testCriterionMetricDoubleInt() {
@@ -59,7 +60,7 @@ public class CriterionTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#getMetric()}.
+	 * Test method for {@link Criterion#getMetric()}.
 	 */
 	@Test
 	public void testGetMetric() {
@@ -67,7 +68,7 @@ public class CriterionTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#setMetric(org.sonar.api.measures.Metric)}.
+	 * Test method for {@link Criterion#setMetric(Metric)} .
 	 */
 	@Test
 	public void testSetMetric() {
@@ -76,7 +77,7 @@ public class CriterionTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#getAmount()}.
+	 * Test method for {@link Criterion#getAmount()}.
 	 */
 	@Test
 	public void testGetAmount() {
@@ -84,7 +85,7 @@ public class CriterionTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#setAmount(double)}.
+	 * Test method for {@link Criterion#setAmount(double)}.
 	 */
 	@Test
 	public void testSetAmount() {
@@ -93,7 +94,7 @@ public class CriterionTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#getDays()}.
+	 * Test method for {@link Criterion#getDays()}.
 	 */
 	@Test
 	public void testGetDays() {
@@ -101,7 +102,7 @@ public class CriterionTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#setDays(int)}.
+	 * Test method for {@link Criterion#setDays(int)}.
 	 */
 	@Test
 	public void testSetDays() {
