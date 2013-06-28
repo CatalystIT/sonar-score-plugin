@@ -12,33 +12,39 @@ class Trophy < ActiveRecord::Base
     @trophyValues
     @trophyPropertyValue
     @trophyArray = Array.new
-    @propertyFound
    
-    
   end
   
    #saves trophies created by the admin
-   def saveTrophy()          
+   def saveTrophy()
+    @name = parseTrophy()  
     @propertyFound = is_property_new?()
+    @validData = is_valid_data?()  
+   
     #if the global trophy does not exist in the database...persist the property and trophy name 
     if (@propertyFound.blank?)
-    	@name = parseTrophy()
-    	Property.set(@propertyValue , @name)
+      
+        if (@validData && validate_number(@amount) && validate_number(@duration))    
+          Property.set(@propertyValue , @name)
+        end
+      
     else
-    #if the global trophy property was found, then add the current trophy to the existing trophies	
-    	@name = parseTrophy()
-    	#finds the row with the global property
-    	@trophyValues = Property.find(:all, :conditions => {:prop_key => @propertyValue});
-    	@trophyPropertyValue= @trophyValues[0].text_value
-    	#create an array of all the existing trophies
-    	@trophyArray = @trophyPropertyValue.split(",")    	
-    	@trophyArray.push(@name)    	
-    	Property.set(@propertyValue, @trophyArray)
+    #if the global trophy property was found, then add the current trophy to the existing trophies        
+      #finds the row with the global property
+      @trophyValues = Property.find(:all, :conditions => {:prop_key => @propertyValue});
+      @trophyPropertyValue= @trophyValues[0].text_value
+      #create an array of all the existing trophies
+      @trophyArray = @trophyPropertyValue.split(",")      
+      @trophyArray.push(@name)  
+      if (@validData && validate_number(@amount) && (@duration))     
+        Property.set(@propertyValue, @trophyArray)
+      end
     end    
     
      
     end
-   #checks to see if the global trophy property has been persisted
+   
+  #checks to see if the global trophy property has been persisted
   def is_property_new?()
     Property.find(:all, :conditions => {:prop_key => @propertyValue})
   end
@@ -48,5 +54,25 @@ class Trophy < ActiveRecord::Base
     @name = @name + '{'+ @metric + ';' + @amount + ';' + @duration + @durationValue +'}'
   end
   
-  
+  #checking to see if the amount entered is a number
+  def validate_number(amount)
+    reg = /^[1-9]\d*(\.\d+)?$/
+    return (amount.match(reg))? true: false    
+  end
+    
+  #makes sure all the form values are not blank
+   def is_valid_data?()
+    @validData = false
+    name = @name
+    metric = @metric
+    amount = @amount
+    isNumber = validate_number(amount)
+    duration = @duration
+    
+    unless(name.blank? | metric.blank? | amount.blank? | duration.blank? )       
+      @validData = true     
+    end
+     
+   end
+ 
 end
