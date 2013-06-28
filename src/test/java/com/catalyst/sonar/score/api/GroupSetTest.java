@@ -4,7 +4,6 @@
 package com.catalyst.sonar.score.api;
 
 import static org.junit.Assert.*;
-import static com.catalyst.sonar.score.api.ApiTestConstants.*;
 
 import org.junit.Before;
 import org.junit.Test;
