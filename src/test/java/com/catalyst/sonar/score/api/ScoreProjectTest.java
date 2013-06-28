@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.sonar.api.database.model.ResourceModel;
 
 /**
- * Test Class for {@link com.catalyst.sonar.score.api.Criterion}.
+ * Test Class for {@link ScoreProject}.
  * 
  * @author JDunn
  */
@@ -32,8 +32,8 @@ public class ScoreProjectTest {
 	}
 
 	/**
-	 * Test method for {@link ScoreProject#ScoreProject(java.lang.String)}.
-	 * Asserts that the constructor sets the appropriate fields.
+	 * Test method for {@link ScoreProject#ScoreProject(String)}. Asserts that
+	 * the constructor sets the appropriate fields.
 	 */
 	@Test
 	public void testScoreProjectString() {
@@ -46,8 +46,7 @@ public class ScoreProjectTest {
 	}
 
 	/**
-	 * Test method for
-	 * {@link ScoreProject#ScoreProject(java.lang.String, java.lang.String, java.lang.String)}
+	 * Test method for {@link ScoreProject#ScoreProject(String, String, String)}
 	 * . Asserts that the constructor sets the appropriate fields.
 	 */
 	@Test
@@ -58,15 +57,15 @@ public class ScoreProjectTest {
 		assertEquals(ROOTID, testProject.getRootId());
 		assertEquals(NAME, testProject.getName());
 	}
-	
+
 	/**
-	 * Test method for
-	 * {@link ScoreProject#ScoreProject(java.lang.String, java.lang.String, java.lang.String)}
-	 * . Asserts that the constructor sets the appropriate fields.
+	 * Test method for {@link ScoreProject#ScoreProject(ResourceModel)} .
+	 * Asserts that the constructor sets the appropriate fields.
 	 */
 	@Test
 	public void testScoreProjectResourceModel() {
-		ResourceModel resourceModel = new ResourceModel(SCOPE, KEY, QUALIFIER, ROOTID, NAME);
+		ResourceModel resourceModel = new ResourceModel(SCOPE, KEY, QUALIFIER,
+				ROOTID, NAME);
 		testProject = new ScoreProject(resourceModel);
 		assertEquals(SCOPE, testProject.getScope());
 		assertEquals(KEY, testProject.getKey());
