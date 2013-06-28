@@ -13,8 +13,9 @@ import org.sonar.api.database.DatabaseSession;
 import org.sonar.jpa.dao.MeasuresDao;
 
 /**
+ * Test Class for {@link CriterionParser}.
+ * 
  * @author JDunn
- *
  */
 public class CriterionParserTest {
 	
@@ -47,7 +48,7 @@ public class CriterionParserTest {
 	@Test
 	public void testCriterionParserDatabaseSessionString() {
 		assertEquals(mockSession, testParser.getSession());
-		String[] criterionFields = (String[]) getField(testParser, "criterionFields");
+		String[] criterionFields = (String[]) getField(testParser, "fields");
 		assertArrayEquals(criterionFields, CRITERION_STRING.split(";"));
 		MeasuresDao dao = (MeasuresDao) getField(testParser, METRIC_DAO_FIELD);
 		assertEquals(mockSession, dao.getSession());

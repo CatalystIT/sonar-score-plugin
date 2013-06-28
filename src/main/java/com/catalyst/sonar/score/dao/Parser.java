@@ -16,6 +16,8 @@ import org.sonar.jpa.dao.BaseDao;
  * @author JDunn
  */
 public abstract class Parser<E> extends BaseDao {
+	
+	private String[] fields;
 
 	/**
 	 * Constructs a {@link Parser}, instantiating the session. The entityString
@@ -25,7 +27,17 @@ public abstract class Parser<E> extends BaseDao {
 	 * @param entityString
 	 */
 	public Parser(DatabaseSession session, String entityString) {
-		super(session);
+		this(session, new String[1]);
+		this.fields[0] = entityString;
+	}
+	
+	/**
+	 * Returns the String at {@code fields[index]}.
+	 * @param index
+	 * @return the String at fields[index].
+	 */
+	public String get(int index) {
+		return fields[index];
 	}
 
 	/**
@@ -34,5 +46,17 @@ public abstract class Parser<E> extends BaseDao {
 	 * @return
 	 */
 	public abstract E parse();
+
+	/**
+	 * For use only within the public constructor or the public constructors of
+	 * subclasses.
+	 * 
+	 * @param session
+	 */
+	protected Parser(DatabaseSession session, String[] fields) {
+		super(session);
+		this.fields = new String[fields.length];
+		System.arraycopy(fields, 0, this.fields, 0, fields.length);
+	}
 
 }
