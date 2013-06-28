@@ -15,7 +15,7 @@ import org.junit.Test;
  * 
  * @author JDunn
  */
-public class SearchableHashSetTest_ImmutableCopy {
+public class SearchableHashSet_ImmutableCopyTest {
 	SearchableHashSet<ScoreUser> testSet;
 	SearchableHashSet<ScoreUser> immutableCopy;
 
