@@ -11,11 +11,12 @@ import org.junit.Test;
 
 /**
  * Test Cases for all possible outcomes of
- * {@link com.catalyst.sonar.score.api.Criterion#equals(java.lang.Object)}.
+ * {@link Criterion#equals(java.lang.Object)}.
+ * 
  * @author JDunn
  */
 public class Criterion_EqualsTest {
-	
+
 	private Criterion testCriterion;
 	private Object referenceToTestCriterion;
 	private Object nullCriterion;
@@ -41,86 +42,89 @@ public class Criterion_EqualsTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#equals(java.lang.Object)}.
-	 * Asserts that two <code>Criteria</code> are equal when they are the same <code>Criterion</code> in memory.
+	 * Test method for {@link Criterion#equals(Object)}. Asserts that two
+	 * {@code Criteria} are equal when they are the same {@link Criterion} in
+	 * memory.
 	 */
 	@Test
 	public void testEqualsObject_isSameObjectInMemory_equals() {
 		assertEquals(testCriterion, referenceToTestCriterion);
 	}
-	
+
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#equals(java.lang.Object)}.
-	 * Asserts that two <code>Criteria</code> are not equal when the <code>Object</code> is <code>null</code>.
+	 * Test method for {@link Criterion#equals(Object)}. Asserts that two
+	 * {@code Criteria} are not equal when the {@code Object} is {@code null}.
 	 */
 	@Test
 	public void testEqualsObject_isNull_notEquals() {
 		assertNotEquals(testCriterion, nullCriterion);
 	}
-	
+
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#equals(java.lang.Object)}.
-	 * Asserts that two "<code>Criteria</code>" are not equal when the <code>Object</code> is
-	 * not an instance of <code>Criterion</code>.
+	 * Test method for {@link Criterion#equals(Object)}. Asserts that two "
+	 * {@code Criteria}" are not equal when the {@code Object} is not an
+	 * instance of {@code Criterion}.
 	 */
 	@Test
 	public void testEqualsObject_isNotACriterion_notEquals() {
 		assertNotEquals(testCriterion, notACriterion);
 	}
-	
+
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#equals(java.lang.Object)}.
-	 * Asserts that two <code>Criteria</code> are not equal when the Criterion has a <code>null</code>
-	 * metric and the <code>Object</code> has a non-<code>null</code> metric.
+	 * Test method for {@link Criterion#equals(Object)}. Asserts that two
+	 * {@code Criteria} are not equal when the {@link Criterion} has a
+	 * {@code null} {@code Metric} and the {@code Object} has a non-
+	 * {@code null} {@code Metric}.
 	 */
 	@Test
 	public void testEqualsObject_hasNonNullMetricWhenCriterionHasNullMetric_notEquals() {
 		testCriterion.setMetric(NULL_METRIC);
 		assertNotEquals(testCriterion, sameFields);
 	}
-	
+
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#equals(java.lang.Object)}.
-	 * Asserts that two <code>Criteria</code> are equal when they both have <code>null</code>
-	 * metrics and all their other fields are the same.
+	 * Test method for {@link Criterion#equals(Object)}. Asserts that two
+	 * {@code Criteria} are equal when they both have {@code null}
+	 * {@code Metric}s and all their other fields are the same.
 	 */
 	@Test
 	public void testEqualsObject_hasNullMetricWhenCriterionHasNullMetric_equals() {
 		testCriterion.setMetric(NULL_METRIC);
-		((Criterion)sameFields).setMetric(NULL_METRIC);
+		((Criterion) sameFields).setMetric(NULL_METRIC);
 		assertEquals(testCriterion, sameFields);
 	}
-	
+
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#equals(java.lang.Object)}.
-	 * Asserts that two <code>Criteria</code> are not equal when they each have different metrics.
+	 * Test method for {@link Criterion#equals(Object)}. Asserts that two
+	 * {@code Criteria} are not equal when they each have different
+	 * {@code Metric}s.
 	 */
 	@Test
 	public void testEqualsObject_differentMetric_notEquals() {
 		assertNotEquals(testCriterion, differentMetric);
 	}
-	
+
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#equals(java.lang.Object)}.
-	 * Asserts that two <code>Criteria</code> are not equal when they each have different amounts.
+	 * Test method for {@link Criterion#equals(Object)}. Asserts that two
+	 * {@code Criteria} are not equal when they each have different amounts.
 	 */
 	@Test
 	public void testEqualsObject_differentAmount_notEquals() {
 		assertNotEquals(testCriterion, differentAmount);
 	}
-	
+
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#equals(java.lang.Object)}.
-	 * Asserts that two <code>Criteria</code> are not equal when they each have different days.
+	 * Test method for {@link Criterion#equals(Object)}. Asserts that two
+	 * {@code Criteria} are not equal when they each have different days.
 	 */
 	@Test
 	public void testEqualsObject_differentDays_notEquals() {
 		assertNotEquals(testCriterion, differentDays);
 	}
-	
+
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.api.Criterion#equals(java.lang.Object)}.
-	 * Asserts that two <code>Criterion</code>s are equal when they both have the same fields.
+	 * Test method for {@link Criterion#equals(Object)}. Asserts that two
+	 * {@code Criteria} are equal when they both have the same fields.
 	 */
 	@Test
 	public void testEqualsObject_sameName_equals() {
