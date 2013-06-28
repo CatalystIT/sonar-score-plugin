@@ -3,13 +3,10 @@ package com.catalyst.sonar.score.api;
 import org.sonar.api.measures.Metric;
 
 /**
- * The <code>Criterion</code> class defines criteria for earning an award: A
- * <code>Metric</code>, a <code>double</code> for how good the
- * <code>Metric</code> must be, and an
- * <code>int<code> for the number of days the <code>Metric</code> must be that
- * good in order for the <code>Award</code> to be earned, and finally a
- * <code>Group</code> of members in case the <code>Award</code> is meant to only
- * apply to those members.
+ * The {@link Criterion} class defines criteria for earning an {@link Award}: a
+ * {@link Metric}, a {@code double} for how good the {@link Metric} must be, and
+ * an {@code int} for the number of days the {@code Metric} must be that good in
+ * order for the {@code Award} to be earned.
  * 
  */
 public class Criterion implements ScoreEntity {

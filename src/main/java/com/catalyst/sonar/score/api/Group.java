@@ -6,8 +6,8 @@ package com.catalyst.sonar.score.api;
 import java.util.Arrays;
 
 /**
- * <code>Group</code> extends <code>SearchableHashSet</code> where the type must
- * extend <code>Member</code>.
+ * {@link Group} extends {@link SearchableHashSet} where the type must extend
+ * {@link Member}.
  * 
  * @author JDunn
  */
@@ -42,6 +42,7 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements
 	 * 
 	 * @param name
 	 */
+	@SafeVarargs
 	public Group(String name, M... members) {
 		this(name);
 		addAll(Arrays.asList(members));
