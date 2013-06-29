@@ -8,7 +8,7 @@ import java.util.Arrays;
  * 
  * @author JDunn
  */
-public abstract class Award implements ScoreEntity {
+public abstract class Award implements AssignableScoreEntity {
 
 	public static final String UNNAMED_AWARD = "Unnamed Award";
 
@@ -167,6 +167,15 @@ public abstract class Award implements ScoreEntity {
 	@SuppressWarnings(UNCHECKED_WARNING)
 	public SearchableHashSet<Member> getMembersToExclude() {
 		return membersToExclude.immutableCopy();
+	}
+	
+	/**
+	 * Gets the uniqueId, which for an {@link Award} is the same as the name.
+	 * 
+	 * @see {@link Member#getUniqueId()}
+	 */
+	public String getUniqueId() {
+		return this.name;
 	}
 
 }

@@ -6,7 +6,7 @@ package com.catalyst.sonar.score.api;
 /**
  * {@code AwardSet} extends {@code SearchableHashSet<Award>}, overriding {@code add()}.
  */
-public class AwardSet<A extends Award> extends SearchableHashSet<A> implements ScoreEntity {
+public class AwardSet<A extends Award> extends SearchableHashSet<A> {
 
 	/**
 	 * If an {@code Award} with the same name is in this {@code AwardSet},

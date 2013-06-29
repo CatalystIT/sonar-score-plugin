@@ -218,5 +218,13 @@ public class AwardTest {
 	public void testGetCriteria() {
 		assertEquals(realSet, getField(testAward, "criteria"));
 	}
+	
+	/**
+	 * Test method for {@link Award#getUniqueId()}.
+	 */
+	@Test
+	public void testGetUniqueId() {
+		assertSame(testAward.getName(), testAward.getUniqueId());
+	}
 
 }

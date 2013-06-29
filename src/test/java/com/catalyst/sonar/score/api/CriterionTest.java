@@ -45,7 +45,10 @@ public class CriterionTest {
 	 */
 	@Test
 	public void testCriterion() {
-		assertTrue(new Criterion() instanceof ScoreEntity);
+		Criterion defaultCriterion = new Criterion();
+		assertEquals(0, defaultCriterion.getAmount(), 0);
+		assertNull(defaultCriterion.getMetric());
+		assertEquals(0, defaultCriterion.getDays());
 	}
 
 	/**

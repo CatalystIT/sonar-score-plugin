@@ -16,5 +16,7 @@ public interface ScoreEntity extends BatchExtension {
 	
 	String RAWTYPE_WARNING = "rawtypes";
 	String UNCHECKED_WARNING = "unchecked";
+	
+	String getUniqueId();
 
 }

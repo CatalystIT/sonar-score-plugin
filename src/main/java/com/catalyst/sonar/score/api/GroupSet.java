@@ -8,8 +8,7 @@ package com.catalyst.sonar.score.api;
  * {@code >}, overriding {@code add()}.
  */
 @SuppressWarnings("rawtypes")
-public class GroupSet<G extends Group> extends SearchableHashSet<G> implements
-		ScoreEntity {
+public class GroupSet<G extends Group> extends SearchableHashSet<G> {
 
 	/**
 	 * If a {@link Group} with the same name is in this {@code GroupSet}, and if

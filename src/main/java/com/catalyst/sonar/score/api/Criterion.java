@@ -9,7 +9,7 @@ import org.sonar.api.measures.Metric;
  * order for the {@code Award} to be earned.
  * 
  */
-public class Criterion implements ScoreEntity {
+public class Criterion {
 
 	public static final String ALL_MEMBERS = "ALL_MEMBERS";
 

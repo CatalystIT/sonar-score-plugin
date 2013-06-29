@@ -120,7 +120,7 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements
 	}
 
 	/**
-	 * Gets the uniqueId, which for a group is the same as the name.
+	 * Gets the uniqueId, which for a {@link Group} is the same as the name.
 	 * 
 	 * @see {@link Member#getUniqueId()}
 	 */
