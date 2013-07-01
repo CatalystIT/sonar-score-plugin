@@ -1,8 +1,9 @@
 class Trophy < ActiveRecord::Base
-  attr_accessor :name, :metric, :amount, :duration, :durationValue
+  attr_accessor :name, :metric, :amount, :duration, :durationValue, :type
     
    #initialize the variables 
   def initialize(trophy=nil)
+    @type = trophy['type']
     @name = trophy['name']
     @metric = trophy['metric']
     @amount = trophy['amount']
@@ -17,6 +18,7 @@ class Trophy < ActiveRecord::Base
   
    #saves trophies created by the admin
    def saveTrophy()
+    
     @name = parseTrophy()  
     @propertyFound = is_property_new?()
     @validData = is_valid_data?()  

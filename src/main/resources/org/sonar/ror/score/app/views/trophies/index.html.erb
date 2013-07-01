@@ -1,18 +1,21 @@
-<div class="dashbox"><h1> Define your trophies here </h1></div><br> 
+<div class="dashbox"><h1> The Awards Page </h1></div><br></br>
 	
-	<% form_for :trophy,:url =>{:controller => "trophies",:action => "create",:method => :post} do|f| %></br>
-	
+	<% form_for :trophy, :url =>{:controller => "trophies",:action => "create",:method => :post} do|f| %></br>	
+	<%= f.radio_button :type, "Trophy" %>
+	<%= f.label :type,'Trophy' %>
+	<%= f.radio_button :type, "Title Cup" %>
+	<%= f.label :type,'Title Cup' %></br></br></br>
 	<%= f.label :name %></br>
 	<%= f.text_field :name %></br>
-	<%= f.label :metric %></br>
-	<%= f.text_field :metric %></br>
-	<%= f.label :amount %></br>
+	<%= f.label :metric %></br>	
+	<%= collection_select(:trophy, :metric, Metric.find(:all, :conditions => {:enabled => 1}, :order => 'short_name ASC'), :short_name, :short_name, :prompt => "Please select a metric") %></br>	
+	<%= f.label :amount %></br>                                                                
 	<%= f.text_field :amount %></br>
 	<%= f.label :duration %></br>
 	<%= f.text_field :duration %>
 	<%= f.select (:durationValue, [['Days', 'd'],['Weeks', 'w']],{ :prompt => "Please select"}) %>	
 	</br></br>
-	<%= f.submit :"Create Trophy" %>	  
+	<%= f.submit :"Save" %>	  
 	<% end %> 
 	
 	

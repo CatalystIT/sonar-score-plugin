@@ -24,7 +24,6 @@ public class ScoreEntityDaoTest {
 	
 	private static class SEntity implements ScoreEntity {
 
-		@Override
 		public String getUniqueId() {
 			return UNIQUEID;
 		}
