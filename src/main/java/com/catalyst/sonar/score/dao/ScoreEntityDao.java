@@ -21,6 +21,8 @@ public abstract class ScoreEntityDao<E extends ScoreEntity> extends BaseDao {
 
 	/**
 	 * Constructor with a parameter for the session to set the session.
+	 * 
+	 * @param session
 	 */
 	public ScoreEntityDao(DatabaseSession session) {
 		super(session);

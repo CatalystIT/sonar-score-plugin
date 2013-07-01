@@ -15,7 +15,7 @@ import com.catalyst.sonar.score.api.Award;
  * @author JDunn
  */
 public abstract class AwardParser<A extends Award> extends Parser<A> {
-
+	
 	/**
 	 * Creates a String[] whose two fields are the {@link Award} name and the
 	 * {@code String} representation of the {@link Criterion}. Intended only for
