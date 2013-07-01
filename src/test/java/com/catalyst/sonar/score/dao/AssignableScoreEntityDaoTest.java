@@ -68,7 +68,7 @@ public class AssignableScoreEntityDaoTest {
 	 */
 	@Test
 	public void testAssignableScoreEntityDao() {
-		assertTrue(testDao instanceof AssignableScoreEntityDao);
+		assertEquals(mockSession, testDao.getSession());
 	}
 
 }

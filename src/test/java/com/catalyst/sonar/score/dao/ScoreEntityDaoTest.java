@@ -80,5 +80,13 @@ public class ScoreEntityDaoTest {
 	public void testGetE() {
 		assertEquals(ENTITY, testDao.get(ENTITY));
 	}
+	
+	/**
+	 * Test method for {@ScoreEntityDao(DatabaseSession)}.
+	 */
+	@Test
+	public void testAssignableScoreEntityDao() {
+		assertEquals(mockSession, testDao.getSession());
+	}
 
 }
