@@ -12,10 +12,10 @@ import com.catalyst.sonar.score.api.SearchableHashSet;
 /**
  * The {@link ScoreEntityDao} class defines methods, mostly abstract, that will
  * work with a {@link ScoreEntity} of type {@code E} and the database.
- * 
- * @author James
  *
  * @param <E>
+ * 
+ * @author JDunn
  */
 public abstract class ScoreEntityDao<E extends ScoreEntity> extends BaseDao {
 
