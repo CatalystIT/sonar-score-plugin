@@ -20,6 +20,7 @@ import com.catalyst.sonar.score.api.SearchableHashSet;
 import com.catalyst.sonar.score.api.TitleCup;
 import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
+import com.catalyst.sonar.score.batch.TitleCupDecorator;
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
 import com.catalyst.sonar.score.batch.points.InvalidNumberOfDoublesException;
 import com.catalyst.sonar.score.batch.points.MetricBrackets;
@@ -69,6 +70,7 @@ public class ScorePluginTest {
 						PointsDecorator.class,
 						PointsCalculator.class,
 						TrophiesDecorator.class,
+						TitleCupDecorator.class,
 						ScoreRubyWidget.class,
 						EnhancedListFilterWidget.class,
 						ProjectComparisonWidget.class,
