@@ -76,8 +76,10 @@ class Trophy < ActiveRecord::Base
     amount = @amount
     isNumber = validate_number(amount)
     duration = @duration
+    durationValue = @durationValue
+    type = @type
     
-    unless(name.blank? | metric.blank? | amount.blank? | duration.blank? )       
+    unless(name.blank? | metric.blank? | amount.blank? | duration.blank? | durationValue.blank? | type.blank?)       
       @validData = true     
     end
      
