@@ -9,7 +9,7 @@ class Trophy < ActiveRecord::Base
     @amount = trophy['amount']
     @duration = trophy['duration']
     @durationValue = trophy['durationValue']
-    @propertyValue = "sonar.score.Trophy"
+    @propertyValue 
     @trophyValues
     @trophyPropertyValue
     @trophyArray = Array.new
@@ -18,6 +18,11 @@ class Trophy < ActiveRecord::Base
   
    #saves trophies created by the admin
    def saveTrophy()
+    if (@type == "Trophy")
+      @propertyValue = "sonar.score.Trophy"
+    elsif (@type == "Title Cup")
+      @propertyValue = "sonar.score.TitleCup"
+    end
     
     @name = parseTrophy()  
     @propertyFound = is_property_new?()
@@ -38,14 +43,15 @@ class Trophy < ActiveRecord::Base
       #create an array of all the existing trophies
       @trophyArray = @trophyPropertyValue.split(",")      
       @trophyArray.push(@name)  
-      if (@validData && validate_number(@amount) && (@duration))     
+      if (@validData && validate_number(@amount) && (@duration))             
         Property.set(@propertyValue, @trophyArray)
       end
     end    
     
      
     end
-   
+    
+  
   #checks to see if the global trophy property has been persisted
   def is_property_new?()
     Property.find(:all, :conditions => {:prop_key => @propertyValue})

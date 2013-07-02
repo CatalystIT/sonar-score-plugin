@@ -17,7 +17,7 @@ public final class TrophyPage implements Page{
 	}
 	
 	public String getTitle() {
-		  return "Trophy Page";
+		  return "Awards Page";
 	}
 
 //	@Override

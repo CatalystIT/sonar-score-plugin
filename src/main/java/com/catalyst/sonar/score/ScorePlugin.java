@@ -45,7 +45,14 @@ import com.catalyst.sonar.score.util.TrophiesHelper;
 		key = ScorePlugin.PROJECT_TROPHY,
 		name = "Project Trophy",
 		description = "Specify the trophies earned by a project.",
-		project = true,
+		project = false,
+		global = false,
+		multiValues = true),
+	  @Property(
+		key = ScorePlugin.TITLECUP,
+		name = "Title Cup",
+		description = "Specify the Title Cup.",
+		project = false,
 		global = false,
 		multiValues = true),
 	  @Property(
@@ -54,7 +61,7 @@ import com.catalyst.sonar.score.util.TrophiesHelper;
 	    description = " The trophies awarded need to be specified in the following format - TrophyName{MetricName;Amount;Time} e.g.GreatCode{Coverage;90%;10d}. To take more than one metric into account for a particular trophy, add another value with the same TrophyName. e.g.GreatCode{Violations;50;2w}." +
 	    		"Time can be denoted using 'd' for days and 'w for weeks. While naming the metrics please follow the naming convention as seen on the widgets e.g. Coverage, Rules Compliance, Violations, Comments, Duplications, Points etc.",
 	    project = false,
-	    global = true,
+	    global = false,
 	    multiValues = true)})
 
 /**
@@ -77,7 +84,7 @@ public class ScorePlugin extends SonarPlugin{
 		//the decorator class (batch)
 		PointsDecorator.class, PointsCalculator.class, TrophiesDecorator.class,
 		// Score's ui/widgets
-		ScoreRubyWidget.class, EnhancedListFilterWidget.class, ProjectComparisonWidget.class, TrophyWidget.class, ImageUploadPage.class,
+		ScoreRubyWidget.class, EnhancedListFilterWidget.class, ProjectComparisonWidget.class, TrophyWidget.class, //ImageUploadPage.class,
 		
 		MetricBrackets.class, MetricBracketsParser.class, InvalidNumberOfDoublesException.class, 
 		
