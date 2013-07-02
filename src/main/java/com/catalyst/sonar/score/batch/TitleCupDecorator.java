@@ -1,8 +1,6 @@
 package com.catalyst.sonar.score.batch;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import org.sonar.api.batch.Decorator;
@@ -12,15 +10,12 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.database.DatabaseSession;
-import org.sonar.api.database.model.Snapshot;
 
 import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.ScoreProject;
-import com.catalyst.sonar.score.api.SearchableHashSet;
 import com.catalyst.sonar.score.api.TitleCup;
-import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
 
 import org.sonar.api.config.Settings;
 
@@ -102,7 +97,11 @@ public class TitleCupDecorator implements Decorator {
 			ScoreProject currentHolder = projectDao.getProjectById(cupDao
 					.getCurrentlyHeld(cup).getResourceId());
 			ScoreProject winner = whoShouldEarnCup(cup, thisProject, currentHolder);
-			cupDao.assign(cup, winner);
+			if(winner != null) {
+				cupDao.assign(cup, winner);
+			} else {
+				//TODO unassign the cup so no one has it.
+			}
 		}
 
 	}
