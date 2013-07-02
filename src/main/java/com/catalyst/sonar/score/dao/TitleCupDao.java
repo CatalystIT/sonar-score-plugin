@@ -106,7 +106,7 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		return getAllCupsFromProperties(properties);
 	}
 
-	private Property getTitleCupProperty(String name) {
+	public Property getTitleCupProperty(String name) {
 		List<Property> properties = getSession().getResults(Property.class,
 				"key", TITLECUP + ":" + name);
 		return properties.get(0);
@@ -129,15 +129,6 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	}
 
 	/**
-	 * Gets the Property containing the information about who currently holds
-	 * the TitleCup with the given name.
-	 */
-	public Property getCurrentlyHeld(TitleCup cup) {
-		// TODO implement
-		return null;
-	}
-
-	/**
 	 * @see {@link AwardDao#getAllAwards()}
 	 */
 	@Override
@@ -146,6 +137,9 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 				"key", TITLECUP);
 		AwardSet<TitleCup> titleCups = new AwardSet<TitleCup>();
 		for (Property property : properties) {
+			System.out.println("*************************************************");
+			System.out.println(property.getValue());
+			System.out.println("*************************************************");
 			TitleCupParser parser = new TitleCupParser(getSession(),
 					property.getValue());
 			titleCups.add(parser.parse());

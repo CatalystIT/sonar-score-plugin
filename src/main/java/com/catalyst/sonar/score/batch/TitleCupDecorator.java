@@ -10,6 +10,7 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.database.DatabaseSession;
+import org.sonar.api.database.configuration.Property;
 
 import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.AwardSet;
@@ -90,19 +91,22 @@ public class TitleCupDecorator implements Decorator {
 	public void decorate(@SuppressWarnings("rawtypes") final Resource resource,
 			DecoratorContext context) {
 		TitleCupDao cupDao = new TitleCupDao(session);
-		AwardSet<TitleCup> cups = cupDao.getAll();
-		ScoreProjectDao projectDao = new ScoreProjectDao(session);
-		ScoreProject thisProject = projectDao.getProjectById(resource.getId());
-		for (TitleCup cup : cups) {
-			ScoreProject currentHolder = projectDao.getProjectById(cupDao
-					.getCurrentlyHeld(cup).getResourceId());
-			ScoreProject winner = whoShouldEarnCup(cup, thisProject, currentHolder);
-			if(winner != null) {
-				cupDao.assign(cup, winner);
-			} else {
-				//TODO unassign the cup so no one has it.
-			}
-		}
+		Property tcProperty = cupDao.getTitleCupProperty("BestCoverage");
+		tcProperty.setResourceId(1);
+		session.save(tcProperty);
+//		AwardSet<TitleCup> cups = cupDao.getAll();
+//		ScoreProjectDao projectDao = new ScoreProjectDao(session);
+//		ScoreProject thisProject = projectDao.getProjectById(resource.getId());
+//		for (TitleCup cup : cups) {
+//			ScoreProject currentHolder = projectDao.getProjectById(cupDao
+//					.getTitleCupProperty(cup.getName()).getResourceId());
+//			ScoreProject winner = whoShouldEarnCup(cup, thisProject, currentHolder);
+//			if(winner != null) {
+//				cupDao.assign(cup, winner);
+//			} else {
+//				//TODO unassign the cup so no one has it.
+//			}
+//		}
 
 	}
 
