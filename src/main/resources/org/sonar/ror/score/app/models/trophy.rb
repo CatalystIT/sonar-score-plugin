@@ -16,7 +16,7 @@ class Trophy < ActiveRecord::Base
    
   end
   
-   #saves trophies created by the admin
+   #saves Trophy(s) or Title Cup(s) created by the admin
    def saveTrophy()
     if (@type == "Trophy")
       @propertyValue = "sonar.score.Trophy"
@@ -24,6 +24,7 @@ class Trophy < ActiveRecord::Base
       @propertyValue = "sonar.score.TitleCup"
     end
     
+    @name = formatName()
     @name = parseTrophy()  
     @propertyFound = is_property_new?()
     @validData = is_valid_data?()  
@@ -36,28 +37,36 @@ class Trophy < ActiveRecord::Base
         end
       
     else
-    #if the global trophy property was found, then add the current trophy to the existing trophies        
+    #if the global trophy property was found, then add the current trophy/title cup to the existing trophies/title cups       
       #finds the row with the global property
       @trophyValues = Property.find(:all, :conditions => {:prop_key => @propertyValue});
       @trophyPropertyValue= @trophyValues[0].text_value
-      #create an array of all the existing trophies
+      #create an array of all the existing trophies/title cups
       @trophyArray = @trophyPropertyValue.split(",")      
       @trophyArray.push(@name)  
-      if (@validData && validate_number(@amount) && (@duration))             
-        Property.set(@propertyValue, @trophyArray)
-      end
-    end    
-    
-     
+        if (@validData && validate_number(@amount) && (@duration))             
+          Property.set(@propertyValue, @trophyArray)
+        end
+      end    
     end
     
+  #formats the title cup/trophy name to capitalize every word and removes spaces between words
+  #i.e. : My best Trophy changes to MyBestTrophy
+  def formatName()
+    if (@name.match(/\s/))
+      @name =  @name.split(' ').map(&:capitalize).join(' ').delete(' ')
+    else
+      @name = @name
+    end 
+   
+  end
   
-  #checks to see if the global trophy property has been persisted
+  #checks to see if the global trophy/title cup property has been persisted
   def is_property_new?()
     Property.find(:all, :conditions => {:prop_key => @propertyValue})
   end
   
-  #set the global trophy property text_value correctly so the different trophies can be parsed
+  #set the global trophy property/title cup property text_value correctly so the different trophies/title cups can be parsed
   def parseTrophy()
     @name = @name + '{'+ @metric + ';' + @amount + ';' + @duration + @durationValue +'}'
   end

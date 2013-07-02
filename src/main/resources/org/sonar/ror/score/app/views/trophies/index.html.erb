@@ -11,9 +11,10 @@
 	<%= collection_select(:trophy, :metric, Metric.find(:all, :conditions => {:enabled => 1}, :order => 'short_name ASC'), :short_name, :short_name, :prompt => "Please select a metric") %></br>	
 	<%= f.label :amount %></br>                                                                
 	<%= f.text_field :amount %></br>
-	<%= f.label :duration %></br>
-	<%= f.text_field :duration %>
+	<%= f.label :duration %></br>	
+	<%= f.text_field :duration %>	
 	<%= f.select (:durationValue, [['Days', 'd'],['Weeks', 'w']],{ :prompt => "Please select"}) %>	
+	<%= f.label  'Weeks/Days' %></br>
 	</br></br>
 	<%= f.submit :"Save" %>	  
 	<% end %> 
