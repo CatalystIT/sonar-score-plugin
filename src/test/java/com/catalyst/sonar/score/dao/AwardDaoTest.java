@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.sonar.api.database.DatabaseSession;
 
 import com.catalyst.sonar.score.api.Award;
+import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.ReceiverScoreEntity;
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.ScoreUser;
@@ -55,6 +56,26 @@ public class AwardDaoTest {
 
 		public boolean update(NewAward entity) {
 			return false;
+		}
+
+		@Override
+		protected NewAward getAssignedFromUser(NewAward award, ScoreUser user) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		protected NewAward getAssignedFromProject(NewAward award,
+				ScoreProject project) {
+			return null;
+		}
+
+		protected AwardSet<NewAward> getAllAssignedFromUser(ScoreUser user) {
+			return null;
+		}
+
+		protected AwardSet<NewAward> getAllAssignedFromProject(
+				ScoreProject project) {
+			return null;
 		}
 		
 	}

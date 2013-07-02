@@ -90,12 +90,12 @@ public class ScorePlugin extends SonarPlugin{
 		
 		Criteria.class, Trophy.class, TrophyAndCriteriaParser.class, TrophySet.class,
 		
-		AwardTrophies.class, MeasuresHelper.class, MetricsHelper.class, DateUtility.class, SnapshotHistory.class, TrophiesHelper.class, TrophyPage.class,
+		AwardTrophies.class, MeasuresHelper.class, MetricsHelper.class, DateUtility.class, SnapshotHistory.class, TrophiesHelper.class, TrophyPage.class//,
 		
 		//API
-		Award.class, AwardSet.class, Criterion.class, Group.class, Member.class,
-		ScoreEntity.class, ScoreProject.class, ScoreUser.class, SearchableHashSet.class,
-		TitleCup.class		
+//		AwardSet.class, Criterion.class, Group.class, Member.class,
+//		ScoreProject.class, ScoreUser.class, SearchableHashSet.class,
+//		TitleCup.class		
 		
 		);
 		

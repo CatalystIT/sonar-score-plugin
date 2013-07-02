@@ -11,7 +11,7 @@ import com.catalyst.sonar.score.api.Criterion;
 import org.sonar.jpa.dao.MeasuresDao;
 
 /**
- * Parses a {@link Criterion) from a {@code String}.
+ * Parses a {@link Criterion} from a {@code String}.
  * 
  * @author JDunn
  */
@@ -38,36 +38,47 @@ public class CriterionParser extends Parser<Criterion> {
 	}
 
 	/**
-	 * Parses out a {@link Criterion} from the criterionString.
+	 * Parses out a {@link Criterion} from the criterionString. If the
+	 * criterionString does not have fields for amount and days, then only the
+	 * metric is set, and the Criterion Type is set to BEST.
+	 * 
 	 * @see {@link Parser#parse()}
+	 * @see {@link Criterion#Criterion(Metric)}
+	 * @see {@link Criterion.Type}
 	 */
 	@Override
 	public Criterion parse() {
 		Metric metric = parseMetric();
-		double amount = parseAmount();
-		int days = parseDays();
+		double amount = 0;
+		int days = 0;
+		try {
+			amount = parseAmount();
+			days = parseDays();
+		} catch (IndexOutOfBoundsException e) {
+			return new Criterion(metric);
+		}
 		return new Criterion(metric, amount, days);
 	}
 
 	/**
-	 * parses out a {@link Metric} from the criterionString.
+	 * Parses out a {@link Metric} from the criterionString.
 	 */
 	public Metric parseMetric() {
 		return metricDao.getMetric(get(METRIC_INDEX));
 	}
 
 	/**
-	 * parses out an amount from the criterionString.
+	 * Parses out an amount from the criterionString.
 	 */
 	public double parseAmount() {
 		return Double.parseDouble(get(AMOUNT_INDEX));
 	}
 
 	/**
-	 * parses out an number of days from the criterionString.
+	 * Parses out a number of days from the criterionString.
 	 */
 	public int parseDays() {
-		String daysString = get(DAYS_INDEX);		
+		String daysString = get(DAYS_INDEX);
 		String numberOf = daysString.replaceAll("\\D", "");
 		String period = daysString.substring(daysString.length() - 1);
 		int periodFactor = (period.equalsIgnoreCase("w")) ? DAYS_IN_WEEK : 1;

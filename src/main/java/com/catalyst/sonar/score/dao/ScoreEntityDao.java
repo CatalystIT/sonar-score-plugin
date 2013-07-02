@@ -49,7 +49,7 @@ public abstract class ScoreEntityDao<E extends ScoreEntity> extends BaseDao {
 	public abstract E get(String uniqueId);
 
 	/**
-	 * Retrieves all the {@code ScoreEntiti}es of type {@code e} in the
+	 * Retrieves all the {@code ScoreEntiti}es of type {@code E} in the
 	 * database.
 	 * 
 	 * @return

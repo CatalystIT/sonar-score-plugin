@@ -16,6 +16,7 @@ public class Criterion {
 	private Metric metric;
 	private double amount;
 	private int days;
+	private Type type;
 
 	/**
 	 * Default Constructor, necessary for the SCORE plugin to work, calls
@@ -23,6 +24,15 @@ public class Criterion {
 	 */
 	public Criterion() {
 		super();
+	}
+	
+	/**
+	 * Single-Arg constructor, sets the metric, and sets the Type to BEST.
+	 */
+	public Criterion(Metric metric) {
+		this();
+		this.metric = metric;
+		this.type = Criterion.Type.BEST;
 	}
 
 	/**
@@ -38,6 +48,7 @@ public class Criterion {
 		this.metric = metric;
 		this.amount = amount;
 		this.days = days;
+		this.type = Criterion.Type.GOOD;
 	}
 
 	/**
@@ -74,10 +85,13 @@ public class Criterion {
 		} else if (!metric.equals(criterion.metric)) {
 			return false;
 		}
-		if (!(amount == criterion.amount)) {
+		if (amount != criterion.amount) {
 			return false;
 		}
-		if (!(days == criterion.days)) {
+		if (days != criterion.days) {
+			return false;
+		}
+		if (type != criterion.type) {
 			return false;
 		}
 		return true;
@@ -92,6 +106,7 @@ public class Criterion {
 		int result = 1;
 		result = prime * result + days;
 		result = prime * result + ((metric == null) ? 0 : metric.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		long temp = Double.doubleToLongBits(amount);
 		result = prime * result + (int) (temp ^ (temp >>> (prime + 1)));
 		return result;
@@ -140,5 +155,23 @@ public class Criterion {
 	 */
 	public void setDays(int days) {
 		this.days = days;
+	}
+	
+	/**
+	 * @return the type
+	 */
+	public Type getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public static enum Type {
+		GOOD, BEST;
 	}
 }

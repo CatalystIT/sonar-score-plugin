@@ -47,6 +47,15 @@ public class AssignableScoreEntityDaoTest {
 		public boolean update(Award entity) {
 			return false;
 		}
+
+		public SearchableHashSet<Award> getAllAssigned(
+				ReceiverScoreEntity receiver) {
+			return null;
+		}
+
+		public Award getAssigned(Award assignable, ReceiverScoreEntity receiver) {
+			return null;
+		}
 		
 	}
 

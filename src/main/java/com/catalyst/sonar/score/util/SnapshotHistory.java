@@ -7,7 +7,7 @@ import java.util.Date;
  * @author mwomack
  *
  */
-public class SnapshotHistory {
+public class SnapshotHistory implements Comparable<SnapshotHistory> {
 	
 	private Date buildDate;
 	private BigDecimal measureValue;
@@ -96,6 +96,11 @@ public class SnapshotHistory {
 	 */
 	public void setMeasureValue(BigDecimal metricValue) {
 		this.measureValue = metricValue;
+	}
+	
+	@Override
+	public int compareTo(SnapshotHistory other) {
+		return buildDate.compareTo(other.buildDate);
 	}
 
 

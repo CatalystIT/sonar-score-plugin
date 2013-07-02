@@ -55,6 +55,57 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		return false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.catalyst.sonar.score.dao.AwardDao#getAssignedFromUser(com.catalyst
+	 * .sonar.score.api.Award, com.catalyst.sonar.score.api.ScoreUser)
+	 */
+	@Override
+	protected TitleCup getAssignedFromUser(TitleCup cup, ScoreUser user) {
+		List<Property> properties = getSession().getResults(Property.class,
+				"userId", user.getId());
+		return getCupFromProperties(cup, properties);
+	}
+
+	/**
+	 * Retrieves the {@link TitleCup} if it has been assigned to the project. If
+	 * it has not been assigned, {@code null} is returned.
+	 * 
+	 * @see {@link AwardDao#getAssignedFromProject(Award, ScoreProject)}
+	 */
+	@Override
+	protected TitleCup getAssignedFromProject(TitleCup cup, ScoreProject project) {
+		List<Property> properties = getSession().getResults(Property.class,
+				"resourceId", project.getId());
+		return getCupFromProperties(cup, properties);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see AwardDao#getAllAssignedFromUser(ScoreUser)
+	 */
+	@Override
+	protected AwardSet<TitleCup> getAllAssignedFromUser(ScoreUser user) {
+		List<Property> properties = getSession().getResults(Property.class,
+				"resourceId", user.getId());
+		return getAllCupsFromProperties(properties);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see AwardDao#getAllAssignedFromProject(ScoreProject)
+	 */
+	@Override
+	protected AwardSet<TitleCup> getAllAssignedFromProject(ScoreProject project) {
+		List<Property> properties = getSession().getResults(Property.class,
+				"resourceId", project.getId());
+		return getAllCupsFromProperties(properties);
+	}
+
 	private Property getTitleCupProperty(String name) {
 		List<Property> properties = getSession().getResults(Property.class,
 				"key", TITLECUP + ":" + name);
@@ -94,8 +145,9 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		List<Property> properties = getSession().getResults(Property.class,
 				"key", TITLECUP);
 		AwardSet<TitleCup> titleCups = new AwardSet<TitleCup>();
-		for(Property property : properties) {
-			TitleCupParser parser = new TitleCupParser(getSession(), property.getValue());			
+		for (Property property : properties) {
+			TitleCupParser parser = new TitleCupParser(getSession(),
+					property.getValue());
 			titleCups.add(parser.parse());
 		}
 		return new AwardSet<TitleCup>();
@@ -119,4 +171,34 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		return false;
 	}
 
+	private TitleCup getCupFromProperties(TitleCup cup,
+			List<Property> properties) {
+		retainOnlyTitleCups(properties);
+		for (Property property : properties) {
+			if (property.getKey().contains(cup.getName())) {
+				return get(cup);
+			}
+		}
+		return null;
+	}
+
+	private AwardSet<TitleCup> getAllCupsFromProperties(
+			List<Property> properties) {
+		retainOnlyTitleCups(properties);
+		AwardSet<TitleCup> cups = new AwardSet<TitleCup>();
+		for (Property property : properties) {
+			String cupName = property.getKey().split(":")[1];
+			cups.add(get(cupName));
+		}
+		return cups;
+	}
+
+	private List<Property> retainOnlyTitleCups(List<Property> properties) {
+		for (int i = 0; i < properties.size(); i++) {
+			while (properties.get(i).getKey().contains(TITLECUP)) {
+				properties.remove(i);
+			}
+		}
+		return properties;
+	}
 }
