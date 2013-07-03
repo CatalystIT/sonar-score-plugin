@@ -91,7 +91,6 @@ public class TitleCupDecorator implements Decorator {
 	 */
 	public void decorate(@SuppressWarnings("rawtypes") final Resource resource,
 			DecoratorContext context) {
-		int i = 0;
 		try {
 			if(resource.getScope() != "PRJ") {
 				return;
@@ -109,7 +108,7 @@ public class TitleCupDecorator implements Decorator {
 					.getId());
 			for (TitleCup cup : cups) {
 				System.out.println("!!!Cup = " + cup.getName());
-				int resourceId = cupDao.getTitleCupProperty(cup.getName())
+				Integer resourceId = cupDao.getTitleCupProperty(cup.getName())
 						.getResourceId();
 				System.out.println("!!! resourceId = " + resourceId);
 				ScoreProject currentHolder = projectDao
@@ -143,7 +142,6 @@ public class TitleCupDecorator implements Decorator {
 				cupDao.assign(cup, winner);
 			}
 		} catch (NullPointerException e) {
-			System.out.println("NULLPOINTER " + ++i);
 			// e.printStackTrace();
 		}
 		System.out

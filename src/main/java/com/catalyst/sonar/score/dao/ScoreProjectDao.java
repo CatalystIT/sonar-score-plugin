@@ -34,10 +34,14 @@ public class ScoreProjectDao extends ScoreEntityDao<ScoreProject> {
 	}
 
 	// TODO javadoc
-	public ScoreProject getProjectById(int id) {
+	public ScoreProject getProjectById(Integer id) {
 		System.out.println("\t<><><><><><><><>");
 		System.out.println("\tIn the Project Dao.");
+		if(id==null) {
+			return null;
+		}
 		ScoreProject scoreProject = null;
+		
 		List<ResourceModel> models = getSession().getResults(
 				ResourceModel.class, "id", id);
 		if (models == null) {
