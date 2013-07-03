@@ -32,6 +32,13 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	public TitleCupDao(DatabaseSession session) {
 		super(session);
 	}
+	
+	/**
+	 * @see {@link TitleCupDao#assignToProject(Award, ScoreUser)	
+	 */
+	public boolean assign(TitleCup cup, ScoreProject project) {
+		return assignToProject(cup, project);
+	}
 
 	/**
 	 * @see {@link AwardDao#assignToUser(Award, ScoreUser)	
@@ -47,12 +54,28 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 */
 	@Override
 	protected boolean assignToProject(TitleCup cup, ScoreProject project) {
+		System.out.println("\t<><><><><><><><>");
+		System.out.println("\tIn assignToProject()");
+		boolean returnThis;
+		System.out.println("Project = " + project);
 		if (project != null) {
-			getTitleCupProperty(cup.getName()).setResourceId(project.getId());
+			Property titleCupProperty = getTitleCupProperty(cup.getName());
+			System.out.println("\ttitleCupProperty = " + titleCupProperty);
+			int resourceId = project.getId();
+			System.out.println("\tresourceId = " + resourceId);
+			titleCupProperty.setResourceId(resourceId);
+			System.out.println("\ttitleCupProperty = " + titleCupProperty);
+			System.out.println("\tAssigning " + cup + " to " + project.getName());
+			getSession().save(titleCupProperty);
+			returnThis = true;
 		} else {
+			System.out.println("\tUnassigning " + cup);
 			unassign(cup);
+			returnThis = false;
 		}
-		return false;
+		System.out.println("\tLeaving assignToProject()");
+		System.out.println("\t<><><><><><><><>");
+		return returnThis;
 	}
 
 	/*
@@ -109,14 +132,23 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	public Property getTitleCupProperty(String name) {
 		List<Property> properties = getSession().getResults(Property.class,
 				"key", TITLECUP + ":" + name);
-		return properties.get(0);
+		System.out.println("Found " + properties.size() + " Properties:");
+		for(Property property : properties) {
+			System.out.println(property.getKey() + " , resourceId = " + property.getResourceId());
+		}
+		Property property = properties.get(0);
+		System.out.println("We want the first one:");
+		System.out.println(property.getKey() + " , resourceId = " + property.getResourceId());
+		return property;
 	}
 
 	/**
 	 * Unassigns the {@link TitleCup} from all Projects.
 	 */
 	private void unassign(TitleCup cup) {
-		// TODO implement
+		Property property = getTitleCupProperty(cup.getName());
+		property.setResourceId(null);
+		getSession().save(property);
 	}
 
 	/**
@@ -133,18 +165,23 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 */
 	@Override
 	public AwardSet<TitleCup> getAll() {
+		System.out.println("\t<><><><><><><><>");
+		System.out.println("\tIn TitleCupDao.getAll()");
 		List<Property> properties = getSession().getResults(Property.class,
 				"key", TITLECUP);
 		AwardSet<TitleCup> titleCups = new AwardSet<TitleCup>();
-		for (Property property : properties) {
-			System.out.println("*************************************************");
-			System.out.println(property.getValue());
-			System.out.println("*************************************************");
-			TitleCupParser parser = new TitleCupParser(getSession(),
-					property.getValue());
+		Property property = properties.get(0);
+		System.out.println("\t" + property.getValue());
+		for(String cupString : property.getValue().split(",")) {
+			System.out.println("\t" + cupString);
+			TitleCupParser parser = new TitleCupParser(getSession(), cupString);
 			titleCups.add(parser.parse());
 		}
-		return new AwardSet<TitleCup>();
+		System.out.println("\t" + titleCups);
+		System.out.println("\tThere are " + titleCups.size() + " TitleCups");
+		System.out.println("\tLeaving TitleCupDao.getAll()");
+		System.out.println("\t<><><><><><><><>");
+		return titleCups;
 	}
 
 	/**

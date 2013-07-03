@@ -32,9 +32,11 @@ public class TitleCupParser extends AwardParser<TitleCup> {
 	 */
 	@Override
 	public TitleCup parse() {
+		System.out.println("\t\tPARSING TITLECUP");
 		CriterionParser cParser = new CriterionParser(getSession(), get(1));
 		TitleCup cup = new TitleCup(get(0));
 		cup.addCriterion(cParser.parse());
+		System.out.println("\t\tCUP = " + cup + "; CRITERIA = " + cup.getCriteria());
 		return cup;
 	}
 

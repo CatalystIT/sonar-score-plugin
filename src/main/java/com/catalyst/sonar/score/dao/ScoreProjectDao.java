@@ -3,9 +3,10 @@
  */
 package com.catalyst.sonar.score.dao;
 
+import java.util.List;
+
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.model.ResourceModel;
-import org.sonar.jpa.dao.BaseDao;
 
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.SearchableHashSet;
@@ -23,37 +24,67 @@ public class ScoreProjectDao extends ScoreEntityDao<ScoreProject> {
 	public ScoreProjectDao(DatabaseSession session) {
 		super(session);
 	}
-	
-	//TODO javadoc
+
+	// TODO javadoc
 	@Override
 	public ScoreProject get(String key) {
-		ResourceModel model = getSession()
-				.getResults(ResourceModel.class, "key", key).get(0);
+		ResourceModel model = getSession().getResults(ResourceModel.class,
+				"key", key).get(0);
 		return new ScoreProject(model);
 	}
-	
-	//TODO javadoc
+
+	// TODO javadoc
 	public ScoreProject getProjectById(int id) {
-		ResourceModel model = getSession()
-				.getResults(ResourceModel.class, "id", id).get(0);
-		return new ScoreProject(model);
+		System.out.println("\t<><><><><><><><>");
+		System.out.println("\tIn the Project Dao.");
+		ScoreProject scoreProject = null;
+		List<ResourceModel> models = getSession().getResults(
+				ResourceModel.class, "id", id);
+		if (models == null) {
+			System.out.println("\tWARNING!  models is null!!!!");
+		} else if (models.size() < 1) {
+			System.out.println("\tWARNING!  models.size() = " + models.size());
+		} else {
+			System.out.println("\tWe are only here because models.size() = " + models.size());
+			System.out.println("\tThere are " + models.size() + " Projects:");
+			for (ResourceModel model : models) {
+				System.out.println("\t" + model.getName() + " ("
+						+ model.getKey() + ")");
+			}
+			ResourceModel model = models.get(0);
+			if (model != null) {
+				System.out.println("\tWARNING!  model is null!!!!");
+				System.out.println("\tHere is the first Project:");
+				System.out.println("\t" + model.getName() + " ("
+						+ model.getKey() + ")");
+				System.out.println("\t\t" + model);
+				scoreProject = new ScoreProject(model);
+				System.out.println("\tConverted to a ScoreProject:");
+				System.out.println("\t" + scoreProject.getName() + " ("
+						+ scoreProject.getKey() + ")");
+				System.out.println("\t\t" + scoreProject);
+			}
+		}
+		System.out.println("\tLeaving the Project Dao.");
+		System.out.println("\t<><><><><><><><>");
+		return scoreProject;
 	}
-	
-	//TODO javadoc
+
+	// TODO javadoc
 	@Override
 	public SearchableHashSet<ScoreProject> getAll() {
-		//TODO implement.
+		// TODO implement.
 		return new SearchableHashSet<ScoreProject>();
 	}
-	
-	//TODO javadoc
+
+	// TODO javadoc
 	@Override
 	public boolean create(ScoreProject project) {
-		//TODO: log some sort of warning that this method should never be used.
+		// TODO: log some sort of warning that this method should never be used.
 		return false;
 	}
 
-	//TODO javadoc
+	// TODO javadoc
 	@Override
 	public boolean update(ScoreProject entity) {
 		// TODO Auto-generated method stub

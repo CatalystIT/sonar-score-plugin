@@ -177,5 +177,10 @@ public abstract class Award implements AssignableScoreEntity {
 	public String getUniqueId() {
 		return this.name;
 	}
+	
+	@Override
+	public String toString() {
+		return "The " + this.name + " " + this.getClass().getSimpleName(); 
+	}
 
 }

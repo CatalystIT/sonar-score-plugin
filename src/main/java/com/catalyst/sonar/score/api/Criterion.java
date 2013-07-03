@@ -16,7 +16,7 @@ public class Criterion {
 	private Metric metric;
 	private double amount;
 	private int days;
-	private Type type;
+	private final Type type;
 
 	/**
 	 * Default Constructor, necessary for the SCORE plugin to work, calls
@@ -24,13 +24,13 @@ public class Criterion {
 	 */
 	public Criterion() {
 		super();
+		this.type = Criterion.Type.GOOD;
 	}
 	
 	/**
 	 * Single-Arg constructor, sets the metric, and sets the Type to BEST.
 	 */
 	public Criterion(Metric metric) {
-		this();
 		this.metric = metric;
 		this.type = Criterion.Type.BEST;
 	}
@@ -163,12 +163,14 @@ public class Criterion {
 	public Type getType() {
 		return type;
 	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(Type type) {
-		this.type = type;
+	
+	@Override
+	public String toString() {
+		String typeString = type.toString();
+		String metricName = (metric != null) ? metric.getName() : null;
+		String amountString = Double.toString(amount);
+		String daysString = Integer.toString(days);
+		return "[" + typeString + " " + metricName + " " + amountString + " " + daysString + "]";
 	}
 
 	public static enum Type {

@@ -16,6 +16,7 @@ import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.ScoreProject;
+import com.catalyst.sonar.score.api.SearchableHashSet;
 import com.catalyst.sonar.score.api.TitleCup;
 
 import org.sonar.api.config.Settings;
@@ -90,61 +91,133 @@ public class TitleCupDecorator implements Decorator {
 	 */
 	public void decorate(@SuppressWarnings("rawtypes") final Resource resource,
 			DecoratorContext context) {
-		TitleCupDao cupDao = new TitleCupDao(session);
-		Property tcProperty = cupDao.getTitleCupProperty("BestCoverage");
-		tcProperty.setResourceId(1);
-		session.save(tcProperty);
-//		AwardSet<TitleCup> cups = cupDao.getAll();
-//		ScoreProjectDao projectDao = new ScoreProjectDao(session);
-//		ScoreProject thisProject = projectDao.getProjectById(resource.getId());
-//		for (TitleCup cup : cups) {
-//			ScoreProject currentHolder = projectDao.getProjectById(cupDao
-//					.getTitleCupProperty(cup.getName()).getResourceId());
-//			ScoreProject winner = whoShouldEarnCup(cup, thisProject, currentHolder);
-//			if(winner != null) {
-//				cupDao.assign(cup, winner);
-//			} else {
-//				//TODO unassign the cup so no one has it.
-//			}
-//		}
+		int i = 0;
+		try {
+			if(resource.getScope() != "PRJ") {
+				return;
+			}
+			System.out
+			.println("\n******START*******************************************");
+			TitleCupDao cupDao = new TitleCupDao(session);
+			// Property tcProperty = cupDao.getTitleCupProperty("BestCoverage");
+			// tcProperty.setResourceId(1);
+			// session.save(tcProperty);
+			AwardSet<TitleCup> cups = cupDao.getAll();
+			System.out.println("!!! There are " + cups.size() + " TitleCups");
+			ScoreProjectDao projectDao = new ScoreProjectDao(session);
+			ScoreProject thisProject = projectDao.getProjectById(resource
+					.getId());
+			for (TitleCup cup : cups) {
+				System.out.println("!!!Cup = " + cup.getName());
+				int resourceId = cupDao.getTitleCupProperty(cup.getName())
+						.getResourceId();
+				System.out.println("!!! resourceId = " + resourceId);
+				ScoreProject currentHolder = projectDao
+						.getProjectById(resourceId);
+				ScoreProject winner;
+				String currentHolderName;
+				String currentHolderKey;
+				if (currentHolder == null) {
+					currentHolderName = "Nobody";
+					currentHolderKey = "I mean Nobody";
+				} else {
+					currentHolderName = currentHolder.getName();
+					currentHolderKey = currentHolder.getKey();
+				}
+				System.out.println("!!! currentHolder = "
+						+ currentHolderName + " ("
+						+ currentHolderKey + ")");
+				System.out.println("!!! " + currentHolderName
+						+ " currently Holds the " + cup.getName() + " cup.");
+				System.out.println("!!! The Challenger is "
+						+ thisProject.getName());
+				winner = whoShouldEarnCup(cup, thisProject,
+						currentHolder);
+				if (winner != null) {
+					System.out.println("!!! The Winner is " + winner.getName());
+				} else {
+					System.out
+							.println("!!! Woops!! The Winner is null, so neither project earned "
+									+ cup + ".");
+				}
+				cupDao.assign(cup, winner);
+			}
+		} catch (NullPointerException e) {
+			System.out.println("NULLPOINTER " + ++i);
+			// e.printStackTrace();
+		}
+		System.out
+				.println("*******************************************STOP!******\n");
 
 	}
 
-	private ScoreProject whoShouldEarnCup(TitleCup cup, ScoreProject thisProject, ScoreProject currentHolder) {
+	private ScoreProject whoShouldEarnCup(TitleCup cup,
+			ScoreProject thisProject, ScoreProject currentHolder) {
+		System.out.println("\t<><><><><><><><>");
+		System.out.println("\tIn whoShouldEarnCup()");
 		if (!criteriaMet(cup)) {
 			return null;
+		} else if (currentHolder==null){
+			return thisProject;
 		}
 		ScoreProject projectToReturn = null;
 		ScoreProject potential;
+		SearchableHashSet<Criterion> criteria = cup.getCriteria();
+		System.out.println("\tThere are " + criteria.size() + " Criteria in " + cup + ":");
 		for (Criterion criterion : cup.getCriteria()) {
+			System.out.println("\tCriterion = " + criterion);
 			if (criterion.getType() == Criterion.Type.BEST) {
+				System.out.println("\tWho has the best score for " + criterion.getMetric().getName() + "?");
 				Metric metric = criterion.getMetric();
 				potential = better(thisProject, currentHolder, metric);
-				if (projectToReturn != null && projectToReturn != potential) {
+				if (projectToReturn != potential) {
 					// If we get here, than one project is best at one
 					// criterion, but the other project is better at another,
 					// so neither project should earn this TitleCup.
+					System.out
+							.println("\tLeaving whoShouldEarnCup(), returning null");
+					System.out.println("\t<><v><><><><><><>");
 					return null;
+				} else {
+					projectToReturn = potential;
 				}
 			}
 		}
-
+		System.out.println("\tLeaving whoShouldEarnCup(), returning "
+				+ projectToReturn.getName());
+		System.out.println("\t<><v><><><><><><>");
 		return projectToReturn;
 	}
 
 	private boolean criteriaMet(Award award) {
-		for (Criterion criterion : award.getCriteria()) {
-			if (criterion.getType() == Criterion.Type.BEST) {
-				continue;
+		System.out.println("\t\t----------------");
+		System.out.println("\t\tIn criteriaMet()");
+		System.out.println("\t\t" + award + " has "
+				+ award.getCriteria().size() + " Criteria:");
+		try {
+			for (Criterion criterion : award.getCriteria()) {
+				System.out.println("\t\t" + criterion);
+				if (criterion.getType() == Criterion.Type.BEST) {
+					continue;
+				}
+				Metric metric = criterion.getMetric();
+				List<SnapshotHistory> entries = measuresHelper
+						.getMeasureCollection(metric.getName());
+				System.out.println("\t\tSnapshotHistories:");
+				System.out.println("\t\t" + entries);
+				if (!trophiesHelper.criteriaMet(entries, criterion.getAmount(),
+						criterion.getDays(), metric.getName(), session)) {
+					System.out
+							.println("\t\tLeaving criteriaMet(), returning false");
+					System.out.println("\t\t----------------");
+					return false;
+				}
 			}
-			Metric metric = criterion.getMetric();
-			List<SnapshotHistory> entries = measuresHelper
-					.getMeasureCollection(metric.getName());
-			if (!trophiesHelper.criteriaMet(entries, criterion.getAmount(),
-					criterion.getDays(), metric.getName(), session)) {
-				return false;
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		System.out.println("\t\tLeaving criteriaMet(), returning true");
+		System.out.println("\t\t----------------");
 		return true;
 	}
 
@@ -156,13 +229,17 @@ public class TitleCupDecorator implements Decorator {
 		return history.get(history.size() - 1).getMeasureValue().doubleValue();
 	}
 
-	private ScoreProject better(ScoreProject project1, ScoreProject project2, Metric metric) {
+	private ScoreProject better(ScoreProject project1, ScoreProject project2,
+			Metric metric) {
+		ScoreProject projectToReturn;
 		if (MeasuresHelper.isBetter(currentValue(project1, metric),
 				currentValue(project2, metric), metric)) {
-			return project1;
+			projectToReturn = project1;
 		} else {
-			return project2;
+			projectToReturn = project2;
 		}
+		System.out.println("\t\t" + projectToReturn + " is better.");
+		return projectToReturn;
 	}
 
 }

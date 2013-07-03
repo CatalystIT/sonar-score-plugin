@@ -12,6 +12,8 @@ import org.junit.Test;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.jpa.dao.MeasuresDao;
 
+import com.catalyst.sonar.score.metrics.MetricsHelper;
+
 /**
  * Test Class for {@link CriterionParser}.
  * 
@@ -29,7 +31,7 @@ public class CriterionParserTest {
 	private static final String METRIC_DAO_FIELD = "metricDao";
 	
 	private DatabaseSession mockSession;
-	private MeasuresDao mockMetricDao;
+	private MetricsHelper mockMetricDao;
 	private CriterionParser testParser;
 
 	/**
@@ -38,7 +40,7 @@ public class CriterionParserTest {
 	@Before
 	public void setUp() throws Exception {
 		mockSession = mock(DatabaseSession.class);
-		mockMetricDao = mock(MeasuresDao.class);
+		mockMetricDao = mock(MetricsHelper.class);
 		testParser = new CriterionParser(mockSession, CRITERION_STRING);
 	}
 
@@ -50,7 +52,7 @@ public class CriterionParserTest {
 		assertEquals(mockSession, testParser.getSession());
 		String[] criterionFields = (String[]) getField(testParser, "fields");
 		assertArrayEquals(criterionFields, CRITERION_STRING.split(";"));
-		MeasuresDao dao = (MeasuresDao) getField(testParser, METRIC_DAO_FIELD);
+		MetricsHelper dao = (MetricsHelper) getField(testParser, METRIC_DAO_FIELD);
 		assertEquals(mockSession, dao.getSession());
 	}
 
@@ -60,7 +62,7 @@ public class CriterionParserTest {
 	@Test
 	public void testParse() {
 		setField(testParser, METRIC_DAO_FIELD, mockMetricDao);
-		when(mockMetricDao.getMetric(METRIC_NAME)).thenReturn(METRIC_1);
+		when(mockMetricDao.findMetricByName(METRIC_NAME)).thenReturn(METRIC_1);
 		assertSame(METRIC_1, testParser.parse().getMetric());
 		assertEquals(AMOUNT, testParser.parse().getAmount(), 0);
 		assertEquals(DAYS * 7, testParser.parse().getDays());
@@ -72,7 +74,7 @@ public class CriterionParserTest {
 	@Test
 	public void testParseMetric() {
 		setField(testParser, METRIC_DAO_FIELD, mockMetricDao);
-		when(mockMetricDao.getMetric(METRIC_NAME)).thenReturn(METRIC_1);
+		when(mockMetricDao.findMetricByName(METRIC_NAME)).thenReturn(METRIC_1);
 		assertSame(METRIC_1, testParser.parseMetric());
 	}
 

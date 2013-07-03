@@ -7,6 +7,7 @@ import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.measures.Metric;
 
 import com.catalyst.sonar.score.api.Criterion;
+import com.catalyst.sonar.score.metrics.MetricsHelper;
 
 import org.sonar.jpa.dao.MeasuresDao;
 
@@ -22,7 +23,7 @@ public class CriterionParser extends Parser<Criterion> {
 	public static final int DAYS_INDEX = 2;
 	public static final int DAYS_IN_WEEK = 7;
 
-	private MeasuresDao metricDao;
+	private MetricsHelper metricDao;
 
 	/**
 	 * Constructs a {@link CriterionParser}, instantiating its session its
@@ -34,7 +35,7 @@ public class CriterionParser extends Parser<Criterion> {
 	 */
 	public CriterionParser(DatabaseSession session, String criterionString) {
 		super(session, criterionString.split(";"));
-		this.metricDao = new MeasuresDao(session);
+		this.metricDao = new MetricsHelper(session);
 	}
 
 	/**
@@ -48,23 +49,32 @@ public class CriterionParser extends Parser<Criterion> {
 	 */
 	@Override
 	public Criterion parse() {
+		Criterion criterion;
 		Metric metric = parseMetric();
 		double amount = 0;
 		int days = 0;
 		try {
 			amount = parseAmount();
 			days = parseDays();
+			criterion = new Criterion(metric, amount, days);
 		} catch (IndexOutOfBoundsException e) {
-			return new Criterion(metric);
+			System.out.println("\t\t\tCREATEING A \"BEST\" CRITERION");
+			criterion = new Criterion(metric);
 		}
-		return new Criterion(metric, amount, days);
+		System.out.println("\t\t\tCRITERION = " + criterion);
+		return criterion;
 	}
 
 	/**
 	 * Parses out a {@link Metric} from the criterionString.
 	 */
 	public Metric parseMetric() {
-		return metricDao.getMetric(get(METRIC_INDEX));
+		System.out.println("\t\t\tPARSING METRIC");
+		String metricName = get(METRIC_INDEX);
+		System.out.println("\t\t\tMETRIC NAME = " + metricName);
+		Metric metric = metricDao.findMetricByName(metricName);
+		System.out.println("\t\t\tRETURNING = " + metric);
+		return metric;
 	}
 
 	/**

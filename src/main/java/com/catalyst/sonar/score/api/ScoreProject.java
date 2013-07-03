@@ -54,6 +54,7 @@ public class ScoreProject extends ResourceModel implements Member {
 		super(resourceModel.getScope(), resourceModel.getKey(), resourceModel
 				.getQualifier(), resourceModel.getRootId(), resourceModel
 				.getName());
+		this.setId(resourceModel.getId());
 		@SuppressWarnings("rawtypes")
 		Class parentClass = ResourceModel.class;
 		while (!parentClass.equals(Object.class)) {

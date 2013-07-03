@@ -98,9 +98,13 @@ public class SnapshotHistory implements Comparable<SnapshotHistory> {
 		this.measureValue = metricValue;
 	}
 	
-	@Override
 	public int compareTo(SnapshotHistory other) {
 		return buildDate.compareTo(other.buildDate);
+	}
+	
+	@Override
+	public String toString() {
+		return "SnapshotHistory: " + measureValue + " on " + buildDate;
 	}
 
 

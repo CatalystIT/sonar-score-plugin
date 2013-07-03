@@ -7,7 +7,6 @@ import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
 
-import com.catalyst.sonar.score.api.*;
 import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.batch.TitleCupDecorator;
@@ -21,7 +20,6 @@ import com.catalyst.sonar.score.batch.trophies.TrophySet;
 import com.catalyst.sonar.score.metrics.MetricsHelper;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.EnhancedListFilterWidget;
-import com.catalyst.sonar.score.ui.ImageUploadPage;
 import com.catalyst.sonar.score.ui.ProjectComparisonWidget;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 import com.catalyst.sonar.score.ui.TrophyPage;
@@ -76,7 +74,7 @@ public class ScorePlugin extends SonarPlugin{
 	/**
 	 * returns a list of the various classes used to create the SCORE extension/plugin
 	 */	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List getExtensions() {
 		
 		return Arrays.asList(

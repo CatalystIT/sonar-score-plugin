@@ -16,6 +16,13 @@ public class MetricsHelper {
 	}
 	
 	/**
+	 * @return the session
+	 */
+	public DatabaseSession getSession() {
+		return session;
+	}
+
+	/**
 	 * Retrieve the metric id for a given metric name
 	 * 
 	 * @param metric name
