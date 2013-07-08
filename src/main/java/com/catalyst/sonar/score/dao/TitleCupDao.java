@@ -192,8 +192,11 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 */
 	@Override
 	public boolean create(TitleCup cup) {
-		// TODO implement
-		return false;
+		System.out.println("creating a new cup: " + cup.getName());
+		Property property = new Property("sonar.score.TitleCup:" + cup.getName(), null, null);
+		getSession().save(property);
+		System.out.println("done");
+		return true;
 	}
 
 	/**
@@ -201,7 +204,7 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 */
 	@Override
 	public boolean update(TitleCup cup) {
-		// TODO implement
+		//TODO implement
 		return false;
 	}
 
