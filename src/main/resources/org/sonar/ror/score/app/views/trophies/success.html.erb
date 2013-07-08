@@ -1,2 +1,32 @@
-<h1> You have successfully created a trophy or title cup!</h1></br></br>
-<%= link_to "Back", '/trophies/index' %>
+<h1> You have successfully created a Trophy or Title Cup!</h1></br></br>
+
+<h1>List of all Trophies:</h1></br>
+<% for @Property in Property.find(:all, :conditions => {:prop_key => "sonar.score.Trophy"}) %>
+<% trophy = @Property.text_value %>
+<% allTrophies = trophy.split(',') %>
+ <% allTrophies.length.times do |i| %>
+    <ul>
+      <li><%= allTrophies[i]%></li>
+      
+    </ul>
+ <% end %>
+
+<% end %>
+</br>
+</br>
+<h1>List of all Title Cups:</h1></br>
+ <% for @Property in Property.find(:all, :conditions => {:prop_key => "sonar.score.TitleCup"}) %>
+<% cup = @Property.text_value %>
+<% allCups = cup.split(',') %>
+ <% allCups.length.times do |i| %>
+    <ul>
+      <li><%= allCups[i]%></li>
+      
+    </ul>
+ <% end %>
+
+<% end %>
+</br>
+<%= link_to "Back", '/trophies/index' ,{:style=>'color: blue'} %></br></br>
+
+

@@ -14,6 +14,7 @@ class TrophiesController < ApplicationController
   
   def create 
     @trophy = Trophy.new(params[:trophy])
+    @trophyType = @trophy.get_type()
     if @trophy.saveTrophy() 
       redirect_to :controller => "trophies", :action => "success"
     else
@@ -21,7 +22,7 @@ class TrophiesController < ApplicationController
     end
   
   end 
-
+  
   def addCriteria
     respond_to do |format|        
       

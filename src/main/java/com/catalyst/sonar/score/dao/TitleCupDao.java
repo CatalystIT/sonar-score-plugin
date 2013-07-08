@@ -136,9 +136,10 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		for(Property property : properties) {
 			System.out.println(property.getKey() + " , resourceId = " + property.getResourceId());
 		}
-		Property property = properties.get(0);
+		Property property = (properties.size() > 0) ? properties.get(0) : null;
 		System.out.println("We want the first one:");
-		System.out.println(property.getKey() + " , resourceId = " + property.getResourceId());
+		String printIt = (property != null) ? property.getKey() + " , resourceId = " + property.getResourceId() : "null";
+		System.out.println(printIt);
 		return property;
 	}
 
@@ -148,7 +149,9 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	private void unassign(TitleCup cup) {
 		Property property = getTitleCupProperty(cup.getName());
 		property.setResourceId(null);
-		getSession().save(property);
+		if (cup != null) {
+			getSession().save(property);
+		}
 	}
 
 	/**

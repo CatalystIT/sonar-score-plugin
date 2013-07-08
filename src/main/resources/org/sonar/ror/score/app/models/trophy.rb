@@ -13,7 +13,13 @@ class Trophy < ActiveRecord::Base
     @trophyValues
     @trophyPropertyValue
     @trophyArray = Array.new
+    @allTrophyArray = Array.new
+    @allTrophies = parse_trophy_property
    
+  end
+  
+  def get_type()
+  	return @type
   end
   
    #saves Trophy(s) or Title Cup(s) created by the admin
@@ -23,11 +29,11 @@ class Trophy < ActiveRecord::Base
     elsif (@type == "Title Cup")
       @propertyValue = "sonar.score.TitleCup"
     end
-    
-    @name = formatName()
-    @name = parseTrophy()  
+         
     @propertyFound = is_property_new?()
-    @validData = is_valid_data?()  
+    @validData = is_valid_data?()
+    @name = formatName()     
+    @name = parseTrophy()   
    
     #if the global trophy does not exist in the database...persist the property and trophy name 
     if (@propertyFound.blank?)
@@ -47,8 +53,8 @@ class Trophy < ActiveRecord::Base
         if (@validData && validate_number(@amount) && (@duration))             
           Property.set(@propertyValue, @trophyArray)
         end
-      end    
-    end
+      end
+   end
     
   #formats the title cup/trophy name to capitalize every word and removes spaces between words
   #i.e. : My best Trophy changes to MyBestTrophy
@@ -68,15 +74,33 @@ class Trophy < ActiveRecord::Base
   
   #set the global trophy property/title cup property text_value correctly so the different trophies/title cups can be parsed
   def parseTrophy()
-    @name = @name + '{'+ @metric + ';' + @amount + ';' + @duration + @durationValue +'}'
+    if (@amount.blank? | @duration.blank? | @durationValue.blank?)
+      @name = @name + '{' + @metric + '}'
+    else
+      @name = @name + '{'+ @metric + ';' + @amount + ';' + @duration + @durationValue +'}'
+    end
   end
   
+    
   #checking to see if the amount entered is a number
   def validate_number(amount)
-    reg = /^[1-9]\d*(\.\d+)?$/
-    return (amount.match(reg))? true: false    
+    if (@type == "Trophy")
+      reg = /^[1-9]\d*(\.\d+)?$/
+      return (amount.match(reg))? true: false  
+    else
+      return true
+    end  
   end
     
+ def parse_trophy_property
+      #trophyProperty = Property.find(:all, :conditions => {:prop_key => @propertyValue})
+    #@trophyNameParsed = trophy
+    #@allTrophyArray = @trophyNameParsed.split(",")      
+    #@trophyNameParsed = @allTrophyArray[0]
+  
+  end
+ 
+ 
   #makes sure all the form values are not blank
    def is_valid_data?()
     @validData = false
@@ -88,8 +112,14 @@ class Trophy < ActiveRecord::Base
     durationValue = @durationValue
     type = @type
     
-    unless(name.blank? | metric.blank? | amount.blank? | duration.blank? | durationValue.blank? | type.blank?)       
-      @validData = true     
+    if (@type == "Trophy")
+      unless(name.blank? | metric.blank? | amount.blank? | duration.blank? | durationValue.blank? | type.blank?)       
+        @validData = true 
+      end
+    elsif(@type =="Title Cup")
+      unless (name.blank? | metric.blank?)
+        @validData = true
+      end   
     end
      
    end
