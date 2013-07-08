@@ -24,6 +24,7 @@ import com.catalyst.sonar.score.ui.ProjectComparisonWidget;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 import com.catalyst.sonar.score.ui.TrophyPage;
 import com.catalyst.sonar.score.ui.TrophyWidget;
+import com.catalyst.sonar.score.ui.TitleCupWidget;
 import com.catalyst.sonar.score.util.DateUtility;
 import com.catalyst.sonar.score.util.MeasuresHelper;
 import com.catalyst.sonar.score.util.SnapshotHistory;
@@ -83,7 +84,7 @@ public class ScorePlugin extends SonarPlugin{
 		//the decorator class (batch)
 		PointsDecorator.class, PointsCalculator.class, TrophiesDecorator.class, TitleCupDecorator.class,
 		// Score's ui/widgets
-		ScoreRubyWidget.class, EnhancedListFilterWidget.class, ProjectComparisonWidget.class, TrophyWidget.class, //ImageUploadPage.class,
+		ScoreRubyWidget.class, EnhancedListFilterWidget.class, ProjectComparisonWidget.class, TrophyWidget.class, TitleCupWidget.class,//ImageUploadPage.class,
 		
 		MetricBrackets.class, MetricBracketsParser.class, InvalidNumberOfDoublesException.class, 
 		

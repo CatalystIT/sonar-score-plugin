@@ -1,0 +1,42 @@
+<% 
+	#finds all the properties for the sonar.score.TitleCup property
+	properties = Property.find(:all)	
+%>
+<% if properties != nil %>
+	<div class="dashbox">
+		<h1 style="font-family: Comic Sans MS; font-size: 1.5em; font-weight: bold">
+		TitleCups Currently Held: </h1>
+		
+		<!-- Loops through the properties and checks if the property is a TitleCup -->
+		<!-- and also checks if the resourceId matches the projectId. -->
+		<% for @Property in properties %>
+			<% if(@Property.prop_key.include? "sonar.score.TitleCup:") %>
+				<% if(@Property.resource_id == @project.id) %>
+					<% titleCup = @Property.prop_key %>
+					<div class="cup">
+						<div>
+							<div style="float:left; margin:10px">
+								<div align="center">
+									<img src="/images/profiles/trophies/star-gold.jpg"; height="50", width="40"/>
+								</div>
+								<div>
+									<%=titleCup[titleCup.index(':') + 1, titleCup.length]%>
+								</div>
+							</div>
+						</div>
+					</div>
+				<% end %>
+			<% end %>
+		<% end %>
+	</div>
+<% end %>
+
+
+
+
+<% if titleCup == nil %>
+	<div class="dashbox">
+		<h1 style="font-family: Comic Sans MS; font-size: 1.0em; font-weight: bold"> No TitleCups are currently held. </h1>
+	</div>
+			
+<% end %>		

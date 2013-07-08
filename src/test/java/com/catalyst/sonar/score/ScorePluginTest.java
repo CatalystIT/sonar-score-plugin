@@ -10,14 +10,6 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.catalyst.sonar.score.api.AwardSet;
-import com.catalyst.sonar.score.api.Criterion;
-import com.catalyst.sonar.score.api.Group;
-import com.catalyst.sonar.score.api.Member;
-import com.catalyst.sonar.score.api.ScoreProject;
-import com.catalyst.sonar.score.api.ScoreUser;
-import com.catalyst.sonar.score.api.SearchableHashSet;
-import com.catalyst.sonar.score.api.TitleCup;
 import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.batch.TitleCupDecorator;
@@ -32,12 +24,7 @@ import com.catalyst.sonar.score.batch.trophies.TrophyAndCriteriaParser;
 import com.catalyst.sonar.score.batch.trophies.TrophySet;
 import com.catalyst.sonar.score.metrics.MetricsHelper;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
-import com.catalyst.sonar.score.ui.EnhancedListFilterWidget;
-import com.catalyst.sonar.score.ui.ImageUploadPage;
-import com.catalyst.sonar.score.ui.ProjectComparisonWidget;
-import com.catalyst.sonar.score.ui.ScoreRubyWidget;
-import com.catalyst.sonar.score.ui.TrophyPage;
-import com.catalyst.sonar.score.ui.TrophyWidget;
+import com.catalyst.sonar.score.ui.*;
 import com.catalyst.sonar.score.util.DateUtility;
 import com.catalyst.sonar.score.util.MeasuresHelper;
 import com.catalyst.sonar.score.util.SnapshotHistory;
@@ -62,6 +49,7 @@ public class ScorePluginTest {
 	/**
 	 * Test method for {@link com.catalyst.sonar.score.ScorePlugin#getExtensions()}.
 	 */
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetExtensions() {
 		assertEquals(scorePlugin.getExtensions(),
@@ -75,6 +63,7 @@ public class ScorePluginTest {
 						EnhancedListFilterWidget.class,
 						ProjectComparisonWidget.class,
 						TrophyWidget.class,
+						TitleCupWidget.class,
 						//ImageUploadPage.class,
 						MetricBrackets.class,
 						MetricBracketsParser.class,
@@ -89,10 +78,7 @@ public class ScorePluginTest {
 						DateUtility.class, 
 						SnapshotHistory.class, 
 						TrophiesHelper.class,
-						TrophyPage.class//,
-//						AwardSet.class, Criterion.class, Group.class, Member.class,
-//						ScoreProject.class, ScoreUser.class, SearchableHashSet.class,
-//						TitleCup.class
+						TrophyPage.class
 						
 						
 						
