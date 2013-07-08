@@ -224,7 +224,8 @@ public class TitleCupDecorator implements Decorator {
 		List<SnapshotHistory> history = helper.getMeasureCollection(metric
 				.getName());
 		Collections.sort(history);
-		return history.get(history.size() - 1).getMeasureValue().doubleValue();
+		double value = (history.size() > 0) ? history.get(history.size() - 1).getMeasureValue().doubleValue() : null;
+		return value;
 	}
 
 	private ScoreProject better(ScoreProject project1, ScoreProject project2,
