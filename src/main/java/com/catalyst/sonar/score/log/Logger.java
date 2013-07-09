@@ -75,8 +75,7 @@ public class Logger {
 	 */
 	public Logger beginMethod(final String methodName) {
 		String message = border(TAB_LENGTH) + START + methodName;
-		stream.println(border(BORDER_LENGTH - (TAB_LENGTH * stack.size())
-				- message.length()));
+		borderMessage(message);
 		stack.add(methodName);
 		return this;
 	}
@@ -89,8 +88,14 @@ public class Logger {
 	public Logger endMethod() {
 		final String methodName = stack.remove(stack.size() - 1);
 		String message = border(TAB_LENGTH) + END + methodName;
-		stream.println(border(BORDER_LENGTH - (TAB_LENGTH * stack.size())
-				- message.length()));
+		return borderMessage(message);
+	}
+	
+	private Logger borderMessage(String message) {
+		stream.println(tab()
+				+ message
+				+ border(BORDER_LENGTH - (TAB_LENGTH * stack.size())
+						- message.length()));
 		return this;
 	}
 
