@@ -1,6 +1,6 @@
 <% 
 	#finds all the properties for the sonar.score.TitleCup property
-	properties = Property.find(:all)	
+	properties = Property.find(:all, :conditions => ['prop_key LIKE ?','sonar.score.TitleCup:%'])	
 %>
 <% if properties != nil %>
 	<div class="dashbox">
@@ -10,22 +10,20 @@
 		<!-- Loops through the properties and checks if the property is a TitleCup -->
 		<!-- and also checks if the resourceId matches the projectId. -->
 		<% for @Property in properties %>
-			<% if(@Property.prop_key.include? "sonar.score.TitleCup:") %>
-				<% if(@Property.resource_id == @project.id) %>
-					<% titleCup = @Property.prop_key %>
-					<div class="cup">
-						<div>
-							<div style="float:left; margin:10px">
-								<div align="center">
-									<img src="/images/profiles/trophies/star-gold.jpg"; height="50", width="40"/>
-								</div>
-								<div>
-									<%=titleCup[titleCup.index(':') + 1, titleCup.length]%>
-								</div>
+			<% if(@Property.resource_id == @project.id) %>
+				<% titleCup = @Property.prop_key %>
+				<div class="cup">
+					<div>
+						<div style="float:left; margin:10px">
+							<div align="center">
+								<img src="/images/profiles/trophies/star-gold.jpg"; height="50", width="40"/>
+							</div>
+							<div>
+								<%=titleCup[titleCup.index(':') + 1, titleCup.length]%>
 							</div>
 						</div>
 					</div>
-				<% end %>
+				</div>
 			<% end %>
 		<% end %>
 	</div>

@@ -1,5 +1,6 @@
 package com.catalyst.sonar.score.batch;
 
+import static com.catalyst.sonar.score.log.Logger.LOG;
 import java.util.Collections;
 import java.util.List;
 
@@ -95,26 +96,22 @@ public class TitleCupDecorator implements Decorator {
 			if(resource.getScope() != "PRJ") {
 				return;
 			}
-			System.out
-			.println("\n******START*******************************************");
+			LOG.beginMethod("TitleCupDecorator.decorate()");
 			TitleCupDao cupDao = new TitleCupDao(session);
-			// Property tcProperty = cupDao.getTitleCupProperty("BestCoverage");
-			// tcProperty.setResourceId(1);
-			// session.save(tcProperty);
 			AwardSet<TitleCup> cups = cupDao.getAll();
-			System.out.println("!!! There are " + cups.size() + " TitleCups");
+			LOG.logEmf("There are " + cups.size() + " TitleCups");
 			ScoreProjectDao projectDao = new ScoreProjectDao(session);
 			ScoreProject thisProject = projectDao.getProjectById(resource
 					.getId());
 			for (TitleCup cup : cups) {
-				System.out.println("!!!Cup = " + cup.getName());
+				LOG.logEmf("Cup = " + cup.getName());
 				Property titleCupProperty = cupDao.getTitleCupProperty(cup.getName());
 				if(titleCupProperty==null) {
 					cupDao.create(cup);
 					titleCupProperty = cupDao.getTitleCupProperty(cup.getName());
 				}
 				Integer resourceId = titleCupProperty.getResourceId();
-				System.out.println("!!! resourceId = " + resourceId);
+				LOG.logEmf("resourceId = " + resourceId);
 				ScoreProject currentHolder = projectDao
 						.getProjectById(resourceId);
 				ScoreProject winner;
@@ -127,20 +124,19 @@ public class TitleCupDecorator implements Decorator {
 					currentHolderName = currentHolder.getName();
 					currentHolderKey = currentHolder.getKey();
 				}
-				System.out.println("!!! currentHolder = "
+				LOG.logEmf("currentHolder = "
 						+ currentHolderName + " ("
 						+ currentHolderKey + ")");
-				System.out.println("!!! " + currentHolderName
+				LOG.logEmf(currentHolderName
 						+ " currently Holds the " + cup.getName() + " cup.");
-				System.out.println("!!! The Challenger is "
+				LOG.logEmf("The Challenger is "
 						+ thisProject.getName());
 				winner = whoShouldEarnCup(cup, thisProject,
 						currentHolder);
 				if (winner != null) {
-					System.out.println("!!! The Winner is " + winner.getName());
+					LOG.logEmf("The Winner is " + winner.getName());
 				} else {
-					System.out
-							.println("!!! Woops!! The Winner is null, so neither project earned "
+					LOG.logEmf("Woops!! The Winner is null, so neither project earned "
 									+ cup + ".");
 				}
 				cupDao.assign(cup, winner);
@@ -148,15 +144,13 @@ public class TitleCupDecorator implements Decorator {
 		} catch (NullPointerException e) {
 			// e.printStackTrace();
 		}
-		System.out
-				.println("*******************************************STOP!******\n");
+		LOG.endMethod();
 
 	}
 
 	private ScoreProject whoShouldEarnCup(TitleCup cup,
 			ScoreProject thisProject, ScoreProject currentHolder) {
-		System.out.println("\t<><><><><><><><>");
-		System.out.println("\tIn whoShouldEarnCup()");
+		LOG.beginMethod("whoShouldEarnCup()");
 		if (!criteriaMet(cup)) {
 			return null;
 		} else if (currentHolder==null){
@@ -165,61 +159,58 @@ public class TitleCupDecorator implements Decorator {
 		ScoreProject projectToReturn = null;
 		ScoreProject potential;
 		SearchableHashSet<Criterion> criteria = cup.getCriteria();
-		System.out.println("\tThere are " + criteria.size() + " Criteria in " + cup + ":");
+		LOG.log("There are " + criteria.size() + " Criteria in " + cup + ":");
 		for (Criterion criterion : cup.getCriteria()) {
-			System.out.println("\tCriterion = " + criterion);
+			LOG.log("Criterion = " + criterion);
 			if (criterion.getType() == Criterion.Type.BEST) {
-				System.out.println("\tWho has the best score for " + criterion.getMetric().getName() + "?");
+				LOG.log("Who has the best score for " + criterion.getMetric().getName() + "?");
 				Metric metric = criterion.getMetric();
 				potential = better(thisProject, currentHolder, metric);
 				if (projectToReturn != potential) {
 					// If we get here, than one project is best at one
 					// criterion, but the other project is better at another,
 					// so neither project should earn this TitleCup.
-					System.out
-							.println("\tLeaving whoShouldEarnCup(), returning null");
-					System.out.println("\t<><v><><><><><><>");
+					LOG.log("Leaving whoShouldEarnCup(), returning null");
+					LOG.endMethod();
 					return null;
 				} else {
 					projectToReturn = potential;
 				}
 			}
 		}
-		System.out.println("\tLeaving whoShouldEarnCup(), returning "
+		LOG.log("Leaving whoShouldEarnCup(), returning "
 				+ projectToReturn.getName());
-		System.out.println("\t<><v><><><><><><>");
+		LOG.endMethod();
 		return projectToReturn;
 	}
 
 	private boolean criteriaMet(Award award) {
-		System.out.println("\t\t----------------");
-		System.out.println("\t\tIn criteriaMet()");
-		System.out.println("\t\t" + award + " has "
+		LOG.beginMethod("criteriaMet()");
+		LOG.log(award + " has "
 				+ award.getCriteria().size() + " Criteria:");
 		try {
 			for (Criterion criterion : award.getCriteria()) {
-				System.out.println("\t\t" + criterion);
+				LOG.log(criterion);
 				if (criterion.getType() == Criterion.Type.BEST) {
 					continue;
 				}
 				Metric metric = criterion.getMetric();
 				List<SnapshotHistory> entries = measuresHelper
 						.getMeasureCollection(metric.getName());
-				System.out.println("\t\tSnapshotHistories:");
+				LOG.log("SnapshotHistories:");
 				System.out.println("\t\t" + entries);
 				if (!trophiesHelper.criteriaMet(entries, criterion.getAmount(),
 						criterion.getDays(), metric.getName(), session)) {
-					System.out
-							.println("\t\tLeaving criteriaMet(), returning false");
-					System.out.println("\t\t----------------");
+					LOG.log("Leaving criteriaMet(), returning false");
+					LOG.endMethod();
 					return false;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("\t\tLeaving criteriaMet(), returning true");
-		System.out.println("\t\t----------------");
+		LOG.log("Leaving criteriaMet(), returning true");
+		LOG.endMethod();
 		return true;
 	}
 
@@ -241,7 +232,7 @@ public class TitleCupDecorator implements Decorator {
 		} else {
 			projectToReturn = project2;
 		}
-		System.out.println("\t\t" + projectToReturn + " is better.");
+		LOG.log(projectToReturn + " is better.");
 		return projectToReturn;
 	}
 
