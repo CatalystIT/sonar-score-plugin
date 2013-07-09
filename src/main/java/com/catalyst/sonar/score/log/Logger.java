@@ -107,8 +107,10 @@ public class Logger {
 	 */
 	private String border(final int x) {
 		StringBuilder border = new StringBuilder();
+		int index = stack.size();
+		index = (index > BORDER.length) ? BORDER.length - 1 : index;
 		for (int y = 0; y < x; y++) {
-			border.append(BORDER[stack.size()]);
+			border.append(BORDER[index]);
 		}
 		return border.toString();
 	}
