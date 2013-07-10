@@ -10,18 +10,11 @@ class Trophy < ActiveRecord::Base
     @duration = trophy['duration']
     @durationValue = trophy['durationValue']
     @propertyValue 
-    @trophyValues
-    @trophyPropertyValue
-    @trophyArray = Array.new
-    @allTrophyArray = Array.new
-    @allTrophies = parse_trophy_property
-   
+    @currentProperty
+    @criteria
+       
   end
-  
-  def get_type()
-  	return @type
-  end
-  
+    
    #saves Trophy(s) or Title Cup(s) created by the admin
    def saveTrophy()
     if (@type == "Trophy")
@@ -29,29 +22,30 @@ class Trophy < ActiveRecord::Base
     elsif (@type == "Title Cup")
       @propertyValue = "sonar.score.TitleCup"
     end
-         
+    
+    @name = formatName()
+    #this is the property that will be persisted to the database
+    @currentProperty =   @propertyValue + ':' + @name    
     @propertyFound = is_property_new?()
     @validData = is_valid_data?()
-    @name = formatName()     
-    @name = parseTrophy()   
+    @criteria = parseCriteria()  
+    @textValue = @currentProperty + ',' + @criteria 
    
-    #if the global trophy does not exist in the database...persist the property and trophy name 
+    #if the trophy/title cup does not exist in the database...persist the new property 
     if (@propertyFound.blank?)
       
         if (@validData && validate_number(@amount) && validate_number(@duration))    
-          Property.set(@propertyValue , @name)
+           Property.set(@currentProperty , @criteria)
         end
       
     else
-    #if the global trophy property was found, then add the current trophy/title cup to the existing trophies/title cups       
-      #finds the row with the global property
-      @trophyValues = Property.find(:all, :conditions => {:prop_key => @propertyValue});
-      @trophyPropertyValue= @trophyValues[0].text_value
-      #create an array of all the existing trophies/title cups
-      @trophyArray = @trophyPropertyValue.split(",")      
-      @trophyArray.push(@name)  
-        if (@validData && validate_number(@amount) && (@duration))             
-          Property.set(@propertyValue, @trophyArray)
+    #if the trophy/title cup property was found, then add the additional criteria to the trophy/title cup 
+      prop = Property.by_key(@currentProperty, nil, nil)           
+         if (@validData && validate_number(@amount) && (@duration))
+           newTextValue = prop.text_value.to_s + ',' + @criteria           
+           prop.text_value = newTextValue
+           prop.save
+           
         end
       end
    end
@@ -67,17 +61,17 @@ class Trophy < ActiveRecord::Base
    
   end
   
-  #checks to see if the global trophy/title cup property has been persisted
+  #checks to see if the trophy/title cup property has been persisted
   def is_property_new?()
-    Property.find(:all, :conditions => {:prop_key => @propertyValue})
+    Property.find(:all, :conditions => {:prop_key => @currentProperty})
   end
   
-  #set the global trophy property/title cup property text_value correctly so the different trophies/title cups can be parsed
-  def parseTrophy()
+  #set the trophy/title cup property text_value correctly so the different trophies/title cups can be parsed
+  def parseCriteria()
     if (@amount.blank? | @duration.blank? | @durationValue.blank?)
-      @name = @name + '{' + @metric + '}'
+      @criteria = '{' + @metric + '}'
     else
-      @name = @name + '{'+ @metric + ';' + @amount + ';' + @duration + @durationValue +'}'
+      @criteria ='{'+ @metric + ';' + @amount + ';' + @duration + @durationValue +'}'
     end
   end
   
@@ -91,15 +85,6 @@ class Trophy < ActiveRecord::Base
       return true
     end  
   end
-    
- def parse_trophy_property
-      #trophyProperty = Property.find(:all, :conditions => {:prop_key => @propertyValue})
-    #@trophyNameParsed = trophy
-    #@allTrophyArray = @trophyNameParsed.split(",")      
-    #@trophyNameParsed = @allTrophyArray[0]
-  
-  end
- 
  
   #makes sure all the form values are not blank
    def is_valid_data?()

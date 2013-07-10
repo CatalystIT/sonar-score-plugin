@@ -14,9 +14,10 @@ class TrophiesController < ApplicationController
   
   def create 
     @trophy = Trophy.new(params[:trophy])
-    @trophyType = @trophy.get_type()
+    
     if @trophy.saveTrophy() 
-      redirect_to :controller => "trophies", :action => "success"
+      #redirect_to :controller => "trophies", :action => "success"
+      redirect_to :controller => "trophies", :action => "index"
     else
       redirect_to :controller => "trophies", :action => "index"
     end
