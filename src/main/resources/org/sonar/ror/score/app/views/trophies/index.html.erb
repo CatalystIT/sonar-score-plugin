@@ -4,7 +4,8 @@
 <%= f.radio_button :type, "Trophy" %>
 <%= f.label :type,'Trophy' %>
 <%= f.radio_button :type, "Title Cup" %>
-<%= f.label :type,'Title Cup' %></br></br></br>	
+<%= f.label :type,'Title Cup' %>
+</br></br></br>	
 	
 <%= f.label :name %>
 <%= f.text_field :name %></br></br>
@@ -20,7 +21,10 @@
 </br></br>	
 <%= f.submit :"Save" %>		
 <% end %> 
+</br></br>
 
+<%= link_to "List of Trophies", '/trophies/_trophyList' ,{:style=>'color: blue'} %>
+<%= link_to "List of Title Cups", '/trophies/_cupList' ,{:style=>'color: blue'} %>
 
 
 

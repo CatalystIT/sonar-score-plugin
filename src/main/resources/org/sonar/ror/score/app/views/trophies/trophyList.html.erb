@@ -1,0 +1,13 @@
+<%
+properties = Property.find(:all, :conditions => ['prop_key LIKE ?','sonar.score.Trophy:%'])
+%>
+<h1> List of Trophies:</h1></br>
+<% for @Property in properties %>
+ <% trophy = @Property.prop_key %> 
+ <% criteria = @Property.text_value %>
+ <th><%=trophy[trophy.index(':') + 1, trophy.length]%><th>
+<%=criteria[criteria.length]%>
+  
+<% end %>
+<% end %>
+

@@ -9,46 +9,48 @@ class Trophy < ActiveRecord::Base
     @amount = trophy['amount']
     @duration = trophy['duration']
     @durationValue = trophy['durationValue']
-    @propertyValue 
+    @propertyValue =nil
     @currentProperty
-    @criteria
-       
+    @criteria       
   end
     
    #saves Trophy(s) or Title Cup(s) created by the admin
    def saveTrophy()
-    if (@type == "Trophy")
-      @propertyValue = "sonar.score.Trophy"
-    elsif (@type == "Title Cup")
-      @propertyValue = "sonar.score.TitleCup"
-    end
-    
-    @name = formatName()
-    #this is the property that will be persisted to the database
-    @currentProperty =   @propertyValue + ':' + @name    
-    @propertyFound = is_property_new?()
-    @validData = is_valid_data?()
-    @criteria = parseCriteria()  
-    @textValue = @currentProperty + ',' + @criteria 
+      unless(@type.blank?)
+      if (@type == "Trophy")
+        @propertyValue = "sonar.score.Trophy"
+      elsif (@type == "Title Cup")
+        @propertyValue = "sonar.score.TitleCup"
+      end
    
-    #if the trophy/title cup does not exist in the database...persist the new property 
-    if (@propertyFound.blank?)
+    
+      @name = formatName()
+      #this is the property that will be persisted to the database
+      @currentProperty =   @propertyValue + ':' + @name    
+      @propertyFound = is_property_new?()
+      @validData = is_valid_data?()
+      @criteria = parseCriteria()  
+      @textValue = @currentProperty + ',' + @criteria 
+   
+      #if the trophy/title cup does not exist in the database...persist the new property 
+      if (@propertyFound.blank?)
       
-        if (@validData && validate_number(@amount) && validate_number(@duration))    
-           Property.set(@currentProperty , @criteria)
-        end
+          if (@validData && validate_number(@amount) && validate_number(@duration))    
+             Property.set(@currentProperty , @criteria)
+          end
       
-    else
-    #if the trophy/title cup property was found, then add the additional criteria to the trophy/title cup 
-      prop = Property.by_key(@currentProperty, nil, nil)           
-         if (@validData && validate_number(@amount) && (@duration))
-           newTextValue = prop.text_value.to_s + ',' + @criteria           
-           prop.text_value = newTextValue
-           prop.save
+      else
+      #if the trophy/title cup property was found, then add the additional criteria to the trophy/title cup 
+        prop = Property.by_key(@currentProperty, nil, nil)           
+           if (@validData && validate_number(@amount) && (@duration))
+             newTextValue = prop.text_value.to_s + ',' + @criteria           
+             prop.text_value = newTextValue
+             prop.save
            
+          end
         end
       end
-   end
+     end
     
   #formats the title cup/trophy name to capitalize every word and removes spaces between words
   #i.e. : My best Trophy changes to MyBestTrophy
@@ -97,15 +99,17 @@ class Trophy < ActiveRecord::Base
     durationValue = @durationValue
     type = @type
     
-    if (@type == "Trophy")
-      unless(name.blank? | metric.blank? | amount.blank? | duration.blank? | durationValue.blank? | type.blank?)       
-        @validData = true 
+    
+      if (@type == "Trophy")
+        unless(name.blank? | metric.blank? | amount.blank? | duration.blank? | durationValue.blank? )       
+          @validData = true 
+        end
+      elsif(@type =="Title Cup")
+        unless (name.blank? | metric.blank? )
+          @validData = true
+        end   
       end
-    elsif(@type =="Title Cup")
-      unless (name.blank? | metric.blank?)
-        @validData = true
-      end   
-    end
+    
      
    end
  

@@ -12,12 +12,20 @@ class TrophiesController < ApplicationController
     # do not delete
   end
   
+  def trophyList
+   # do not delete
+  end
+  
+  def cupList
+   # do not delete
+  end
+  
   def create 
     @trophy = Trophy.new(params[:trophy])
     
     if @trophy.saveTrophy() 
-      #redirect_to :controller => "trophies", :action => "success"
-      redirect_to :controller => "trophies", :action => "index"
+      redirect_to :controller => "trophies", :action => "success"
+      #redirect_to :controller => "trophies", :action => "index"
     else
       redirect_to :controller => "trophies", :action => "index"
     end

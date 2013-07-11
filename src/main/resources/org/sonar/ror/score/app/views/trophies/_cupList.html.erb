@@ -1,0 +1,12 @@
+<%
+properties = Property.find(:all, :conditions => ['prop_key LIKE ?','sonar.score.TitleCup:%'])
+%>
+<h1> List of Title Cups:</h1></br>
+<% for @Property in properties %>
+ <% cup = @Property.prop_key %> 
+   <div>
+   <%=cup[cup.index(':') + 1, cup.length]%>
+
+</div> 
+<% end %>
+
