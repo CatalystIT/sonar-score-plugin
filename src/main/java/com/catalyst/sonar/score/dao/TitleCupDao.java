@@ -4,6 +4,7 @@
 package com.catalyst.sonar.score.dao;
 
 import static com.catalyst.sonar.score.ScorePlugin.TITLECUP;
+import static com.catalyst.sonar.score.log.Logger.LOG;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	public TitleCupDao(DatabaseSession session) {
 		super(session);
 	}
-	
+
 	/**
 	 * @see {@link TitleCupDao#assignToProject(Award, ScoreUser)	
 	 */
@@ -54,28 +55,26 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 */
 	@Override
 	protected boolean assignToProject(TitleCup cup, ScoreProject project) {
-		System.out.println("\t<><><><><><><><>");
-		System.out.println("\tIn assignToProject()");
-		boolean returnThis;
-		System.out.println("Project = " + project);
+		LOG.beginMethod("Assign Title Cup to Project");
+		boolean successful;
+		LOG.log("Project = " + project);
 		if (project != null) {
 			Property titleCupProperty = getTitleCupProperty(cup.getName());
-			System.out.println("\ttitleCupProperty = " + titleCupProperty);
+			LOG.log("titleCupProperty = " + titleCupProperty);
 			int resourceId = project.getId();
-			System.out.println("\tresourceId = " + resourceId);
+			LOG.log("resourceId = " + resourceId);
 			titleCupProperty.setResourceId(resourceId);
-			System.out.println("\ttitleCupProperty = " + titleCupProperty);
-			System.out.println("\tAssigning " + cup + " to " + project.getName());
+			LOG.log("titleCupProperty = " + titleCupProperty).log(
+					"Assigning " + cup + " to " + project.getName());
 			getSession().save(titleCupProperty);
-			returnThis = true;
+			successful = true;
 		} else {
-			System.out.println("\tUnassigning " + cup);
+			LOG.log("Unassigning " + cup);
 			unassign(cup);
-			returnThis = false;
+			successful = false;
 		}
-		System.out.println("\tLeaving assignToProject()");
-		System.out.println("\t<><><><><><><><>");
-		return returnThis;
+		LOG.endMethod();
+		return successful;
 	}
 
 	/*
@@ -130,16 +129,19 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	}
 
 	public Property getTitleCupProperty(String name) {
+		LOG.beginMethod("Getting TitleCup Property");
 		List<Property> properties = getSession().getResults(Property.class,
 				"key", TITLECUP + ":" + name);
-		System.out.println("Found " + properties.size() + " Properties:");
-		for(Property property : properties) {
-			System.out.println(property.getKey() + " , resourceId = " + property.getResourceId());
+		LOG.log("Found " + properties.size() + " Properties:");
+		for (Property property : properties) {
+			System.out.println(property.getKey() + " , resourceId = "
+					+ property.getResourceId());
 		}
 		Property property = (properties.size() > 0) ? properties.get(0) : null;
-		System.out.println("We want the first one:");
-		String printIt = (property != null) ? property.getKey() + " , resourceId = " + property.getResourceId() : "null";
-		System.out.println(printIt);
+		LOG.log("We want the first one:");
+		String printIt = (property != null) ? property.getKey()
+				+ " , resourceId = " + property.getResourceId() : "null";
+		LOG.log(printIt).endMethod();
 		return property;
 	}
 
@@ -168,22 +170,19 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 */
 	@Override
 	public AwardSet<TitleCup> getAll() {
-		System.out.println("\t<><><><><><><><>");
-		System.out.println("\tIn TitleCupDao.getAll()");
+		LOG.beginMethod("TitleCupDao.getAll()");
 		List<Property> properties = getSession().getResults(Property.class,
 				"key", TITLECUP);
 		AwardSet<TitleCup> titleCups = new AwardSet<TitleCup>();
 		Property property = properties.get(0);
-		System.out.println("\t" + property.getValue());
-		for(String cupString : property.getValue().split(",")) {
-			System.out.println("\t" + cupString);
+		LOG.log(property.getValue());
+		for (String cupString : property.getValue().split(",")) {
+			LOG.log(cupString);
 			TitleCupParser parser = new TitleCupParser(getSession(), cupString);
-			titleCups.add(parser.parse());
+			LOG.log(parser.parse());
 		}
-		System.out.println("\t" + titleCups);
-		System.out.println("\tThere are " + titleCups.size() + " TitleCups");
-		System.out.println("\tLeaving TitleCupDao.getAll()");
-		System.out.println("\t<><><><><><><><>");
+		LOG.log(titleCups).log("There are " + titleCups.size() + " TitleCups")
+				.endMethod();
 		return titleCups;
 	}
 
@@ -192,10 +191,11 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 */
 	@Override
 	public boolean create(TitleCup cup) {
-		System.out.println("creating a new cup: " + cup.getName());
-		Property property = new Property("sonar.score.TitleCup:" + cup.getName(), null, null);
+		LOG.beginMethod("creating a new cup: " + cup.getName());
+		Property property = new Property("sonar.score.TitleCup:"
+				+ cup.getName(), null, null);
 		getSession().save(property);
-		System.out.println("done");
+		LOG.endMethod();
 		return true;
 	}
 
@@ -204,7 +204,7 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 */
 	@Override
 	public boolean update(TitleCup cup) {
-		//TODO implement
+		// TODO implement
 		return false;
 	}
 

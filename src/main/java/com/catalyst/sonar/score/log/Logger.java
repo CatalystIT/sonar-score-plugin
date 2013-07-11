@@ -65,6 +65,18 @@ public class Logger {
 		stream.println(tab() + "!!! " + x);
 		return log(x);
 	}
+	
+	/**
+	 * Prints the same as {@link Logger.log(Object x)} but adding an emphasis
+	 * String.
+	 * 
+	 * @param x
+	 * @return
+	 */
+	public Logger warn(Object x) {
+		stream.println(tab() + "WARNING! " + x);
+		return log(x);
+	}
 
 	/**
 	 * Prints the methodName with a border, and then adds the methodName to the

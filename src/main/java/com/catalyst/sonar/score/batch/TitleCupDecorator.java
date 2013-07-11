@@ -170,8 +170,7 @@ public class TitleCupDecorator implements Decorator {
 					// If we get here, than one project is best at one
 					// criterion, but the other project is better at another,
 					// so neither project should earn this TitleCup.
-					LOG.log("Leaving whoShouldEarnCup(), returning null");
-					LOG.endMethod();
+					LOG.log("Leaving whoShouldEarnCup(), returning null").endMethod();
 					return null;
 				} else {
 					projectToReturn = potential;
@@ -179,8 +178,7 @@ public class TitleCupDecorator implements Decorator {
 			}
 		}
 		LOG.log("Leaving whoShouldEarnCup(), returning "
-				+ projectToReturn.getName());
-		LOG.endMethod();
+				+ projectToReturn.getName()).endMethod();
 		return projectToReturn;
 	}
 
@@ -201,30 +199,33 @@ public class TitleCupDecorator implements Decorator {
 				System.out.println("\t\t" + entries);
 				if (!trophiesHelper.criteriaMet(entries, criterion.getAmount(),
 						criterion.getDays(), metric.getName(), session)) {
-					LOG.log("Leaving criteriaMet(), returning false");
-					LOG.endMethod();
+					LOG.log("Leaving criteriaMet(), returning false").endMethod();
 					return false;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		LOG.log("Leaving criteriaMet(), returning true");
-		LOG.endMethod();
+		LOG.log("Leaving criteriaMet(), returning true").endMethod();
 		return true;
 	}
 
 	private double currentValue(ScoreProject thisProject, Metric metric) {
+		LOG.beginMethod("Current Value");
 		MeasuresHelper helper = new MeasuresHelper(session, thisProject);
 		List<SnapshotHistory> history = helper.getMeasureCollection(metric
 				.getName());
 		Collections.sort(history);
-		double value = (history.size() > 0) ? history.get(history.size() - 1).getMeasureValue().doubleValue() : null;
+		SnapshotHistory lastSnapshot = (history.size() > 0) ? history.get(history.size() - 1) : null;
+		LOG.log("Last Snapshot for " + thisProject.getName() + " = " + lastSnapshot);
+		double value = (lastSnapshot != null) ? lastSnapshot.getMeasureValue().doubleValue() : null;
+		LOG.beginMethod("current value = " + value).endMethod();
 		return value;
 	}
 
 	private ScoreProject better(ScoreProject project1, ScoreProject project2,
 			Metric metric) {
+		LOG.beginMethod("Which project is better?");
 		ScoreProject projectToReturn;
 		if (MeasuresHelper.isBetter(currentValue(project1, metric),
 				currentValue(project2, metric), metric)) {
@@ -232,7 +233,7 @@ public class TitleCupDecorator implements Decorator {
 		} else {
 			projectToReturn = project2;
 		}
-		LOG.log(projectToReturn + " is better.");
+		LOG.log(projectToReturn + " is better.").endMethod();
 		return projectToReturn;
 	}
 

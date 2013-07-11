@@ -3,6 +3,8 @@
  */
 package com.catalyst.sonar.score.dao;
 
+import static com.catalyst.sonar.score.log.Logger.LOG;
+
 import java.util.List;
 
 import org.sonar.api.database.DatabaseSession;
@@ -35,42 +37,37 @@ public class ScoreProjectDao extends ScoreEntityDao<ScoreProject> {
 
 	// TODO javadoc
 	public ScoreProject getProjectById(Integer id) {
-		System.out.println("\t<><><><><><><><>");
-		System.out.println("\tIn the Project Dao.");
-		if(id==null) {
+		LOG.beginMethod("getProjectById()");
+		if (id == null) {
 			return null;
 		}
 		ScoreProject scoreProject = null;
-		
+
 		List<ResourceModel> models = getSession().getResults(
 				ResourceModel.class, "id", id);
 		if (models == null) {
-			System.out.println("\tWARNING!  models is null!!!!");
+			LOG.warn("models is null!!!!");
 		} else if (models.size() < 1) {
-			System.out.println("\tWARNING!  models.size() = " + models.size());
+			LOG.warn("models.size() = " + models.size());
 		} else {
-			System.out.println("\tWe are only here because models.size() = " + models.size());
-			System.out.println("\tThere are " + models.size() + " Projects:");
+			LOG.log("We are only here because models.size() = " + models.size())
+					.log("\tThere are " + models.size() + " Projects:");
 			for (ResourceModel model : models) {
-				System.out.println("\t" + model.getName() + " ("
-						+ model.getKey() + ")");
+				LOG.log(model.getName() + " (" + model.getKey() + ")");
 			}
 			ResourceModel model = models.get(0);
 			if (model != null) {
-				System.out.println("\tWARNING!  model is null!!!!");
-				System.out.println("\tHere is the first Project:");
-				System.out.println("\t" + model.getName() + " ("
-						+ model.getKey() + ")");
-				System.out.println("\t\t" + model);
+				LOG.warn("model is null!!!!").log("Here is the first Project:")
+						.log(model.getName() + " (" + model.getKey() + ")")
+						.log(model);
 				scoreProject = new ScoreProject(model);
-				System.out.println("\tConverted to a ScoreProject:");
-				System.out.println("\t" + scoreProject.getName() + " ("
-						+ scoreProject.getKey() + ")");
-				System.out.println("\t\t" + scoreProject);
+				LOG.log("Converted to a ScoreProject:")
+						.log(scoreProject.getName() + " ("
+								+ scoreProject.getKey() + ")")
+						.log(scoreProject);
 			}
 		}
-		System.out.println("\tLeaving the Project Dao.");
-		System.out.println("\t<><><><><><><><>");
+		LOG.log("returning " + scoreProject).endMethod();
 		return scoreProject;
 	}
 

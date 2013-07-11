@@ -3,6 +3,8 @@
  */
 package com.catalyst.sonar.score.dao;
 
+import static com.catalyst.sonar.score.log.Logger.LOG;
+
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.measures.Metric;
 
@@ -49,6 +51,7 @@ public class CriterionParser extends Parser<Criterion> {
 	 */
 	@Override
 	public Criterion parse() {
+		LOG.beginMethod("Parsing Criterion");
 		Criterion criterion;
 		Metric metric = parseMetric();
 		double amount = 0;
@@ -58,10 +61,10 @@ public class CriterionParser extends Parser<Criterion> {
 			days = parseDays();
 			criterion = new Criterion(metric, amount, days);
 		} catch (IndexOutOfBoundsException e) {
-			System.out.println("\t\t\tCREATEING A \"BEST\" CRITERION");
+			LOG.log("Creating a \"BEST\" Criterion");
 			criterion = new Criterion(metric);
 		}
-		System.out.println("\t\t\tCRITERION = " + criterion);
+		LOG.log("Criterion = " + criterion).endMethod();
 		return criterion;
 	}
 
@@ -69,11 +72,11 @@ public class CriterionParser extends Parser<Criterion> {
 	 * Parses out a {@link Metric} from the criterionString.
 	 */
 	public Metric parseMetric() {
-		System.out.println("\t\t\tPARSING METRIC");
+		LOG.beginMethod("Parsing Metric");
 		String metricName = get(METRIC_INDEX);
-		System.out.println("\t\t\tMETRIC NAME = " + metricName);
+		LOG.log("Metric Name = " + metricName);
 		Metric metric = metricDao.findMetricByName(metricName);
-		System.out.println("\t\t\tRETURNING = " + metric);
+		LOG.log("Returning = " + metric).endMethod();
 		return metric;
 	}
 
