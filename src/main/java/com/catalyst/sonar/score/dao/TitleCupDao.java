@@ -173,6 +173,10 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		LOG.beginMethod("TitleCupDao.getAll()");
 		List<Property> properties = getSession().getResults(Property.class,
 				"key", TITLECUP);
+		if(properties == null || properties.size() == 0) {
+			LOG.warn("There are not TitleCups!").endMethod();
+			return null;
+		}
 		AwardSet<TitleCup> titleCups = new AwardSet<TitleCup>();
 		Property property = properties.get(0);
 		LOG.log(property.getValue());
