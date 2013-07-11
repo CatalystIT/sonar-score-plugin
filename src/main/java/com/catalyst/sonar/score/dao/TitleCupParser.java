@@ -38,7 +38,7 @@ public class TitleCupParser extends AwardParser<TitleCup> {
 		LOG.beginMethod("PARSING TITLECUP");
 		TitleCup cup = new TitleCup(getName());
 		for (int index = 0; index < fieldsLength(); index++) {			
-			CriterionParser cParser = new CriterionParser(getSession(), get(1));
+			CriterionParser cParser = new CriterionParser(getSession(), get(index));
 			cup.addCriterion(cParser.parse());
 		}
 		LOG.log("CUP = " + cup + "; CRITERIA = " + cup.getCriteria())

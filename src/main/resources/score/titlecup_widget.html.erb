@@ -1,6 +1,6 @@
 <% 
 	#finds all the properties for the sonar.score.TitleCup property
-	properties = Property.find(:all, :conditions => ['prop_key LIKE ?','sonar.score.TitleCup:%'])	
+	properties = Property.find(:all, :conditions => ['prop_key LIKE ?','sonar.score.TitleCup=%'])	
 %>
 <% if properties != nil %>
 	<div class="dashbox">
@@ -19,7 +19,7 @@
 								<img src="/images/profiles/trophies/star-gold.jpg"; height="50", width="40"/>
 							</div>
 							<div>
-								<%=titleCup[titleCup.index(':') + 1, titleCup.length]%>
+								<%= titleCup[titleCup.index('=') + 1, titleCup.length]%>
 							</div>
 						</div>
 					</div>

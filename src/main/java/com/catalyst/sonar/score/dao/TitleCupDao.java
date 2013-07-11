@@ -71,7 +71,7 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 */
 	public Property getTitleCupProperty(String name) {
 		LOG.beginMethod("Getting " + entityTypeKey() + " Property");
-		String key = this.entityTypeKey() + ":" + name + ":Projects";
+		String key = this.entityTypeKey() + "=" + name;
 		Property property = getSession().getSingleResult(Property.class, "key",
 				key);
 		LOG.log(property);
