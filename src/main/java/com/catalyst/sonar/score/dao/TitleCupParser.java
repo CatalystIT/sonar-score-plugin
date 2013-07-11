@@ -23,8 +23,9 @@ public class TitleCupParser extends AwardParser<TitleCup> {
 	 * @param session
 	 * @param entityString
 	 */
-	public TitleCupParser(DatabaseSession session, String entityString) {
-		super(session, entityString);
+	// TODO update Javadoc
+	public TitleCupParser(DatabaseSession session, String key, String value) {
+		super(session, key, value);
 	}
 
 	/**
@@ -35,12 +36,13 @@ public class TitleCupParser extends AwardParser<TitleCup> {
 	@Override
 	public TitleCup parse() {
 		LOG.beginMethod("PARSING TITLECUP");
-		CriterionParser cParser = new CriterionParser(getSession(), get(1));
-		TitleCup cup = new TitleCup(get(0));
-		cup.addCriterion(cParser.parse());
+		TitleCup cup = new TitleCup(getName());
+		for (int index = 0; index < fieldsLength(); index++) {			
+			CriterionParser cParser = new CriterionParser(getSession(), get(1));
+			cup.addCriterion(cParser.parse());
+		}
 		LOG.log("CUP = " + cup + "; CRITERIA = " + cup.getCriteria())
 				.endMethod();
 		return cup;
 	}
-
 }

@@ -16,7 +16,7 @@ import org.sonar.jpa.dao.BaseDao;
  * @author JDunn
  */
 public abstract class Parser<E> extends BaseDao {
-	
+
 	private String[] fields;
 
 	/**
@@ -30,9 +30,10 @@ public abstract class Parser<E> extends BaseDao {
 		this(session, new String[1]);
 		this.fields[0] = entityString;
 	}
-	
+
 	/**
 	 * Returns the String at {@code fields[index]}.
+	 * 
 	 * @param index
 	 * @return the String at fields[index].
 	 */
@@ -57,6 +58,14 @@ public abstract class Parser<E> extends BaseDao {
 		super(session);
 		this.fields = new String[fields.length];
 		System.arraycopy(fields, 0, this.fields, 0, fields.length);
+	}
+
+	/**
+	 * 
+	 * @return the length of the {@code String[] fields} field.
+	 */
+	protected int fieldsLength() {
+		return fields.length;
 	}
 
 }

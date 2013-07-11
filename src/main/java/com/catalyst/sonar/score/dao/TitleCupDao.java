@@ -6,6 +6,7 @@ package com.catalyst.sonar.score.dao;
 import static com.catalyst.sonar.score.ScorePlugin.TITLECUP;
 import static com.catalyst.sonar.score.log.Logger.LOG;
 
+import java.util.Date;
 import java.util.List;
 
 import org.sonar.api.database.DatabaseSession;
@@ -53,28 +54,32 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	/**
 	 * @see {@link AwardDao#assignToProject(Award, ScoreUser)	
 	 */
-	@Override
 	protected boolean assignToProject(TitleCup cup, ScoreProject project) {
-		LOG.beginMethod("Assign Title Cup to Project");
-		boolean successful;
-		LOG.log("Project = " + project);
-		if (project != null) {
-			Property titleCupProperty = getTitleCupProperty(cup.getName());
-			LOG.log("titleCupProperty = " + titleCupProperty);
-			int resourceId = project.getId();
-			LOG.log("resourceId = " + resourceId);
-			titleCupProperty.setResourceId(resourceId);
-			LOG.log("titleCupProperty = " + titleCupProperty).log(
-					"Assigning " + cup + " to " + project.getName());
-			getSession().save(titleCupProperty);
-			successful = true;
-		} else {
-			LOG.log("Unassigning " + cup);
-			unassign(cup);
-			successful = false;
+		Property property = getTitleCupProperty(cup.getName());
+		property.setResourceId(project.getId());
+		property.setValue(Long.toString(new Date().getTime()));
+		getSession().save(property);
+		return true;
+	}
+
+	/**
+	 * Retrieves the {@link Property} from the properties table in the database
+	 * that assigns the TitleCup to a {@link Project}.
+	 * 
+	 * @param name
+	 * @return the property that assigns the TitleCup.
+	 */
+	public Property getTitleCupProperty(String name) {
+		LOG.beginMethod("Getting " + entityTypeKey() + " Property");
+		String key = this.entityTypeKey() + ":" + name + ":Projects";
+		Property property = getSession().getSingleResult(Property.class, "key",
+				key);
+		LOG.log(property);
+		if (property == null) {
+			property = new Property(key, null, null);
 		}
-		LOG.endMethod();
-		return successful;
+		LOG.log(property).endMethod();
+		return property;
 	}
 
 	/*
@@ -116,8 +121,8 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		return getAllCupsFromProperties(properties);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Gets all the {@link TitleCup}s earned by a {@link Project}.
 	 * 
 	 * @see AwardDao#getAllAssignedFromProject(ScoreProject)
 	 */
@@ -128,30 +133,13 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		return getAllCupsFromProperties(properties);
 	}
 
-	public Property getTitleCupProperty(String name) {
-		LOG.beginMethod("Getting TitleCup Property");
-		List<Property> properties = getSession().getResults(Property.class,
-				"key", TITLECUP + ":" + name);
-		LOG.log("Found " + properties.size() + " Properties:");
-		for (Property property : properties) {
-			System.out.println(property.getKey() + " , resourceId = "
-					+ property.getResourceId());
-		}
-		Property property = (properties.size() > 0) ? properties.get(0) : null;
-		LOG.log("We want the first one:");
-		String printIt = (property != null) ? property.getKey()
-				+ " , resourceId = " + property.getResourceId() : "null";
-		LOG.log(printIt).endMethod();
-		return property;
-	}
-
 	/**
 	 * Unassigns the {@link TitleCup} from all Projects.
 	 */
 	private void unassign(TitleCup cup) {
-		Property property = getTitleCupProperty(cup.getName());
-		property.setResourceId(null);
 		if (cup != null) {
+			Property property = getTitleCupProperty(cup.getName());
+			property.setResourceId(null);
 			getSession().save(property);
 		}
 	}
@@ -165,30 +153,30 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		return null;
 	}
 
-	/**
-	 * @see {@link AwardDao#getAllAwards()}
-	 */
-	@Override
-	public AwardSet<TitleCup> getAll() {
-		LOG.beginMethod("TitleCupDao.getAll()");
-		List<Property> properties = getSession().getResults(Property.class,
-				"key", TITLECUP);
-		if(properties == null || properties.size() == 0) {
-			LOG.warn("There are not TitleCups!").endMethod();
-			return null;
-		}
-		AwardSet<TitleCup> titleCups = new AwardSet<TitleCup>();
-		Property property = properties.get(0);
-		LOG.log(property.getValue());
-		for (String cupString : property.getValue().split(",")) {
-			LOG.log(cupString);
-			TitleCupParser parser = new TitleCupParser(getSession(), cupString);
-			LOG.log(parser.parse());
-		}
-		LOG.log(titleCups).log("There are " + titleCups.size() + " TitleCups")
-				.endMethod();
-		return titleCups;
-	}
+	// /**
+	// * @see {@link AwardDao#getAllAwards()}
+	// */
+	// @Override
+	// public AwardSet<TitleCup> getAll() {
+	// LOG.beginMethod("TitleCupDao.getAll()");
+	// List<Property> properties = getSession().getResults(Property.class,
+	// "key", TITLECUP);
+	// if(properties == null || properties.size() == 0) {
+	// LOG.warn("There are not TitleCups!").endMethod();
+	// return null;
+	// }
+	// AwardSet<TitleCup> titleCups = new AwardSet<TitleCup>();
+	// Property property = properties.get(0);
+	// LOG.log(property.getValue());
+	// for (String cupString : property.getValue().split(",")) {
+	// LOG.log(cupString);
+	// TitleCupParser parser = new TitleCupParser(getSession(), cupString);
+	// LOG.log(parser.parse());
+	// }
+	// LOG.log(titleCups).log("There are " + titleCups.size() + " TitleCups")
+	// .endMethod();
+	// return titleCups;
+	// }
 
 	/**
 	 * @see {@link AwardDao#create(Award)}
@@ -241,5 +229,16 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 			}
 		}
 		return properties;
+	}
+
+	@Override
+	protected String entityTypeKey() {
+		return TITLECUP;
+	}
+
+	@Override
+	protected AwardParser<TitleCup> makeParser(Property property) {
+		return new TitleCupParser(getSession(), property.getKey(),
+				property.getValue());
 	}
 }

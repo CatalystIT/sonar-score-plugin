@@ -5,6 +5,7 @@ package com.catalyst.sonar.score.log;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -74,6 +75,9 @@ public class Logger {
 	 * @return
 	 */
 	public Logger warn(Object x) {
+		if(x instanceof String[]) {
+			x = Arrays.toString((String[]) x);
+		}
 		stream.println(tab() + "WARNING! " + x);
 		return log(x);
 	}
@@ -120,7 +124,7 @@ public class Logger {
 	private String border(final int x) {
 		StringBuilder border = new StringBuilder();
 		int index = stack.size();
-		index = (index > BORDER.length) ? BORDER.length - 1 : index;
+		index = (index >= BORDER.length) ? BORDER.length - 1 : index;
 		for (int y = 0; y < x; y++) {
 			border.append(BORDER[index]);
 		}

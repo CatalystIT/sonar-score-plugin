@@ -106,10 +106,6 @@ public class TitleCupDecorator implements Decorator {
 			for (TitleCup cup : cups) {
 				LOG.logEmf("Cup = " + cup.getName());
 				Property titleCupProperty = cupDao.getTitleCupProperty(cup.getName());
-				if(titleCupProperty==null) {
-					cupDao.create(cup);
-					titleCupProperty = cupDao.getTitleCupProperty(cup.getName());
-				}
 				Integer resourceId = titleCupProperty.getResourceId();
 				LOG.logEmf("resourceId = " + resourceId);
 				ScoreProject currentHolder = projectDao

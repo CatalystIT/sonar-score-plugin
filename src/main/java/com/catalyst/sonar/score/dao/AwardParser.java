@@ -3,6 +3,8 @@
  */
 package com.catalyst.sonar.score.dao;
 
+import static com.catalyst.sonar.score.log.Logger.LOG;
+
 import org.sonar.api.database.DatabaseSession;
 
 import com.catalyst.sonar.score.api.Award;
@@ -16,6 +18,8 @@ import com.catalyst.sonar.score.api.Award;
  */
 public abstract class AwardParser<A extends Award> extends Parser<A> {
 	
+	private final String name;
+	
 	/**
 	 * Creates a String[] whose two fields are the {@link Award} name and the
 	 * {@code String} representation of the {@link Criterion}. Intended only for
@@ -25,12 +29,10 @@ public abstract class AwardParser<A extends Award> extends Parser<A> {
 	 * @param awardString
 	 * @return
 	 */
-	private static String[] spliceAwardString(String awardString) {
-		// Separates the award name from the Criterion/Group.
-		String[] fields = awardString.split("\\{");
-		// Trims the "}" off the end of the Criterion/Group.
-		fields[1] = fields[1].replaceAll("\\}", "");
-		return fields;
+	private static String[] spliceValueToCriteria(String value) {
+		String[] criteriaStrings = value.split("\\{|,|\\}");
+		LOG.log(criteriaStrings);
+		return criteriaStrings;
 	}
 
 	/**
@@ -40,9 +42,10 @@ public abstract class AwardParser<A extends Award> extends Parser<A> {
 	 * 
 	 * @param session
 	 * @param entityString
-	 */
-	public AwardParser(DatabaseSession session, String entityString) {
-		super(session, spliceAwardString(entityString));
+	 *///TODO: update Javadoc description
+	public AwardParser(DatabaseSession session, String key, String value) {
+		super(session, spliceValueToCriteria(value));
+		this.name = key.substring(key.lastIndexOf(':') + 1);
 	}
 
 	/**
@@ -54,4 +57,11 @@ public abstract class AwardParser<A extends Award> extends Parser<A> {
 	 */
 	@Override
 	public abstract A parse();
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
 }

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.mock;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.database.DatabaseSession;
+import org.sonar.api.database.configuration.Property;
 
 import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.AwardSet;
@@ -46,7 +47,7 @@ public class AwardDaoTest {
 			return null;
 		}
 
-		public SearchableHashSet<NewAward> getAll() {
+		public AwardSet<NewAward> getAll() {
 			return null;
 		}
 
@@ -75,6 +76,18 @@ public class AwardDaoTest {
 
 		protected AwardSet<NewAward> getAllAssignedFromProject(
 				ScoreProject project) {
+			return null;
+		}
+
+		@Override
+		protected String entityTypeKey() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AwardParser<NewAward> makeParser(Property property) {
+			// TODO Auto-generated method stub
 			return null;
 		}
 		
