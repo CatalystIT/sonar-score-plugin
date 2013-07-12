@@ -7,16 +7,12 @@ import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
 
-import com.catalyst.sonar.score.api.Trophy;
 import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.batch.TitleCupDecorator;
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
 import com.catalyst.sonar.score.batch.points.*;
 import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
-import com.catalyst.sonar.score.batch.trophies.Criteria;
-import com.catalyst.sonar.score.batch.trophies.TrophyAndCriteriaParser;
-import com.catalyst.sonar.score.batch.trophies.TrophySet;
 import com.catalyst.sonar.score.dao.MetricDao;
 import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
@@ -87,8 +83,6 @@ public class ScorePlugin extends SonarPlugin{
 		ScoreRubyWidget.class, EnhancedListFilterWidget.class, ProjectComparisonWidget.class, TrophyWidget.class, TitleCupWidget.class,//ImageUploadPage.class,
 		
 		MetricBrackets.class, MetricBracketsParser.class, InvalidNumberOfDoublesException.class, 
-		
-		Criteria.class, Trophy.class, TrophyAndCriteriaParser.class, TrophySet.class,
 		
 		AwardTrophies.class, SnapShotDao.class, MetricDao.class, DateUtility.class, SnapshotHistory.class, TrophiesHelper.class, TrophyPage.class//,
 		

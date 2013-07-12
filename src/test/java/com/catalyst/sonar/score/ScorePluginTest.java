@@ -10,7 +10,6 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.catalyst.sonar.score.api.Trophy;
 import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.batch.TitleCupDecorator;
@@ -19,9 +18,6 @@ import com.catalyst.sonar.score.batch.points.InvalidNumberOfDoublesException;
 import com.catalyst.sonar.score.batch.points.MetricBrackets;
 import com.catalyst.sonar.score.batch.points.MetricBracketsParser;
 import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
-import com.catalyst.sonar.score.batch.trophies.Criteria;
-import com.catalyst.sonar.score.batch.trophies.TrophyAndCriteriaParser;
-import com.catalyst.sonar.score.batch.trophies.TrophySet;
 import com.catalyst.sonar.score.dao.MetricDao;
 import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
@@ -68,10 +64,6 @@ public class ScorePluginTest {
 						MetricBrackets.class,
 						MetricBracketsParser.class,
 						InvalidNumberOfDoublesException.class,
-						Criteria.class,
-						Trophy.class,						
-						TrophyAndCriteriaParser.class,
-						TrophySet.class,
 						AwardTrophies.class, 
 						SnapShotDao.class, 
 						MetricDao.class, 
