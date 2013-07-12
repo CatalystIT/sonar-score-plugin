@@ -5,6 +5,9 @@ package com.catalyst.sonar.score.batch.trophies;
 
 import java.util.HashSet;
 
+import com.catalyst.sonar.score.api.Criterion;
+import com.catalyst.sonar.score.api.Trophy;
+
 
 /**
  * TrophySet extends HashSet<Trophy>, overriding the add() method and adding a get() method.
@@ -21,7 +24,7 @@ public class TrophySet extends HashSet<Trophy> {
 		//The method super.add(trophy) will run as part of the boolean expression.
 		//Thus, if the expression returns false, super.add returned true and the trophy was added.
 		if(!super.add(trophy)) {			
-			for(Criteria criteria : trophy.getCriteria()) {
+			for(Criterion criteria : trophy.getCriteria()) {
 				this.get(trophy).getCriteria().add(criteria);
 			}						
 		}		

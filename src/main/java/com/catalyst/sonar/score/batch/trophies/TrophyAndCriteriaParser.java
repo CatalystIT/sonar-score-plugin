@@ -5,6 +5,9 @@ import java.util.Map;
 import org.sonar.api.config.Settings;
 import org.sonar.api.database.configuration.Property;
 
+import com.catalyst.sonar.score.api.Criterion;
+import com.catalyst.sonar.score.api.Trophy;
+
 
 /**
  * TrophyAndCriteriaParser parses a String from the database
@@ -60,7 +63,7 @@ public class TrophyAndCriteriaParser {
 					int indexNum = tPropertyString.indexOf(REGEX_CURLYBRACES);
 					String criteriaString = tPropertyString.substring(++indexNum);
 					// parse the rest of the string and get the criteria
-					Criteria criteria = parseCriteria(criteriaString);
+					Criterion criteria = parseCriteria(criteriaString);
 					trophy.addCriteria(criteria);
 					trophies.add(trophy);
 				}
@@ -89,7 +92,7 @@ public class TrophyAndCriteriaParser {
 	 * @param propertyString
 	 * @return
 	 */
-	public static Criteria parseCriteria(String propertyString) {
+	public static Criterion parseCriteria(String propertyString) {
 		String metric = "";
 		double requiredAmt = 0;
 		int days = 0;
@@ -123,7 +126,7 @@ public class TrophyAndCriteriaParser {
 				}
 			}
 		}
-		return new Criteria(metric, requiredAmt, days);
+		return new Criterion(null, requiredAmt, days);
 	}
 
 	/**

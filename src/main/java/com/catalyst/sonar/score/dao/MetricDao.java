@@ -1,26 +1,19 @@
-package com.catalyst.sonar.score.metrics;
+package com.catalyst.sonar.score.dao;
 
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.measures.Metric;
+import org.sonar.jpa.dao.BaseDao;
 /**
  * 
  * @author mwomack
  *
  */
-public class MetricsHelper {
+public class MetricDao extends BaseDao {
 
-	private Metric metric;
-	private DatabaseSession session;	
-	public MetricsHelper(DatabaseSession session){
-		this.session = session;
+	public MetricDao(DatabaseSession session){
+		super(session);
 	}
-	
-	/**
-	 * @return the session
-	 */
-	public DatabaseSession getSession() {
-		return session;
-	}
+
 
 	/**
 	 * Retrieve the metric id for a given metric name
@@ -31,7 +24,7 @@ public class MetricsHelper {
 	public int getMetricId(String metricName) {
 		// retrieve the metric by name in order to retrieve the metric id
 		int metricId = 0;
-		metric = findMetricByName(metricName);
+		Metric metric = findMetricByName(metricName);
 			if (metric != null) {
 				metricId = metric.getId();
 			}
@@ -45,7 +38,7 @@ public class MetricsHelper {
 	 * @returns the Metric object by name
 	 */
 	public Metric findMetricByName(String name) {
-		return session.getSingleResult(Metric.class, "name", name, "enabled",
+		return getSession().getSingleResult(Metric.class, "name", name, "enabled",
 				true);
 	}
 

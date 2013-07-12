@@ -66,7 +66,7 @@ public abstract class AwardDao<A extends Award> extends
 		List<Property> allProperties = getSession().getResults(Property.class);
 		List<Property> properties = new ArrayList<Property>();
 		for (Property property : allProperties) {
-			if (property.getKey().contains(entityTypeKey())) {
+			if (property.getKey().contains(entityTypeKey() + ":")) {
 				properties.add(property);
 			}
 		}

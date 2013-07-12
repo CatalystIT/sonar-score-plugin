@@ -7,6 +7,7 @@ import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
 
+import com.catalyst.sonar.score.api.Trophy;
 import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.batch.TitleCupDecorator;
@@ -14,10 +15,10 @@ import com.catalyst.sonar.score.batch.TrophiesDecorator;
 import com.catalyst.sonar.score.batch.points.*;
 import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
 import com.catalyst.sonar.score.batch.trophies.Criteria;
-import com.catalyst.sonar.score.batch.trophies.Trophy;
 import com.catalyst.sonar.score.batch.trophies.TrophyAndCriteriaParser;
 import com.catalyst.sonar.score.batch.trophies.TrophySet;
-import com.catalyst.sonar.score.metrics.MetricsHelper;
+import com.catalyst.sonar.score.dao.MetricDao;
+import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.EnhancedListFilterWidget;
 import com.catalyst.sonar.score.ui.ProjectComparisonWidget;
@@ -26,7 +27,6 @@ import com.catalyst.sonar.score.ui.TrophyPage;
 import com.catalyst.sonar.score.ui.TrophyWidget;
 import com.catalyst.sonar.score.ui.TitleCupWidget;
 import com.catalyst.sonar.score.util.DateUtility;
-import com.catalyst.sonar.score.util.MeasuresHelper;
 import com.catalyst.sonar.score.util.SnapshotHistory;
 import com.catalyst.sonar.score.util.TrophiesHelper;
 
@@ -90,7 +90,7 @@ public class ScorePlugin extends SonarPlugin{
 		
 		Criteria.class, Trophy.class, TrophyAndCriteriaParser.class, TrophySet.class,
 		
-		AwardTrophies.class, MeasuresHelper.class, MetricsHelper.class, DateUtility.class, SnapshotHistory.class, TrophiesHelper.class, TrophyPage.class//,
+		AwardTrophies.class, SnapShotDao.class, MetricDao.class, DateUtility.class, SnapshotHistory.class, TrophiesHelper.class, TrophyPage.class//,
 		
 		//API
 //		AwardSet.class, Criterion.class, Group.class, Member.class,

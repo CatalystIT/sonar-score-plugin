@@ -5,11 +5,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.sonar.api.config.Settings;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.measures.Metric;
+
 import com.catalyst.sonar.score.ScorePlugin;
-import com.catalyst.sonar.score.metrics.MetricsHelper;
+import com.catalyst.sonar.score.dao.MetricDao;
 
 public class TrophiesHelper {
 	
@@ -21,7 +23,7 @@ public class TrophiesHelper {
 	private static final int SMALLER_MEASURE_VALUE = -1;
 	private static final int BIGGER_MEASURE_VALUE = 1;
 	private Settings settings;
-	private MetricsHelper metricsHelper;
+	private MetricDao metricsHelper;
 	
 	/**
 	 * TrophiesHelper constructor
@@ -98,7 +100,7 @@ public class TrophiesHelper {
 		
 		boolean criteriaMet = false;
 		BigDecimal requiredAmt = new BigDecimal(reqAmt);
-		metricsHelper = new MetricsHelper(session);
+		metricsHelper = new MetricDao(session);
 		Metric metric = metricsHelper.findMetricByName(metricName);
 		
 			if (metric != null){ 

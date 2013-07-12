@@ -1,6 +1,7 @@
 package com.catalyst.sonar.score.batch;
 
 import static com.catalyst.sonar.score.log.Logger.LOG;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +24,6 @@ import com.catalyst.sonar.score.api.TitleCup;
 import org.sonar.api.config.Settings;
 
 import com.catalyst.sonar.score.dao.*;
-import com.catalyst.sonar.score.util.MeasuresHelper;
 import com.catalyst.sonar.score.util.SnapshotHistory;
 import com.catalyst.sonar.score.util.TrophiesHelper;
 
@@ -39,7 +39,7 @@ public class TitleCupDecorator implements Decorator {
 	private final DatabaseSession session;
 	private Project project;
 	private Settings settings;
-	private MeasuresHelper measuresHelper;
+	private SnapShotDao measuresHelper;
 	private TrophiesHelper trophiesHelper;
 
 	public TitleCupDecorator(DatabaseSession session, Project project,
@@ -47,7 +47,7 @@ public class TitleCupDecorator implements Decorator {
 		this.session = session;
 		this.project = project;
 		this.settings = settings;
-		this.measuresHelper = new MeasuresHelper(session, project);
+		this.measuresHelper = new SnapShotDao(session, project);
 		this.trophiesHelper = new TrophiesHelper(settings);
 
 	}
@@ -208,7 +208,7 @@ public class TitleCupDecorator implements Decorator {
 
 	private double currentValue(ScoreProject thisProject, Metric metric) {
 		LOG.beginMethod("Current Value");
-		MeasuresHelper helper = new MeasuresHelper(session, thisProject);
+		SnapShotDao helper = new SnapShotDao(session, thisProject);
 		List<SnapshotHistory> history = helper.getMeasureCollection(metric
 				.getName());
 		Collections.sort(history);
@@ -223,7 +223,7 @@ public class TitleCupDecorator implements Decorator {
 			Metric metric) {
 		LOG.beginMethod("Which project is better?");
 		ScoreProject projectToReturn;
-		if (MeasuresHelper.isBetter(currentValue(project1, metric),
+		if (SnapShotDao.isBetter(currentValue(project1, metric),
 				currentValue(project2, metric), metric)) {
 			projectToReturn = project1;
 		} else {

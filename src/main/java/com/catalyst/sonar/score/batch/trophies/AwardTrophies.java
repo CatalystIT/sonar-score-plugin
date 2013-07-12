@@ -2,6 +2,7 @@ package com.catalyst.sonar.score.batch.trophies;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.config.Settings;
@@ -11,7 +12,9 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 
 import com.catalyst.sonar.score.ScorePlugin;
-import com.catalyst.sonar.score.util.MeasuresHelper;
+import com.catalyst.sonar.score.api.Criterion;
+import com.catalyst.sonar.score.api.Trophy;
+import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.util.SnapshotHistory;
 import com.catalyst.sonar.score.util.TrophiesHelper;
 /**
@@ -24,7 +27,7 @@ public class AwardTrophies {
 	private DatabaseSession session;
 	private Project project;
 	private Settings settings;
-	private MeasuresHelper measuresHelper;
+	private SnapShotDao measuresHelper;
 	private TrophiesHelper trophiesHelper;
 	private Property newProperty;
 	int numberOfListsOfCriteriaPerTrophy;
@@ -96,31 +99,30 @@ public class AwardTrophies {
 	this.project = project;
 	this.settings = settings;
 		
-	// adding the trophies to the trophySet objects
-	trophySet1.add(trophy1);
-	trophySet2.add(trophy2);
-	trophySet3.add(trophy3);
-	trophySet4.add(trophy4);
-	trophySet5.add(trophy5);
-	trophySet6.add(trophy6);
-	trophySet6.add(trophy7);
-
-	// adds criteria to the criteria list
-	trophy1.addCriteria(criteria1);
-	trophy2.addCriteria(criteria2);
-	trophy3.addCriteria(criteria3);
-	
-	
-	//trophy four has three lists of criteria
-	trophy4.addCriteria(criteria1);
-	trophy4.addCriteria(criteria2);
-	trophy4.addCriteria(criteria4);
-	
-	trophy5.addCriteria(criteria5);
-	trophy6.addCriteria(criteria6);
-	trophy7.addCriteria(criteria7);
-	
-	}	
+//		// adding the trophies to the trophySet objects
+//		trophySet1.add(trophy1);
+//		trophySet2.add(trophy2);
+//		trophySet3.add(trophy3);
+//		trophySet4.add(trophy4);
+//		trophySet5.add(trophy5);
+//		trophySet6.add(trophy6);
+//		trophySet6.add(trophy7);
+//
+//		// adds criteria to the criteria list
+//		trophy1.addCriterion(criteria1);
+//		trophy2.addCriterion(criteria2);
+//		trophy3.addCriterion(criteria3);
+//
+//		// trophy four has three lists of criteria
+//		trophy4.addCriterion(criteria1);
+//		trophy4.addCriterion(criteria2);
+//		trophy4.addCriterion(criteria4);
+//
+//		trophy5.addCriterion(criteria5);
+//		trophy6.addCriterion(criteria6);
+//		trophy7.addCriterion(criteria7);
+//
+	}
 	
 	/**
 	 * 
@@ -145,7 +147,7 @@ public class AwardTrophies {
 	 */
 	public void awardTrophies(final DecoratorContext context, Resource resource) {
 		List<SnapshotHistory> snapshotHistory = new ArrayList<SnapshotHistory>();
-		measuresHelper = new MeasuresHelper(session, project);
+		measuresHelper = new SnapShotDao(session, project);
 		trophiesHelper = new TrophiesHelper(settings);
 						
 		double requirementAmount = 0.0;
@@ -163,18 +165,18 @@ public class AwardTrophies {
 		 * through each trophy's criteria to see if a trophy was earned.
 		 */
 		for (Trophy items : listTrophies(settings)) {
-			List<Criteria> listOfCriteria = items.getCriteria();
+			Set<Criterion> listOfCriteria = items.getCriteria();
 			//represents the number of lists of criteria per trophy
 			numberOfListsOfCriteriaPerTrophy = listOfCriteria.size();
 			int numberOfCriteriaListsMet = 0;
-			for (Criteria criteria : listOfCriteria) {
+			for (Criterion criteria : listOfCriteria) {
 				/*
 				 * For each trophy, retrieve the trophy name and its criteria:
 				 * metric, required amount and days
 				 */
-				String trophyName = items.getTrophyName();				
-				String metricName = criteria.getMetric();
-				requirementAmount = criteria.getRequiredAmt();
+				String trophyName = items.getName();				
+				String metricName = criteria.getMetric().getName();
+				requirementAmount = criteria.getAmount();
 				days = criteria.getDays();
 								
 				/*

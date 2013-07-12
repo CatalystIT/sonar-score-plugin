@@ -1,4 +1,4 @@
-package com.catalyst.sonar.score.util;
+package com.catalyst.sonar.score.dao;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,19 +10,19 @@ import org.sonar.api.database.model.Snapshot;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.measures.Metric;
+import org.sonar.jpa.dao.BaseDao;
 
 import com.catalyst.sonar.score.api.ScoreProject;
-import com.catalyst.sonar.score.metrics.MetricsHelper;
+import com.catalyst.sonar.score.util.SnapshotHistory;
 
 /**
  * 
  * @author mwomack
  * 
  */
-public class MeasuresHelper {
+public class SnapShotDao extends BaseDao{
 
-	private DatabaseSession session;
-	private MetricsHelper metricsHelper;
+	private MetricDao metricsHelper;
 	private String resourceKey;
 	private Project project;
 
@@ -32,8 +32,8 @@ public class MeasuresHelper {
 	 * @param session
 	 * @param project
 	 */
-	public MeasuresHelper(DatabaseSession session, Project project) {
-		this.session = session;
+	public SnapShotDao(DatabaseSession session, Project project) {
+		super(session);
 		this.project = project;
 	}
 	
@@ -43,8 +43,8 @@ public class MeasuresHelper {
 	 * @param session
 	 * @param project
 	 */
-	public MeasuresHelper(DatabaseSession session, ScoreProject project) {
-		this.session = session;
+	public SnapShotDao(DatabaseSession session, ScoreProject project) {
+		super(session);
 		this.project = new Project(project.getKey(), "", project.getName());
 	}
 
@@ -58,7 +58,7 @@ public class MeasuresHelper {
 	public List<SnapshotHistory> getMeasureCollection(String metricName) {
 
 		List<SnapshotHistory> entries = new ArrayList<SnapshotHistory>();
-		metricsHelper = new MetricsHelper(session);
+		metricsHelper = new MetricDao(getSession());
 		// retrieve the metric's id
 		int metricId = metricsHelper.getMetricId(metricName);
 
@@ -107,7 +107,7 @@ public class MeasuresHelper {
 				+ " where m.snapshot_id=s.id and m.metric_id in (:metricId) "
 				+ " and s.status=:status and s.project_id=(select p.id from projects p where p.kee=:resourceKey and p.qualifier<>:lib)"
 				+ " order by s.build_date desc";
-		return session.createNativeQuery(sql)
+		return getSession().createNativeQuery(sql)
 				.setParameter("metricId", metricId)
 				.setParameter("resourceKey", resourceKey)
 				.setParameter("lib", Qualifiers.LIBRARY)

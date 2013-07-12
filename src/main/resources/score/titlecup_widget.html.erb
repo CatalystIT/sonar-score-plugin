@@ -1,5 +1,5 @@
 <% 
-	#finds all the properties for the sonar.score.TitleCup property
+	#finds all the properties that assign a TitleCup to this Project
 	properties = Property.find(:all, :conditions => ['prop_key LIKE ?','sonar.score.TitleCup=%'])	
 %>
 <% if properties != nil %>
