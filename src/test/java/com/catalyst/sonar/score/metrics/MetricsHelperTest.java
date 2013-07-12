@@ -6,6 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.database.DatabaseSession;
+
+import com.catalyst.sonar.score.dao.MetricDao;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -14,7 +17,7 @@ public class MetricsHelperTest {
 	private String pointsName;
 	private String pointsKey;
 	private Metric pointsMetric;
-	private MetricsHelper metricsHelper;
+	private MetricDao metricsHelper;
 	private DatabaseSession mockSession;	
 	private Metric.ValueType pointsType;
 	private int pointsMetricId;
@@ -25,7 +28,7 @@ public class MetricsHelperTest {
 	@Before
 	public void testSetup(){
 	mockSession = mock(DatabaseSession.class);
-	metricsHelper = new MetricsHelper(mockSession);
+	metricsHelper = new MetricDao(mockSession);
 	
 	pointsKey = "Points";
 	pointsName = "Points";

@@ -16,12 +16,13 @@ import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.configuration.Property;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
+
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
-import com.catalyst.sonar.score.util.MeasuresHelper;
+import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.util.TrophiesHelper;
 
 public class AwardTrophiesTest {
@@ -29,7 +30,7 @@ public class AwardTrophiesTest {
 	private DatabaseSession mockSession;
 	private Project project;
 	private Settings settings;
-	private MeasuresHelper measuresHelper;
+	private SnapShotDao measuresHelper;
 	private TrophiesHelper trophiesHelper;
 	private Property newProperty;
 	int numberOfListsOfCriteriaPerTrophy;

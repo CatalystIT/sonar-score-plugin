@@ -12,8 +12,6 @@ import org.junit.Test;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.jpa.dao.MeasuresDao;
 
-import com.catalyst.sonar.score.metrics.MetricsHelper;
-
 /**
  * Test Class for {@link CriterionParser}.
  * 
@@ -31,7 +29,7 @@ public class CriterionParserTest {
 	private static final String METRIC_DAO_FIELD = "metricDao";
 	
 	private DatabaseSession mockSession;
-	private MetricsHelper mockMetricDao;
+	private MetricDao mockMetricDao;
 	private CriterionParser testParser;
 
 	/**
@@ -40,7 +38,7 @@ public class CriterionParserTest {
 	@Before
 	public void setUp() throws Exception {
 		mockSession = mock(DatabaseSession.class);
-		mockMetricDao = mock(MetricsHelper.class);
+		mockMetricDao = mock(MetricDao.class);
 		testParser = new CriterionParser(mockSession, CRITERION_STRING);
 	}
 
@@ -52,7 +50,7 @@ public class CriterionParserTest {
 		assertEquals(mockSession, testParser.getSession());
 		String[] criterionFields = (String[]) getField(testParser, "fields");
 		assertArrayEquals(criterionFields, CRITERION_STRING.split(";"));
-		MetricsHelper dao = (MetricsHelper) getField(testParser, METRIC_DAO_FIELD);
+		MetricDao dao = (MetricDao) getField(testParser, METRIC_DAO_FIELD);
 		assertEquals(mockSession, dao.getSession());
 	}
 

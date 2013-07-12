@@ -22,7 +22,7 @@ import org.sonar.api.resources.Resource;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.catalyst.sonar.score.util.MeasuresHelper;
+import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.util.SnapshotHistory;
 
 public class MeasuresHelperTest {
@@ -47,7 +47,7 @@ public class MeasuresHelperTest {
 	List<Object[]> pastMeasures;
 	private DatabaseSession mockSession; 
 	private Project mockProject;	
-	private MeasuresHelper measuresHelper;
+	private SnapShotDao measuresHelper;
 		
 	private SnapshotHistory sh1;
 	private SnapshotHistory sh2;
@@ -68,7 +68,7 @@ public class MeasuresHelperTest {
 	entries = new ArrayList<SnapshotHistory>();
 	emptyEntries = new ArrayList<SnapshotHistory>();
 	otherEntries = new ArrayList<SnapshotHistory>();
-	measuresHelper = new MeasuresHelper(mockSession, mockProject);
+	measuresHelper = new SnapShotDao(mockSession, mockProject);
 	
 
 	sql = "select m.value, s.build_date from project_measures m, snapshots s"
