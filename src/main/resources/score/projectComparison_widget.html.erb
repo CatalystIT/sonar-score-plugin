@@ -45,18 +45,18 @@ then set the projectGroup variable to the @Property variable.
 
 <div id="metricTableSpace">
 <table id = "metricsTable" class ="data" style = "table-layout:auto; width:100%" >
-<thead> 
-  <tr valign ="top">
+<thead id = "metricTableHead"> 
+  <tr valign ="top" >
     <th align="left" ></th>
-    <th align="left" nowrap="" style = "width:40%">Name</th>
-    <th class="right" onclick="retrieveTitle(this); showBargraphTable();" id="points" title = "Points" style = "text-decoration:underline; cursor: pointer; width:15%" nowrap="">Points</th>
-    <th class="right" onclick="retrieveTitle(this); showBargraphTable();" id="coverage" title = "Coverage" style = "text-decoration:underline; cursor: pointer;width:15%" nowrap="">Coverage</th>
-    <th class="right" onclick="retrieveTitle(this); showBargraphTable();" id="rules" title = "Rules Compliance" style = "text-decoration:underline; cursor: pointer;width:15%" >Rules Compliance</th>
-    <th class="right" onclick="retrieveTitle(this); showBargraphTable();" id="docApi" title = "Documented API" style = "text-decoration:underline; cursor: pointer;width:15%"  >Documented API </th>
+    <th id = "nameSpot" onclick = "showMetricsTable();" align="left" nowrap="" style = "width:40%">Name</th>
+    <th class="right" onclick="retrieveTitle(this); showBargraphTable(this);" id="points" title = "Points" style = "text-decoration:underline; cursor: pointer; width:15%" nowrap="">Points</th>
+    <th class="right" onclick="retrieveTitle(this); showBargraphTable(this);" id="coverage" title = "Coverage" style = "text-decoration:underline; cursor: pointer;width:15%" nowrap="">Coverage</th>
+    <th class="right" onclick="retrieveTitle(this); showBargraphTable(this);" id="rules" title = "Rules Compliance" style = "text-decoration:underline; cursor: pointer;width:15%" >Rules Compliance</th>
+    <th class="right" onclick="retrieveTitle(this); showBargraphTable(this);" id="docApi" title = "Documented API" style = "text-decoration:underline; cursor: pointer;width:15%"  >Documented API </th>
   </tr>    
   </thead>
-  <tbody id = "tableBody" >
-
+  <tbody id = "tableBody" class = "tableBodyClass" >
+  
 <!--Retrieve all the resource ids for the projectGroup name -->
 <% for @Property in Property.find(:all, :conditions => {:prop_key => "sonar.score.projectGroup"}) %>
 <% if (@Property.value == projectGroup.value )%>
@@ -109,8 +109,7 @@ then set the projectGroup variable to the @Property variable.
 	<% documentedApiValue = @ProjectMeasure %>
 	<td align="right" id ="docApiValue" nowrap="" ><%= @ProjectMeasure.value -%>%</td>
 	
-	</tr>
-	</tbody>
+	</tr>	
 	
 <% end %>
 <% end %>
@@ -126,11 +125,12 @@ then set the projectGroup variable to the @Property variable.
 <% end %>
 <% end %>
 <% end %>
+</tbody>
 </table>
 </div>
 <% end %>
+<div id="tablespace" style = "display: table-header-group; table-layout:auto;"></div>
 
-<div id="tablespace"></div>
 
 <!------------------------------------ JAVASCRIPT---------------------------------------------------------------->
 
@@ -138,14 +138,63 @@ then set the projectGroup variable to the @Property variable.
 <script type="text/javascript">
 
 <!--shows the bar graph table-->
-function showBargraphTable(){
-	document.getElementById("tablespace").style.display =  "table";		 
+function showBargraphTable(elem){
+	
+	//get the width size in pixels of the metricsTable
+	var tableWidth = document.getElementById("metricsTable").offsetWidth;
+	var tableWidthInPixels = tableWidth + "px";
+	
+	//hide the metrics table body (keep header)
+	document.getElementById("tableBody").style.display = "none";	
+	//retrieves the header title
+	var metric = elem.innerHTML;	
+	//show the bar graph 
+	document.getElementById("metricsTable").style.width = tableWidthInPixels;
+	document.getElementById("tablespace").style.display =  "table-header-group";
+		
+	//change the name header to the metric selected header
+	document.getElementById("nameSpot").innerHTML = metric;		
+	document.getElementById("nameSpot").style.textDecoration = "underline";
+	document.getElementById("nameSpot").style.color = "#4B9FD5";
+	document.getElementById("nameSpot").title = "Click to display comparison table";	
+	
+	//keep all headers the same width when displaying the bar graph
+	//document.getElementById("leftThSpot").style.width = "2.30%";
+	document.getElementById("nameSpot").style.width = "38.89%";
+	document.getElementById("points").style.width = "14.65%";
+	document.getElementById("coverage").style.width = "14.65%";
+	document.getElementById("rules").style.width = "14.76%";
+	document.getElementById("docApi").title = "14.76%";	
+}
+
+function showMetricsTable(){
+	//show the metric table
+	//document.getElementById("metricsTable").style.display = "table";	
+	document.getElementById("tablespace").style.display =  "none";
+	
+	document.getElementById("tableBody").style.display = "table-header-group";
+	document.getElementById("tableBody").style.tableLayout = "auto";
+	
+	//change the name header to the metric selected header
+	document.getElementById("nameSpot").innerHTML = "Name";		
+	document.getElementById("nameSpot").style.textDecoration = "none";
+	document.getElementById("nameSpot").style.color = "#444";
+	document.getElementById("nameSpot").title = "";
+	
+	//keep all headers the same width when displaying the bar graph
+	//document.getElementById("leftThSpot").style.width = "2.30%";
+	document.getElementById("nameSpot").style.width = "38.89%";
+	document.getElementById("points").style.width = "14.65%";
+	document.getElementById("coverage").style.width = "14.65%";
+	document.getElementById("rules").style.width = "14.76%";
+	document.getElementById("docApi").style.width = "14.76%";	
+		
 }
 
 <!--override the metrics table-->
-function overrideMetricsTable(tablecontents){
+function putsTableContentsIntoTableSpaceDiv(tablecontents){
 	//gets the bar graph	
-	document.getElementById("metricsTable").innerHTML = tablecontents;
+	document.getElementById("tablespace").innerHTML = tablecontents;
 }
 
 <!--Retrieves metric title and displays it under the project comparison widget table-->
@@ -280,8 +329,7 @@ function getColor( row ){
  
  <!--Dynamically creates the table with the selected metric, team image and team name--> 
   function createTable(metric, barGraphTitle){ 
-  	showBargraphTable();
-	//this is the metric's id: (coverage, points...etc. depending on what the user selected)
+  	//this is the metric's id: (coverage, points...etc. depending on what the user selected)
 	var metricValue = metric +"Value";	
 	//once createTable function is complete and the bars are created...this variable is used to pass the 
 	//metric selected value along
@@ -307,14 +355,7 @@ function getColor( row ){
     var tablecontents = "";
     tablecontents = "<table id = 'barGraphTable' style='table-layout: auto; width: 100%'  class = 'data'> " +
     
-    "<thead style = 'border: 0px' height = '14px'>" + 
-   	"<tr align = 'left' style = 'border: 0px' height = '14px'>"+
-    "<th style = 'border: 0px' align='right' height = '14px'></th>" +
-    "<th id = 'barGraphMetricHeader' style = 'border: 0px; text-transform:capitalize; text-decoration:underline; cursor: pointer ' onclick = location.reload(true) title = 'Project comparison table' height = '14px'>"+barGraphTitle+"</th>"+
-    "<th style = 'border: 0px' height = '14px'></th>"+    
-    "</tr>"+    
-    "</thead> " +
-    "<tbody style = 'border: 0px'> ";      
+    "<tbody id = 'barGraphBody' style = 'border: 0px; width: 100%' > ";      
      
    //go through each element for each row in the metrics table, extracting the needed information
    	var idGenerator = 0;
@@ -327,7 +368,7 @@ function getColor( row ){
       	newRow = false;
       	//row creation is based on the number of columns. Create a new row if the expression evaluates to true      	
       	if ( (i + columns) % columns == 0 ){
-      	tablecontents += "<tr align = 'left' style = 'border: 0px' >";
+      	tablecontents += "<tr class = 'tablespaceRows' align = 'left' style = 'border: 0px' >";
       	//new row...now looking for the next row's metric value
       	metricFound = false;
       	}
@@ -357,7 +398,6 @@ function getColor( row ){
    				 var nameId = "nameId" + count;
    				 tablecontents += "<td id = '" + nameIdGenerator + "'style = 'border: 0px' align='left'><span class = 'longName' id ='" + nameId + "'>  " + projectName + "</span></td>";
    				 //hidden td to use for calculating the project's truncated project's name width
-   				 //tablecontents += "<td style = 'visibility: hidden' id = '" + truncatedNameId + "'nowrap='' >" + shortName + "</td>"; 
    				  tablecontents += "<td style = 'visibility: hidden'nowrap=''><span id = '" + truncatedNameId + "'nowrap='' >" + shortName + "</span></td>";				
    			}
    			//retrieve the correct metric values
@@ -388,9 +428,10 @@ function getColor( row ){
    	tablecontents += "</table>";
    	
    	//this is where IE doesn't work
-   	overrideMetricsTable(tablecontents);   	
-    var scale = getBarGraphScale(metricArray);
-    showBars( idName, scale, noOfRows );         
+   	 putsTableContentsIntoTableSpaceDiv(tablecontents); 
+       	 var scale = getBarGraphScale(metricArray);
+    	 showBars( idName, scale, noOfRows );  
+    	         
 }     
 
 </script>
