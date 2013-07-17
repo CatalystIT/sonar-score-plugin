@@ -43,7 +43,7 @@ then set the projectGroup variable to the @Property variable.
 <% if (projectGroup != nil )%>
 <h1 style="color:#4B9FD5" ><%=projectGroup.value -%></h1><br>
 
-<div id="metricTableSpace">
+<div id="metricTableSpace" onload = "getProjectFullNames();">
 <table id = "metricsTable" class ="data" style = "table-layout:auto; width:100%" >
 <thead id = "metricTableHead"> 
   <tr valign ="top" >
@@ -136,6 +136,8 @@ then set the projectGroup variable to the @Property variable.
 
 <!--<script src = "/javascripts/projectComparison.js" type="text/javascript"></script>-->
 <script type="text/javascript">
+var projectNamesArray = new Array();
+
 
 <!--shows the bar graph table-->
 function showBargraphTable(elem){
@@ -145,7 +147,8 @@ function showBargraphTable(elem){
 	var tableWidthInPixels = tableWidth + "px";
 	
 	//hide the metrics table body (keep header)
-	document.getElementById("tableBody").style.display = "none";	
+	document.getElementById("tableBody").style.display = "none";
+	
 	//retrieves the header title
 	var metric = elem.innerHTML;	
 	//show the bar graph 
@@ -164,14 +167,14 @@ function showBargraphTable(elem){
 	document.getElementById("points").style.width = "14.65%";
 	document.getElementById("coverage").style.width = "14.65%";
 	document.getElementById("rules").style.width = "14.76%";
-	document.getElementById("docApi").title = "14.76%";	
+	document.getElementById("docApi").title = "14.76%";
+			
 }
 
+<!--shows the project comparison table-->
 function showMetricsTable(){
 	//show the metric table
-	//document.getElementById("metricsTable").style.display = "table";	
-	document.getElementById("tablespace").style.display =  "none";
-	
+	document.getElementById("tablespace").style.display =  "none";	
 	document.getElementById("tableBody").style.display = "table-header-group";
 	document.getElementById("tableBody").style.tableLayout = "auto";
 	
@@ -187,26 +190,24 @@ function showMetricsTable(){
 	document.getElementById("points").style.width = "14.65%";
 	document.getElementById("coverage").style.width = "14.65%";
 	document.getElementById("rules").style.width = "14.76%";
-	document.getElementById("docApi").style.width = "14.76%";	
-		
+	document.getElementById("docApi").style.width = "14.76%";		
 }
 
-<!--override the metrics table-->
+
+<!--puts the contents of the bar graph table in the table space div-->
 function putsTableContentsIntoTableSpaceDiv(tablecontents){
-	//gets the bar graph	
+	//gets the bar graph
 	document.getElementById("tablespace").innerHTML = tablecontents;
 }
 
 <!--Retrieves metric title and displays it under the project comparison widget table-->
-function retrieveTitle(elem){	 
-	
+function retrieveTitle(elem){		
 	//retrieves the header title
 	var metric = elem.innerHTML;
 	//retrieves the header id
 	var metricId = elem.id;
-	//creates a new table 
-	createTable(metricId, metric);
-				
+	//creates a new table/bargraph	
+	createTable(metricId, metric);				
 }
  
  <!--Retrieves the number of 'td' elements in the metrics table-->
@@ -248,9 +249,10 @@ function getBarGraphScale(metricsArray){
 
 <!--Creates the bars from the metric the user selects-->
 function showBars(metric, scale, noOfRows){  
+ 	
  	var projectName;
  	var shortName;
- 	
+ 	 
  	for(var i = 0; i < noOfRows; i++ ){
  	 	//retrieves the name element
  	 	var previousElement = document.getElementById("name" + [i]);
@@ -271,13 +273,12 @@ function showBars(metric, scale, noOfRows){
  		//create a bar based on the metric value.  Used to calculate the name width.
  		previousElement.innerHTML = "<span style='display:inline-block; overflow: hidden; '></span><span id = "+spanId+" style = 'display: inline-block; overflow: hidden; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+names+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
  	 	  	
-  	}
- 	 	
- 	checkNameFormat(noOfRows); 	
+  	} 	 	
+ 	checkNameFormat(noOfRows, metric);	
 }
 
 <!--this function makes sure that the project name does not overflow the width of the metric's bar-->
-function checkNameFormat(noOfRows){
+function checkNameFormat(noOfRows, metric){
 	
 	//loop through each row to retrieve the project name width, the project bar width and the project's truncated name width
 	for (var i = 0; i < noOfRows; i ++){
@@ -285,26 +286,35 @@ function checkNameFormat(noOfRows){
  	var projectBarWidth = document.getElementById("span" + i).offsetWidth;
  	var truncatedNameWidth = document.getElementById("truncName" + i).offsetWidth;
  	//retrieve the project name
- 	var projectName = projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;  
+ 	var projectName = document.getElementById('metricsTable').getElementsByClassName('nameWidthClass')[i].innerHTML;  
  	//retrieve the projects truncated name
  	shortName = truncateName(projectName);
  	//retrieve the element  	
- 	var element = document.getElementsByClassName('nameWidthClass')[i];
- 	//if the project name is greater than the bar width add a project name tool tip displaying the project's full name to the element
- 	if ( projectNameWidth > projectBarWidth ){
+ 	var element = document.getElementById('tablespace').getElementsByClassName('nameWidthClass')[i]; 	
+ 	//if the project name is greater than the bar width add a project name tool tip displaying the projects full name to the element
+ 	
+ 	//if the project name width and the project bar width are zero... display the bar graph table...then get the project name and bar width (when toggling).
+ 	if ( projectNameWidth == 0 && projectBarWidth == 0){
+ 		showBargraphTable(metric);
+ 		projectNameWidth = document.getElementById("nameId" + i).offsetWidth;
+ 		projectBarWidth = document.getElementById("span" + i).offsetWidth;
+ 	
+ 	} 	
+ 		if ( projectNameWidth > projectBarWidth ){ 			
  			element.title = projectName;
- 	 	  //if the truncatedName is greater than the bar width eliminate the name altogether, else add the projects's truncated name to the bar 	 	 	 	 	
- 	 	if (truncatedNameWidth >= projectBarWidth){
- 	 			element.innerHTML = "&nbsp;";  	 	 	
- 	 	 	}else{
- 	 	 		element.innerHTML = shortName; 
- 	 	 	} 
- 	 	 }
-  	}
+ 	 	  	//if the truncatedName is greater than the bar width eliminate the name altogether, else add the projectss truncated name to the bar  	 	  	 	 	 	 	
+ 	 		if (truncatedNameWidth >= projectBarWidth){ 	 	 
+ 	 				element.innerHTML = "&nbsp;"; 		
+ 	 			  	 	 	
+ 	 	 		}else{
+ 	 	 			element.innerHTML = shortName;
+ 	 	 			 	 	 		
+ 	 	 		} 
+ 	 	 	}
+  		}
 
-}
+} 
 
- 
 <!--Truncates the project name to the first three letters of the name and adds (...).  A user may hover over the shortened name to see the full name-->
 function truncateName( projectName ){
 	var newName;
@@ -329,12 +339,13 @@ function getColor( row ){
  
  <!--Dynamically creates the table with the selected metric, team image and team name--> 
   function createTable(metric, barGraphTitle){ 
-  	//this is the metric's id: (coverage, points...etc. depending on what the user selected)
+  	//this is the metrics id: (coverage, points...etc. depending on what the user selected)
 	var metricValue = metric +"Value";	
 	//once createTable function is complete and the bars are created...this variable is used to pass the 
 	//metric selected value along
 	var idName = metric;   
     //retrieves number of table elements, rows and columns
+    
     var elements =getNumberOfElementsInTable();
     var columns = getNumberOfColumnsInTable();
     var noOfRows = elements/columns;
@@ -342,7 +353,7 @@ function getColor( row ){
     var newRow; 
     var metricFound;
     
-    //variables holding the table's data elements
+    //variables holding the tables data elements
     var image;
     var metric;
     var metricAsNumber;
@@ -390,7 +401,7 @@ function getColor( row ){
    				 projectName = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;
    				 //used to calculate the width of the project's truncated name to compare with selected metric's bar width
    				 var nameWithSpanTags = document.getElementById('metricsTable').getElementsByTagName('td')[i];   				 
- 	 	         var correctName = nameWithSpanTags.getElementsByTagName('span')[0].innerHTML;   				 
+ 	 	         	 var correctName = nameWithSpanTags.getElementsByTagName('span')[0].innerHTML;   				 
    				 var shortName = truncateName (correctName);   				 
    				
    				 nameIdGenerator = "name" + count;
@@ -398,7 +409,8 @@ function getColor( row ){
    				 var nameId = "nameId" + count;
    				 tablecontents += "<td id = '" + nameIdGenerator + "'style = 'border: 0px' align='left'><span class = 'longName' id ='" + nameId + "'>  " + projectName + "</span></td>";
    				 //hidden td to use for calculating the project's truncated project's name width
-   				  tablecontents += "<td style = 'visibility: hidden'nowrap=''><span id = '" + truncatedNameId + "'nowrap='' >" + shortName + "</span></td>";				
+   				  tablecontents += "<td style = 'visibility: hidden'nowrap=''><span id =  '" + truncatedNameId + "'nowrap='' >" + shortName + "</span></td>";
+   				 				
    			}
    			//retrieve the correct metric values
    			if (elementId != "name" && elementId != "image" ){     				
@@ -409,8 +421,8 @@ function getColor( row ){
    						 metricArray.push(metricAsNumber);
    						 idGenerator = idName + count;   			
    						 divGenerator = "div" + count;   							    						    						 
-   					     tablecontents += "<td style = 'display: none' id = '" + idGenerator + "'nowrap='' align='left' >" + metric + "</td>";
-   					  	  metricFound = true; 
+   					     	 tablecontents += "<td style = 'display: none' id = '" + idGenerator + "'nowrap='' align='left' >" + metric + "</td>";
+   					  	 metricFound = true; 
    						 newRow = true;  
    						 count++					   						
    						}
@@ -418,22 +430,17 @@ function getColor( row ){
    			}
    		   //if the new row property set to true, end the creation of a new row
    		   if(newRow){
-      		 tablecontents += "</tr>"; 
-      	 	       		          
+      		 tablecontents += "</tr>";       	 	       		          
       		} 		
       	    		 		
-       }
-     
+       }     
    	tablecontents += "</tbody>";
-   	tablecontents += "</table>";
-   	
-   	//this is where IE doesn't work
-   	 putsTableContentsIntoTableSpaceDiv(tablecontents); 
-       	 var scale = getBarGraphScale(metricArray);
-    	 showBars( idName, scale, noOfRows );  
-    	         
+   	tablecontents += "</table>";   	
+   	var scale = getBarGraphScale(metricArray);         
+        putsTableContentsIntoTableSpaceDiv(tablecontents); 
+        showBars( idName, scale, noOfRows );         
+    		         
 }     
-
 </script>
 
 <!--The project that is selected must be a member of a group.  If they're not...an error message 
