@@ -34,60 +34,7 @@ public class AwardTrophies {
 	private TrophyAndCriteriaParser parser;
 	private TrophySet trophySet;
 	
-	private String metric1 = "Lines of code"; //non-commenting lines of code (int value in the db, direction -1)
-	private double req1 = 500.00;
-	private int days1 = 10;
-
-	private String metric2 = "Points";
-	private double req2 = 80.0;
-	private int days2 = 10;
-
-	private String metric3 = "Coverage";
-	private double req3 = 90.0;
-	private int days3 = 10;
 	
-	private int days4 = 30;
-	private double req4 = 50.0;
-	
-	private String metric5 = "Major violations";
-	private double req5 = 5;
-	private int days5 = 30;
-	
-	private String metric6 = "Minor violations";
-	private double req6 = 30;
-	private int days6 = 30;
-	
-	private String metric7 = "Complexity /class";
-	private double req7 =15.0;
-	private int days7 = 30;
-
-	// creating new criteria objects
-//	private Criteria criteria1 = new Criteria(metric1, req1, days1); 
-//	private Criteria criteria2 = new Criteria(metric2, req2, days2);
-//	private Criteria criteria3 = new Criteria(metric3, req3, days3);
-//	private Criteria criteria4 = new Criteria(metric3, req4, days4);
-//	private Criteria criteria5 = new Criteria(metric5, req5, days5);
-//	private Criteria criteria6 = new Criteria(metric6, req6, days6);
-//	private Criteria criteria7 = new Criteria(metric7, req7, days7);
-	
-	// creating new trophies...and setting their names
-	private Trophy trophy1 = new Trophy("Trophy1");
-	private Trophy trophy2 = new Trophy("Trophy2");
-	private Trophy trophy3 = new Trophy("Trophy3");
-	private Trophy trophy4 = new Trophy("Trophy4");
-	private Trophy trophy5 = new Trophy("Trophy5");
-	private Trophy trophy6 = new Trophy("Trophy6");
-	private Trophy trophy7 = new Trophy("Trophy7");
-
-	// creating new trophy set objects
-	private TrophySet trophySet1 = new TrophySet();
-	private TrophySet trophySet2 = new TrophySet();
-	private TrophySet trophySet3 = new TrophySet();
-	private TrophySet trophySet4 = new TrophySet();
-	private TrophySet trophySet5 = new TrophySet();
-	private TrophySet trophySet6 = new TrophySet();
-	private TrophySet trophySet7 = new TrophySet();
-
 	/**
 	 * AwardTrophies constructor
 	 * @param session
@@ -98,30 +45,7 @@ public class AwardTrophies {
 	this.session = session;
 	this.project = project;
 	this.settings = settings;
-		
-//		// adding the trophies to the trophySet objects
-//		trophySet1.add(trophy1);
-//		trophySet2.add(trophy2);
-//		trophySet3.add(trophy3);
-//		trophySet4.add(trophy4);
-//		trophySet5.add(trophy5);
-//		trophySet6.add(trophy6);
-//		trophySet6.add(trophy7);
-//
-//		// adds criteria to the criteria list
-//		trophy1.addCriterion(criteria1);
-//		trophy2.addCriterion(criteria2);
-//		trophy3.addCriterion(criteria3);
-//
-//		// trophy four has three lists of criteria
-//		trophy4.addCriterion(criteria1);
-//		trophy4.addCriterion(criteria2);
-//		trophy4.addCriterion(criteria4);
-//
-//		trophy5.addCriterion(criteria5);
-//		trophy6.addCriterion(criteria6);
-//		trophy7.addCriterion(criteria7);
-//
+
 	}
 	
 	/**
@@ -139,12 +63,13 @@ public class AwardTrophies {
 	
 	/**
 	 * This method is called when a build is scheduled for a project. It
-	 * iterates through list of trophies and their corresponding criteria and
+	 * iterates through the list of trophies and their corresponding criteria and
 	 * calls the awardTrophy method if any trophies have been earned.
 	 * 
 	 * @param context
 	 * @param resource
 	 */
+	@SuppressWarnings("rawtypes")
 	public void awardTrophies(final DecoratorContext context, Resource resource) {
 		List<SnapshotHistory> snapshotHistory = new ArrayList<SnapshotHistory>();
 		measuresHelper = new SnapShotDao(session, project);
@@ -158,7 +83,9 @@ public class AwardTrophies {
 		 * the set up trophy method will save the property name and resource id
 		 * to the database.  
 		 */
-		setUpTrophyProperty(context, resource);			
+		//TODO:  This method most likely can be removed.  Trophy persistence has changed.  More testing
+		//needs to be done before removing.
+		//setUpTrophyProperty(context, resource);			
 		
 		/*
 		 * call the list trophy method to get all the trophies and then iterate
@@ -219,9 +146,7 @@ public class AwardTrophies {
 	 * @param context
 	 * @param resource
 	 */
-	private void setUpTrophyProperty(DecoratorContext context, Resource resource) {
-		System.out.println(resource);
-		System.out.println(resource.getId());
+	private void setUpTrophyProperty(DecoratorContext context, @SuppressWarnings("rawtypes") Resource resource) {
 		int projectId = resource.getId();
 		//create a new trophy property for the given project if it does not already exist
 		
@@ -240,6 +165,7 @@ public class AwardTrophies {
 	 * @param trophyName
 	 * @param resource
 	 */
+	@SuppressWarnings("rawtypes")
 	public void awardTrophy(String trophyName, Resource resource) {
 		/*
 		 * if the project property already exists in the database and the
@@ -259,6 +185,7 @@ public class AwardTrophies {
 	 * @param trophyName
 	 * @param resource
 	 */
+	@SuppressWarnings("rawtypes")
 	public void createAnotherTrophy(String trophyName, Resource resource) {
 		// retrieve a list of all the properties for the given resource
 		List<Property> properties = session.getResults(Property.class,
