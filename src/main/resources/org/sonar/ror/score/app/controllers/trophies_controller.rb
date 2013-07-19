@@ -25,9 +25,9 @@ class TrophiesController < ApplicationController
     
     if @trophy.saveTrophy() 
       redirect_to :controller => "trophies", :action => "success"
-      #redirect_to :controller => "trophies", :action => "index"
-    else
+      else
       redirect_to :controller => "trophies", :action => "index"
+      
     end
   
   end 

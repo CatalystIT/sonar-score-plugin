@@ -1,31 +1,34 @@
 <div class="dashbox"><h1> The Awards Page </h1></div><br></br>
 	
 <% form_for :trophy, :url =>{:controller => "trophies",:action => "create",:method => :post} do|f| %></br>	
-<%= f.radio_button :type, "Trophy" %>
+<%= f.radio_button :type, "Trophy", :required => "required" %>
 <%= f.label :type,'Trophy' %>
 <%= f.radio_button :type, "Title Cup" %>
-<%= f.label :type,'Title Cup' %>
+<%= f.label :type,'Title Cup' %><span id = "trohyTypeButton"></span>
 </br></br></br>	
 	
 <%= f.label :name %>
-<%= f.text_field :name %></br></br>
+<%= f.text_field :name, :required => "required" %></br></br>
 <%= f.label :metric %>	
-<%= collection_select(:trophy, :metric, Metric.find(:all, :conditions => {:enabled => 1}, :order => 'short_name ASC'), :short_name, :short_name, :prompt => "Please select a metric") %>	
+<%= select('trophy','metric', options_from_collection_for_select(Metric.find(:all, :conditions => {:enabled => 1}, :order => 'short_name ASC'), :short_name, :short_name),{:prompt => 'Select Metric'},{:required => true})%>
 <%= f.label :amount %>                                                               
-<%= f.text_field :amount,:size => 15 %>
+<%= f.text_field :amount,:size => 15, :required => "required" %>
 <%= f.label :duration %>	
-<%= f.text_field :duration, :size => 15 %> 
-<%= f.select (:durationValue, [['Days', 'd'],['Weeks', 'w']],{ :prompt => "Weeks or Days?"}) %>
-
+<%= f.text_field :duration, :size => 15, :required => "required" %> 
+<%= f.select (:durationValue, [['Days', 'd'],['Weeks', 'w']],{ :prompt => "Weeks or Days?"},{:required => true})%>
 
 </br></br>	
-<%= f.submit :"Save" %>		
+<%= f.submit :"Save"%>
+	
 <% end %> 
 </br></br>
 
 <%= link_to "List of Trophies", '/trophies/_trophyList' ,{:style=>'color: blue'} %>
 <%= link_to "List of Title Cups", '/trophies/_cupList' ,{:style=>'color: blue'} %>
 
+<script type="text/javascript">
+
+</script>
 
 
 
