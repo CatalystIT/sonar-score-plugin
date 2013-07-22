@@ -1,0 +1,28 @@
+Features:
+	-- Logos for Projects
+	-- Project Groups
+	-- Points Metric
+	-- (planned) User Profile Pictures
+	-- (planned) Teams
+	-- (planned) Team Profile Pictures
+	
+	-- Award System:	
+		-- Trophies, earned by multiple projects
+		-- Title Cups, each cup can only be held by one project at a time
+		-- (planned) badges, earned by Users
+	
+	-- New Widgets:
+		-- Enhanced Project List Widget, displaying each Project Logo instead of generic icon
+		-- Project Group Comparison Widget
+		-- Title Cup Widget
+		-- Trophy Widget
+		-- (in progress) Project Profile Widget to display Project Logo and Points Metric
+		-- (in progress) Project Profile Page to upload Project Logo	
+	
+	-- New Pages:
+		-- (planned) Profile Pages for Users
+		-- (planned) Profile Pages for Teams
+		
+Requirements:
+	-- Sonar, version 3.4.1 or higher
+	-- Java, version 1.6 or higher
