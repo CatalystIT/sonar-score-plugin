@@ -18,9 +18,10 @@
 							<div align="center">
 								<img src="/images/profiles/trophies/TrophyBronze.png"; height="50", width="40"/>
 							</div>
-							<div>
+							<div id = "trophyName" class = "nameClass" >
 								<%= trophy[trophy.index('=') + 1, trophy.length]%>
 							</div>
+							
 						</div>
 					</div>
 				</div>
@@ -29,12 +30,29 @@
 	</div>
 <% end %>
 
-
-
-
 <% if trophy == nil %>
 	<div class="dashbox">
 		<h1 style="font-family: Comic Sans MS; font-size: 1.0em; font-weight: bold"> No Trophies have been earned. </h1>
 	</div>
 			
-<% end %>		
+<% end %>
+
+
+<script type="text/javascript">
+window.onload=formatName();
+
+<!--Formats the trophy name-->
+function formatName(){
+	var names = document.getElementsByClassName("nameClass");
+	for (var i = 0; i < names.length; i ++){
+		var name = names[i];
+		var formattedNameArray = name.textContent.split(/(?=[A-Z])/);
+		var formattedName = formattedNameArray.toString();
+		var goodName = formattedName.replace(/,/g,' ');
+		names[i].textContent = goodName;
+		
+	}		
+
+}
+
+</script>			

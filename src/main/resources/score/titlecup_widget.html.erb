@@ -3,9 +3,9 @@
 	properties = Property.find(:all, :conditions => ['prop_key LIKE ?','sonar.score.TitleCup=%'])	
 %>
 <% if properties != nil %>
-	<div class="dashbox">
+	<div class="dashbox" >
 		<h1 style="font-family: Comic Sans MS; font-size: 1.5em; font-weight: bold">
-		TitleCups Currently Held: </h1>
+		Title Cups Currently Held: </h1>
 		
 		<!-- Loops through the properties and checks if the property is a TitleCup -->
 		<!-- and also checks if the resourceId matches the projectId. -->
@@ -18,7 +18,7 @@
 							<div align="center">
 								<img src="/images/profiles/trophies/TrophyBronze.png"; height="50", width="40"/>
 							</div>
-							<div>
+							<div id = "titleCupName" class = "nameClass">
 								<%= titleCup[titleCup.index('=') + 1, titleCup.length]%>
 							</div>
 						</div>
@@ -34,7 +34,26 @@
 
 <% if titleCup == nil %>
 	<div class="dashbox">
-		<h1 style="font-family: Comic Sans MS; font-size: 1.0em; font-weight: bold"> No TitleCups are currently held. </h1>
+		<h1 style="font-family: Comic Sans MS; font-size: 1.0em; font-weight: bold"> No Title Cups are currently held. </h1>
 	</div>
 			
-<% end %>		
+<% end %>
+
+<script type="text/javascript">
+window.onload=formatName();
+
+<!--Formats the trophy name-->
+function formatName(){
+	var names = document.getElementsByClassName("nameClass");
+	for (var i = 0; i < names.length; i ++){
+		var name = names[i];
+		var formattedNameArray = name.textContent.split(/(?=[A-Z])/);
+		var formattedName = formattedNameArray.toString();
+		var goodName = formattedName.replace(/,/g,' ');
+		names[i].textContent = goodName;
+		
+	}		
+
+}
+
+</script>			

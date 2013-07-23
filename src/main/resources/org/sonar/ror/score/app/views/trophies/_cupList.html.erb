@@ -4,9 +4,30 @@ properties = Property.find(:all, :conditions => ['prop_key LIKE ?','sonar.score.
 <h1> List of Title Cups:</h1></br>
 <% for @Property in properties %>
  <% cup = @Property.prop_key %> 
-   <div>
+   <div class = "nameClass">
    <%=cup[cup.index(':') + 1, cup.length]%>
 
 </div> 
 <% end %>
+</br></br>
+</br></br>
+<%= link_to "Back", '/trophies/index' ,{:style=>'color: blue'} %>
+<script type="text/javascript">
+window.onload=formatName();
+
+<!--Formats the trophy name-->
+function formatName(){
+	var names = document.getElementsByClassName("nameClass");
+	for (var i = 0; i < names.length; i ++){
+		var name = names[i];
+		var formattedNameArray = name.textContent.split(/(?=[A-Z])/);
+		var formattedName = formattedNameArray.toString();
+		var goodName = formattedName.replace(/,/g,' ');
+		names[i].textContent = goodName;
+		
+	}		
+
+}
+
+</script>	
 
