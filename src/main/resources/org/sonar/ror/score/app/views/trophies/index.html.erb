@@ -1,10 +1,11 @@
-<div class="dashbox"><h1> The Awards Page </h1></div><br></br>
-	
+<div class="dashbox"><h1> The Awards Page </h1></div><br></br>	
 <% form_for :trophy, :url =>{:controller => "trophies",:action => "create",:method => :post} do|f| %></br>	
-<%= f.radio_button :type, "Trophy", :required => "required" %>
+<span id = "trophyTypeButton" >
+<%= f.radio_button :type, "Trophy", :required => "required", :onclick => "return validateform();" %>
 <%= f.label :type,'Trophy' %>
-<%= f.radio_button :type, "Title Cup" %>
-<%= f.label :type,'Title Cup' %><span id = "trohyTypeButton"></span>
+<%= f.radio_button :type, "Title Cup" , :onclick => "return validateform();"%>
+<%= f.label :type,'Title Cup' %>
+</span>
 </br></br></br>	
 	
 <%= f.label :name %>
@@ -12,10 +13,10 @@
 <%= f.label :metric %>	
 <%= select('trophy','metric', options_from_collection_for_select(Metric.find(:all, :conditions => {:enabled => 1}, :order => 'short_name ASC'), :short_name, :short_name),{:prompt => 'Select Metric'},{:required => true})%>
 <%= f.label :amount %>                                                               
-<%= f.text_field :amount,:size => 15, :required => "required" %>
+<%= f.text_field :amount,:size => 15, :class => 'someClass',:required => "required" %>
 <%= f.label :duration %>	
 <%= f.text_field :duration, :size => 15, :required => "required" %> 
-<%= f.select (:durationValue, [['Days', 'd'],['Weeks', 'w']],{ :prompt => "Weeks or Days?"},{:required => true})%>
+<%= f.select (:durationValue, [['Days', 'd'],['Weeks', 'w']],{ :prompt => "Weeks or Days?"},{:required => 'select'})%>
 
 </br></br>	
 <%= f.submit :"Save"%>
@@ -28,9 +29,26 @@
 
 <script type="text/javascript">
 
+function validateform(){
+	var titleCup = trophy_type_title_cup.checked;
+	var trophy = trophy_type_trophy.checked;
+	console.log("is the title cup checked? " + titleCup);
+	if (titleCup){
+		document.getElementById("trophy_amount").removeAttribute("required");
+		document.getElementById("trophy_durationValue").removeAttribute("required");
+		document.getElementById("trophy_duration").removeAttribute("required");	
+	
+	}else{		
+		document.getElementById("trophy_amount").setAttribute("required","required");
+		document.getElementById("trophy_durationValue").setAttribute("required","required");
+		document.getElementById("trophy_duration").setAttribute("required","required");
+		
+	}
+
+}
+
+
 </script>
-
-
 
 
 
