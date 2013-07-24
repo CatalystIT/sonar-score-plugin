@@ -13,9 +13,9 @@
 <%= f.label :metric %>	
 <%= select('trophy','metric', options_from_collection_for_select(Metric.find(:all, :conditions => {:enabled => 1}, :order => 'short_name ASC'), :short_name, :short_name),{:prompt => 'Select Metric'},{:required => true})%>
 <%= f.label :amount %>                                                               
-<%= f.text_field :amount,:size => 15, :class => 'someClass',:required => "required", :pattern => '^[1-9]\d*(\.\d+)?$' %>
+<%= f.text_field :amount,:size => 15, :class => 'someClass',:required => "required", :pattern => '^[1-9]\d*(\.\d+)?$', :title => 'Enter a positive number'%>
 <%= f.label :duration %>	
-<%= f.text_field :duration, :size => 15, :required => "required", :pattern => '^[1-9]\d*(\.\d+)?$' %> 
+<%= f.text_field :duration, :size => 15, :required => "required", :pattern => '^[1-9]\d*(\.\d+)?$', :title => 'Enter a positive number' %> 
 <%= f.select (:durationValue, [['Days', 'd'],['Weeks', 'w']],{ :prompt => "Weeks or Days?"},{:required => 'select'})%>
 
 </br></br>	
