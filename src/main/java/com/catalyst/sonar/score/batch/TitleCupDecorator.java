@@ -97,6 +97,7 @@ public class TitleCupDecorator extends AbstractAwardDecorator implements
 			TitleCupDao cupDao = new TitleCupDao(session);
 			AwardSet<TitleCup> cups = cupDao.getAll();
 			if (cups == null) {
+				LOG.endMethod();
 				return;
 			}
 			LOG.logEmf("There are " + cups.size() + " TitleCups");

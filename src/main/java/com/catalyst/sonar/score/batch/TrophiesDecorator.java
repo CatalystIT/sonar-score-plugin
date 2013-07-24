@@ -94,36 +94,20 @@ public class TrophiesDecorator implements Decorator {
 	/**
 	 * This method is called when build is scheduled for a given project
 	 */
-//	public void decorate(final Resource resource, DecoratorContext context) { 
-//		awardTrophies = new AwardTrophies (session, project, settings);
-//				
-//		/*
-//		 * if the resource is a project, award any earned trophies
-//		 */
-//		if (shouldCheckTrophyStatusForResource(resource)
-//				&& shouldDecorateResource(resource, context)) {
-//			System.out.println(resource);
-//			awardTrophies.awardTrophies(context, resource);
-//
-//		}
-//
-//	}
-	/**
-	 * This method is called when build is scheduled for a given project
-	 */
 	public void decorate(@SuppressWarnings("rawtypes") final Resource resource,
 			DecoratorContext context) {
 		try {
 			if(resource.getScope() != "PRJ") {
 				return;
 			}
-			LOG.beginMethod("TitleCupDecorator.decorate()");
+			LOG.beginMethod("TrophiesDecorator.decorate()");
 			TrophyDao trophyDao = new TrophyDao(session);
 			AwardSet<Trophy> trophies = trophyDao.getAll();
 			if(trophies == null) {
+				LOG.endMethod();
 				return;
 			}
-			LOG.logEmf("There are " + trophies.size() + " TitleCups");
+			LOG.logEmf("There are " + trophies.size() + " Trophies");
 			ScoreProjectDao projectDao = new ScoreProjectDao(session);
 			ScoreProject thisProject = projectDao.getProjectById(project
 					.getId());
