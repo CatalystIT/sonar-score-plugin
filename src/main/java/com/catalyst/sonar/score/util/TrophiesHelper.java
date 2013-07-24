@@ -96,7 +96,7 @@ public class TrophiesHelper {
 	 * @returns true if the list of criteria is met for a given metric and project,
 	 * false otherwise
 	 */
-	public boolean criteriaMet(List<SnapshotHistory> entries, double reqAmt,int days, String metricName, DatabaseSession session) {
+	public boolean criteriaMet(List<SnapshotValue> entries, double reqAmt,int days, String metricName, DatabaseSession session) {
 		
 		boolean criteriaMet = false;
 		BigDecimal requiredAmt = new BigDecimal(reqAmt);
@@ -150,7 +150,7 @@ public class TrophiesHelper {
  * @param days: number of days to hold a given metric from the criteria list
  * @returns true if the list of criteria is met for a given metric and project
  */
-	private boolean criteriaMetForSmallerMeasureValue(List<SnapshotHistory> entries, BigDecimal requiredAmt, int days) {
+	private boolean criteriaMetForSmallerMeasureValue(List<SnapshotValue> entries, BigDecimal requiredAmt, int days) {
 		DateUtility dateUtility = new DateUtility();
 		boolean criteriaForDegradation = false;
 		int nextMeasureIndex = 0;
@@ -255,7 +255,7 @@ public class TrophiesHelper {
 	 * @param days: number of days to hold a given metric from the criteria list
 	 * @returns true if the list of criteria is met for a given metric and project
 	 */
-	public boolean criteriaMetForLargerMeasureValue(List<SnapshotHistory> entries, BigDecimal requiredAmt, int days) {
+	public boolean criteriaMetForLargerMeasureValue(List<SnapshotValue> entries, BigDecimal requiredAmt, int days) {
 		DateUtility dateUtility = new DateUtility();
 		boolean criteriaForImprovementMet = false;
 		int nextMeasureIndex = 0;

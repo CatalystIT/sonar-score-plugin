@@ -55,10 +55,18 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 * @see {@link AwardDao#assignToProject(Award, ScoreUser)	
 	 */
 	protected boolean assignToProject(TitleCup cup, ScoreProject project) {
-		Property property = getTitleCupProperty(cup.getName());
-		property.setResourceId(project.getId());
+		LOG.beginMethod("assignToProject");
+		Integer projectId = (project != null) ? project.getId() : null;
+		String cupName = (cup != null) ? cup.getName() : null;
+		LOG.log("Cup name = " + cupName + ", ResourceId = " + projectId);
+		Property property = getTitleCupProperty(cupName);
+		LOG.log(property);
+		property.setResourceId(projectId);
+		LOG.log(property);
 		property.setValue(Long.toString(new Date().getTime()));
+		LOG.log(property);
 		getSession().save(property);
+		LOG.endMethod();
 		return true;
 	}
 
@@ -131,17 +139,6 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		List<Property> properties = getSession().getResults(Property.class,
 				"resourceId", project.getId());
 		return getAllCupsFromProperties(properties);
-	}
-
-	/**
-	 * Unassigns the {@link TitleCup} from all Projects.
-	 */
-	private void unassign(TitleCup cup) {
-		if (cup != null) {
-			Property property = getTitleCupProperty(cup.getName());
-			property.setResourceId(null);
-			getSession().save(property);
-		}
 	}
 
 	/**

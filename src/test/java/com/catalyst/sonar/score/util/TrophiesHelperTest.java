@@ -29,11 +29,11 @@ public class TrophiesHelperTest {
 	private TrophiesHelper trophiesHelper;
 	private DatabaseSession mockSession;
 	private String nullMetric;
-	private List<SnapshotHistory> entries = new ArrayList<SnapshotHistory>();
-	private List<SnapshotHistory> entries2 = new ArrayList<SnapshotHistory>();
-	private List<SnapshotHistory> entries3 = new ArrayList<SnapshotHistory>();
-	private List<SnapshotHistory> entries4 = new ArrayList<SnapshotHistory>();
-	private List<SnapshotHistory> smallEntries = new ArrayList<SnapshotHistory>();
+	private List<SnapshotValue> entries = new ArrayList<SnapshotValue>();
+	private List<SnapshotValue> entries2 = new ArrayList<SnapshotValue>();
+	private List<SnapshotValue> entries3 = new ArrayList<SnapshotValue>();
+	private List<SnapshotValue> entries4 = new ArrayList<SnapshotValue>();
+	private List<SnapshotValue> smallEntries = new ArrayList<SnapshotValue>();
 	private double requiredAmount;
 	private double requiredAmount2;
 	private double requiredAmount3;
@@ -46,17 +46,17 @@ public class TrophiesHelperTest {
 	private Query query;
 	private String defaultValue;
 	
-	private SnapshotHistory sh1;
-	private SnapshotHistory sh2;
-	private SnapshotHistory sh5;
-	private SnapshotHistory sh6;
+	private SnapshotValue sh1;
+	private SnapshotValue sh2;
+	private SnapshotValue sh5;
+	private SnapshotValue sh6;
 	private BigDecimal bd1;
 	private Date date1;
 	private BigDecimal bd2;
 	private Date date2;
 	
-	private SnapshotHistory sh3;
-	private SnapshotHistory sh4;
+	private SnapshotValue sh3;
+	private SnapshotValue sh4;
 	private BigDecimal bd3;
 	private Date date3;
 	private BigDecimal bd4;
@@ -70,10 +70,10 @@ public class TrophiesHelperTest {
 	private Date date11;
 	private Date date12;
 	private Date date13;	
-	private SnapshotHistory sh10;
-	private SnapshotHistory sh11;
-	private SnapshotHistory sh12;
-	private SnapshotHistory sh13;	
+	private SnapshotValue sh10;
+	private SnapshotValue sh11;
+	private SnapshotValue sh12;
+	private SnapshotValue sh13;	
 	
 	private BigDecimal bd15;
 	private BigDecimal bd16;
@@ -83,9 +83,9 @@ public class TrophiesHelperTest {
 	private Date date16;
 	private Date date17;
 	
-	private SnapshotHistory sh15;
-	private SnapshotHistory sh16;
-	private SnapshotHistory sh17;	
+	private SnapshotValue sh15;
+	private SnapshotValue sh16;
+	private SnapshotValue sh17;	
 	
 	private Date date4;
 	private Date date5;
@@ -121,10 +121,10 @@ public class TrophiesHelperTest {
 	private Date date21;
 	private Date date22;
 	private Date date23;	
-	private SnapshotHistory sh20;
-	private SnapshotHistory sh21;
-	private SnapshotHistory sh22;
-	private SnapshotHistory sh23;	
+	private SnapshotValue sh20;
+	private SnapshotValue sh21;
+	private SnapshotValue sh22;
+	private SnapshotValue sh23;	
 	
 	private Metric violationsMetric;
 		
@@ -154,8 +154,8 @@ public class TrophiesHelperTest {
 		bd2 = new BigDecimal(1500);
 		date1 = new Date(1370464358000l); //6/5/2013
 		date2 = new Date (1360099958000l); //2/15/2013
-		sh1 = new SnapshotHistory(bd1,date1); //new snapshotHistory (1200,6/5/2013)
-		sh2 = new SnapshotHistory(bd2,date2);//new snapshotHistory (1500, 2/5/2013)	
+		sh1 = new SnapshotValue(bd1,date1); //new snapshotHistory (1200,6/5/2013)
+		sh2 = new SnapshotValue(bd2,date2);//new snapshotHistory (1500, 2/5/2013)	
 		entries.add(sh1);
 		entries.add(sh2);
 		
@@ -163,8 +163,8 @@ public class TrophiesHelperTest {
 		bd4 = new BigDecimal (600);
 		date3 = new Date(1370464358000l); //6/5/2013
 		date4 = new Date (1360099958000l); //2/15/2013
-		sh3 = new SnapshotHistory(bd3,date3);
-		sh4 = new SnapshotHistory(bd4,date4);
+		sh3 = new SnapshotValue(bd3,date3);
+		sh4 = new SnapshotValue(bd4,date4);
 		entries2.add(sh3);
 		entries2.add(sh4);
 		
@@ -172,8 +172,8 @@ public class TrophiesHelperTest {
 		bd4 = new BigDecimal (600);
 		date3 = new Date(1370464358000l); //6/5/2013
 		date4 = new Date (1360099958000l); //2/15/2013
-		sh3 = new SnapshotHistory(bd3,date3);
-		sh4 = new SnapshotHistory(bd4,date4);
+		sh3 = new SnapshotValue(bd3,date3);
+		sh4 = new SnapshotValue(bd4,date4);
 		entries2.add(sh3);
 		entries2.add(sh4);
 		
@@ -181,8 +181,8 @@ public class TrophiesHelperTest {
 		bd6 = new BigDecimal (600);
 		date5 = new Date(1370464358000l); //6/5/2013
 		date6 = new Date (1360099958000l); //2/15/2013
-		sh5 = new SnapshotHistory(bd5,date5);
-		sh6 = new SnapshotHistory(bd6,date6);
+		sh5 = new SnapshotValue(bd5,date5);
+		sh6 = new SnapshotValue(bd6,date6);
 		entries2.add(sh5);
 		entries2.add(sh6);
 			
@@ -241,10 +241,10 @@ public class TrophiesHelperTest {
 		date12 = new Date(1362519158000l); //3/5/2013
 		date13 = new Date (1360099958000l); //2/15/2013
 		
-		sh10 = new SnapshotHistory(bd10,date10);
-		sh11 = new SnapshotHistory(bd11,date11);
-		sh12 = new SnapshotHistory(bd12,date12);
-		sh13 = new SnapshotHistory(bd13,date13);
+		sh10 = new SnapshotValue(bd10,date10);
+		sh11 = new SnapshotValue(bd11,date11);
+		sh12 = new SnapshotValue(bd12,date12);
+		sh13 = new SnapshotValue(bd13,date13);
 		entries3.add(sh10);
 		entries3.add(sh11);
 		entries3.add(sh12);
@@ -258,9 +258,9 @@ public class TrophiesHelperTest {
 		date16 = new Date(1367785958000l);//5/5/2013
 		date17 = new Date(1362519158000l); //3/5/2013
 				
-		sh15 = new SnapshotHistory(bd15,date15);
-		sh16 = new SnapshotHistory(bd16,date16);
-		sh17 = new SnapshotHistory(bd17,date17);
+		sh15 = new SnapshotValue(bd15,date15);
+		sh16 = new SnapshotValue(bd16,date16);
+		sh17 = new SnapshotValue(bd17,date17);
 		
 		entries4.add(sh15);
 		entries4.add(sh16);
@@ -275,10 +275,10 @@ public class TrophiesHelperTest {
 		date22 = new Date(1362519158000l); //3/5/2013
 		date23 = new Date (1360099958000l); //2/15/2013
 		
-		sh20 = new SnapshotHistory(bd20,date20);
-		sh21 = new SnapshotHistory(bd21,date21);
-		sh22 = new SnapshotHistory(bd22,date22);
-		sh23 = new SnapshotHistory(bd23,date23);
+		sh20 = new SnapshotValue(bd20,date20);
+		sh21 = new SnapshotValue(bd21,date21);
+		sh22 = new SnapshotValue(bd22,date22);
+		sh23 = new SnapshotValue(bd23,date23);
 		smallEntries.add(sh20);
 		smallEntries.add(sh21);
 		smallEntries.add(sh22);
@@ -377,9 +377,9 @@ public class TrophiesHelperTest {
 		Date date20 = new Date(1370464358000l); //6/5/2013
 		Date date21 = new Date(1367785958000l);//5/5/2013
 		
-		SnapshotHistory sh20 = new SnapshotHistory(bd20,date20);
-		SnapshotHistory sh21 = new SnapshotHistory(bd21,date21);
-		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		SnapshotValue sh20 = new SnapshotValue(bd20,date20);
+		SnapshotValue sh21 = new SnapshotValue(bd21,date21);
+		List<SnapshotValue> info = new ArrayList<SnapshotValue>();
 		info.add(sh20);
 		info.add(sh21);
 		when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);	
@@ -397,10 +397,10 @@ public class TrophiesHelperTest {
 	Date date20 = new Date(1370464358000l); //6/5/2013
 	Date date21 = new Date(1367785958000l);//5/5/2013
 		
-	SnapshotHistory sh20 = new SnapshotHistory(bd20,date20);
-	SnapshotHistory sh21 = new SnapshotHistory(bd21,date21);
-	SnapshotHistory sh22 = new SnapshotHistory(bd22,date22);
-	List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+	SnapshotValue sh20 = new SnapshotValue(bd20,date20);
+	SnapshotValue sh21 = new SnapshotValue(bd21,date21);
+	SnapshotValue sh22 = new SnapshotValue(bd22,date22);
+	List<SnapshotValue> info = new ArrayList<SnapshotValue>();
 	info.add(sh20);
 	info.add(sh21);
 	
@@ -423,11 +423,11 @@ public class TrophiesHelperTest {
 		Date date21 = new Date(1367785958000l);//5/5/2013
 		Date date22 = new Date(1360099958000l);//2/5/2013
 		Date date23 = new Date(1360099958000l);//2/5/2013
-		SnapshotHistory sh20 = new SnapshotHistory(bd20,date20);
-		SnapshotHistory sh21 = new SnapshotHistory(bd21,date21);
-		SnapshotHistory sh22 = new SnapshotHistory(bd22,date22);
-		SnapshotHistory sh23 = new SnapshotHistory(bd23,date23);
-		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		SnapshotValue sh20 = new SnapshotValue(bd20,date20);
+		SnapshotValue sh21 = new SnapshotValue(bd21,date21);
+		SnapshotValue sh22 = new SnapshotValue(bd22,date22);
+		SnapshotValue sh23 = new SnapshotValue(bd23,date23);
+		List<SnapshotValue> info = new ArrayList<SnapshotValue>();
 		info.add(sh20);
 		info.add(sh21);
 		info.add(sh22);
@@ -464,7 +464,7 @@ public class TrophiesHelperTest {
 	@Test
 	public void testCriteriaNotMetWhenThereIsNoBuildHistoryForDirectionNegativeOne(){
 		//no build history
-		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		List<SnapshotValue> info = new ArrayList<SnapshotValue>();
 		
 		when(mockSession.getSingleResult(Metric.class, "name",violationsName, "enabled", true)).thenReturn(violationsMetric);
 		assertFalse(trophiesHelper.criteriaMet(info, requiredAmount, days4, violationsName, mockSession));
@@ -478,9 +478,9 @@ public class TrophiesHelperTest {
 	public void testCriteriaNotMetWhenThereIsOnlyOneSnapshotForDirectionNegativeOne(){
 		BigDecimal bd20= new BigDecimal (25);
 		Date date20 = new Date(1370464358000l); //6/5/2013				
-		SnapshotHistory sh20 = new SnapshotHistory(bd20,date20);
+		SnapshotValue sh20 = new SnapshotValue(bd20,date20);
 		
-		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		List<SnapshotValue> info = new ArrayList<SnapshotValue>();
 		//only one snapshot
 		info.add(sh20);
 				
@@ -495,7 +495,7 @@ public class TrophiesHelperTest {
 	@Test 
 	public void testCriteriaNotMetWhenThereIsNoBuildHistoryForDirectionOneAndZero(){
 		//no build history
-		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		List<SnapshotValue> info = new ArrayList<SnapshotValue>();
 				
 		when(mockSession.getSingleResult(Metric.class, "name",pointsName, "enabled", true)).thenReturn(pointsMetric);
 		assertFalse(trophiesHelper.criteriaMet(info, requiredAmount, days4, pointsName, mockSession));	
@@ -512,9 +512,9 @@ public class TrophiesHelperTest {
 	public void testCriteriaNotMetWhenThereOnlyOneSnapshotForDirectionOne(){
 		BigDecimal bd20= new BigDecimal (1000);
 		Date date20 = new Date(1370464358000l); //6/5/2013				
-		SnapshotHistory sh20 = new SnapshotHistory(bd20,date20);
+		SnapshotValue sh20 = new SnapshotValue(bd20,date20);
 		
-		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		List<SnapshotValue> info = new ArrayList<SnapshotValue>();
 		//only one snapshot
 		info.add(sh20);
 				
@@ -555,15 +555,15 @@ public class TrophiesHelperTest {
 		Date theDate5 = new Date(1366403558000l);//4/19/2013
 		Date theDate6 = new Date(1334867558000l);//4/19/2012		
 		
-		SnapshotHistory snapShot1 = new SnapshotHistory(bigDec1,theDate1);
-		SnapshotHistory snapShot2 = new SnapshotHistory(bigDec2,theDate2);
-		SnapshotHistory snapShot3 = new SnapshotHistory(bigDec3,theDate3); 
-		SnapshotHistory snapShot4 = new SnapshotHistory(bigDec4,theDate4);
-		SnapshotHistory snapShot5 = new SnapshotHistory(bigDec5,theDate5);
-		SnapshotHistory snapShot6 = new SnapshotHistory(bigDec6,theDate6);
+		SnapshotValue snapShot1 = new SnapshotValue(bigDec1,theDate1);
+		SnapshotValue snapShot2 = new SnapshotValue(bigDec2,theDate2);
+		SnapshotValue snapShot3 = new SnapshotValue(bigDec3,theDate3); 
+		SnapshotValue snapShot4 = new SnapshotValue(bigDec4,theDate4);
+		SnapshotValue snapShot5 = new SnapshotValue(bigDec5,theDate5);
+		SnapshotValue snapShot6 = new SnapshotValue(bigDec6,theDate6);
 		
 		
-		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		List<SnapshotValue> info = new ArrayList<SnapshotValue>();
 		info.add(snapShot1);
 		info.add(snapShot2);
 		info.add(snapShot3);
@@ -599,16 +599,16 @@ public class TrophiesHelperTest {
 	Date theDate6 = new Date(1334867558000l);//4/19/2012	
 	Date theDate7 = new Date(1327008758000l);//1/19/2012
 	
-	SnapshotHistory snapShot1 = new SnapshotHistory(bigDec1,theDate1);
-	SnapshotHistory snapShot2 = new SnapshotHistory(bigDec2,theDate2);
-	SnapshotHistory snapShot3 = new SnapshotHistory(bigDec3,theDate3);
-	SnapshotHistory snapShot4 = new SnapshotHistory(bigDec4,theDate4);
-	SnapshotHistory snapShot5 = new SnapshotHistory(bigDec5,theDate5);
-	SnapshotHistory snapShot6 = new SnapshotHistory(bigDec6,theDate6);
-	SnapshotHistory snapShot7 = new SnapshotHistory(bigDec7,theDate7);
+	SnapshotValue snapShot1 = new SnapshotValue(bigDec1,theDate1);
+	SnapshotValue snapShot2 = new SnapshotValue(bigDec2,theDate2);
+	SnapshotValue snapShot3 = new SnapshotValue(bigDec3,theDate3);
+	SnapshotValue snapShot4 = new SnapshotValue(bigDec4,theDate4);
+	SnapshotValue snapShot5 = new SnapshotValue(bigDec5,theDate5);
+	SnapshotValue snapShot6 = new SnapshotValue(bigDec6,theDate6);
+	SnapshotValue snapShot7 = new SnapshotValue(bigDec7,theDate7);
 	
 	
-	List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+	List<SnapshotValue> info = new ArrayList<SnapshotValue>();
 	info.add(snapShot1);
 	info.add(snapShot2);
 	info.add(snapShot3);
@@ -640,11 +640,11 @@ public class TrophiesHelperTest {
 		Date theDate2 = new Date(1376857958000l);//02/18/2013 
 		Date theDate3 = new Date(1327008758000l);//12/19/2011 
 		
-		SnapshotHistory snapShot1 = new SnapshotHistory(bigDec1,theDate1);
-		SnapshotHistory snapShot2 = new SnapshotHistory(bigDec2,theDate2);
-		SnapshotHistory snapShot3 = new SnapshotHistory(bigDec3,theDate3);
+		SnapshotValue snapShot1 = new SnapshotValue(bigDec1,theDate1);
+		SnapshotValue snapShot2 = new SnapshotValue(bigDec2,theDate2);
+		SnapshotValue snapShot3 = new SnapshotValue(bigDec3,theDate3);
 		
-		List<SnapshotHistory> info = new ArrayList<SnapshotHistory>();
+		List<SnapshotValue> info = new ArrayList<SnapshotValue>();
 		info.add(snapShot1);
 		info.add(snapShot2);
 		info.add(snapShot3); 

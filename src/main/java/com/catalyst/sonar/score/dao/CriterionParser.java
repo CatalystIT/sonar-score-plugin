@@ -60,8 +60,8 @@ public class CriterionParser extends Parser<Criterion> {
 			days = parseDays();
 			criterion = new Criterion(metric, amount, days);
 		} catch (IndexOutOfBoundsException e) {
-			LOG.log("Creating a \"BEST\" Criterion");
-			criterion = new Criterion(metric);
+			LOG.log("Creating a " + ((metric != null) ? "\"BEST\"" : null) + " Criterion");
+			criterion = (metric != null) ? new Criterion(metric): null;
 		}
 		LOG.log("Criterion = " + criterion).endMethod();
 		return criterion;
@@ -75,7 +75,11 @@ public class CriterionParser extends Parser<Criterion> {
 		String metricName = get(METRIC_INDEX);
 		LOG.log("Metric Name = " + metricName);
 		Metric metric = metricDao.findMetricByName(metricName);
-		LOG.log("Returning = " + metric).endMethod();
+		if(metric != null) {
+			LOG.log("Returning = Metric[" + metric.getName() + " " + metric.getKey() + "]").endMethod();
+		} else {
+			LOG.log("Returning null").endMethod();
+		}
 		return metric;
 	}
 

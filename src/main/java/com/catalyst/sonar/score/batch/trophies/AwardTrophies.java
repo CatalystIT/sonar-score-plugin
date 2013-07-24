@@ -15,7 +15,7 @@ import com.catalyst.sonar.score.ScorePlugin;
 import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.Trophy;
 import com.catalyst.sonar.score.dao.SnapShotDao;
-import com.catalyst.sonar.score.util.SnapshotHistory;
+import com.catalyst.sonar.score.util.SnapshotValue;
 import com.catalyst.sonar.score.util.TrophiesHelper;
 /**
  * 
@@ -71,7 +71,7 @@ public class AwardTrophies {
 	 */
 	@SuppressWarnings("rawtypes")
 	public void awardTrophies(final DecoratorContext context, Resource resource) {
-		List<SnapshotHistory> snapshotHistory = new ArrayList<SnapshotHistory>();
+		List<SnapshotValue> snapshotHistory = new ArrayList<SnapshotValue>();
 		measuresHelper = new SnapShotDao(session, project);
 		trophiesHelper = new TrophiesHelper(settings);
 						

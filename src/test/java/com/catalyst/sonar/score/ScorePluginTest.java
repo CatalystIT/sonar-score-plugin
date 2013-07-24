@@ -23,7 +23,7 @@ import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.*;
 import com.catalyst.sonar.score.util.DateUtility;
-import com.catalyst.sonar.score.util.SnapshotHistory;
+import com.catalyst.sonar.score.util.SnapshotValue;
 import com.catalyst.sonar.score.util.TrophiesHelper;
 
 /**
@@ -68,7 +68,7 @@ public class ScorePluginTest {
 						SnapShotDao.class, 
 						MetricDao.class, 
 						DateUtility.class, 
-						SnapshotHistory.class, 
+						SnapshotValue.class, 
 						TrophiesHelper.class,
 						TrophyPage.class
 						

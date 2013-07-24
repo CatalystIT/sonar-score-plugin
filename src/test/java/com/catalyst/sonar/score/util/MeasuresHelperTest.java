@@ -23,10 +23,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.catalyst.sonar.score.dao.SnapShotDao;
-import com.catalyst.sonar.score.util.SnapshotHistory;
+import com.catalyst.sonar.score.util.SnapshotValue;
 
 public class MeasuresHelperTest {
-	private SnapshotHistory snapshotHistory;
+	private SnapshotValue snapshotHistory;
 	private String pointsName;
 	private String pointsKey;
 	private Metric pointsMetric;
@@ -38,19 +38,19 @@ public class MeasuresHelperTest {
 	private Metric coverageMetric;
 	private Metric.ValueType coverageType;
 	
-	private List<SnapshotHistory> entries;
-	private List<SnapshotHistory> emptyEntries;
-	private List<SnapshotHistory> otherEntries;
-	private SnapshotHistory snapshot1;
-	private SnapshotHistory snapshot2;
+	private List<SnapshotValue> entries;
+	private List<SnapshotValue> emptyEntries;
+	private List<SnapshotValue> otherEntries;
+	private SnapshotValue snapshot1;
+	private SnapshotValue snapshot2;
 	
 	List<Object[]> pastMeasures;
 	private DatabaseSession mockSession; 
 	private Project mockProject;	
 	private SnapShotDao measuresHelper;
 		
-	private SnapshotHistory sh1;
-	private SnapshotHistory sh2;
+	private SnapshotValue sh1;
+	private SnapshotValue sh2;
 	private BigDecimal bd1;
 	private Date date1;
 	private BigDecimal bd2;
@@ -65,9 +65,9 @@ public class MeasuresHelperTest {
 	mockSession = mock(DatabaseSession.class);	
 	query = mock(Query.class);
 	mockProject = new Project("Points");
-	entries = new ArrayList<SnapshotHistory>();
-	emptyEntries = new ArrayList<SnapshotHistory>();
-	otherEntries = new ArrayList<SnapshotHistory>();
+	entries = new ArrayList<SnapshotValue>();
+	emptyEntries = new ArrayList<SnapshotValue>();
+	otherEntries = new ArrayList<SnapshotValue>();
 	measuresHelper = new SnapShotDao(mockSession, mockProject);
 	
 
@@ -80,10 +80,10 @@ public class MeasuresHelperTest {
 	bd2 = new BigDecimal(1500);
 	date1 = new Date(1370464358000l); //6/5/2013
 	date2 = new Date (1360099958000l); //2/15/2013
-	sh1 = new SnapshotHistory(bd1,date1); //new snapshotHistory (1200,6/5/2013)
-	sh2 = new SnapshotHistory(bd2,date2);//new snapshotHistory (1500, 2/5/2013)	
-	snapshot1 = new SnapshotHistory (new BigDecimal(9090), new Date(756267889000l));
-	snapshot2 = new SnapshotHistory (new BigDecimal (8765), new Date (774584689000l));
+	sh1 = new SnapshotValue(bd1,date1); //new snapshotHistory (1200,6/5/2013)
+	sh2 = new SnapshotValue(bd2,date2);//new snapshotHistory (1500, 2/5/2013)	
+	snapshot1 = new SnapshotValue (new BigDecimal(9090), new Date(756267889000l));
+	snapshot2 = new SnapshotValue (new BigDecimal (8765), new Date (774584689000l));
 	otherEntries.add(snapshot1);
 	otherEntries.add(snapshot2);
 	

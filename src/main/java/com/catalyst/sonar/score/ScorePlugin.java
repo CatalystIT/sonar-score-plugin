@@ -23,7 +23,7 @@ import com.catalyst.sonar.score.ui.TrophyPage;
 import com.catalyst.sonar.score.ui.TrophyWidget;
 import com.catalyst.sonar.score.ui.TitleCupWidget;
 import com.catalyst.sonar.score.util.DateUtility;
-import com.catalyst.sonar.score.util.SnapshotHistory;
+import com.catalyst.sonar.score.util.SnapshotValue;
 import com.catalyst.sonar.score.util.TrophiesHelper;
 
 /**
@@ -84,7 +84,7 @@ public class ScorePlugin extends SonarPlugin{
 		
 		MetricBrackets.class, MetricBracketsParser.class, InvalidNumberOfDoublesException.class, 
 		
-		AwardTrophies.class, SnapShotDao.class, MetricDao.class, DateUtility.class, SnapshotHistory.class, TrophiesHelper.class, TrophyPage.class//,
+		AwardTrophies.class, SnapShotDao.class, MetricDao.class, DateUtility.class, SnapshotValue.class, TrophiesHelper.class, TrophyPage.class//,
 		
 		//API
 //		AwardSet.class, Criterion.class, Group.class, Member.class,

@@ -58,13 +58,11 @@ public class ScoreProjectDao extends ScoreEntityDao<ScoreProject> {
 			ResourceModel model = models.get(0);
 			if (model != null) {
 				LOG.warn("model is null!!!!").log("Here is the first Project:")
-						.log(model.getName() + " (" + model.getKey() + ")")
-						.log(model);
+						.log(model.getName() + " (" + model.getKey() + ")");
 				scoreProject = new ScoreProject(model);
 				LOG.log("Converted to a ScoreProject:")
 						.log(scoreProject.getName() + " ("
-								+ scoreProject.getKey() + ")")
-						.log(scoreProject);
+								+ scoreProject.getKey() + ")");
 			}
 		}
 		LOG.log("returning " + scoreProject).endMethod();

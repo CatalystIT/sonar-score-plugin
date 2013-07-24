@@ -24,7 +24,7 @@ import com.catalyst.sonar.score.dao.ScoreProjectDao;
 import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.dao.TitleCupDao;
 import com.catalyst.sonar.score.dao.TrophyDao;
-import com.catalyst.sonar.score.util.SnapshotHistory;
+import com.catalyst.sonar.score.util.SnapshotValue;
 import com.catalyst.sonar.score.util.TrophiesHelper;
 
 import org.sonar.api.config.Settings;
@@ -120,6 +120,9 @@ public class TrophiesDecorator implements Decorator {
 			LOG.beginMethod("TitleCupDecorator.decorate()");
 			TrophyDao trophyDao = new TrophyDao(session);
 			AwardSet<Trophy> trophies = trophyDao.getAll();
+			if(trophies == null) {
+				return;
+			}
 			LOG.logEmf("There are " + trophies.size() + " TitleCups");
 			ScoreProjectDao projectDao = new ScoreProjectDao(session);
 			ScoreProject thisProject = projectDao.getProjectById(project
@@ -148,10 +151,9 @@ public class TrophiesDecorator implements Decorator {
 					continue;
 				}
 				Metric metric = criterion.getMetric();
-				List<SnapshotHistory> entries = measuresHelper
+				List<SnapshotValue> entries = measuresHelper
 						.getMeasureCollection(metric.getName());
-				LOG.log("SnapshotHistories:");
-				System.out.println("\t\t" + entries);
+				LOG.log("SnapshotHistories:").log(entries);
 				if (!trophiesHelper.criteriaMet(entries, criterion.getAmount(),
 						criterion.getDays(), metric.getName(), session)) {
 					LOG.log("Leaving criteriaMet(), returning false").endMethod();

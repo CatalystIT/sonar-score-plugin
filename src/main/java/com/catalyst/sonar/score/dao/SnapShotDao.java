@@ -13,7 +13,7 @@ import org.sonar.api.measures.Metric;
 import org.sonar.jpa.dao.BaseDao;
 
 import com.catalyst.sonar.score.api.ScoreProject;
-import com.catalyst.sonar.score.util.SnapshotHistory;
+import com.catalyst.sonar.score.util.SnapshotValue;
 
 /**
  * 
@@ -55,9 +55,9 @@ public class SnapShotDao extends BaseDao{
 	 *          project and metric to be used to compare against a trophy's
 	 *          criteria
 	 */
-	public List<SnapshotHistory> getMeasureCollection(String metricName) {
+	public List<SnapshotValue> getMeasureCollection(String metricName) {
 
-		List<SnapshotHistory> entries = new ArrayList<SnapshotHistory>();
+		List<SnapshotValue> entries = new ArrayList<SnapshotValue>();
 		metricsHelper = new MetricDao(getSession());
 		// retrieve the metric's id
 		int metricId = metricsHelper.getMetricId(metricName);
@@ -79,7 +79,7 @@ public class SnapShotDao extends BaseDao{
 				 * creates a snapshot history, with the corresponding build
 				 * dates and measure values for a given project and metric
 				 */
-				SnapshotHistory entry = new SnapshotHistory(value, date);
+				SnapshotValue entry = new SnapshotValue(value, date);
 				entries.add(entry);
 
 			}
@@ -147,7 +147,4 @@ public class SnapShotDao extends BaseDao{
 		}
 		return compare < value;
 	}
-
-
-
 }

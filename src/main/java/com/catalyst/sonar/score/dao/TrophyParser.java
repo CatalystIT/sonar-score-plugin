@@ -42,10 +42,13 @@ public class TrophyParser extends AwardParser<Trophy> {
 			CriterionParser cParser = new CriterionParser(getSession(), get(index));
 			Criterion criterion = cParser.parse();
 			if (criterion.getMetric() != null) {
-				trophy.addCriterion(cParser.parse());
+				LOG.log("adding criterion: " + criterion);
+				trophy.addCriterion(criterion);
+			} else {
+				LOG.log("Metric = " + criterion.getMetric() + ", so not adding.");
 			}
 		}
-		LOG.log("TROPHY = " + trophy + "; CRITERIA = " + trophy.getCriteria())
+		LOG.log("Name = " + trophy + "; Criteria = ").log(trophy.getCriteria())
 				.endMethod();
 		return trophy;
 	}

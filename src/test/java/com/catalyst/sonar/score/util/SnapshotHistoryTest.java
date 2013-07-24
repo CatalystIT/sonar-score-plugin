@@ -13,13 +13,13 @@ public class SnapshotHistoryTest {
 	
 	private Date buildDate = new Date(1371193200000l);	
 	private BigDecimal measureValue = new BigDecimal(500.00);
-	private SnapshotHistory sh = new SnapshotHistory (measureValue, buildDate);
-	private SnapshotHistory snapshot1;
+	private SnapshotValue sh = new SnapshotValue (measureValue, buildDate);
+	private SnapshotValue snapshot1;
 	@Before
 	public void setUp(){
 	sh.setBuildDate(buildDate)	;
 	sh.setMeasureValue(measureValue);
-	snapshot1 = new SnapshotHistory (new BigDecimal(9090), new Date(756267889000l));
+	snapshot1 = new SnapshotValue (new BigDecimal(9090), new Date(756267889000l));
 	}
 	
 	
@@ -65,7 +65,7 @@ public class SnapshotHistoryTest {
 	 */
 	@Test
 	public void testSnapshotHistoryBuildDateNullEquality(){
-		SnapshotHistory snapshotTest = new SnapshotHistory(null, null);
+		SnapshotValue snapshotTest = new SnapshotValue(null, null);
 		assertEquals(snapshotTest.equals(snapshot1), false);
 	}
 	
@@ -76,8 +76,8 @@ public class SnapshotHistoryTest {
 	 */
 	@Test
 	public void testSnapshotEqualityWhenBuildDatesNull(){
-		SnapshotHistory snapshotTest = new SnapshotHistory(new BigDecimal (500),null );
-		SnapshotHistory snapshotTest1 = new SnapshotHistory(null, null);
+		SnapshotValue snapshotTest = new SnapshotValue(new BigDecimal (500),null );
+		SnapshotValue snapshotTest1 = new SnapshotValue(null, null);
 		assertEquals(snapshotTest.equals(snapshotTest1), false);
 	}
 	
@@ -87,8 +87,8 @@ public class SnapshotHistoryTest {
 	 */
 	@Test
 	public void testDifferentBuildDatesSnapshotInEquality(){
-		SnapshotHistory snapshot1 = new SnapshotHistory(new BigDecimal (500), new Date (774584689000l));
-		SnapshotHistory snapshot2 = new SnapshotHistory(new BigDecimal (500), new Date (756267889000l));
+		SnapshotValue snapshot1 = new SnapshotValue(new BigDecimal (500), new Date (774584689000l));
+		SnapshotValue snapshot2 = new SnapshotValue(new BigDecimal (500), new Date (756267889000l));
 		assertEquals(snapshot1.equals(snapshot2), false);
 	}
 	
@@ -98,8 +98,8 @@ public class SnapshotHistoryTest {
 	 */
 	@Test
 	public void testSameBuildDateNullMeasureValue(){
-		SnapshotHistory snapshot1 = new SnapshotHistory(null, new Date (774584689000l));
-		SnapshotHistory snapshot2 = new SnapshotHistory(new BigDecimal(678), new Date (774584689000l));
+		SnapshotValue snapshot1 = new SnapshotValue(null, new Date (774584689000l));
+		SnapshotValue snapshot2 = new SnapshotValue(new BigDecimal(678), new Date (774584689000l));
 		assertEquals(snapshot1.equals(snapshot2), false);	
 	}
 	
@@ -109,8 +109,8 @@ public class SnapshotHistoryTest {
 	 */
 	@Test
 	public void testSnapshotHistoryEqualityWhenBuildDatesSameAndValuesAreNull(){
-		SnapshotHistory snapshot1 = new SnapshotHistory(null, new Date (774584689000l));
-		SnapshotHistory snapshot2 = new SnapshotHistory(null, new Date (774584689000l));
+		SnapshotValue snapshot1 = new SnapshotValue(null, new Date (774584689000l));
+		SnapshotValue snapshot2 = new SnapshotValue(null, new Date (774584689000l));
 		assertEquals(snapshot1.equals(snapshot2), true);	
 
 	}
@@ -132,7 +132,7 @@ public class SnapshotHistoryTest {
 	 */
 	@Test
 	public void testhashWhenBuildDateAndValuesNull(){
-		SnapshotHistory sh1 = new SnapshotHistory(null, null);
+		SnapshotValue sh1 = new SnapshotValue(null, null);
 		assertEquals(sh1.hashCode(),961);	
 		
 	}
@@ -142,7 +142,7 @@ public class SnapshotHistoryTest {
 	 */
 	@Test
 	public void testHashWhenBuildDateNullAndMeasureValueIsOne(){
-		SnapshotHistory sh1 = new SnapshotHistory(new BigDecimal(1), null);
+		SnapshotValue sh1 = new SnapshotValue(new BigDecimal(1), null);
 		assertEquals(sh1.hashCode(),992);		
 	}
 	
@@ -152,7 +152,7 @@ public class SnapshotHistoryTest {
 	 */
 	@Test
 	public void testHashWhenBuildDateNotNullButValueIsNull(){
-		SnapshotHistory sh1 = new SnapshotHistory(null, new Date (750988800000l));
+		SnapshotValue sh1 = new SnapshotValue(null, new Date (750988800000l));
 		assertEquals(sh1.hashCode(),1930062035);	
 	}
 
