@@ -1,1 +1,36 @@
-<h1>File uploaded successfully! </h1> 
+<% 
+ url = request.url
+ projectId = url.split('id=')[1]
+ projectName = Project.find(:all, :conditions =>{:id => projectId})[0].name
+
+%>
+<h1>Edit <%=projectName %>'s Profile</h1></br></br>
+<h3>Change logo:</h3></br>
+
+<div class="dashbox"> 
+	<!-- The uploaded project image/icon gets displayed here and if the project does not have an image/icon then the default image/icon is displayed -->
+     <p>
+	<span class="big" id="score_image">
+		<img id= "project_image" style ="height:100px; max-width:150px" src="/images/display?project_id=<%=projectId%>" onerror="this.src='/images/profiles/projects/default.png'" />
+		
+	</span>
+     </p>
+    
+	<!-- The image selected is uploaded and saved in the images folder as the project image/icon -->
+	<% form_for :image,:url =>{:controller => "images",:action => "create",:method => :post, :project_id => projectId}, :html => {:multipart => true} do %>
+	<%= file_field :image,:uploadedfile , :onclick => "showChangeIconButton();"%></br></br>
+	<%= submit_tag "Change Icon" ,:style=>'visibility: hidden', :id=> 'changeIconButton'%>
+	
+	<% end %> 
+ </div>
+
+ <script type="text/javascript">
+ 
+ function showChangeIconButton(){
+  var text = document.getElementById("changeIconButton").value;
+  console.log("this is the text:  " + text);
+  document.getElementById("changeIconButton").style.visibility = "visible";
+ 
+ }
+ 
+ </script>

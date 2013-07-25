@@ -60,7 +60,7 @@ public class ScorePluginTest {
 						ProjectComparisonWidget.class,
 						TrophyWidget.class,
 						TitleCupWidget.class,
-						//ImageUploadPage.class,
+						ImageUploadPage.class,
 						MetricBrackets.class,
 						MetricBracketsParser.class,
 						InvalidNumberOfDoublesException.class,

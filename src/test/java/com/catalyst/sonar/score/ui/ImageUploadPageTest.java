@@ -33,7 +33,7 @@ public class ImageUploadPageTest {
 	 */
 	@Test
 	public void testGetTitle() {
-		assertEquals(imageUpload.getTitle(), "Image Upload");
+		assertEquals(imageUpload.getTitle(), "Edit Project Profile");
 	}
 
 }

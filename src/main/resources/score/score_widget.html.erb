@@ -13,11 +13,7 @@ points=measure('points')
 	</span>
      </p>
     
-	<!-- The image selected is uploaded and saved in the images folder as the project image/icon -->
-	<% form_for :image,:url =>{:controller => "images",:action => "create",:method => :post, :project_id => @project.id}, :html => {:multipart => true} do %>
-	<%= file_field :image,:uploadedfile %><br/>
-	<%= submit_tag "Change Icon" %>
-	<% end %> 
+	
  </div>
  </td>
  <td valign="top" nowrap="">

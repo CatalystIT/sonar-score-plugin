@@ -12,6 +12,7 @@ class Image < ActiveRecord::Base
       @uploadedfile = image['uploadedfile']
     end
     @project_id = project_id
+
     @path = newPath(@project_id + ".png")
   end
 

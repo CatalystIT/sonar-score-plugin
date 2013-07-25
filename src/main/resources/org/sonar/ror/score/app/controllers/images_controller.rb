@@ -8,9 +8,10 @@ class ImagesController < ApplicationController
   #POST/Images
   #Redirects to the dashboard
   def create
-    @image = Image.new(params[:project_id],params[:image])
+    @image = Image.new(params[:project_id],params[:image])     
     @image.saveImage()
     redirect_to :controller => "dashboard", :action => "index", :id => params[:project_id]
+   
   end
 
   #GET/Images

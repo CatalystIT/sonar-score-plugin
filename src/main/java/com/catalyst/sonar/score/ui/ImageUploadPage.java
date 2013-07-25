@@ -7,7 +7,7 @@ import org.sonar.api.web.Page;
  * @author Team Build Meister
  *
  */
-@NavigationSection({NavigationSection.RESOURCE_TAB, NavigationSection.CONFIGURATION})
+@NavigationSection({NavigationSection.RESOURCE_TAB, NavigationSection.RESOURCE})
 public class ImageUploadPage implements Page{
 	public String getId(){
 		//returns the URL of the ruby widget view/index file
@@ -16,6 +16,6 @@ public class ImageUploadPage implements Page{
 	
 	public String getTitle(){
 		//returns the title
-		return "Image Upload";
+		return "Edit Project Profile";
 	}
 }
