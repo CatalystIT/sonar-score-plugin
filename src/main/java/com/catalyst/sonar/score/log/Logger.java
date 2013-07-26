@@ -31,6 +31,7 @@ public class Logger {
 	public static final int MAX_LENGTH = 50;
 
 	public static final Logger LOG = new Logger();
+	private static int extraTabs = 0;
 
 	private PrintStream stream;
 	private List<String> stack;
@@ -129,6 +130,7 @@ public class Logger {
 	 * @return
 	 */
 	public Logger beginMethod(final String methodName) {
+		System.out.println("HEY, IS THIS METHOD RUNNING?  METHOD_NAME = " + methodName);
 		String message = border(TAB_LENGTH) + START + methodName;
 		borderMessage(message);
 		stack.add(methodName);
@@ -178,7 +180,7 @@ public class Logger {
 	 */
 	private String tab() {
 		String tabs = "";
-		for (int i = 0; i < stack.size(); i++) {
+		for (int i = 0; i < stack.size() + extraTabs; i++) {
 			tabs += '\t';
 		}
 		return tabs;
@@ -199,6 +201,16 @@ public class Logger {
 	 */
 	public Logger setStream(PrintStream stream) {
 		this.stream = stream;
+		return this;
+	}
+	
+	public Logger addTab(int amount) {
+		extraTabs += amount;
+		return this;
+	}
+	
+	public Logger removeTab(int amount) {
+		extraTabs -= amount;
 		return this;
 	}
 }
