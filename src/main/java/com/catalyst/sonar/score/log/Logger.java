@@ -130,7 +130,6 @@ public class Logger {
 	 * @return
 	 */
 	public Logger beginMethod(final String methodName) {
-		System.out.println("HEY, IS THIS METHOD RUNNING?  METHOD_NAME = " + methodName);
 		String message = border(TAB_LENGTH) + START + methodName;
 		borderMessage(message);
 		stack.add(methodName);
