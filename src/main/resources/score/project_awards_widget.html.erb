@@ -1,0 +1,55 @@
+<% 
+	#finds all the properties that assign a Trophy to this Project
+	properties = Property.find(:all, :conditions => ['prop_key LIKE ? OR prop_key LIKE ? ','sonar.score.Trophy=%' ,'sonar.score.TitleCup=%'])
+	
+%>
+<% if properties != nil %>
+	<div class="dashbox">
+		
+		
+		<!-- Loops through the properties and checks if the property is a Trophy -->
+		<!-- and also checks if the resourceId matches the projectId. -->
+		<% for @Property in properties %>
+			<% if(@Property.resource_id == @project.id) %>
+				<% trophy = @Property.prop_key %>
+				<div class="cup">
+					<div>
+						<div style="float:left; margin:10px">
+							<span align="center">
+								<img src="/images/profiles/trophies/TrophyBronze.png"; height="50", width="40" title = '<%= trophy[trophy.index('=') + 1, trophy.length]%>'/>
+							</span>			
+							
+						</div>
+					</div>
+				</div>
+			<% end %>
+		<% end %>
+	</div>
+<% end %>
+
+<% if trophy == nil %>
+	<div class="dashbox">
+		<h1 style="font-family: Comic Sans MS; font-size: 1.0em; font-weight: bold"> No Trophies have been earned. </h1>
+	</div>
+			
+<% end %>
+
+
+<script type="text/javascript">
+window.onload=formatName();
+
+<!--Formats the trophy name-->
+function formatName(){
+	var names = document.getElementsByClassName("nameClass");
+	for (var i = 0; i < names.length; i ++){
+		var name = names[i];
+		var formattedNameArray = name.textContent.split(/(?=[A-Z])/);
+		var formattedName = formattedNameArray.toString();
+		var goodName = formattedName.replace(/,/g,' ');
+		names[i].textContent = goodName;
+		
+	}		
+
+}
+
+</script>			

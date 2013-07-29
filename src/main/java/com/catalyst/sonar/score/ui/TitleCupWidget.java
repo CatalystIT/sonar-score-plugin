@@ -22,7 +22,7 @@ public class TitleCupWidget extends AbstractRubyTemplate implements RubyRailsWid
 
 	public String getTitle() {
 		//retrieves the widget title
-		return "TitleCups";
+		return "Title Cups";
 	}
 
 	@Override

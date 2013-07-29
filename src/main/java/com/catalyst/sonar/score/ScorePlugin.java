@@ -18,6 +18,7 @@ import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.EnhancedListFilterWidget;
 import com.catalyst.sonar.score.ui.ImageUploadPage;
+import com.catalyst.sonar.score.ui.ProjectAwardsWidget;
 import com.catalyst.sonar.score.ui.ProjectComparisonWidget;
 import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 import com.catalyst.sonar.score.ui.TrophyPage;
@@ -52,6 +53,13 @@ import com.catalyst.sonar.score.util.TrophiesHelper;
 		project = false,
 		global = false,
 		multiValues = true),
+		 @Property(
+		key = ScorePlugin.PROJECT_AWARDS,
+		name = "Project Awards",
+		description = "Specify awards for a project.",
+		project = false,
+		global = false,
+		multiValues = true),
 	  @Property(
 	    key = ScorePlugin.TROPHY,
 	    name = "Trophy",
@@ -69,6 +77,8 @@ public class ScorePlugin extends SonarPlugin{
 	public static final String PROJECT_TROPHY = "sonar.score.projectTrophy";
 	public static final String TITLECUP = "sonar.score.TitleCup";
 	public static final String TROPHY = "sonar.score.Trophy";
+	public static final String PROJECT_AWARDS = "sonar.score.Project_Awards";
+	
 	/**
 	 * returns a list of the various classes used to create the SCORE extension/plugin
 	 */	
@@ -81,7 +91,7 @@ public class ScorePlugin extends SonarPlugin{
 		//the decorator class (batch)
 		PointsDecorator.class, PointsCalculator.class, TrophiesDecorator.class, TitleCupDecorator.class,
 		// Score's ui/widgets
-		ScoreRubyWidget.class, EnhancedListFilterWidget.class, ProjectComparisonWidget.class, TrophyWidget.class, TitleCupWidget.class,ImageUploadPage.class,
+		ScoreRubyWidget.class, EnhancedListFilterWidget.class, ProjectComparisonWidget.class, TrophyWidget.class, TitleCupWidget.class,ImageUploadPage.class, ProjectAwardsWidget.class,
 		
 		MetricBrackets.class, MetricBracketsParser.class, InvalidNumberOfDoublesException.class, 
 		

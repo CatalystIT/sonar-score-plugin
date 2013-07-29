@@ -5,24 +5,29 @@ import org.sonar.api.web.Page;
 import org.sonar.api.web.RubyRailsPage;
 import org.sonar.api.web.UserRole;
 
+/**
+ * Page that allows an admin to create trophies and title cups.
+ * @author team Build Meister
+ *
+ */
 @NavigationSection({NavigationSection.RESOURCE_TAB, NavigationSection.CONFIGURATION})
-//@NavigationSection(NavigationSection.CONFIGURATION)
-//@UserRole(UserRole.ADMIN)
+@UserRole(UserRole.ADMIN)
 public final class TrophyPage implements Page{
-	
-	public String getId() {
-		    // URL of the controller
+	/**
+	 * retrieves the URL of the trophy page
+	 */
+	public String getId() {		    
 		   return "/trophies/index";
-		//return "trophy_page";
+		
 	}
 	
+	/**
+	 * retrieves the title of the Awards Page
+	 */
 	public String getTitle() {
 		  return "Awards Page";
 	}
 
-//	@Override
-//	protected String getTemplatePath(){
-//		return "/score/trophy_page.html.erb";
-//	}
+
 
 }
