@@ -25,10 +25,11 @@
 	function changeImage() {
 		// find all images on the page
 		var images = document.getElementsByTagName('img');
+		
 
 		// iterate through all found images
 		for (i = 0; i < images.length; i++) {
-
+			
 			// check that the images 7th parent has Class enhancedList and that the image contains "TRK" which is the image that will be replaced
 			if ((images[i].parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className == "enhancedList")
 					&& (images[i].src.indexOf("TRK") != -1)) {
@@ -65,10 +66,9 @@
 					}
 					return 0; //returns false
 				}
-				//checking to see if the image for a particular project exists.  Assuming the name of the file 
-				//is the same as the project id
-				images[i].src = "/images/display?project_id=" + projectId;
-
+				//display the project's image
+				images[i].src = '/images/display?project_id=' + projectId ;
+								
 			}
 		}
 		//set both flags to true so both searches for the img tag and href will stop

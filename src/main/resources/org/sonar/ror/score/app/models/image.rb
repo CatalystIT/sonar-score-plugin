@@ -16,8 +16,9 @@ class Image < ActiveRecord::Base
     @path = newPath(@project_id + ".png")
   end
 
-  # Save the uploaded image to 
+  # Save the uploaded image to sonar file if a file has been selected.
   def saveImage()
+    unless uploadedfile == nil
     # checks if the directory exists if not creates it
     unless File.directory?(File.dirname(@path))
       FileUtils.mkdir_p(File.dirname(@path))
@@ -25,6 +26,7 @@ class Image < ActiveRecord::Base
     # writes the file
     File.open(@path, "wb") { |f| f.write(@uploadedfile.read) }
     true
+    end
   end
 
   #Shows default image if no image is set
