@@ -14,9 +14,9 @@ import org.sonar.api.resources.Resource;
 import com.catalyst.sonar.score.ScorePlugin;
 import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.Trophy;
+import com.catalyst.sonar.score.batch.util.TrophiesHelper;
 import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.util.SnapshotValue;
-import com.catalyst.sonar.score.util.TrophiesHelper;
 /**
  * 
  * @author mwomack
