@@ -1,24 +1,28 @@
 <% 
 	#finds all the properties that assign a Trophy to this Project
-	properties = Property.find(:all, :conditions => ['prop_key LIKE ? OR prop_key LIKE ? ','sonar.score.Trophy=%' ,'sonar.score.TitleCup=%'], :order => 'text_value DESC', :limit => 9)
+	properties = Property.find(:all, :conditions => ['prop_key LIKE ? OR prop_key LIKE ? ','sonar.score.Trophy=%' ,'sonar.score.TitleCup=%'], :order => 'text_value DESC', :limit => 7)
 	
 %>
 <% if properties != nil %>
-	<div class="dashbox">
+	<div class="dashbox" style="padding:0px;margin:0px">
 		
 		
 		<!-- Loops through the properties and checks if the property is a Trophy -->
 		<!-- and also checks if the resourceId matches the projectId. -->
 		<% for @Property in properties %>
 			<% if(@Property.resource_id == @project.id) %>
-				<% trophy = @Property.prop_key %>
-				<span class="cup">
-					<span>
-						<span style="float:left; margin:10px">
-							<span align="center">
-								<img src="/images/profiles/trophies/TrophyBronze.png"; height="50", width="40" class = 'nameClass' title = '<%= trophy[trophy.index('=') + 1, trophy.length]%>'/>
-							</span>			
-							
+				<% award = @Property.prop_key %>
+				<% awardType = (award.partition("sonar\.score\.").last).partition("=").first %>
+				<% awardColor = "Silver" %>
+				<% awardFolder = "trophies" %>
+				<% if awardType == "TitleCup" %>
+					<% awardColor = "Gold" %>
+					<% awardFolder = "titlecups" %>
+				<% end %>
+				<span class="award" style="padding:0px;margin:0px">
+					<span style="float:left; margin:5px; padding:0px">
+						<span align="center">
+								<img src="/images/profiles/awards/<%= awardFolder %>/<%= awardType %><%= awardColor %>.png"; height="60" class = 'nameClass' style="padding:0px;margin:0px" title = '<%= award[award.index('=') + 1, award.length]%>'/>
 						</span>
 					</span>
 				</span>
@@ -27,9 +31,9 @@
 	</div>
 <% end %>
 
-<% if trophy == nil %>
+<% if award == nil %>
 	<div class="dashbox">
-		<h1 style="font-family: Comic Sans MS; font-size: 1.0em; font-weight: bold"> No Trophies have been earned. </h1>
+		<h1 style="font-family: Comic Sans MS; font-size: 1.0em; font-weight: bold"> No Awards have been earned. </h1>
 	</div>
 			
 <% end %>
