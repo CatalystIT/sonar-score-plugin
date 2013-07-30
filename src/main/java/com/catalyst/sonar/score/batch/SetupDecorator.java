@@ -36,11 +36,13 @@ public class SetupDecorator implements Decorator {
 
 	public static final String SETUP = "sonar.score.setup";
 
-	/**
+	/*
 	 * {@code int tries} prevents SetupDecorator.decorate() from running its
-	 * execution branch more than once.
+	 * execution branch more than once. Set to 1 to prevent this decorator from
+	 * executing at all during normal operations until the code functions
+	 * correctly.  If functioning correctly, should be set to 0.
 	 */
-	private static int tries = 0;
+	private static int tries = 1;
 
 	private Project project;
 	private PropertyDao propertyDao;
