@@ -16,10 +16,10 @@ import org.sonar.api.resources.Project;
 import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.ScoreProject;
+import com.catalyst.sonar.score.batch.util.TrophiesHelper;
 import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.util.SnapshotValue;
 import com.catalyst.sonar.score.util.SnapshotValues;
-import com.catalyst.sonar.score.util.TrophiesHelper;
 
 /**
  * The {@code AbstractAwardDecorator} contains methods that Award Decorators

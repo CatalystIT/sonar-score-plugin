@@ -20,13 +20,13 @@ import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.SearchableHashSet;
 import com.catalyst.sonar.score.api.TitleCup;
+import com.catalyst.sonar.score.batch.util.TrophiesHelper;
 
 import org.sonar.api.config.Settings;
 
 import com.catalyst.sonar.score.dao.*;
 import com.catalyst.sonar.score.util.SnapshotValue;
 import com.catalyst.sonar.score.util.SnapshotValues;
-import com.catalyst.sonar.score.util.TrophiesHelper;
 
 /**
  * The TitleCup Decorator awards TitleCups to qualifying projects when a project

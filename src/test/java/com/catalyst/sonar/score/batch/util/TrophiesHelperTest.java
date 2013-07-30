@@ -1,4 +1,4 @@
-package com.catalyst.sonar.score.util;
+package com.catalyst.sonar.score.batch.util;
 
 import static org.junit.Assert.*;
 
@@ -18,6 +18,8 @@ import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.measures.Metric;
 
 import com.catalyst.sonar.score.ScorePlugin;
+import com.catalyst.sonar.score.batch.util.TrophiesHelper;
+import com.catalyst.sonar.score.util.SnapshotValue;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

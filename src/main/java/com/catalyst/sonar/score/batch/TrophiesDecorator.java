@@ -20,12 +20,12 @@ import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.TitleCup;
 import com.catalyst.sonar.score.api.Trophy;
 import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
+import com.catalyst.sonar.score.batch.util.TrophiesHelper;
 import com.catalyst.sonar.score.dao.ScoreProjectDao;
 import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.dao.TitleCupDao;
 import com.catalyst.sonar.score.dao.TrophyDao;
 import com.catalyst.sonar.score.util.SnapshotValue;
-import com.catalyst.sonar.score.util.TrophiesHelper;
 
 import org.sonar.api.config.Settings;
 

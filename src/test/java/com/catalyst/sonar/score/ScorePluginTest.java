@@ -19,13 +19,13 @@ import com.catalyst.sonar.score.batch.points.InvalidNumberOfDoublesException;
 import com.catalyst.sonar.score.batch.points.MetricBrackets;
 import com.catalyst.sonar.score.batch.points.MetricBracketsParser;
 import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
+import com.catalyst.sonar.score.batch.util.TrophiesHelper;
 import com.catalyst.sonar.score.dao.MetricDao;
 import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.*;
 import com.catalyst.sonar.score.util.DateUtility;
 import com.catalyst.sonar.score.util.SnapshotValue;
-import com.catalyst.sonar.score.util.TrophiesHelper;
 
 /**
  * @author JDunn

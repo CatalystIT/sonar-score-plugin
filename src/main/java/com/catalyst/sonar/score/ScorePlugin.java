@@ -14,6 +14,7 @@ import com.catalyst.sonar.score.batch.TitleCupDecorator;
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
 import com.catalyst.sonar.score.batch.points.*;
 import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
+import com.catalyst.sonar.score.batch.util.TrophiesHelper;
 import com.catalyst.sonar.score.dao.MetricDao;
 import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
@@ -27,7 +28,6 @@ import com.catalyst.sonar.score.ui.TrophyWidget;
 import com.catalyst.sonar.score.ui.TitleCupWidget;
 import com.catalyst.sonar.score.util.DateUtility;
 import com.catalyst.sonar.score.util.SnapshotValue;
-import com.catalyst.sonar.score.util.TrophiesHelper;
 
 /**
  * Creates a property in the database with the key, name, description and default value set
