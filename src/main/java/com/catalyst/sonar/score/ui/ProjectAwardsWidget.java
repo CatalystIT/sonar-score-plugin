@@ -19,7 +19,6 @@ public class ProjectAwardsWidget extends AbstractRubyTemplate implements RubyRai
 	/**
 	 * returns the widget's id represents the "widget_key" in the widgets table
 	 */
-	@Override
 	public String getId() {		
 		return "projectAwards";
 	}
@@ -27,7 +26,6 @@ public class ProjectAwardsWidget extends AbstractRubyTemplate implements RubyRai
 	 * returns the widget's title represents the widget's "name" in the widgets
 	 * table
 	 */
-	@Override
 	public String getTitle() {
 		return "Project Awards";
 	}
