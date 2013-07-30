@@ -9,6 +9,7 @@ import org.sonar.api.SonarPlugin;
 
 import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
+import com.catalyst.sonar.score.batch.SetupDecorator;
 import com.catalyst.sonar.score.batch.TitleCupDecorator;
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
 import com.catalyst.sonar.score.batch.points.*;
@@ -89,7 +90,7 @@ public class ScorePlugin extends SonarPlugin{
 		// Definition of Score's points metric		
 		ScoreMetrics.class,
 		//the decorator class (batch)
-		PointsDecorator.class, PointsCalculator.class, TrophiesDecorator.class, TitleCupDecorator.class,
+		SetupDecorator.class, PointsDecorator.class, PointsCalculator.class, TrophiesDecorator.class, TitleCupDecorator.class,
 		// Score's ui/widgets
 		ScoreRubyWidget.class, EnhancedListFilterWidget.class, ProjectComparisonWidget.class, TrophyWidget.class, TitleCupWidget.class,ImageUploadPage.class, ProjectAwardsWidget.class,
 		

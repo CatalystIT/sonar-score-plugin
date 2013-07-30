@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
+import com.catalyst.sonar.score.batch.SetupDecorator;
 import com.catalyst.sonar.score.batch.TitleCupDecorator;
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
 import com.catalyst.sonar.score.batch.points.InvalidNumberOfDoublesException;
@@ -51,6 +52,7 @@ public class ScorePluginTest {
 		assertEquals(scorePlugin.getExtensions(),
 				Arrays.asList(
 						ScoreMetrics.class,
+						SetupDecorator.class,
 						PointsDecorator.class,
 						PointsCalculator.class,
 						TrophiesDecorator.class,
