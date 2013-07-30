@@ -1,6 +1,6 @@
 <% 
 	#finds all the properties that assign a Trophy to this Project
-	properties = Property.find(:all, :conditions => ['prop_key LIKE ? OR prop_key LIKE ? ','sonar.score.Trophy=%' ,'sonar.score.TitleCup=%'], :order => 'text_value DESC')
+	properties = Property.find(:all, :conditions => ['prop_key LIKE ? OR prop_key LIKE ? ','sonar.score.Trophy=%' ,'sonar.score.TitleCup=%'], :order => 'text_value DESC', :limit => 9)
 	
 %>
 <% if properties != nil %>
@@ -47,7 +47,7 @@ function formatName(){
 		var name = names[i].title;
 		var formattedNameArray = name.split(/(?=[A-Z])/);
 		var formattedName = formattedNameArray.toString();
-		var goodName = formattedName.replace(/,/g,' ');
+		var goodName = formattedName.replace(/,/g,' ');		
 		names[i].textContent = goodName;
 		names[i].title = goodName;
 			
