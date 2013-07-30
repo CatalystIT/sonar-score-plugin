@@ -12,9 +12,9 @@
 		<% for @Property in properties %>
 			<% if(@Property.resource_id == @project.id) %>
 				<% trophy = @Property.prop_key %>
-				<div class="cup">
-					<div>
-						<div style="float:left; margin:10px">
+				<span class="cup">
+					<span>
+						<span style="float:left; margin:10px">
 							<div align="center">
 								<img src="/images/profiles/awards/trophies/TrophySilver.png"; height="100"/>
 							</div>
@@ -22,9 +22,9 @@
 								<%= trophy[trophy.index('=') + 1, trophy.length]%>
 							</div>
 							
-						</div>
-					</div>
-				</div>
+						</span>
+					</span>
+				</span>
 			<% end %>
 		<% end %>
 	</div>
