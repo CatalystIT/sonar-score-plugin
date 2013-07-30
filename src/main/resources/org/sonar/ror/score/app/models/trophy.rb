@@ -81,7 +81,7 @@ class Trophy < ActiveRecord::Base
   #checking to see if the amount entered is a number
   def validate_number(amount)
     if (@type == "Trophy")
-      reg = /^[1-9]\d*(\.\d+)?$/
+      reg = /^[0-9]\d*(\.\d+)?$/
       return (amount.match(reg))? true: false  
     else
       return true
