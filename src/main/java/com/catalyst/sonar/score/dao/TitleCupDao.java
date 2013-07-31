@@ -19,7 +19,7 @@ import com.catalyst.sonar.score.api.ScoreUser;
 import com.catalyst.sonar.score.api.TitleCup;
 
 /**
- * The {link TitleCupDao} class implements methods from {@link AwardDao}{@code <}
+ * The {@link TitleCupDao} class implements methods from {@link AwardDao}{@code <}
  * {@link TitleCup}{@code >} to specifically retrieve and/or manipulate
  * {@link TitleCup} information in the database.
  * 
@@ -90,12 +90,8 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		return property;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.catalyst.sonar.score.dao.AwardDao#getAssignedFromUser(com.catalyst
-	 * .sonar.score.api.Award, com.catalyst.sonar.score.api.ScoreUser)
+	/** 
+	 * @see {@link AwardDao#getAssignedFromUser(Award, ScoreUser)}
 	 */
 	@Override
 	protected TitleCup getAssignedFromUser(TitleCup cup, ScoreUser user) {
@@ -117,9 +113,7 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		return getCupFromProperties(cup, properties);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/** 
 	 * @see AwardDao#getAllAssignedFromUser(ScoreUser)
 	 */
 	@Override
@@ -149,31 +143,6 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 		// TODO implement
 		return null;
 	}
-
-	// /**
-	// * @see {@link AwardDao#getAllAwards()}
-	// */
-	// @Override
-	// public AwardSet<TitleCup> getAll() {
-	// LOG.beginMethod("TitleCupDao.getAll()");
-	// List<Property> properties = getSession().getResults(Property.class,
-	// "key", TITLECUP);
-	// if(properties == null || properties.size() == 0) {
-	// LOG.warn("There are not TitleCups!").endMethod();
-	// return null;
-	// }
-	// AwardSet<TitleCup> titleCups = new AwardSet<TitleCup>();
-	// Property property = properties.get(0);
-	// LOG.log(property.getValue());
-	// for (String cupString : property.getValue().split(",")) {
-	// LOG.log(cupString);
-	// TitleCupParser parser = new TitleCupParser(getSession(), cupString);
-	// LOG.log(parser.parse());
-	// }
-	// LOG.log(titleCups).log("There are " + titleCups.size() + " TitleCups")
-	// .endMethod();
-	// return titleCups;
-	// }
 
 	/**
 	 * @see {@link AwardDao#create(Award)}

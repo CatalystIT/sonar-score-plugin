@@ -12,6 +12,9 @@ import org.sonar.api.measures.Metric;
 public class Criterion {
 
 	public static final String ALL_MEMBERS = "ALL_MEMBERS";
+	public static final int DAYS_IN_WEEK = 7;
+	public static final String WEEK = "w";
+	public static final String DAY = "d";
 
 	private Metric metric;
 	private double amount;
@@ -171,6 +174,14 @@ public class Criterion {
 		String amountString = Double.toString(amount);
 		String daysString = Integer.toString(days);
 		return "[" + typeString + " " + metricName + " " + amountString + " " + daysString + "]";
+	}
+	
+	public String toValueString() {
+		return '{' + metric.getName() + ';' + amount + ';' + getDayString() + '}'; 
+	}
+		
+	public String getDayString() {
+		return (days % DAYS_IN_WEEK == 0) ? days/DAYS_IN_WEEK + WEEK : days + DAY;
 	}
 
 	public static enum Type {

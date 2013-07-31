@@ -2,6 +2,7 @@ package com.catalyst.sonar.score.batch;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.util.CalculationComponent;
 import com.catalyst.sonar.score.util.CalculationComponent.CalculationComponentList;
+
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
@@ -11,9 +12,12 @@ import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
+
 import java.util.Arrays;
 import java.util.Collection;
+
 import com.google.common.collect.ImmutableList;
+
 import org.sonar.api.batch.DependsUpon;
 /**
  * The ScoreDecorator class is responsible for obtaining, analyzing and calculating information and 
@@ -53,9 +57,6 @@ public class PointsDecorator implements Decorator {
 	 * returns whether or not analysis should be ran on a particular project
 	 */
 	public boolean shouldExecuteOnProject(Project project) {
-		// TODO: look into this further. Do we need this method?
-		// return
-		// !Project.AnalysisType.STATIC.equals(project.getAnalysisType());
 		return true;
 	}
 
@@ -64,7 +65,7 @@ public class PointsDecorator implements Decorator {
 	 * @param context
 	 * @returns whether or not a resource is a unit test class
 	 */
-	public boolean shouldDecorateResource(final Resource resource,
+	public boolean shouldDecorateResource(@SuppressWarnings("rawtypes") final Resource resource,
 			final DecoratorContext context) {
 		// if the resource is not a unit test class, then proceed with
 		// decoration/analysis
@@ -76,7 +77,7 @@ public class PointsDecorator implements Decorator {
 	 * necessary measures are retrieved in order to calculate the points metric
 	 * for a particular project.
 	 */
-	public void decorate(final Resource resource, final DecoratorContext context) {
+	public void decorate(@SuppressWarnings("rawtypes") final Resource resource, final DecoratorContext context) {
 		/*
 		 * if the resource to decorate is not a unit test class, then retrieve
 		 * the various code metrics and calculate the points for a given
@@ -120,8 +121,6 @@ public class PointsDecorator implements Decorator {
 		CalculationComponent packageTanglePenalty = new CalculationComponent(packageTangle, MAGNIFY_PACKAGE_TANGLE);
 		penalties.add(packageTanglePenalty);
 		return new PointsCalculator(penalties, null).calculateTotalPoints(packages, classes, ncloc, rulesCompliance, docAPI, coverage, packageTangle);
-				//PointsCalculator.calculateBasePoints(lines, classes);
-				//.calculateTotalPoints(classes, lines, rulesComplexity, docAPI, coverage, packageTangle);
 	}
 	
 }

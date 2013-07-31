@@ -6,6 +6,8 @@ package com.catalyst.sonar.score.dao;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.jpa.dao.BaseDao;
 
+import com.catalyst.sonar.score.api.ScoreEntity;
+
 /**
  * 
  * The {@code SonarEntityDao<E>} class defines a dao that specifically access a
@@ -49,6 +51,38 @@ public abstract class SonarEntityDao<E> extends BaseDao {
 	public E create(E e) {
 		return getSession().save(e);
 	}
+
+	/**
+	 * Creates a {@link ScoreEntity} in the database with the given String as
+	 * its key, and {@code null} fields.
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	public E create(String key) {
+		return create(key, null);
+	}
+	
+	/**
+	 * Creates a {@link ScoreEntity} in the database with the String key
+	 * as its key and {@code value.toString()} as its value (or relevant field).
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	public E create (String key, Object value) {
+		String valueArg = (value != null) ? value.toString() : null;
+		return create(key, valueArg);
+	}
+
+	/**
+	 * Creates a {@link ScoreEntity} in the database with the first String arg
+	 * as its key and the second String arg as its value (or relevant field).
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	public abstract E create(String key, String value);
 
 	/**
 	 * @return the name of the column used as the key, or unique identifier, of

@@ -34,9 +34,18 @@ public class PropertyDao extends SonarEntityDao<Property> {
 		property.setValue(value.toString());
 		return getSession().save(property);
 	}
+	
+	/**
+	 * @see {@link SonarEntityDao#create(String, String)}
+	 */
+	@Override
+	public Property create(String key, String value) {
+		Property property = new Property(key, value);
+		return getSession().save(property);
+	}
 
 	/**
-	 * @see com.catalyst.sonar.score.dao.SonarEntityDao#entityClass()
+	 * @see {@link SonarEntityDao#entityClass()}
 	 * @return {@code Property.class}
 	 */
 	@Override

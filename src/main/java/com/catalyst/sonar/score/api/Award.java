@@ -13,7 +13,7 @@ public abstract class Award implements AssignableScoreEntity {
 	public static final String UNNAMED_AWARD = "Unnamed Award";
 
 	private String name;
-	private SearchableHashSet<Criterion> criteria;
+	private CriterionSet criteria;
 	@SuppressWarnings(RAWTYPE_WARNING)
 	private Group membersToInclude;
 	@SuppressWarnings(RAWTYPE_WARNING)
@@ -38,7 +38,7 @@ public abstract class Award implements AssignableScoreEntity {
 	@SuppressWarnings(RAWTYPE_WARNING)
 	public Award(String name) {
 		this.name = name;
-		this.criteria = new SearchableHashSet<Criterion>();
+		this.criteria = new CriterionSet();
 		this.membersToInclude = new Group();
 		this.membersToExclude = new Group();
 	}

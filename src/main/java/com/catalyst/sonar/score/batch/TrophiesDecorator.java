@@ -11,19 +11,16 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.database.DatabaseSession;
-import org.sonar.api.database.configuration.Property;
 
 import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.ScoreProject;
-import com.catalyst.sonar.score.api.TitleCup;
 import com.catalyst.sonar.score.api.Trophy;
 import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
 import com.catalyst.sonar.score.batch.util.TrophiesHelper;
 import com.catalyst.sonar.score.dao.ScoreProjectDao;
 import com.catalyst.sonar.score.dao.SnapShotDao;
-import com.catalyst.sonar.score.dao.TitleCupDao;
 import com.catalyst.sonar.score.dao.TrophyDao;
 import com.catalyst.sonar.score.util.SnapshotValue;
 
@@ -62,10 +59,6 @@ public class TrophiesDecorator implements Decorator {
 	 * returns analysis type of the project
 	 */
 	public boolean shouldExecuteOnProject(Project project) {
-		// TODO
-		// !Project.AnalysisType.STATIC.equals(project.getAnalysisType())||
-		// !Project.AnalysisType.DYNAMIC.equals(project.getAnalysisType());
-
 		return true;
 	}
 
@@ -75,7 +68,7 @@ public class TrophiesDecorator implements Decorator {
 	 * @param context
 	 * @return checks if resource is a unit test class
 	 */
-	public boolean shouldDecorateResource(final Resource resource,
+	public boolean shouldDecorateResource(@SuppressWarnings("rawtypes") final Resource resource,
 			final DecoratorContext context) {
 		// the resource is not a unit test class
 		return !ResourceUtils.isUnitTestClass(resource);
@@ -87,7 +80,7 @@ public class TrophiesDecorator implements Decorator {
 	 * @param resource
 	 * @returns true if the Resource is a project, otherwise returns false
 	 */
-	public boolean shouldCheckTrophyStatusForResource(final Resource resource) {
+	public boolean shouldCheckTrophyStatusForResource(@SuppressWarnings("rawtypes") final Resource resource) {
 		return ResourceUtils.isProject(resource);
 	}
 

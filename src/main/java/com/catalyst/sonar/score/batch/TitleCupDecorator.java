@@ -53,10 +53,6 @@ public class TitleCupDecorator extends AbstractAwardDecorator implements
 	 * returns analysis type of the project
 	 */
 	public boolean shouldExecuteOnProject(Project project) {
-		// TODO
-		// !Project.AnalysisType.STATIC.equals(project.getAnalysisType())||
-		// !Project.AnalysisType.DYNAMIC.equals(project.getAnalysisType());
-
 		return true;
 	}
 

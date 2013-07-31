@@ -51,7 +51,7 @@ public class SearchableHashSet<E> extends HashSet<E> {
 	 * @return
 	 */
 	public ImmutableSearchableHashSet<E> immutableCopy() {
-		return new ImmutableSearchableHashSet<E>().addAllAnyway(this);
+		return new ImmutableSearchableHashSet<E>(this);
 	}
 
 	/**
@@ -71,6 +71,20 @@ public class SearchableHashSet<E> extends HashSet<E> {
 			SearchableHashSet<E> {
 
 		public static final String EXCEPTION_MESSAGE = "This SearchableHashSet is immutable and cannot be modified.";
+
+		private SearchableHashSet<E> set;
+
+		/**
+		 * Creates an {@code ImmutableSearchableHashSet}, sets the {@code set}
+		 * field to the {@code set} argument, and populates this
+		 * {@code ImmutableSearchableHashSet} with it.
+		 * 
+		 * @param set
+		 */
+		private ImmutableSearchableHashSet(SearchableHashSet<E> set) {
+			this.set = set;
+			addAllAnyway(set);
+		}
 
 		/**
 		 * @throws {@link UnsupportedOperationException} to enforce
@@ -124,6 +138,15 @@ public class SearchableHashSet<E> extends HashSet<E> {
 		@Override
 		public boolean retainAll(Collection<?> c) {
 			throw new UnsupportedOperationException(EXCEPTION_MESSAGE);
+		}
+
+		/**
+		 * Ensures that if the original set.toString() was overridden, this set
+		 * will override in the same way.
+		 */
+		@Override
+		public String toString() {
+			return set.toString();
 		}
 
 		/**

@@ -29,11 +29,14 @@ import com.catalyst.sonar.score.api.Trophy;
  */
 public class TrophyDao extends AwardDao<Trophy> {
 
+	private PropertyDao propertyDao;
+
 	/**
 	 * @param session
 	 */
 	public TrophyDao(DatabaseSession session) {
 		super(session);
+		this.propertyDao = new PropertyDao(session);
 	}
 
 	/**
@@ -48,7 +51,7 @@ public class TrophyDao extends AwardDao<Trophy> {
 	 */
 	@Override
 	protected boolean assignToUser(Trophy trophy, ScoreUser user) {
-		//TODO implement, and get rid of line below
+		// TODO implement, and get rid of line below
 		getEarnedTrophyProperty(trophy, user.getId()).setUserId(user.getId());
 		return false;
 	}
@@ -58,7 +61,7 @@ public class TrophyDao extends AwardDao<Trophy> {
 	 */
 	protected boolean assignToProject(Trophy trophy, ScoreProject project) {
 		Property property = getEarnedTrophyProperty(trophy, project.getId());
-		if(property.getResourceId() == null || property.getValue() == null) {
+		if (property.getResourceId() == null || property.getValue() == null) {
 			property.setResourceId(project.getId());
 			property.setValue(Long.toString(new Date().getTime()));
 			getSession().save(property);
@@ -71,11 +74,12 @@ public class TrophyDao extends AwardDao<Trophy> {
 	/**
 	 * Retrieves the {@link Property} from the properties table in the database
 	 * that assigns the Trophy to the {@link Project} with the given Id.
-	 *
+	 * 
 	 * 
 	 * @param name
 	 * @return the property that assigns the TitleCup.
-	 *///TODO update javadoc
+	 */
+	// TODO update javadoc
 	public Property getEarnedTrophyProperty(Trophy trophy, Integer projectId) {
 		LOG.beginMethod("Getting " + entityTypeKey() + " Property");
 		String key = this.entityTypeKey() + "=" + trophy.getName();
@@ -88,12 +92,8 @@ public class TrophyDao extends AwardDao<Trophy> {
 		return property;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.catalyst.sonar.score.dao.AwardDao#getAssignedFromUser(com.catalyst
-	 * .sonar.score.api.Award, com.catalyst.sonar.score.api.ScoreUser)
+	/**
+	 * @see {@link AwardDao#getAssignedFromUser(Award, ScoreUser)}
 	 */
 	@Override
 	protected Trophy getAssignedFromUser(Trophy trophy, ScoreUser user) {
@@ -115,10 +115,8 @@ public class TrophyDao extends AwardDao<Trophy> {
 		return getCupFromProperties(trophy, properties);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see AwardDao#getAllAssignedFromUser(ScoreUser)
+	/**
+	 * @see {@link AwardDao#getAllAssignedFromUser(ScoreUser)}
 	 */
 	@Override
 	protected AwardSet<Trophy> getAllAssignedFromUser(ScoreUser user) {
@@ -147,7 +145,7 @@ public class TrophyDao extends AwardDao<Trophy> {
 			Property property = getEarnedTrophyProperty(trophy, project.getId());
 			if (property.getResourceId() != null) {
 				getSession().remove(property);
-				return true;				
+				return true;
 			}
 		}
 		return false;
@@ -162,41 +160,15 @@ public class TrophyDao extends AwardDao<Trophy> {
 		return null;
 	}
 
-	// /**
-	// * @see {@link AwardDao#getAllAwards()}
-	// */
-	// @Override
-	// public AwardSet<TitleCup> getAll() {
-	// LOG.beginMethod("TitleCupDao.getAll()");
-	// List<Property> properties = getSession().getResults(Property.class,
-	// "key", TITLECUP);
-	// if(properties == null || properties.size() == 0) {
-	// LOG.warn("There are not TitleCups!").endMethod();
-	// return null;
-	// }
-	// AwardSet<TitleCup> titleCups = new AwardSet<TitleCup>();
-	// Property property = properties.get(0);
-	// LOG.log(property.getValue());
-	// for (String cupString : property.getValue().split(",")) {
-	// LOG.log(cupString);
-	// TitleCupParser parser = new TitleCupParser(getSession(), cupString);
-	// LOG.log(parser.parse());
-	// }
-	// LOG.log(titleCups).log("There are " + titleCups.size() + " TitleCups")
-	// .endMethod();
-	// return titleCups;
-	// }
-
 	/**
 	 * @see {@link AwardDao#create(Award)}
-	 *///TODO: this method should go
+	 */
+	// TODO: this method should go
 	@Override
 	public boolean create(Trophy trophy) {
-//		LOG.beginMethod("creating a new trophy: " + trophy.getName());
-//		Property property = new Property("sonar.score.TitleCup:"
-//				+ trophy.getName(), null, null);
-//		getSession().save(property);
-//		LOG.endMethod();
+		LOG.beginMethod("Creating a new trophy: " + trophy.getName());
+		propertyDao.create("sonar.score.Trophy:" + trophy.getName(), trophy.getCriteria());
+		LOG.endMethod();
 		return false;
 	}
 
@@ -209,8 +181,7 @@ public class TrophyDao extends AwardDao<Trophy> {
 		return false;
 	}
 
-	private Trophy getCupFromProperties(Trophy trophy,
-			List<Property> properties) {
+	private Trophy getCupFromProperties(Trophy trophy, List<Property> properties) {
 		retainOnlyTrophies(properties);
 		for (Property property : properties) {
 			if (property.getKey().contains(trophy.getName())) {
@@ -220,8 +191,7 @@ public class TrophyDao extends AwardDao<Trophy> {
 		return null;
 	}
 
-	private AwardSet<Trophy> getAllCupsFromProperties(
-			List<Property> properties) {
+	private AwardSet<Trophy> getAllCupsFromProperties(List<Property> properties) {
 		retainOnlyTrophies(properties);
 		AwardSet<Trophy> trophies = new AwardSet<Trophy>();
 		for (Property property : properties) {
