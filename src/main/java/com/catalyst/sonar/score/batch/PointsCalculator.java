@@ -59,9 +59,13 @@ public class PointsCalculator implements BatchExtension {
 	 * @return
 	 */
 	public static double calculateBasePoints(double packages, double classes, double ncloc) {
-		return PACKAGE_BRACKET.metricFactor(packages)
-				* CLASS_BRACKET.metricFactor(classes)
-				* NCLOC_BRACKET.metricFactor(ncloc);
+		double packageFactor = PACKAGE_BRACKET.metricFactor(packages);
+		double classFactor = CLASS_BRACKET.metricFactor(classes);
+		double lineFactor = NCLOC_BRACKET.metricFactor(ncloc);
+		packageFactor = (packageFactor != 0) ? packageFactor : 10;
+		classFactor = (classFactor != 0) ? classFactor : 10;
+		lineFactor = (lineFactor != 0) ? lineFactor : 10;
+		return packageFactor * classFactor * lineFactor;
 	}
 	
 	/**
