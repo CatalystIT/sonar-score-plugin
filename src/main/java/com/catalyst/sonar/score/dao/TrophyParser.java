@@ -41,12 +41,7 @@ public class TrophyParser extends AwardParser<Trophy> {
 		for (int index = 0; index < fieldsLength(); index++) {			
 			CriterionParser cParser = new CriterionParser(getSession(), get(index));
 			Criterion criterion = cParser.parse();
-			if (criterion.getMetric() != null) {
-				LOG.log("adding criterion: " + criterion);
-				trophy.addCriterion(criterion);
-			} else {
-				LOG.log("Metric = " + criterion.getMetric() + ", so not adding.");
-			}
+			trophy.addCriterion(criterion);
 		}
 		LOG.log("Name = " + trophy + "; Criteria = ").log(trophy.getCriteria())
 				.endMethod();

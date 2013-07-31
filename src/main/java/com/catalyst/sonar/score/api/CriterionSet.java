@@ -10,6 +10,18 @@ package com.catalyst.sonar.score.api;
 public class CriterionSet extends SearchableHashSet<Criterion> {
 
 	/**
+	 * Ensures that no Criterion will be added if its Metric is null.
+	 * @See {@link SearchableHashSet#add(Object)}
+	 */
+	@Override
+	public boolean add(Criterion criterion) {
+		if (criterion == null || criterion.getMetric() == null) {
+			return false;
+		}
+		return super.add(criterion);
+	}
+	
+	/**
 	 * Prints out the CriterionSet as it will be represented in the database.
 	 * @see {@link AbstractCollection#toString()}
 	 * @see {@link Object#toString()}

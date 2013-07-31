@@ -21,7 +21,6 @@ import org.sonar.api.resources.Resource;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 
 public class TrophiesDecoratorTest {
@@ -29,7 +28,6 @@ public class TrophiesDecoratorTest {
 	private DatabaseSession mockSession;
 	private Project project;
 	private Settings mockSetting;
-	private AwardTrophies awardTrophies;
 	private TrophiesDecorator trophiesDecorator;
 	private Resource<Project> resource;
 	private Resource<Project> utsResource;
@@ -42,7 +40,6 @@ public class TrophiesDecoratorTest {
 	mockSession = mock(DatabaseSession.class);
 	mockSetting = mock(Settings.class);
 	mockContext = mock(DecoratorContext.class);
-	awardTrophies = mock(AwardTrophies.class);
 	mockContext2 = mock(DecoratorContext.class);
 	project = new Project("Project test");
 	project.setId(1);

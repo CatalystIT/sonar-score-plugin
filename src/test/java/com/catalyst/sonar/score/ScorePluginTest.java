@@ -18,7 +18,6 @@ import com.catalyst.sonar.score.batch.TrophiesDecorator;
 import com.catalyst.sonar.score.batch.points.InvalidNumberOfDoublesException;
 import com.catalyst.sonar.score.batch.points.MetricBrackets;
 import com.catalyst.sonar.score.batch.points.MetricBracketsParser;
-import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
 import com.catalyst.sonar.score.batch.util.TrophiesHelper;
 import com.catalyst.sonar.score.dao.MetricDao;
 import com.catalyst.sonar.score.dao.SnapShotDao;
@@ -67,7 +66,6 @@ public class ScorePluginTest {
 						MetricBrackets.class,
 						MetricBracketsParser.class,
 						InvalidNumberOfDoublesException.class,
-						AwardTrophies.class, 
 						SnapShotDao.class, 
 						MetricDao.class, 
 						DateUtility.class, 

@@ -17,7 +17,6 @@ import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.Trophy;
-import com.catalyst.sonar.score.batch.trophies.AwardTrophies;
 import com.catalyst.sonar.score.batch.util.TrophiesHelper;
 import com.catalyst.sonar.score.dao.ScoreProjectDao;
 import com.catalyst.sonar.score.dao.SnapShotDao;
@@ -38,7 +37,6 @@ public class TrophiesDecorator implements Decorator {
 	private final DatabaseSession session;
 	private Project project;
 	private Settings settings;
-	private AwardTrophies awardTrophies;
 	private SnapShotDao measuresHelper;
 	private TrophiesHelper trophiesHelper;
 

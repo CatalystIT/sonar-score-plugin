@@ -23,6 +23,7 @@ public class AwardTest {
 	private SearchableHashSet<Criterion> realSet;
 	private Criterion criterion1;
 	private Criterion criterion2;
+	private Criterion criterionNullMetric;
 
 	private Object referenceToTestAward;
 	private Object nullAward;
@@ -40,8 +41,9 @@ public class AwardTest {
 	public void setUp() throws Exception {
 		testAward = new TitleCup(AWARD_NAME);
 		realSet = (SearchableHashSet<Criterion>) getField(testAward, "criteria");
-		criterion1 = new Criterion(null, 1.1, 1);
-		criterion2 = new Criterion(null, 2.2, 2);
+		criterion1 = new Criterion(MOCK_METRIC_1, 1.1, 1);
+		criterion2 = new Criterion(MOCK_METRIC_2, 2.2, 2);
+		criterionNullMetric = new Criterion(null, 3.3, 3);
 
 		referenceToTestAward = testAward;
 		nullAward = null;
@@ -84,12 +86,22 @@ public class AwardTest {
 
 	/**
 	 * Test method for {@link Award#addCriterion(Criterion)} . Asserts that
-	 * {@code addCriteria(criteria)} adds the Criteria.
+	 * {@code addCriteria(criteria)} adds the Criterion.
 	 */
 	@Test
 	public void testAddCriterion() {
 		testAward.addCriterion(criterion1);
 		assertTrue(testAward.getCriteria().contains(criterion1));
+	}
+	
+	/**
+	 * Test method for {@link Award#addCriterion(Criterion)} . Asserts that
+	 * {@code addCriteria(criteria)} does not add the Criterion if the Metric is null.
+	 */
+	@Test
+	public void testAddCriterion_Criterion_Metric_Null() {
+		testAward.addCriterion(criterionNullMetric);
+		assertFalse(testAward.getCriteria().contains(criterion1));
 	}
 
 	/**
