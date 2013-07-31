@@ -86,7 +86,7 @@ public class TitleCupDecorator extends AbstractAwardDecorator implements
 	public void decorate(@SuppressWarnings("rawtypes") final Resource resource,
 			DecoratorContext context) {
 		try {
-			if (resource.getScope() != "PRJ") {
+			if (!resource.getScope().equals("PRJ")) {
 				return;
 			}
 			LOG.beginMethod("TitleCupDecorator.decorate()");
@@ -132,8 +132,8 @@ public class TitleCupDecorator extends AbstractAwardDecorator implements
 				}
 				cupDao.assign(cup, winner);
 			}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
+		} catch (RuntimeException e) {
+			LOG.log(e);
 		}
 		LOG.endMethod();
 

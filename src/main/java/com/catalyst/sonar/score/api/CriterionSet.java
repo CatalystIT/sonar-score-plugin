@@ -28,11 +28,11 @@ public class CriterionSet extends SearchableHashSet<Criterion> {
 	 */
 	@Override
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		String toString = "";
 		for (Criterion criterion: this) {
-			buffer.append(criterion.toValueString() + ',');
+			toString += criterion.toValueString() + ',';
 		}
-		return buffer.subSequence(0, buffer.length() - 1).toString();
+		return toString.substring(0, toString.length() - 1);
 	}
 
 	/**

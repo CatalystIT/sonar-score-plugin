@@ -53,6 +53,8 @@ public class AbstractAwardDecorator {
 	 * @param award
 	 * @return
 	 */
+	// TODO: Code Smell, why is this returning true after an exception is
+	// caught? Or is the try catch left over from debugging?  If so it should be removed.
 	protected boolean typeGoodCriteriaMet(Award award) {
 		LOG.beginMethod("criteriaMet()");
 		LOG.log(award + " has " + award.getCriteria().size() + " Criteria:");
@@ -77,8 +79,8 @@ public class AbstractAwardDecorator {
 					return false;
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (RuntimeException e) {
+			LOG.log(e);
 		}
 		LOG.log("Leaving criteriaMet(), returning true").endMethod();
 		return true;

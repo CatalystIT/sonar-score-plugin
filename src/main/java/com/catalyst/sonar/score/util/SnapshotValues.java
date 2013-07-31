@@ -64,31 +64,31 @@ public class SnapshotValues extends ArrayList<SnapshotValue> {
 	 * Restores the original contents of this {@link SnapshotValues}.
 	 * @param index
 	 */
-	public void restore() {
+	public final void restore() {
 		this.clear();
 		this.addAll(allValues);
 	}
 
 	@Override
-	public boolean add(SnapshotValue e) {
+	public final boolean add(SnapshotValue e) {
 		allValues.add(e);
 		return super.add(e);
 	}
 
 	@Override
-	public void add(int index, SnapshotValue element) {
+	public final void add(int index, SnapshotValue element) {
 		allValues.add(index, element);
 		super.add(index, element);
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends SnapshotValue> c) {
+	public final boolean addAll(Collection<? extends SnapshotValue> c) {
 		allValues.addAll(c);
 		return super.addAll(c);
 	}
 
 	@Override
-	public boolean addAll(int index, Collection<? extends SnapshotValue> c) {
+	public final boolean addAll(int index, Collection<? extends SnapshotValue> c) {
 		allValues.addAll(index, c);
 		return super.addAll(index, c);
 	}

@@ -21,10 +21,10 @@ import org.apache.commons.lang3.StringUtils;
  * The FileInstaller class is designed to copy a directory from inside the jar
  * of this plugin to a directory outside the plugin. The functionality of the
  * methods herein was first written by jabber in answer to this question on
- * StackOverflow: {@link http
- * ://stackoverflow.com/questions/1386809/copy-directory-from-a-jar-file}. The
- * class itself was modified to be an object with two String fields for the
- * source and destination directories.
+ * StackOverflow:
+ * {@code http://stackoverflow.com/questions/1386809/copy-directory-from-a-jar-file}
+ * . The class itself was modified to be an object with two String fields for
+ * the source and destination directories.
  * 
  * Unfortunately, the FileInstaller installs files in a directory relative to
  * the CI Engine(Hudson or Jenkins) rather than to the SonarQube Server's
@@ -66,7 +66,7 @@ public class FileInstaller {
 			LOG.log("returning " + success).endMethod();
 			return success;
 		} catch (final FileNotFoundException e) {
-			e.printStackTrace();
+			LOG.log(e);
 		}
 		LOG.log("returning " + success).endMethod();
 		return success;
@@ -144,10 +144,9 @@ public class FileInstaller {
 					entryInputStream.close();
 				} else {
 					if (!FileInstaller.ensureDirectoryExists(f)) {
-						// LOG.log("throwing an IOException").endMethod();
-						// throw new IOException("Could not create directory: "
-						// + f.getAbsolutePath());
-						LOG.logEmf("Cannot ensure that Directory Exists!");
+						LOG.log("throwing an IOException").endMethod();
+						throw new IOException("Could not create directory: "
+								+ f.getAbsolutePath());
 					}
 				}
 			}
@@ -183,7 +182,7 @@ public class FileInstaller {
 				return success;
 			}
 		} catch (final IOException e) {
-			e.printStackTrace();
+			LOG.log(e);
 		}
 		LOG.log("returning " + success).endMethod();
 		return success;
@@ -204,7 +203,7 @@ public class FileInstaller {
 			LOG.log("returning " + success).endMethod();
 			return success;
 		} catch (final FileNotFoundException e) {
-			e.printStackTrace();
+			LOG.log(e);
 		}
 		LOG.log("returning " + success).endMethod();
 		return success;
@@ -234,7 +233,7 @@ public class FileInstaller {
 			LOG.log("returning " + success).endMethod();
 			return success;
 		} catch (final IOException e) {
-			e.printStackTrace();
+			LOG.log(e);
 		}
 		LOG.log("returning " + success).endMethod();
 		return false;
@@ -254,7 +253,7 @@ public class FileInstaller {
 		try {
 			LOG.log("CanonicalPath = " + directory.getCanonicalPath());
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.log(e);
 		}
 		boolean success = directory.exists() || directory.mkdir();
 		LOG.log("returning " + success).endMethod();

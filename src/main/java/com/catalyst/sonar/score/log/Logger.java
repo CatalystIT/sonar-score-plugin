@@ -59,6 +59,18 @@ public class Logger {
 	}
 	
 	/**
+	 * Logs an Exception.
+	 * @param e
+	 * @return
+	 */
+	public Logger log(Exception e) {
+		log(e.toString());
+		addTab(1);
+		log(Arrays.asList(e.getStackTrace()));
+		return this;
+	}
+	
+	/**
 	 * Prints a tab for every method name in the stack List, and then logs each
 	 * object in Collection x on its own line.
 	 * 
@@ -115,11 +127,12 @@ public class Logger {
 	 * @return
 	 */
 	public Logger warn(Object x) {
+		Object objectToPrint = x;
 		if(x instanceof String[]) {
-			x = Arrays.toString((String[]) x);
+			objectToPrint = Arrays.toString((String[]) x);
 		}
-		stream.println(tab() + "WARNING! " + x);
-		return log(x);
+		stream.println(tab() + "WARNING! " + objectToPrint);
+		return this;
 	}
 
 	/**

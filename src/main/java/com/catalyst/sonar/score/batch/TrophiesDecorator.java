@@ -88,7 +88,7 @@ public class TrophiesDecorator implements Decorator {
 	public void decorate(@SuppressWarnings("rawtypes") final Resource resource,
 			DecoratorContext context) {
 		try {
-			if(resource.getScope() != "PRJ") {
+			if(!resource.getScope().equals("PRJ")) {
 				return;
 			}
 			LOG.beginMethod("TrophiesDecorator.decorate()");
@@ -108,8 +108,8 @@ public class TrophiesDecorator implements Decorator {
 					trophyDao.assign(trophy, thisProject);
 				}
 			}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
+		} catch (RuntimeException e) {
+			LOG.log(e);
 		}
 		LOG.endMethod();
 
@@ -135,8 +135,8 @@ public class TrophiesDecorator implements Decorator {
 					return false;
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (RuntimeException e) {
+			LOG.log(e);
 		}
 		LOG.log("Leaving criteriaMet(), returning true").endMethod();
 		return true;

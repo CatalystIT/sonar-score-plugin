@@ -87,7 +87,7 @@ public class SetupDecorator implements Decorator {
 	 */
 	public void decorate(@SuppressWarnings("rawtypes") Resource resource,
 			DecoratorContext context) {
-		if (!shouldExecuteOnProject(project) || project.getScope() != "PRJ") {
+		if (!shouldExecuteOnProject(project) || !project.getScope().equals("PRJ")) {
 			return;
 		} else {
 			LOG.log("Project Scope = " + project.getScope() + ", Project = "
