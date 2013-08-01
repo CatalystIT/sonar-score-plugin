@@ -12,11 +12,9 @@ import java.util.List;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.configuration.Property;
 
-import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.ScoreUser;
-import com.catalyst.sonar.score.api.TitleCup;
 import com.catalyst.sonar.score.api.Trophy;
 
 /**
