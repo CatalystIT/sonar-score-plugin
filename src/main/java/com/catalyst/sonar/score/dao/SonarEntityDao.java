@@ -3,6 +3,8 @@
  */
 package com.catalyst.sonar.score.dao;
 
+import java.util.List;
+
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.jpa.dao.BaseDao;
 
@@ -33,13 +35,23 @@ public abstract class SonarEntityDao<E> extends BaseDao {
 	}
 
 	/**
-	 * Gets the Entity of type {@code <E>} from Sonar's database.
+	 * Gets the first Entity of type {@code <E>} from Sonar's database.
 	 * 
 	 * @param key
 	 * @return
 	 */
 	public E get(String key) {
 		return getSession().getSingleResult(entityClass(), keyLabel(), key);
+	}
+	
+	/**
+	 * Gets a list of all Entities of type {@code <E>} from Sonar's database.
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public List<E> getAll(String key) {
+		return getSession().getResults(entityClass(), keyLabel(), key);
 	}
 
 	/**
