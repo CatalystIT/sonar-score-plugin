@@ -8,8 +8,6 @@ import java.util.List;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.jpa.dao.BaseDao;
 
-import com.catalyst.sonar.score.api.ScoreEntity;
-
 /**
  * 
  * The {@code SonarEntityDao<E>} class defines a dao that specifically access a
