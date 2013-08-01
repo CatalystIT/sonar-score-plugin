@@ -31,7 +31,7 @@ public class Logger {
 	public static final int MAX_LENGTH = 50;
 
 	public static final Logger LOG = new Logger();
-	private static int extraTabs = 0;
+	private int extraTabs = 0;
 
 	private PrintStream stream;
 	private List<String> stack;
