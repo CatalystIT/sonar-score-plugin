@@ -2,9 +2,6 @@ package com.catalyst.sonar.score.batch;
 
 import static com.catalyst.sonar.score.log.Logger.LOG;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.measures.Metric;
@@ -14,19 +11,15 @@ import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.configuration.Property;
 
-import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.SearchableHashSet;
 import com.catalyst.sonar.score.api.TitleCup;
-import com.catalyst.sonar.score.batch.util.TrophiesHelper;
 
 import org.sonar.api.config.Settings;
 
 import com.catalyst.sonar.score.dao.*;
-import com.catalyst.sonar.score.util.SnapshotValue;
-import com.catalyst.sonar.score.util.SnapshotValues;
 
 /**
  * The TitleCup Decorator awards TitleCups to qualifying projects when a project
