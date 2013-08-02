@@ -3,6 +3,8 @@
  */
 package com.catalyst.sonar.score.log;
 
+import static org.mockito.Mockito.mock;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,9 +34,11 @@ public class Logger {
 
 	public static final Logger LOG = new Logger();
 	private int extraTabs = 0;
+	private static final PrintStream mockStream = mock(PrintStream.class);
 
 	private PrintStream stream;
 	private List<String> stack;
+	private boolean offForMethod;
 
 	/**
 	 * The no-args constructor sets the stream to {@code System.out} and
@@ -44,6 +48,7 @@ public class Logger {
 	public Logger() {
 		this.stream = System.out;
 		this.stack = new ArrayList<String>();
+		offForMethod = false;
 	}
 
 	/**
@@ -148,6 +153,14 @@ public class Logger {
 		stack.add(methodName);
 		return this;
 	}
+	
+	public Logger beginMethod(final String methodName, boolean logIf) {
+		if(!logIf) {
+			off();
+			this.offForMethod = true;
+		}
+		return beginMethod(methodName);
+	}
 
 	/**
 	 * Removes the last methodName from the stack and prints it with a border.
@@ -157,7 +170,11 @@ public class Logger {
 	public Logger endMethod() {
 		final String methodName = stack.remove(stack.size() - 1);
 		String message = border(TAB_LENGTH) + END + methodName;
-		return borderMessage(message);
+		return borderMessage(message).onIf(offForMethod);
+	}
+	
+	public Logger returning(Object o) {
+		return log("Returning " + o);
 	}
 	
 	private Logger borderMessage(String message) {
@@ -224,5 +241,17 @@ public class Logger {
 	public Logger removeTab(int amount) {
 		extraTabs -= amount;
 		return this;
+	}
+	
+	private Logger on() {
+		return setStream(System.out);
+	}
+	
+	private Logger off() {
+		return setStream(mockStream);
+	}
+	
+	private Logger onIf(boolean onIf) {
+		return (onIf) ? on() : this;
 	}
 }

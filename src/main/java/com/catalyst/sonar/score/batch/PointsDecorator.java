@@ -1,4 +1,9 @@
 package com.catalyst.sonar.score.batch;
+
+import static com.catalyst.sonar.score.log.Logger.LOG;
+import static org.sonar.api.resources.Scopes.PROJECT;
+
+import com.catalyst.sonar.score.dao.PropertyDao;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.util.CalculationComponent;
 import com.catalyst.sonar.score.util.CalculationComponent.CalculationComponentList;
@@ -19,6 +24,9 @@ import java.util.Collection;
 import com.google.common.collect.ImmutableList;
 
 import org.sonar.api.batch.DependsUpon;
+import org.sonar.api.config.Settings;
+import org.sonar.api.database.DatabaseSession;
+import org.sonar.api.database.configuration.Property;
 /**
  * The ScoreDecorator class is responsible for obtaining, analyzing and calculating information and 
  * various code metrics for the points metric
@@ -28,6 +36,50 @@ import org.sonar.api.batch.DependsUpon;
 public class PointsDecorator implements Decorator {
 	
 	public static final double MAGNIFY_PACKAGE_TANGLE = 100;
+	
+	private PropertyDao propertyDao;
+	private Project project;
+	
+	public PointsDecorator(DatabaseSession session, Project project,
+			Settings settings) {
+		this.propertyDao = new PropertyDao(session);
+		this.project = project;
+
+	}
+	
+	private boolean isProject(@SuppressWarnings("rawtypes") Resource resource) {
+		return PROJECT.equals(resource.getScope());
+	}
+	
+	/**
+	 * Checks to see if point earning is disabled for this project or globally.
+	 * @return
+	 */
+	private boolean pointsAreDisabled(@SuppressWarnings("rawtypes") Resource resource) {
+		boolean disabled = false;
+		LOG.beginMethod("pointsAreDisabled", isProject(resource));
+		LOG.log("Project Scope = " + resource.getScope());
+		LOG.log("Project Name = " + resource.getName());
+		Property projectProperty = propertyDao.getForResource(PropertyDao.POINTS_DISABLED, project);
+		Property globalProperty = propertyDao.getForGlobal(PropertyDao.POINTS_DISABLED);
+		if(projectProperty == null) {
+			LOG.log("projectProperty = " + projectProperty);
+			if(globalProperty == null) {
+				LOG.log("globalProperty = " + globalProperty);
+				LOG.returning(false).endMethod();
+				return false;
+			} else {
+				LOG.log("globalProperty = " + globalProperty.getValue());
+				disabled = globalProperty.getValue().equals(Boolean.toString(true));
+				LOG.returning("globalProperty = " + disabled).endMethod();
+				return disabled;
+			}
+		} else {
+			disabled = projectProperty.getValue().equals(true);
+			LOG.returning("projectProperty = " + disabled).endMethod();
+			return disabled;
+		}
+	}
 	
 	/**
 	 * @DependsUpon: The points metric depends upon the non-commented lines of code, the rules compliance 
@@ -69,7 +121,7 @@ public class PointsDecorator implements Decorator {
 			final DecoratorContext context) {
 		// if the resource is not a unit test class, then proceed with
 		// decoration/analysis
-		return !ResourceUtils.isUnitTestClass(resource);
+		return !ResourceUtils.isUnitTestClass(resource) && !pointsAreDisabled(resource);
 	}
 
 	/**
@@ -78,12 +130,15 @@ public class PointsDecorator implements Decorator {
 	 * for a particular project.
 	 */
 	public void decorate(@SuppressWarnings("rawtypes") final Resource resource, final DecoratorContext context) {
+		if("PRJ".equals(resource.getScope())) {
+			LOG.beginMethod("PointsDecorator.decorate()");
+			LOG.log("Point Earning is " + ((pointsAreDisabled(resource)) ? "dis" : "en") + "abled.");
+		}
 		/*
 		 * if the resource to decorate is not a unit test class, then retrieve
 		 * the various code metrics and calculate the points for a given
 		 * resource/project
 		 */
-
 		if (shouldDecorateResource(resource, context)) {
 			double value = getPointsValue(context);
 

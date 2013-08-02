@@ -41,7 +41,7 @@ public abstract class SonarEntityDao<E> extends BaseDao {
 	public E get(String key) {
 		return getSession().getSingleResult(entityClass(), keyLabel(), key);
 	}
-	
+
 	/**
 	 * Gets a list of all Entities of type {@code <E>} from Sonar's database.
 	 * 
@@ -72,15 +72,15 @@ public abstract class SonarEntityDao<E> extends BaseDao {
 	public E create(String key) {
 		return create(key, null);
 	}
-	
+
 	/**
-	 * Creates a {@link ScoreEntity} in the database with the String key
-	 * as its key and {@code value.toString()} as its value (or relevant field).
+	 * Creates a {@link ScoreEntity} in the database with the String key as its
+	 * key and {@code value.toString()} as its value (or relevant field).
 	 * 
 	 * @param entity
 	 * @return
 	 */
-	public E create (String key, Object value) {
+	public E create(String key, Object value) {
 		String valueArg = (value != null) ? value.toString() : null;
 		return create(key, valueArg);
 	}
@@ -101,6 +101,17 @@ public abstract class SonarEntityDao<E> extends BaseDao {
 	 */
 	protected String keyLabel() {
 		return KEY_LABEL;
+	}
+
+	/**
+	 * Returns the SonarEntity with the given Key and matching field.
+	 * 
+	 * @param key
+	 * @param criterias
+	 * @return the SonarEntity
+	 */
+	protected E get(String key, String fieldName, Object fieldValue) {
+		return getSession().getSingleResult(entityClass(), keyLabel(), key, fieldName, fieldValue);
 	}
 
 	/**

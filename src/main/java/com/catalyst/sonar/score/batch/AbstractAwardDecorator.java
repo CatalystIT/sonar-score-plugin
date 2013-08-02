@@ -34,7 +34,7 @@ public class AbstractAwardDecorator {
 	protected Project project;
 	protected Settings settings;
 	protected SnapShotDao measuresHelper;
-	protected TrophiesHelper trophiesHelper;
+//	protected TrophiesHelper trophiesHelper;
 
 	public AbstractAwardDecorator(DatabaseSession session, Project project,
 			Settings settings) {
@@ -42,7 +42,7 @@ public class AbstractAwardDecorator {
 		this.project = project;
 		this.settings = settings;
 		this.measuresHelper = new SnapShotDao(session, project);
-		this.trophiesHelper = new TrophiesHelper(settings);
+//		this.trophiesHelper = new TrophiesHelper(settings);
 
 	}
 
@@ -139,7 +139,7 @@ public class AbstractAwardDecorator {
 		LOG.log("Last Snapshot for " + thisProject.getName() + " = "
 				+ lastSnapshot);
 		double value = (lastSnapshot != null) ? lastSnapshot.getMeasureValue()
-				.doubleValue() : null;
+				.doubleValue() : 0;
 		LOG.log("current value = " + value).endMethod();
 		return value;
 	}

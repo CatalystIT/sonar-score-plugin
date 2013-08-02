@@ -39,28 +39,35 @@ import com.catalyst.sonar.score.util.SnapshotValue;
 	    description = "Specify the project group of your project.",
 	    project = true,	    
 	    global = false),
-	  @Property(
+	@Property(
+		key = ScorePlugin.POINTS_DISABLED,
+		name = "Points Disabled",
+		description = "Disable Points being earned",
+		project = true,
+		global = true,
+		options = {"true","false"}),
+	@Property(
 		key = ScorePlugin.PROJECT_TROPHY,
 		name = "Project Trophy",
 		description = "Specify the trophies earned by a project.",
 		project = false,
 		global = false,
 		multiValues = true),
-	  @Property(
+	@Property(
 		key = ScorePlugin.TITLECUP,
 		name = "Title Cup",
 		description = "Specify the Title Cup.",
 		project = false,
 		global = false,
 		multiValues = true),
-		 @Property(
+	@Property(
 		key = ScorePlugin.PROJECT_AWARDS,
 		name = "Project Awards",
 		description = "Specify awards for a project.",
 		project = false,
 		global = false,
 		multiValues = true),
-	  @Property(
+	@Property(
 	    key = ScorePlugin.TROPHY,
 	    name = "Trophy",
 	    description = " The trophies awarded need to be specified in the following format - TrophyName{MetricName;Amount;Time} e.g.GreatCode{Coverage;90%;10d}. To take more than one metric into account for a particular trophy, add another value with the same TrophyName. e.g.GreatCode{Violations;50;2w}." +
@@ -73,6 +80,7 @@ import com.catalyst.sonar.score.util.SnapshotValue;
  * This class is the entry point for the SCORE extension/plugin
  */
 public class ScorePlugin extends SonarPlugin{
+	public static final String POINTS_DISABLED = "sonar.score.PointsDisabled";
 	public static final String PROJECT_GROUP = "sonar.score.projectGroup";
 	public static final String PROJECT_TROPHY = "sonar.score.projectTrophy";
 	public static final String TITLECUP = "sonar.score.TitleCup";
