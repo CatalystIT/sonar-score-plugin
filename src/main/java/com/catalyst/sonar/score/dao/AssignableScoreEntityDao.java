@@ -22,6 +22,8 @@ public abstract class AssignableScoreEntityDao<A extends AssignableScoreEntity>
 		extends ScoreEntityDao<A> {
 
 	/**
+	 * Constructor with a parameter for the session to set the session.
+	 * 
 	 * @param session
 	 */
 	public AssignableScoreEntityDao(DatabaseSession session) {

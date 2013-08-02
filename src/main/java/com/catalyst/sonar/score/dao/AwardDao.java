@@ -32,16 +32,16 @@ public abstract class AwardDao<A extends Award> extends
 
 	/**
 	 * Constructor with a parameter for the session to set the session.
+	 * 
+	 * @param session
 	 */
 	public AwardDao(DatabaseSession session) {
 		super(session);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.catalyst.sonar.score.dao.ScoreEntityDao#getAll()
-	 */// TODO Javadoc
+	/**
+	 * Gets all the Awards of type A from the database.
+	 */
 	@Override
 	public AwardSet<A> getAll() {
 		LOG.beginMethod("Get All " + entityTypeKey() + "s");
@@ -62,6 +62,10 @@ public abstract class AwardDao<A extends Award> extends
 		return awards;
 	}
 
+	/**
+	 * Gets all the Properties from the Property Table that declare Awards.
+	 * @return
+	 */
 	protected List<Property> getAllAsProperties() {
 		List<Property> allProperties = getSession().getResults(Property.class);
 		List<Property> properties = new ArrayList<Property>();

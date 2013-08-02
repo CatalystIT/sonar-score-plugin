@@ -146,7 +146,7 @@ public class PointsDecorator implements Decorator {
 			// resource/project
 			context.saveMeasure(ScoreMetrics.POINTS, value);
 		}
-
+		LOG.endMethod();
 	}
 
 	/**

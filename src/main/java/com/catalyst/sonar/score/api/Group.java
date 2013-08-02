@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 @SuppressWarnings("rawtypes")
 public class Group<M extends Member> extends SearchableHashSet<M> implements
-		Member {
+		Member, AssignableScoreEntity {
 
 	private String name;
 	private String description;

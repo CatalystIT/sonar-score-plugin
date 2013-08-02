@@ -62,9 +62,10 @@ public class Logger {
 		stream.println(tab() + x);
 		return this;
 	}
-	
+
 	/**
 	 * Logs an Exception.
+	 * 
 	 * @param e
 	 * @return
 	 */
@@ -74,7 +75,7 @@ public class Logger {
 		log(Arrays.asList(e.getStackTrace()));
 		return this;
 	}
-	
+
 	/**
 	 * Prints a tab for every method name in the stack List, and then logs each
 	 * object in Collection x on its own line.
@@ -84,9 +85,9 @@ public class Logger {
 	 */
 	public Logger log(@SuppressWarnings("rawtypes") Collection x) {
 		String listDelimiter = ",  ";
-		//characters left in line now
+		// characters left in line now
 		int before = MAX_LENGTH;
-		//characters that will be left in line after Object o is printed
+		// characters that will be left in line after Object o is printed
 		int after = before;
 		int index = 0;
 		for (Object o : x) {
@@ -96,7 +97,7 @@ public class Logger {
 			}
 			String objStr = o.toString() + listDelimiter;
 			after = before - objStr.length();
-			if(before == MAX_LENGTH) {
+			if (before == MAX_LENGTH) {
 				stream.print(tab() + objStr);
 			} else if (after >= 0) {
 				stream.print("" + objStr);
@@ -106,7 +107,7 @@ public class Logger {
 				before = MAX_LENGTH - objStr.length();
 				continue;
 			}
-			before = after;			
+			before = after;
 		}
 		stream.println();
 		return this;
@@ -123,7 +124,7 @@ public class Logger {
 		stream.println(tab() + "!!! " + x);
 		return log(x);
 	}
-	
+
 	/**
 	 * Prints the same as {@link Logger.log(Object x)} but adding an emphasis
 	 * String.
@@ -133,7 +134,7 @@ public class Logger {
 	 */
 	public Logger warn(Object x) {
 		Object objectToPrint = x;
-		if(x instanceof String[]) {
+		if (x instanceof String[]) {
 			objectToPrint = Arrays.toString((String[]) x);
 		}
 		stream.println(tab() + "WARNING! " + objectToPrint);
@@ -153,9 +154,17 @@ public class Logger {
 		stack.add(methodName);
 		return this;
 	}
-	
+
+	/**
+	 * Logs the beginning of a method only if logIf is true; if not, the Logger
+	 * is turned off until endMethod() is called.
+	 * 
+	 * @param methodName
+	 * @param logIf
+	 * @return
+	 */
 	public Logger beginMethod(final String methodName, boolean logIf) {
-		if(!logIf) {
+		if (!logIf) {
 			off();
 			this.offForMethod = true;
 		}
@@ -172,11 +181,24 @@ public class Logger {
 		String message = border(TAB_LENGTH) + END + methodName;
 		return borderMessage(message).onIf(offForMethod);
 	}
-	
+
+	/**
+	 * Logs "Returning " + the object.
+	 * 
+	 * @param o
+	 * @return
+	 */
 	public Logger returning(Object o) {
 		return log("Returning " + o);
 	}
-	
+
+	/**
+	 * prints a message with a "border". The characters used in the Border will
+	 * be based on the stack size.
+	 * 
+	 * @param message
+	 * @return
+	 */
 	private Logger borderMessage(String message) {
 		stream.println(tab()
 				+ message
@@ -232,25 +254,55 @@ public class Logger {
 		this.stream = stream;
 		return this;
 	}
-	
+
+	/**
+	 * Adds the specified number of tabs to the indentation of what is being
+	 * logged.
+	 * 
+	 * @param amount
+	 * @return
+	 */
 	public Logger addTab(int amount) {
 		extraTabs += amount;
 		return this;
 	}
-	
+
+	/**
+	 * Removes the specified number of tabs from the indentation of what is
+	 * being logged.
+	 * 
+	 * @param amount
+	 * @return
+	 */
 	public Logger removeTab(int amount) {
 		extraTabs -= amount;
 		return this;
 	}
-	
+
+	/**
+	 * Turns on the stream by setting it to System.out.
+	 * 
+	 * @return
+	 */
 	private Logger on() {
 		return setStream(System.out);
 	}
-	
+
+	/**
+	 * Turns off the stream by setting it to a mocked Stream.
+	 * 
+	 * @return
+	 */
 	private Logger off() {
 		return setStream(mockStream);
 	}
-	
+
+	/**
+	 * Turns the stream back on if the boolean argument onIf is true.
+	 * 
+	 * @param onIf
+	 * @return
+	 */
 	private Logger onIf(boolean onIf) {
 		return (onIf) ? on() : this;
 	}

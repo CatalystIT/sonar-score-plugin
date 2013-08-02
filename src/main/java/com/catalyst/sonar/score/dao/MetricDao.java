@@ -10,6 +10,11 @@ import org.sonar.jpa.dao.BaseDao;
  */
 public class MetricDao extends BaseDao {
 
+	/**
+	 * Constructor with a parameter for the session to set the session.
+	 * 
+	 * @param session
+	 */
 	public MetricDao(DatabaseSession session){
 		super(session);
 	}

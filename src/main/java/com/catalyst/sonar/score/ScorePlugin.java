@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.PropertyType;
 import org.sonar.api.SonarPlugin;
 
 import com.catalyst.sonar.score.batch.PointsCalculator;
@@ -45,7 +46,7 @@ import com.catalyst.sonar.score.util.SnapshotValue;
 		description = "Disable Points being earned",
 		project = true,
 		global = true,
-		options = {"true","false"}),
+		type = PropertyType.BOOLEAN),
 	@Property(
 		key = ScorePlugin.PROJECT_TROPHY,
 		name = "Project Trophy",
