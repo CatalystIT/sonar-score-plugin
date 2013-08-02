@@ -34,19 +34,32 @@ public class Logger {
 
 	public static final Logger LOG = new Logger();
 	private int extraTabs = 0;
-	private static final PrintStream mockStream = mock(PrintStream.class);
+	private static final PrintStream offStream = mock(PrintStream.class);
 
-	private PrintStream stream;
+	private PrintStream currentStream;
+	private PrintStream onStream;
 	private List<String> stack;
 	private boolean offForMethod;
 
 	/**
-	 * The no-args constructor sets the stream to {@code System.out} and
-	 * instantiates the {@code List<String> stack} as an {@link ArrayList}.
-	 * {@code String}.
+	 * The no-args constructor sets the currentStream and onStream to
+	 * {@code System.out} and instantiates the {@code List<String> stack} as an
+	 * {@link ArrayList} {@code <String>}.
 	 */
 	public Logger() {
-		this.stream = System.out;
+		this(System.out);
+	}
+
+	/**
+	 * Constructs a Logger and sets its currentStream and onStream to
+	 * {@code onStream} and instantiates the {@code List<String> stack} as an
+	 * {@link ArrayList} {@code <String>}.
+	 * 
+	 * @param onStream
+	 */
+	public Logger(PrintStream onStream) {
+		this.onStream = onStream;
+		this.currentStream = this.onStream;
 		this.stack = new ArrayList<String>();
 		offForMethod = false;
 	}
@@ -59,7 +72,7 @@ public class Logger {
 	 * @return this
 	 */
 	public Logger log(Object x) {
-		stream.println(tab() + x);
+		currentStream.println(tab() + x);
 		return this;
 	}
 
@@ -70,10 +83,12 @@ public class Logger {
 	 * @return
 	 */
 	public Logger log(Exception e) {
+		final boolean wasOff = !isOn();
+		onIf(wasOff);
 		log(e.toString());
 		addTab(1);
 		log(Arrays.asList(e.getStackTrace()));
-		return this;
+		return offIf(wasOff);
 	}
 
 	/**
@@ -98,18 +113,18 @@ public class Logger {
 			String objStr = o.toString() + listDelimiter;
 			after = before - objStr.length();
 			if (before == MAX_LENGTH) {
-				stream.print(tab() + objStr);
+				currentStream.print(tab() + objStr);
 			} else if (after >= 0) {
-				stream.print("" + objStr);
+				currentStream.print("" + objStr);
 			} else {
-				stream.println();
-				stream.print(tab() + objStr);
+				currentStream.println();
+				currentStream.print(tab() + objStr);
 				before = MAX_LENGTH - objStr.length();
 				continue;
 			}
 			before = after;
 		}
-		stream.println();
+		currentStream.println();
 		return this;
 	}
 
@@ -121,7 +136,7 @@ public class Logger {
 	 * @return
 	 */
 	public Logger logEmf(Object x) {
-		stream.println(tab() + "!!! " + x);
+		currentStream.println(tab() + "!!! " + x);
 		return log(x);
 	}
 
@@ -137,7 +152,7 @@ public class Logger {
 		if (x instanceof String[]) {
 			objectToPrint = Arrays.toString((String[]) x);
 		}
-		stream.println(tab() + "WARNING! " + objectToPrint);
+		currentStream.println(tab() + "WARNING! " + objectToPrint);
 		return this;
 	}
 
@@ -178,11 +193,14 @@ public class Logger {
 	 */
 	public Logger endMethod() {
 		try {
-		final String methodName = stack.remove(stack.size() - 1);
-		String message = border(TAB_LENGTH) + END + methodName;
-		return borderMessage(message).onIf(offForMethod);
+			final String methodName = stack.remove(stack.size() - 1);
+			String message = border(TAB_LENGTH) + END + methodName;
+			return borderMessage(message).onIf(offForMethod);
 		} catch (ArrayIndexOutOfBoundsException methodLoggingOutOfSync) {
-			return LOG.log("METHOD LOGGING OUT OF SYNC!!!").log(methodLoggingOutOfSync);
+			final boolean wasOff = !isOn();
+			onIf(wasOff);
+			return LOG.log("METHOD LOGGING OUT OF SYNC!!!")
+					.log(methodLoggingOutOfSync).offIf(wasOff);
 		}
 	}
 
@@ -204,7 +222,7 @@ public class Logger {
 	 * @return
 	 */
 	private Logger borderMessage(String message) {
-		stream.println(tab()
+		currentStream.println(tab()
 				+ message
 				+ border(BORDER_LENGTH - (TAB_LENGTH * stack.size())
 						- message.length()));
@@ -242,21 +260,42 @@ public class Logger {
 	}
 
 	/**
-	 * @return the stream
+	 * @return the currentStream
 	 */
 	public PrintStream getStream() {
-		return stream;
+		return currentStream;
 	}
 
 	/**
 	 * @param stream
-	 *            the stream to set
+	 *            the currentStream to set
 	 * @param stream
 	 * @return this
 	 */
 	public Logger setStream(PrintStream stream) {
-		this.stream = stream;
+		this.currentStream = stream;
 		return this;
+	}
+
+	/**
+	 * Gets the onStream -- that is, the {@link PrintStream} when this Logger is
+	 * turned on.
+	 * 
+	 * @return the onStream
+	 */
+	public PrintStream getOnStream() {
+		return onStream;
+	}
+
+	/**
+	 * Gets the onStream -- that is, the {@link PrintStream} when this Logger is
+	 * turned on.
+	 * 
+	 * @param onStream
+	 *            the onStream to set
+	 */
+	public void setOnStream(PrintStream onStream) {
+		this.onStream = onStream;
 	}
 
 	/**
@@ -284,25 +323,41 @@ public class Logger {
 	}
 
 	/**
-	 * Turns on the stream by setting it to System.out.
+	 * Turns on this Logger by setting {@code this.currentStream} to
+	 * {@code this.onStream}.
 	 * 
 	 * @return
 	 */
 	private Logger on() {
-		return setStream(System.out);
+		return setStream(onStream);
 	}
 
 	/**
-	 * Turns off the stream by setting it to a mocked Stream.
+	 * Turns off this Logger by setting {@code this.currentStream} to
+	 * {@code this.offStream}.
 	 * 
 	 * @return
 	 */
 	private Logger off() {
-		return setStream(mockStream);
+		return setStream(offStream);
 	}
 
 	/**
-	 * Turns the stream back on if the boolean argument onIf is true.
+	 * Turns this Logger off if the boolean argument offIf is true.
+	 * 
+	 * @param offIf
+	 * @return
+	 */
+	private Logger offIf(boolean offIf) {
+		return (offIf) ? off() : this;
+	}
+	
+	private boolean isOn() {
+		return currentStream == onStream;
+	}
+	
+	/**
+	 * Turns this Logger on if the boolean argument onIf is true.
 	 * 
 	 * @param onIf
 	 * @return
