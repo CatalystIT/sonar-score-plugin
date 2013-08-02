@@ -15,6 +15,9 @@
 <% if widget_properties['displayFilterDescription'] || !widget_properties['displayFilterDescription'] %>
 <div style="padding-bottom: 5px"></div>
 <script type="text/javascript">
+
+	jQuery(document).ready(function(){
+
 	//set a flag - true tells us the image src has been swapped, so we can stop searching for it
 	var flag = false;
 	//set a flag - true tells us the href has been found, so we can stop searching for it
@@ -23,19 +26,23 @@
 	var projectId = "";
 
 	function changeImage() {
+		console.log('from inside changeImage()');
 		// find all images on the page
 		var images = document.getElementsByTagName('img');
-		
+		console.log(images.length + " images found");
 
 		// iterate through all found images
 		for (i = 0; i < images.length; i++) {
-			
+			console.log(jQuery(images[i]).closest(".enhancedList").length);
 			// check that the images 7th parent has Class enhancedList and that the image contains "TRK" which is the image that will be replaced
-			if ((images[i].parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className == "enhancedList")
+			if ((jQuery(images[i]).closest(".enhancedList").length) > 0
 					&& (images[i].src.indexOf("TRK") != -1)) {
 
+				console.log("7th parent was 'enhanced list & src contains TRK'");
 				var href = "";
 				if (hrefFlag == false) {
+				
+					console.log("hrefFlag was false");
 					//goes through all the child nodes and if the child node is an href, set the flag to true to stop searching
 					var children = images[i].parentNode.children;
 					for (j = 0; j < children.length; j++) {
@@ -82,8 +89,25 @@
 		if ((document.readyState === "complete") && (flag != true)) {
 			changeImage();
 			clearInterval(readyStateCheckInterval);
+			
+						
 		}
 	}, 10);
+	
+	
+
+	
+	
+	var logCount = 1;
+	
+		//jQuery('#measures-table thead').on('click', function(){
+		jQuery('table').load(function(){
+			changeImage();
+			console.log('triggered by click on "#measures-table thead" ' + logCount + 'times');
+			logCount++;
+		});
+	});
+	
 </script>
 <div style="padding-bottom: 5px","word-wrap: break-word", "white-space: pre-wrap" >
       <span class="note"><%= h filter.description -%></span>
