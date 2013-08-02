@@ -177,9 +177,13 @@ public class Logger {
 	 * @return
 	 */
 	public Logger endMethod() {
+		try {
 		final String methodName = stack.remove(stack.size() - 1);
 		String message = border(TAB_LENGTH) + END + methodName;
 		return borderMessage(message).onIf(offForMethod);
+		} catch (ArrayIndexOutOfBoundsException methodLoggingOutOfSync) {
+			return LOG.log("METHOD LOGGING OUT OF SYNC!!!").log(methodLoggingOutOfSync);
+		}
 	}
 
 	/**
