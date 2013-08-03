@@ -39,7 +39,7 @@ public class Logger {
 	private PrintStream currentStream;
 	private PrintStream onStream;
 	private List<String> stack;
-	private boolean offForMethod;
+	private int offAt;
 
 	/**
 	 * The no-args constructor sets the currentStream and onStream to
@@ -61,7 +61,7 @@ public class Logger {
 		this.onStream = onStream;
 		this.currentStream = this.onStream;
 		this.stack = new ArrayList<String>();
-		offForMethod = false;
+		offAt = 0;
 	}
 
 	/**
@@ -181,7 +181,6 @@ public class Logger {
 	public Logger beginMethod(final String methodName, boolean logIf) {
 		if (!logIf) {
 			off();
-			this.offForMethod = true;
 		}
 		return beginMethod(methodName);
 	}
@@ -195,7 +194,7 @@ public class Logger {
 		try {
 			final String methodName = stack.remove(stack.size() - 1);
 			String message = border(TAB_LENGTH) + END + methodName;
-			return borderMessage(message).onIf(offForMethod);
+			return borderMessage(message).onIf(offAt == stack.size());
 		} catch (ArrayIndexOutOfBoundsException methodLoggingOutOfSync) {
 			final boolean wasOff = !isOn();
 			onIf(wasOff);
@@ -272,7 +271,7 @@ public class Logger {
 	 * @param stream
 	 * @return this
 	 */
-	public Logger setStream(PrintStream stream) {
+	private Logger setStream(PrintStream stream) {
 		this.currentStream = stream;
 		return this;
 	}
@@ -288,13 +287,17 @@ public class Logger {
 	}
 
 	/**
-	 * Gets the onStream -- that is, the {@link PrintStream} when this Logger is
-	 * turned on.
+	 * Sets the onStream -- that is, the {@link PrintStream} when this Logger is
+	 * turned on. If this Logger is on, also sets the currentStream to the
+	 * onStream arg.
 	 * 
 	 * @param onStream
 	 *            the onStream to set
 	 */
 	public void setOnStream(PrintStream onStream) {
+		if (isOn()) {
+			currentStream = onStream;
+		}
 		this.onStream = onStream;
 	}
 
@@ -328,7 +331,8 @@ public class Logger {
 	 * 
 	 * @return
 	 */
-	private Logger on() {
+	public Logger on() {
+		offAt = 0;
 		return setStream(onStream);
 	}
 
@@ -338,8 +342,13 @@ public class Logger {
 	 * 
 	 * @return
 	 */
-	private Logger off() {
-		return setStream(offStream);
+	public Logger off() {
+		if(isOn()) {			
+			offAt = stack.size();
+			return setStream(offStream);
+		} else {
+			return this;
+		}
 	}
 
 	/**
@@ -351,11 +360,11 @@ public class Logger {
 	private Logger offIf(boolean offIf) {
 		return (offIf) ? off() : this;
 	}
-	
+
 	private boolean isOn() {
 		return currentStream == onStream;
 	}
-	
+
 	/**
 	 * Turns this Logger on if the boolean argument onIf is true.
 	 * 

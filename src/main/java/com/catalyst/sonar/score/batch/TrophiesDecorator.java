@@ -36,21 +36,23 @@ public class TrophiesDecorator implements Decorator {
 
 	private final DatabaseSession session;
 	private Project project;
-	private Settings settings;
 	private SnapShotDao measuresHelper;
 	private TrophiesHelper trophiesHelper;
 
-
+	/**
+	 * Constructs a TrophiesDecorator, setting the session, project, and
+	 * settings.
+	 * 
+	 * @param session
+	 * @param project
+	 * @param settings
+	 */
 	public TrophiesDecorator(DatabaseSession session, Project project,
 			Settings settings) {
 		this.session = session;
 		this.project = project;
-		this.settings = settings;
 		this.measuresHelper = new SnapShotDao(session, project);
 		this.trophiesHelper = new TrophiesHelper(settings);
-		
-		
-
 	}
 
 	/**

@@ -32,8 +32,7 @@ public class LoggerTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		testLogger = new Logger();
-		testLogger.setStream(stream);
+		testLogger = new Logger(stream);
 	}
 
 	/**
@@ -151,12 +150,14 @@ public class LoggerTest {
 	}
 
 	/**
-	 * Test method for {@link com.catalyst.sonar.score.log.Logger#setStream(java.io.PrintStream)}.
+	 * Test method for {@link com.catalyst.sonar.score.log.Logger#setOnStream(java.io.PrintStream)}.
 	 */
 	@Test
-	public void testSetStream() {
-		testLogger.setStream(System.out);
-		assertSame(System.out, testLogger.getStream());
+	public void testSetOnStream() {
+		testLogger.on();
+		testLogger.setOnStream(System.out);
+		assertSame(System.out, testLogger.getOnStream());
+		assertSame(testLogger.getOnStream(), testLogger.getStream());
 	}
 
 	/**
@@ -180,14 +181,18 @@ public class LoggerTest {
 		assertTrue(stream.getOutput().startsWith("Hi"));
 	}
 	
-	/**
-	 * Test method for {@link com.catalyst.sonar.score.log.Logger#removeTab(int)}.
-	 */
 	@Test
-	public void testBigStack() {
-		for(int i = 0; i < 20; i++) {
-			testLogger.beginMethod("HI");
-		}
+	public void ensureBeginMethod_false_AndEndMethodWorkTogether() {
+		testLogger.beginMethod("FIRST", false);
+		testLogger.beginMethod("SECOND", false);
+		assertEquals("", stream.getOutput());
+		testLogger.log("HI");
+		assertEquals("", stream.getOutput());
+		testLogger.endMethod();
+		testLogger.endMethod();
+		assertEquals("", stream.getOutput());
+		testLogger.log("HI");
+		assertEquals("HI\n", stream.getOutput());
 	}
 	
 	/**

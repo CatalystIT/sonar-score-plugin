@@ -32,9 +32,7 @@ public class SnapshotValue implements Comparable<SnapshotValue> {
 		this.measureValue = measureValue;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -48,9 +46,7 @@ public class SnapshotValue implements Comparable<SnapshotValue> {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -131,10 +127,17 @@ public class SnapshotValue implements Comparable<SnapshotValue> {
 		this.measureValue = metricValue;
 	}
 
+	/**
+	 * Compares this Snapshot to another Snapshot based on the values of their buildDates.
+	 * @see {@link Comparable#compareTo()}
+	 */
 	public int compareTo(SnapshotValue other) {
 		return buildDate.compareTo(other.buildDate);
 	}
 
+	/**
+	 * @see {@link Object#toString}
+	 */
 	@Override
 	public String toString() {
 		SimpleDateFormat formater = new SimpleDateFormat("E yyyy.MM.dd kk:mm");

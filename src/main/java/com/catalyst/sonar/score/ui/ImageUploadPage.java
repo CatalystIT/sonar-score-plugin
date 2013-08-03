@@ -3,19 +3,24 @@ package com.catalyst.sonar.score.ui;
 import org.sonar.api.web.NavigationSection;
 import org.sonar.api.web.Page;
 /**
- * ImageUpload Page adds a page to the sidebar. The url directs the page to the index.html.erb file
+ * ImageUpload Page adds a page to the sidebar. The url directs the page to the index.html.erb file.
  * @author Team Build Meister
  *
  */
 @NavigationSection({NavigationSection.RESOURCE_TAB, NavigationSection.RESOURCE})
 public class ImageUploadPage implements Page{
+	
+	/**
+	 * @return the URL of the ruby view/index .erb file
+	 */
 	public String getId(){
-		//returns the URL of the ruby widget view/index file
 		return "/images/index";
 	}
 	
+	/**
+	 * @return the Title of the page
+	 */
 	public String getTitle(){
-		//returns the title
 		return "Edit Project Profile";
 	}
 }

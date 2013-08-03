@@ -16,7 +16,6 @@ import org.sonar.api.resources.Project;
 import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.ScoreProject;
-import com.catalyst.sonar.score.batch.util.TrophiesHelper;
 import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.util.SnapshotValue;
 import com.catalyst.sonar.score.util.SnapshotValues;
@@ -34,15 +33,21 @@ public class AbstractAwardDecorator {
 	protected Project project;
 	protected Settings settings;
 	protected SnapShotDao measuresHelper;
-//	protected TrophiesHelper trophiesHelper;
 
+	/**
+	 * Constructs an AbstractAwardDecorator, setting the session, project, and
+	 * settings.
+	 * 
+	 * @param session
+	 * @param project
+	 * @param settings
+	 */
 	public AbstractAwardDecorator(DatabaseSession session, Project project,
 			Settings settings) {
 		this.session = session;
 		this.project = project;
 		this.settings = settings;
 		this.measuresHelper = new SnapShotDao(session, project);
-//		this.trophiesHelper = new TrophiesHelper(settings);
 
 	}
 
@@ -54,7 +59,8 @@ public class AbstractAwardDecorator {
 	 * @return
 	 */
 	// TODO: Code Smell, why is this returning true after an exception is
-	// caught? Or is the try catch left over from debugging?  If so it should be removed.
+	// caught? Or is the try catch left over from debugging? If so it should be
+	// removed.
 	protected boolean typeGoodCriteriaMet(Award award) {
 		LOG.beginMethod("criteriaMet()");
 		LOG.log(award + " has " + award.getCriteria().size() + " Criteria:");
@@ -111,6 +117,15 @@ public class AbstractAwardDecorator {
 		return true;
 	}
 
+	/**
+	 * Given the two ScoreProjects and the Metric, figures out which one has the
+	 * better Metric value in its latest snapshot.
+	 * 
+	 * @param project1
+	 * @param project2
+	 * @param metric
+	 * @return the project that has the better metric value.
+	 */
 	protected ScoreProject better(ScoreProject project1, ScoreProject project2,
 			Metric metric) {
 		LOG.beginMethod("Which project is better?");
@@ -128,6 +143,12 @@ public class AbstractAwardDecorator {
 		return projectToReturn;
 	}
 
+	/**
+	 * Given the ScoreProject, finds its current value for the given Metric.
+	 * @param thisProject
+	 * @param metric
+	 * @return the latest value for the metric attained by the ScoreProject.
+	 */
 	private double currentValue(ScoreProject thisProject, Metric metric) {
 		LOG.beginMethod("Current Value");
 		SnapShotDao helper = new SnapShotDao(session, thisProject);

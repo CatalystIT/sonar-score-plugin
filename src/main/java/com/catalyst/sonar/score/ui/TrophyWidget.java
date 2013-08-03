@@ -15,16 +15,23 @@ import org.sonar.api.web.WidgetCategory;
 @WidgetCategory("Score")
 public class TrophyWidget extends AbstractRubyTemplate implements RubyRailsWidget{
 
+	/**
+	 * @return the id of the ruby widget
+	 */
 	public String getId() {
-		// retrieves the widget Id
 		return "trophies";
 	}
 
+	/**
+	 * @return the Title of the widget
+	 */
 	public String getTitle() {
-		//retrieves the widget title
 		return "Trophies";
 	}
 
+	/**
+	 * @return the URL of the ruby widget view/index .erb file
+	 */
 	@Override
 	protected String getTemplatePath() {
 		// retrieves path of the widget

@@ -1,33 +1,33 @@
 package com.catalyst.sonar.score.ui;
-import org.sonar.api.web.AbstractRubyTemplate;
+
 import org.sonar.api.web.NavigationSection;
 import org.sonar.api.web.Page;
-import org.sonar.api.web.RubyRailsPage;
 import org.sonar.api.web.UserRole;
 
 /**
- * Page that allows an admin to create trophies and title cups.
- * @author team Build Meister
- *
+ * Page that allows an admin to configure Awards, such as Trophies and Title
+ * Cups.
+ * 
+ * @author mWomack
+ * 
  */
-@NavigationSection({NavigationSection.RESOURCE_TAB, NavigationSection.CONFIGURATION})
+@NavigationSection({ NavigationSection.RESOURCE_TAB,
+		NavigationSection.CONFIGURATION })
 @UserRole(UserRole.ADMIN)
-public final class TrophyPage implements Page{
+public final class TrophyPage implements Page {
+
 	/**
-	 * retrieves the URL of the trophy page
+	 * @return the URL of the Awards Page
 	 */
-	public String getId() {		    
-		   return "/trophies/index";
-		
+	public String getId() {
+		return "/trophies/index";
 	}
-	
+
 	/**
-	 * retrieves the title of the Awards Page
+	 * @return the title of the Awards Page
 	 */
 	public String getTitle() {
-		  return "Awards Page";
+		return "Awards Page";
 	}
-
-
 
 }

@@ -30,8 +30,8 @@ import org.sonar.api.database.configuration.Property;
 /**
  * The ScoreDecorator class is responsible for obtaining, analyzing and calculating information and 
  * various code metrics for the points metric
- * @author Team Build Meister
- *
+ * 
+ * @author mWomack
  */
 public class PointsDecorator implements Decorator {
 	
@@ -47,6 +47,11 @@ public class PointsDecorator implements Decorator {
 
 	}
 	
+	/**
+	 * Checks if the given Resource is a Project.
+	 * @param resource
+	 * @return whether or not the given Resource is a Project.
+	 */
 	private boolean isProject(@SuppressWarnings("rawtypes") Resource resource) {
 		return PROJECT.equals(resource.getScope());
 	}
@@ -106,7 +111,8 @@ public class PointsDecorator implements Decorator {
 	}
 
 	/**
-	 * returns whether or not analysis should be ran on a particular project
+	 * Checks if analysis should be run on the given project
+	 * @return whether or not analysis should be run on the given project
 	 */
 	public boolean shouldExecuteOnProject(Project project) {
 		return true;
@@ -115,7 +121,7 @@ public class PointsDecorator implements Decorator {
 	/**
 	 * @param resource
 	 * @param context
-	 * @returns whether or not a resource is a unit test class
+	 * @returns whether or not the given resource is a unit test class
 	 */
 	public boolean shouldDecorateResource(@SuppressWarnings("rawtypes") final Resource resource,
 			final DecoratorContext context) {
@@ -129,11 +135,9 @@ public class PointsDecorator implements Decorator {
 	 * necessary measures are retrieved in order to calculate the points metric
 	 * for a particular project.
 	 */
-	public void decorate(@SuppressWarnings("rawtypes") final Resource resource, final DecoratorContext context) {
-		if("PRJ".equals(resource.getScope())) {
-			LOG.beginMethod("PointsDecorator.decorate()");
-			LOG.log("Point Earning is " + ((pointsAreDisabled(resource)) ? "dis" : "en") + "abled.");
-		}
+	public void decorate(@SuppressWarnings("rawtypes") final Resource resource, final DecoratorContext context) {		
+		LOG.beginMethod("PointsDecorator.decorate()", isProject(resource));
+		LOG.log("Point Earning is " + ((pointsAreDisabled(resource)) ? "dis" : "en") + "abled.");
 		/*
 		 * if the resource to decorate is not a unit test class, then retrieve
 		 * the various code metrics and calculate the points for a given

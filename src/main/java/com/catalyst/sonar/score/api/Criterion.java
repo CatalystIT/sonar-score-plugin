@@ -29,7 +29,7 @@ public class Criterion {
 		super();
 		this.type = Criterion.Type.GOOD;
 	}
-	
+
 	/**
 	 * Single-Arg constructor, sets the metric, and sets the Type to BEST.
 	 */
@@ -55,7 +55,13 @@ public class Criterion {
 	}
 
 	/**
-	 * Overrides the equals method
+	 * Checks for meaningful equality based on the fields {@code metric},
+	 * {@code amount}, {@code days}, and {@code type}, as well as if the object
+	 * is an instance of {@code Criterion}.
+	 * 
+	 * @return true if this Criterion is meaningfully equal to the obj argument;
+	 *         false otherwise.
+	 * @see {@link Object#equals(Object)}
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -101,7 +107,12 @@ public class Criterion {
 	}
 
 	/**
-	 * overrides the hashCode
+	 * In keeping with the overriding of {@link Criterion.equals(Object},
+	 * {@code hashCode} is overridden using the same fields.
+	 * 
+	 * @return a hash code value for the {@code Criterion}, based on the fields
+	 *         {@code metric}, {@code amount}, {@code days}, and {@code type}.
+	 * @see {@link Object#hashCode()}
 	 */
 	@Override
 	public int hashCode() {
@@ -146,7 +157,7 @@ public class Criterion {
 	}
 
 	/**
-	 * @return the days
+	 * @return the duration in days
 	 */
 	public int getDays() {
 		return days;
@@ -154,37 +165,78 @@ public class Criterion {
 
 	/**
 	 * @param days
-	 *            the days to set
+	 *            the duration in days to set
 	 */
 	public void setDays(int days) {
 		this.days = days;
 	}
-	
+
 	/**
 	 * @return the type
 	 */
 	public Type getType() {
 		return type;
 	}
-	
+
+	/**
+	 * Returns a String representation of the Criterion including the type, the
+	 * metricName, the amount, and the duration in days.
+	 * 
+	 * @return a String representation of the Criterion.
+	 */
 	@Override
 	public String toString() {
 		String typeString = type.toString();
 		String metricName = (metric != null) ? metric.getName() : null;
 		String amountString = Double.toString(amount);
 		String daysString = Integer.toString(days);
-		return "[" + typeString + " " + metricName + " " + amountString + " " + daysString + "]";
-	}
-	
-	public String toValueString() {
-		return '{' + metric.getName() + ';' + amount + ';' + getDayString() + '}'; 
-	}
-		
-	public String getDayString() {
-		return (days % DAYS_IN_WEEK == 0) ? days/DAYS_IN_WEEK + WEEK : days + DAY;
+		return "[" + typeString + " " + metricName + " " + amountString + " "
+				+ daysString + "]";
 	}
 
+	/**
+	 * a special String representation of the Criterion, as the Criterion would
+	 * appear in the {@code value} column in the Properties table in the
+	 * database. Used by {@link CriterionSet#toString()}.
+	 * 
+	 * @return
+	 */
+	public String toValueString() {
+		return '{' + metric.getName() + ';' + amount + ';' + getDayString()
+				+ '}';
+	}
+
+	/**
+	 * Returns a String representing the duration; if divisible by 7, the number
+	 * of weeks followed by {@code w}, otherwise the number of days followed by
+	 * {@code d}.
+	 * 
+	 * @return a String representation of the duration
+	 */
+	public String getDayString() {
+		return (days % DAYS_IN_WEEK == 0) ? days / DAYS_IN_WEEK + WEEK : days
+				+ DAY;
+	}
+
+	/**
+	 * The {@code enum Criterion.Type} represents the types of {@code Criterion}
+	 * : {@link Type.GOOD}, and {@link Type.BEST}.
+	 * 
+	 * @author JDunn
+	 * 
+	 */
 	public static enum Type {
-		GOOD, BEST;
+		
+		/**
+		 * GOOD represents a {@link Criterion} where, to earn an {@link Award},
+		 * a Project must have a reading for the metric at least as good as the amount.
+		 */
+		GOOD,
+		
+		/**
+		 * BEST represents a {@link Criterion} where, to earn an {@link Award},
+		 * a Project must have a better reading for the metric than any other Project.
+		 */
+		BEST;
 	}
 }
