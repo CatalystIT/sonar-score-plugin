@@ -13,6 +13,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.sonar.api.database.BaseIdentifiable;
 import org.sonar.api.database.DatabaseSession;
 
 import com.catalyst.sonar.score.ScoreTest;
@@ -26,12 +27,15 @@ public class SonarEntityDaoTest extends ScoreTest {
 
 	static final String KEY = "Greeting";
 	static final String VALUE = "Hi There!";
-	static final Integer TEST_INT = 1;
-	static final List<Integer> TEST_LIST = new ArrayList<Integer>();
+	static final SonarEntity TEST_ENTITY = new SonarEntity();
+	static final List<SonarEntity> TEST_LIST = new ArrayList<SonarEntity>();
+	static class SonarEntity extends BaseIdentifiable {
+		
+	}
 
 	static String testValue;
 
-	SonarEntityDao<Integer> testDao;
+	SonarModelDao<SonarEntity> testDao;
 	DatabaseSession mockSession;
 	Object mockObject;
 
@@ -43,33 +47,33 @@ public class SonarEntityDaoTest extends ScoreTest {
 		testValue = "";
 		mockSession = mock(DatabaseSession.class);
 		mockObject = mock(Object.class);
-		testDao = new SonarEntityDao<Integer>(mockSession) {
+		testDao = new SonarModelDao<SonarEntity>(mockSession) {
 
-			public Integer create(String key, String value) {
+			public SonarEntity create(String key, String value) {
 				testValue = value;
-				return TEST_INT;
+				return TEST_ENTITY;
 			}
 
-			protected Class<Integer> entityClass() {
-				return Integer.class;
+			protected Class<SonarEntity> entityClass() {
+				return SonarEntity.class;
 			}
 
-			public Integer get(Integer entity) {
+			public SonarEntity get(SonarEntity entity) {
 				return null;
 			}
 
-			public SearchableHashSet<Integer> getAll() {
+			public SearchableHashSet<SonarEntity> getAll() {
 				return null;
 			}
 
-			public Integer update(Integer entity) {
+			public SonarEntity update(SonarEntity entity) {
 				return null;
 			}
 		};
 	}
 
 	/**
-	 * Test method for {@link SonarEntityDao#SonarEntityDao(DatabaseSession)}.
+	 * Test method for {@link SonarModelDao#SonarEntityDao(DatabaseSession)}.
 	 */
 	@Test
 	public void testSonarEntityDao() {
@@ -77,40 +81,40 @@ public class SonarEntityDaoTest extends ScoreTest {
 	}
 
 	/**
-	 * Test method for {@link SonarEntityDao#get(String)}.
+	 * Test method for {@link SonarModelDao#get(String)}.
 	 */
 	@Test
 	public void testGet() {
 		when(
-				mockSession.getSingleResult(Integer.class, testDao.keyLabel(),
-						KEY)).thenReturn(TEST_INT);
-		assertSame(TEST_INT, testDao.get(KEY));
+				mockSession.getSingleResult(SonarEntity.class, testDao.keyLabel(),
+						KEY)).thenReturn(TEST_ENTITY);
+		assertSame(TEST_ENTITY, testDao.get(KEY));
 	}
 
 	/**
-	 * Test method for {@link SonarEntityDao#getAll(String)}.
+	 * Test method for {@link SonarModelDao#getAll(String)}.
 	 */
 	@Test
 	public void testGetAll() {
-		when(mockSession.getResults(Integer.class, testDao.keyLabel(), KEY))
+		when(mockSession.getResults(SonarEntity.class, testDao.keyLabel(), KEY))
 				.thenReturn(TEST_LIST);
 		assertSame(TEST_LIST, testDao.getAll(KEY));
 	}
 
 	/**
 	 * Test method for
-	 * {@link com.catalyst.sonar.score.dao.SonarEntityDao#create(java.lang.Object)}
+	 * {@link com.catalyst.sonar.score.dao.SonarModelDao#create(java.lang.Object)}
 	 * .
 	 */
 	@Test
 	public void testCreateE() {
-		testDao.create(TEST_INT);
-		verify(mockSession).save(TEST_INT);
+		testDao.create(TEST_ENTITY);
+		verify(mockSession).save(TEST_ENTITY);
 	}
 
 	/**
-	 * Test method for {@link SonarEntityDao#create(String)}. Tests that it
-	 * called {@link SonarEntityDao#create(String, String)} with parameters KEY and null.
+	 * Test method for {@link SonarModelDao#create(String)}. Tests that it
+	 * called {@link SonarModelDao#create(String, String)} with parameters KEY and null.
 	 */
 	@Test
 	public void testCreateString() {
@@ -120,25 +124,25 @@ public class SonarEntityDaoTest extends ScoreTest {
 
 	/**
 	 * Test method for
-	 * {@link SonarEntityDao#create(String, Object)}
+	 * {@link SonarModelDao#create(String, Object)}
 	 * .
 	 */
 	@Test
 	public void testCreateStringObject() {
 		when(mockObject.toString()).thenReturn(VALUE);
-		assertSame(TEST_INT, testDao.create(KEY, mockObject));
+		assertSame(TEST_ENTITY, testDao.create(KEY, mockObject));
 		assertSame(VALUE, testValue);
 	}
 	
 	/**
 	 * Test method for
-	 * {@link SonarEntityDao#create(String, Object)}
+	 * {@link SonarModelDao#create(String, Object)}
 	 * .
 	 */
 	@Test
 	public void testCreateStringObject_ObjectIsNull() {
 		mockObject = null;
-		assertSame(TEST_INT, testDao.create(KEY, mockObject));
+		assertSame(TEST_ENTITY, testDao.create(KEY, mockObject));
 		assertNull(testValue);
 	}
 

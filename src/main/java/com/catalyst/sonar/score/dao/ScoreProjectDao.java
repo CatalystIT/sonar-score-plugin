@@ -14,7 +14,7 @@ import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.SearchableHashSet;
 
 //TODO javadoc
-public class ScoreProjectDao extends SonarEntityDao<ScoreProject> {
+public class ScoreProjectDao extends SonarModelDao<ScoreProject> {
 
 	/**
 	 * Constructor with a parameter for the session to set the session.

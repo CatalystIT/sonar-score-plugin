@@ -5,20 +5,22 @@ package com.catalyst.sonar.score.dao;
 
 import java.util.List;
 
+import org.sonar.api.database.BaseIdentifiable;
 import org.sonar.api.database.DatabaseSession;
 
 /**
  * 
- * The {@code SonarEntityDao<E>} class defines a dao that specifically access a
- * SonarEntity. What is meant by a SonarEntity is an Entity that is represented
- * in Sonar's database through Hibernate. As a consequence, any implementation
- * of this class should use only classes defined by Sonar that map directly to a
+ * The {@code SonarModelDao<E>} class defines a dao that specifically accesses a
+ * Sonar Database Model defined by SonarQube's database API and persited in
+ * Sonar's database through Hibernate. As a consequence, any implementation of
+ * this class should use only classes defined by Sonar that map directly to a
  * table in Sonar's database for generic type {@code <E>}.
  * 
  * @author JDunn
  * 
  */
-public abstract class SonarEntityDao<E> extends EntityDao<E> {
+public abstract class SonarModelDao<E extends BaseIdentifiable> extends
+		EntityDao<E> {
 
 	public static final String KEY_LABEL = "key";
 
@@ -27,7 +29,7 @@ public abstract class SonarEntityDao<E> extends EntityDao<E> {
 	 * 
 	 * @param session
 	 */
-	public SonarEntityDao(DatabaseSession session) {
+	public SonarModelDao(DatabaseSession session) {
 		super(session);
 	}
 
@@ -110,12 +112,13 @@ public abstract class SonarEntityDao<E> extends EntityDao<E> {
 	 * @return the SonarEntity
 	 */
 	protected E get(String key, String fieldName, Object fieldValue) {
-		return getSession().getSingleResult(entityClass(), keyLabel(), key, fieldName, fieldValue);
+		return getSession().getSingleResult(entityClass(), keyLabel(), key,
+				fieldName, fieldValue);
 	}
 
 	/**
 	 * When this is implemented, it MUST return the class of the generic type.
-	 * For example, if StringDao extends {@code SonarEntityDao<String>}, this
+	 * For example, if StringDao extends {@code SonarModelDao<String>}, this
 	 * method must return {@code String.class}.
 	 * 
 	 * @return (GenericParameterType).class

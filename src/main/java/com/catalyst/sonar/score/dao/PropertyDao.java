@@ -15,7 +15,7 @@ import com.catalyst.sonar.score.api.SearchableHashSet;
  * @author JDunn
  *
  */
-public class PropertyDao extends SonarEntityDao<Property> {
+public class PropertyDao extends SonarModelDao<Property> {
 	
 	public static final String POINTS_DISABLED = "sonar.score.PointsDisabled";
 	private static final String RESOURCE_ID = "resourceId";
@@ -62,7 +62,7 @@ public class PropertyDao extends SonarEntityDao<Property> {
 	}
 	
 	/**
-	 * @see {@link SonarEntityDao#create(String, String)}
+	 * @see {@link SonarModelDao#create(String, String)}
 	 */
 	@Override
 	public Property create(String key, String value) {
@@ -71,7 +71,7 @@ public class PropertyDao extends SonarEntityDao<Property> {
 	}
 
 	/**
-	 * @see {@link SonarEntityDao#entityClass()}
+	 * @see {@link SonarModelDao#entityClass()}
 	 * @return {@code Property.class}
 	 */
 	@Override
