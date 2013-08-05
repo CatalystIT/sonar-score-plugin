@@ -28,7 +28,7 @@ import org.sonar.api.database.configuration.Property;
  * 
  * <br/>
  * <br/>
- * A {@link SonarEntity} is an object from (or derived from) Sonar's database
+ * A {@link SonarEntity} is an object derived from Sonar's database
  * models, and as such are persisted directly to the respective table in Sonar's
  * database.
  * 
@@ -39,7 +39,7 @@ import org.sonar.api.database.configuration.Property;
  *  - {@link ScoreProject}
  * 
  * <br/>
- *  - {@link Property}
+ *  - {@link ScoreUser}
  * 
  * @author JDunn
  * 
@@ -48,7 +48,7 @@ public interface Entity {
 	
 	/**
 	 * Gets the field that functions as the uniqueId for this
-	 * {@link ScoreEntity}. The name of this field will vary from implementation
+	 * {@link Entity}. The name of this field will vary from implementation
 	 * to implementation, and most likely the field will have its own getter as
 	 * well.
 	 * 
