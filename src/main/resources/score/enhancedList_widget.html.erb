@@ -1,125 +1,142 @@
 <%
-  
-   filter_id = widget_properties['filter']
-   page_size = widget_properties['pageSize']
-   filter = MeasureFilter.find_by_id(filter_id.to_i) if filter_id
-   if filter
-     filter.load_criteria_from_data
-     if !filter.require_authentication? || logged_in?
-       filter.set_criteria_value('display', 'list')
-       filter.set_criteria_value('pageSize', page_size)
-       filter.execute(self, :user => current_user)
-       @widget_title = link_to h(filter.name), {:controller => 'measures', :action => 'filter', :id => filter.id, :display => 'list'}
+filter_id = widget_properties['filter']
+page_size = widget_properties['pageSize']
+filter = MeasureFilter.find_by_id(filter_id.to_i) if filter_id
+if filter
+filter.load_criteria_from_data
+if !filter.require_authentication? || logged_in?
+filter.set_criteria_value('display', 'list')
+filter.set_criteria_value('pageSize', page_size)
+filter.execute(self, :user => current_user)
+@widget_title = link_to h(filter.name), {:controller => 'measures', :action => 'filter', :id => filter.id, :display => 'list'}
 %>
-
 <% if widget_properties['displayFilterDescription'] || !widget_properties['displayFilterDescription'] %>
 <div style="padding-bottom: 5px"></div>
 <script type="text/javascript">
 
-	jQuery(document).ready(function(){
 
-	//set a flag - true tells us the image src has been swapped, so we can stop searching for it
-	var flag = false;
-	//set a flag - true tells us the href has been found, so we can stop searching for it
-	var hrefFlag = false;
+	var changeImageRef;
+	jQuery(document).ready(function() {
 
-	var projectId = "";
+		//get the onclick function from the thead
+		jQuery('#measures-table thead').on('click', function() {
+			var theadOnclick = this.onclick;
+		});
 
-	function changeImage() {
-		console.log('from inside changeImage()');
-		// find all images on the page
-		var images = document.getElementsByTagName('img');
-		console.log(images.length + " images found");
+		//set a flag - true tells us the image src has been swapped, so we can stop searching for it
+		var flag = false;
+		//set a flag - true tells us the href has been found, so we can stop searching for it
+		var hrefFlag = false;
 
-		// iterate through all found images
-		for (i = 0; i < images.length; i++) {
-			console.log(jQuery(images[i]).closest(".enhancedList").length);
-			// check that the images 7th parent has Class enhancedList and that the image contains "TRK" which is the image that will be replaced
-			if ((jQuery(images[i]).closest(".enhancedList").length) > 0
-					&& (images[i].src.indexOf("TRK") != -1)) {
+		var projectId = "";
 
-				console.log("7th parent was 'enhanced list & src contains TRK'");
-				var href = "";
-				if (hrefFlag == false) {
-				
-					console.log("hrefFlag was false");
-					//goes through all the child nodes and if the child node is an href, set the flag to true to stop searching
-					var children = images[i].parentNode.children;
-					for (j = 0; j < children.length; j++) {
-						if (children[j].href) {
-							href = children[j].href;
+		changeImageRef = function changeImage() {
+			// find all images on the page
+			var images = document.getElementsByTagName('img');
 
+			// iterate through all found images
+			for ( i = 0; i < images.length; i++) {
+				// check that the images 7th parent has Class enhancedList and that the image contains "TRK" which is the image that will be replaced
+				if ((jQuery(images[i]).closest(".enhancedList").length) > 0 && (images[i].src.indexOf("TRK") != -1)) {
+
+					var href = "";
+					
+
+						//goes through all the child nodes and if the child node has an href, set the flag to true to stop searching
+						var children = images[i].parentNode.children;
+						for ( j = 0; j < children.length; j++) {
+							if (children[j].href) {
+								href = children[j].href;
+							}
 						}
-					}
-				}
-				//extract the project id number from the href
-				var beginning = href.lastIndexOf("/");
-				projectId = href.substring(++beginning);
+					
+					//extract the project id number from the href
+					var beginning = href.lastIndexOf("/");
+					projectId = href.substring(++beginning);
+					
 
-				//checks to see if there is an existing image for the project
+					//checks to see if there is an existing image for the project
 
-				function file_exists(url) {
-					// Returns true if filename exists and false if it does not exist 
-					var req = this.window.ActiveXObject ? new ActiveXObject(
-							"Microsoft.XMLHTTP") : new XMLHttpRequest();
-					if (!req) {
-						throw new Error('XMLHttpRequest not supported');
+					function file_exists(url) {
+						// Returns true if filename exists and false if it does not exist
+						var req = this.window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();
+						if (!req) {
+							throw new Error('XMLHttpRequest not supported');
+						}
+						// HEAD Results are usually shorter (faster) than GET
+						req.open('HEAD', url, false);
+						req.send(null);
+						if (req.status == 200) {
+							return 1;
+							//returns true
+						}
+						return 0;
+						//returns false
 					}
-					// HEAD Results are usually shorter (faster) than GET
-					req.open('HEAD', url, false);
-					req.send(null);
-					if (req.status == 200) {
-						return 1;//returns true
-					}
-					return 0; //returns false
+
+					//display the project's image
+					images[i].src = '/images/display?project_id=' + projectId;
+
 				}
-				//display the project's image
-				images[i].src = '/images/display?project_id=' + projectId ;
-								
 			}
+			//set both flags to true so both searches for the img tag and href will stop
+			flag = true;
+			hrefFlag = true;
+
 		}
-		//set both flags to true so both searches for the img tag and href will stop
-		flag = true;
-		hrefFlag = true;
 
-	}
+		var readyStateCheckInterval = setInterval(function() {
+			//if the document is ready and the search for hrefs and imgs is over, then set the new image
+			if ((document.readyState === "complete") && (flag != true)) {
+				changeImageRef();
+				clearInterval(readyStateCheckInterval);
 
-	var readyStateCheckInterval = setInterval(function() {
-		//if the document is ready and the search for hrefs and imgs is over, then set the new image
-		if ((document.readyState === "complete") && (flag != true)) {
-			changeImage();
-			clearInterval(readyStateCheckInterval);
-			
-						
-		}
-	}, 10);
-	
-	
+			}
+		}, 10);
 
-	
-	
-	var logCount = 1;
-	
-		//jQuery('#measures-table thead').on('click', function(){
-		jQuery('table').load(function(){
-			changeImage();
-			console.log('triggered by click on "#measures-table thead" ' + logCount + 'times');
+
+		//TODO detecting mutations still not working in IE....
+		MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+		var observer = new MutationObserver(function(mutations, observer) {
+			// fired when a mutation occurs
+			console.log(mutations);
+			changeImageRef();
+		});
+
+		// define what element should be observed by the observer
+		// and what types of mutations trigger the callback
+		observer.observe(document, {
+			subtree : true,
+			attributes : true,
+			childList : true,
+			characterData : true,
+			attributeOldValue : true,
+			characterDataOldValue : true
+		});
+
+		var logCount = 1;
+
+		jQuery(document).on('click', '#measures-table thead', function() {
+			//jQuery('table').load(function(){
+			changeImageRef();
 			logCount++;
 		});
 	});
-	
+
 </script>
 <div style="padding-bottom: 5px","word-wrap: break-word", "white-space: pre-wrap" >
-      <span class="note"><%= h filter.description -%></span>
-    </div>
-  <% end %>
-
-    <%= render :partial => "measures/display_#{filter.display.key}", :locals => {:edit_mode => false, :filter => filter, :widget_id => widget.id} -%>
+	<span class="note"><%= h filter.description -%></span>
+</div>
+<% end %>
+<%= render :partial => "measures/display_#{filter.display.key}", :locals => {:edit_mode => false, :filter => filter, :widget_id => widget.id} -%>
 <%
-     end
-   else
+end
+else
 %>
-  <p><%= image_tag 'warning.png' %> <%= message 'measure_filter.widget.unknown_filter_warning' -%></p>
+<p>
+	<%= image_tag 'warning.png' %> <%= message 'measure_filter.widget.unknown_filter_warning' -%>
+</p>
 <%
-   end
+end
 %>
