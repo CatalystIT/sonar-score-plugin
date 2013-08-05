@@ -6,7 +6,6 @@ package com.catalyst.sonar.score.dao;
 import java.util.List;
 
 import org.sonar.api.database.DatabaseSession;
-import org.sonar.jpa.dao.BaseDao;
 
 /**
  * 
@@ -19,7 +18,7 @@ import org.sonar.jpa.dao.BaseDao;
  * @author JDunn
  * 
  */
-public abstract class SonarEntityDao<E> extends BaseDao {
+public abstract class SonarEntityDao<E> extends EntityDao<E> {
 
 	public static final String KEY_LABEL = "key";
 

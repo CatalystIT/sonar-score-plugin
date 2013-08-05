@@ -14,7 +14,7 @@ import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.SearchableHashSet;
 
 //TODO javadoc
-public class ScoreProjectDao extends ScoreEntityDao<ScoreProject> {
+public class ScoreProjectDao extends SonarEntityDao<ScoreProject> {
 
 	/**
 	 * Constructor with a parameter for the session to set the session.
@@ -78,16 +78,34 @@ public class ScoreProjectDao extends ScoreEntityDao<ScoreProject> {
 
 	// TODO javadoc
 	@Override
-	public boolean create(ScoreProject project) {
+	public ScoreProject create(ScoreProject project) {
 		// TODO: log some sort of warning that this method should never be used.
-		return false;
+		return null;
 	}
 
 	// TODO javadoc
 	@Override
-	public boolean update(ScoreProject entity) {
+	public ScoreProject update(ScoreProject entity) {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
+	}
+
+	@Override
+	public ScoreProject create(String key, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Class<ScoreProject> entityClass() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ScoreProject get(ScoreProject entity) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

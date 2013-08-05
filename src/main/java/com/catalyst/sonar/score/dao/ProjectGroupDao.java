@@ -13,7 +13,7 @@ import org.sonar.jpa.dao.BaseDao;
 
 import com.catalyst.sonar.score.api.GroupSet;
 import com.catalyst.sonar.score.api.ProjectGroup;
-import com.catalyst.sonar.score.api.ReceiverScoreEntity;
+import com.catalyst.sonar.score.api.ReceiverEntity;
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.SearchableHashSet;
 
@@ -66,7 +66,7 @@ public class ProjectGroupDao extends AssignableScoreEntityDao<ProjectGroup> {
 	 * @see {@link AssignableScoreEntityDao#assign(AssignableScoreEntity, ReceiverScoreEntity)}
 	 */
 	@Override
-	public boolean assign(ProjectGroup assignable, ReceiverScoreEntity receiver) {
+	public boolean assign(ProjectGroup assignable, ReceiverEntity receiver) {
 		// TODO Implement
 		return false;
 	}
@@ -76,7 +76,7 @@ public class ProjectGroupDao extends AssignableScoreEntityDao<ProjectGroup> {
 	 */
 	@Override
 	public SearchableHashSet<ProjectGroup> getAllAssigned(
-			ReceiverScoreEntity receiver) {
+			ReceiverEntity receiver) {
 		// TODO Implement
 		return null;
 	}
@@ -86,27 +86,24 @@ public class ProjectGroupDao extends AssignableScoreEntityDao<ProjectGroup> {
 	 */
 	@Override
 	public ProjectGroup getAssigned(ProjectGroup assignable,
-			ReceiverScoreEntity receiver) {
+			ReceiverEntity receiver) {
 		// TODO Implement
 		return null;
-	}
-
-	/**
-	 * @see {@link ScoreEntityDao#create(ScoreEntity)}
-	 */
-	@Override
-	public boolean create(ProjectGroup entity) {
-		// TODO Implement
-		return false;
 	}
 
 	/**
 	 * @see {@link ScoreEntityDao#update(ScoreEntity)}
 	 */
 	@Override
-	public boolean update(ProjectGroup entity) {
+	public ProjectGroup update(ProjectGroup entity) {
 		// TODO Implement
-		return false;
+		return null;
+	}
+
+	@Override
+	public ProjectGroup create(ProjectGroup entity) {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 	
 

@@ -6,7 +6,7 @@ package com.catalyst.sonar.score.dao;
 import org.sonar.api.database.DatabaseSession;
 
 import com.catalyst.sonar.score.api.AssignableScoreEntity;
-import com.catalyst.sonar.score.api.ReceiverScoreEntity;
+import com.catalyst.sonar.score.api.ReceiverEntity;
 import com.catalyst.sonar.score.api.SearchableHashSet;
 
 /**
@@ -39,7 +39,7 @@ public abstract class AssignableScoreEntityDao<A extends AssignableScoreEntity>
 	 * @param receiver
 	 * @return
 	 */
-	public abstract boolean assign(A assignable, ReceiverScoreEntity receiver);
+	public abstract boolean assign(A assignable, ReceiverEntity receiver);
 
 	/**
 	 * Retrieves all the {@code AssignableScoreEntiti}es of type {@code A} that
@@ -49,7 +49,7 @@ public abstract class AssignableScoreEntityDao<A extends AssignableScoreEntity>
 	 * @return
 	 */
 	public abstract SearchableHashSet<A> getAllAssigned(
-			ReceiverScoreEntity receiver);
+			ReceiverEntity receiver);
 
 	/**
 	 * Retrieves the {@link AssignableScoreEntity} of type {@code A} if it has
@@ -60,6 +60,6 @@ public abstract class AssignableScoreEntityDao<A extends AssignableScoreEntity>
 	 * @param receiver
 	 * @return
 	 */
-	public abstract A getAssigned(A assignable, ReceiverScoreEntity receiver);
+	public abstract A getAssigned(A assignable, ReceiverEntity receiver);
 
 }

@@ -163,20 +163,20 @@ public class TrophyDao extends AwardDao<Trophy> {
 	 */
 	// TODO: this method should go
 	@Override
-	public boolean create(Trophy trophy) {
+	public Trophy create(Trophy trophy) {
 		LOG.beginMethod("Creating a new trophy: " + trophy.getName());
 		propertyDao.create("sonar.score.Trophy:" + trophy.getName(), trophy.getCriteria());
 		LOG.endMethod();
-		return false;
+		return trophy;
 	}
 
 	/**
 	 * @see {@link AwardDao#update(Award)}
 	 */
 	@Override
-	public boolean update(Trophy trophy) {
+	public Trophy update(Trophy trophy) {
 		// TODO implement
-		return false;
+		return null;
 	}
 
 	private Trophy getCupFromProperties(Trophy trophy, List<Property> properties) {

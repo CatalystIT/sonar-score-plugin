@@ -13,7 +13,7 @@ import org.sonar.api.database.configuration.Property;
 
 import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.AwardSet;
-import com.catalyst.sonar.score.api.ReceiverScoreEntity;
+import com.catalyst.sonar.score.api.ReceiverEntity;
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.ScoreUser;
 import com.catalyst.sonar.score.api.SearchableHashSet;
@@ -51,12 +51,12 @@ public class AwardDaoTest {
 			return null;
 		}
 
-		public boolean create(NewAward entity) {
-			return false;
+		public NewAward create(NewAward entity) {
+			return null;
 		}
 
-		public boolean update(NewAward entity) {
-			return false;
+		public NewAward update(NewAward entity) {
+			return null;
 		}
 
 		@Override
@@ -135,7 +135,7 @@ public class AwardDaoTest {
 	 */
 	@Test
 	public void testAssign_Neither_false() {
-		assertFalse(testDao.assign(new NewAward(), new ReceiverScoreEntity() {
+		assertFalse(testDao.assign(new NewAward(), new ReceiverEntity() {
 
 			public String getUniqueId() {
 				return null;

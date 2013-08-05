@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.sonar.api.database.DatabaseSession;
 
 import com.catalyst.sonar.score.api.Award;
-import com.catalyst.sonar.score.api.ReceiverScoreEntity;
+import com.catalyst.sonar.score.api.ReceiverEntity;
 import com.catalyst.sonar.score.api.SearchableHashSet;
 
 /**
@@ -28,7 +28,7 @@ public class AssignableScoreEntityDaoTest {
 		}
 
 		public boolean assign(Award assignable,
-				ReceiverScoreEntity receiver) {
+				ReceiverEntity receiver) {
 			return false;
 		}
 
@@ -40,20 +40,20 @@ public class AssignableScoreEntityDaoTest {
 			return null;
 		}
 
-		public boolean create(Award entity) {
-			return false;
-		}
-
-		public boolean update(Award entity) {
-			return false;
-		}
-
-		public SearchableHashSet<Award> getAllAssigned(
-				ReceiverScoreEntity receiver) {
+		public Award create(Award entity) {
 			return null;
 		}
 
-		public Award getAssigned(Award assignable, ReceiverScoreEntity receiver) {
+		public Award update(Award entity) {
+			return null;
+		}
+
+		public SearchableHashSet<Award> getAllAssigned(
+				ReceiverEntity receiver) {
+			return null;
+		}
+
+		public Award getAssigned(Award assignable, ReceiverEntity receiver) {
 			return null;
 		}
 		

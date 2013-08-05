@@ -148,22 +148,22 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 * @see {@link AwardDao#create(Award)}
 	 */
 	@Override
-	public boolean create(TitleCup cup) {
+	public TitleCup create(TitleCup cup) {
 		LOG.beginMethod("creating a new cup: " + cup.getName());
 		Property property = new Property("sonar.score.TitleCup:"
 				+ cup.getName(), null, null);
 		getSession().save(property);
 		LOG.endMethod();
-		return true;
+		return cup;
 	}
 
 	/**
 	 * @see {@link AwardDao#update(Award)}
 	 */
 	@Override
-	public boolean update(TitleCup cup) {
+	public TitleCup update(TitleCup cup) {
 		// TODO implement
-		return false;
+		return null;
 	}
 
 	private TitleCup getCupFromProperties(TitleCup cup,

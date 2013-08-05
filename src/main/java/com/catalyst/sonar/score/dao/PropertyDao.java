@@ -7,6 +7,8 @@ import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.configuration.Property;
 import org.sonar.api.resources.Resource;
 
+import com.catalyst.sonar.score.api.SearchableHashSet;
+
 /**
  * Accesses Properties in the Properties table in the database.
  * 
@@ -75,6 +77,24 @@ public class PropertyDao extends SonarEntityDao<Property> {
 	@Override
 	protected Class<Property> entityClass() {
 		return Property.class;
+	}
+
+	@Override
+	public Property get(Property entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SearchableHashSet<Property> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Property update(Property entity) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

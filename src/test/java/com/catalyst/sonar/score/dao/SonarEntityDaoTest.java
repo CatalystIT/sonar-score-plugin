@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.sonar.api.database.DatabaseSession;
 
 import com.catalyst.sonar.score.ScoreTest;
+import com.catalyst.sonar.score.api.SearchableHashSet;
 
 /**
  * @author JDunn
@@ -51,6 +52,18 @@ public class SonarEntityDaoTest extends ScoreTest {
 
 			protected Class<Integer> entityClass() {
 				return Integer.class;
+			}
+
+			public Integer get(Integer entity) {
+				return null;
+			}
+
+			public SearchableHashSet<Integer> getAll() {
+				return null;
+			}
+
+			public Integer update(Integer entity) {
+				return null;
 			}
 		};
 	}

@@ -14,7 +14,7 @@ import org.sonar.api.database.configuration.Property;
 import com.catalyst.sonar.score.api.AssignableScoreEntity;
 import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.AwardSet;
-import com.catalyst.sonar.score.api.ReceiverScoreEntity;
+import com.catalyst.sonar.score.api.ReceiverEntity;
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.ScoreUser;
 import com.catalyst.sonar.score.api.SearchableHashSet;
@@ -80,7 +80,7 @@ public abstract class AwardDao<A extends Award> extends
 	/**
 	 * @see {@link AssignableScoreEntityDao#assign(AssignableScoreEntity, ReceiverScoreEntity)}
 	 */
-	public boolean assign(A award, ReceiverScoreEntity receiver) {
+	public boolean assign(A award, ReceiverEntity receiver) {
 		if (receiver instanceof ScoreProject) {
 			return assignToProject(award, (ScoreProject) receiver);
 		} else if (receiver instanceof ScoreUser) {
@@ -97,7 +97,7 @@ public abstract class AwardDao<A extends Award> extends
 	 * @param receiver
 	 * @return
 	 */
-	public SearchableHashSet<A> getAllAssigned(ReceiverScoreEntity receiver) {
+	public SearchableHashSet<A> getAllAssigned(ReceiverEntity receiver) {
 		if (receiver instanceof ScoreProject) {
 			return getAllAssignedFromProject((ScoreProject) receiver);
 		} else if (receiver instanceof ScoreUser) {
@@ -114,7 +114,7 @@ public abstract class AwardDao<A extends Award> extends
 	 * @param receiver
 	 * @return
 	 */
-	public A getAssigned(A award, ReceiverScoreEntity receiver) {
+	public A getAssigned(A award, ReceiverEntity receiver) {
 		return null;
 	}
 

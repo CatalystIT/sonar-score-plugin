@@ -48,13 +48,13 @@ public class ScoreEntityDaoTest {
 			return null;
 		}
 
-		public boolean create(SEntity entity) {
-			return false;
+		public SEntity create(SEntity entity) {
+			return null;
 		}
 
 		@Override
-		public boolean update(SEntity entity) {
-			return false;
+		public SEntity update(SEntity entity) {
+			return null;
 		}
 		
 	}

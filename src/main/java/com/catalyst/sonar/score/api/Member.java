@@ -8,7 +8,7 @@ package com.catalyst.sonar.score.api;
  * 
  * @author JDunn
  */
-public interface Member extends ReceiverScoreEntity {
+public interface Member extends ReceiverEntity {
 
 	/**
 	 * @return the name
