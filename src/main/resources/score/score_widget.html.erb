@@ -1,49 +1,50 @@
-<%
-	points=measure('points')
-	 if ( points )
-	%>
-<table id="score_table_container" style="table-layout: fixed; width: 100%" border="0">
+<table id="score_table_container"
+	style="table-layout: fixed; width: 100%" border="0">
 	<tr>
 		<td valign="top" width="100px" style="word-wrap: normal">
 			<div class="dashbox">
 				<!-- The uploaded project image/icon gets displayed here and if the project does not have an image/icon then the default image/icon is displayed -->
 				<p>
-					<span class="big" id="score_image">
-					<img id= "project_image" style ="height:100px; max-width:150px" src="/images/display?project_id=<%= @project.id -%>" onerror="this.src='/images/profiles/projects/default.png'" />
+					<span class="big" id="score_image"> <img id="project_image"
+						style="height: 100px; max-width: 150px"
+						src="/images/display?project_id=<%=@project.id -%>"
+						onerror="this.src='/images/profiles/projects/default.png'" />
 					</span>
 				</p>
 			</div>
 		</td>
 		<td id="pointsData" valign="top">
 			<div id="score_table_1" style="word-wrap: break-word">
-					
-						<!-- Displays project name -->
-						<h1> <%= @project.long_name -%></h1>
-				
-				
-				
-					
-						<div id= "score_points">
-							<p style="a.color:#994411; font-family:Comic Sans MS; font-size:1.5em; font-weight:bold">
-								<!-- Displays points -->
-								<span id="score_points">
-								<%= format_measure('points', :suffix => ' Points ', :url =>url_for_drilldown('points'))-%>
-								</span> 
-							</p>
-						</div>
-					
-				
+
+				<!-- Displays project name -->
+				<h1>
+					<%=@project.long_name -%></h1>
+
+
+
+
+				<% points=measure('points') %>
+				<% if ( points ) %>
+				<div id="score_points">
+					<p
+						style="a .color: #994411; font-family: Comic Sans MS; font-size: 1.5em; font-weight: bold">
+						<!-- Displays points -->
+						<span id="score_points"> <%=format_measure('points', :suffix => ' Points ', :url =>url_for_drilldown('points'))-%>
+						</span>
+					</p>
+				</div>
+				<% end %>
+
+
 			</div>
 		</td>
 	</tr>
 </table>
 <script>
-	jQuery(document).ready(function(){
+	jQuery(document).ready(function() {
 		console.log("jQuery is working...");
 		//newWidth = jQuery('#score_table_1').css("width");
 		//console.log("newWidth: " + newWidth);
 		//jQuery('#score_points').css("width", newWidth);
 	});
-		
 </script>
-<% end %>
