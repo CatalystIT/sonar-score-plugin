@@ -1,0 +1,19 @@
+<p>Currently Logged In User Id = <%=current_user.id %></p>
+<h1>Edit <%=current_user.name %>'s Profile</h1></br></br>
+<h3>Change profile picture:</h3></br>
+<div class="dashbox"> 
+	<!-- The uploaded project image/icon gets displayed here and if the project does not have an image/icon then the default image/icon is displayed -->
+     <p>
+	<span class="big" id="score_image">
+		<img id= "profile_picture" style ="height:100px; max-width:150px" src="/images/display?current_user_id=<%=current_user.id%>" onerror="this.src='/images/profiles/users/default.png'" />
+		
+	</span>
+     </p>
+    
+	<!-- The image selected is uploaded and saved in the images folder as the project image/icon -->
+	<% form_for :userprofile,:url =>{:controller => "userprofiles",:action => "create",:method => :post, :current_user_id => current_user.id}, :html => {:multipart => true} do %>
+	<%= file_field :userprofile,:uploadedfile ,:required => true %></br></br>
+	<%= submit_tag "Change Icon" %>
+	
+	<% end %> 
+ </div>
