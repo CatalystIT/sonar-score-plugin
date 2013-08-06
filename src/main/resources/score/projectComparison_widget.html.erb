@@ -26,7 +26,12 @@
    
    projectName = nil
    projectImage = nil
-       
+   
+   #set all metrics to zero
+   pointsValue = 0
+   
+    
+          
 %>
 
 <!--Loops through the properties array that contains all the groups of projects for the 
@@ -76,49 +81,45 @@ then set the projectGroup variable to the @Property variable.
 	<!--Loop through all the snapshots and if the project id = the resource id then set the snapshot id variable -->
 	<% for @Snapshot in snapshots %>
 	<% if (@Project.id == @Snapshot.project_id)%>
-	<% snapshotId = @Snapshot %>
-	
-	
-	<!--Loop through all the project measures and if the snapshot id for the project 
-	 equals the snapshot id from the snapshot table then retrieve
-	 metric values for all the projects in the group -->
+	<% snapshotId = @Snapshot.id %>
+		
+	<!--Retrieve each project's points, coverage, rules compliance and documented api measures and display them in the project comparison table-->
 	
 	<!--points value-->
-	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => pointsMetric}) %>
-	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
-	<% pointsName = @ProjectMeasure.short_name %>
-	<% pointsValue = number_with_delimiter(@ProjectMeasure.value.to_i, :delimiter => ',') %>
-	<td id ="pointsValue" class="pointsValue" align="right" nowrap=""><%= pointsValue -%></td>
+     <% myPoints = ProjectMeasure.find(:all, :conditions =>{:metric_id => pointsMetric, :snapshot_id => snapshotId})%>
+     <% if (myPoints.blank? || myPoints == nil)%>
+      <td id ="pointsValue" class="pointsValue" align="right" nowrap="">-</td>
+     <% else %>
+        <% pointsValue = number_with_delimiter(myPoints[0].value.to_i, :delimiter => ',') %>
+	    <td id ="pointsValue" class="pointsValue" align="right" nowrap=""><%= pointsValue -%></td>
+     <% end %>
 	
-		
-	<!--coverage value-->
-	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => coverageMetric}) %>	
-	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
-	<% coverageValue = @ProjectMeasure %>
-	<td id = "coverageValue" align="right" nowrap=""><%= @ProjectMeasure.value -%>%</td>
-	
+	<!--coverage value-->	
+	<% myCoverage = ProjectMeasure.find(:all, :conditions =>{:metric_id => coverageMetric, :snapshot_id => snapshotId}) %>
+     <% if (myCoverage.blank? || myCoverage == nil)%>
+      <td id = "coverageValue" align="right" nowrap=""><%= @ProjectMeasure.value -%>%</td>
+     <% else %>
+      <td id = "coverageValue" align="right" nowrap=""><%= myCoverage[0].value-%>%</td>
+     <% end %>	
+	  	
 	<!--rules compliance value -->
-	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => rulesComplianceMetric}) %>	
-	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
-	<% rulesComplianceValue = @ProjectMeasure %>
-	<td align="right" id = "rulesValue" nowrap=""><%= @ProjectMeasure.value -%>%</td>
-	
+	<% myRules =  ProjectMeasure.find(:all, :conditions =>{:metric_id => rulesComplianceMetric, :snapshot_id => snapshotId}) %>		
+	  <% if (myRules.blank? || myRules == nil)%>
+	     <td align="right" id = "rulesValue" nowrap="">-</td>	  		    
+	  <% else %>
+	    <td align="right" id = "rulesValue" nowrap=""><%= myRules[0].value-%>%</td>	    
+	 <% end %>
+		
 	<!--documented API value -->
-	<% for @ProjectMeasure in ProjectMeasure.find(:all, :conditions =>{:metric_id => docApiMetric}) %>	
-	<% if (@ProjectMeasure.snapshot_id == @Snapshot.id)%>
-	<% documentedApiValue = @ProjectMeasure %>
-	<td align="right" id ="docApiValue" nowrap="" ><%= @ProjectMeasure.value -%>%</td>
-	
-	</tr>	
-	
-<% end %>
-<% end %>
-<% end %>
-<% end %>
-<% end %>
-<% end %>
-<% end %>
-<% end %>
+	<% myDocApi =  ProjectMeasure.find(:all, :conditions =>{:metric_id => docApiMetric, :snapshot_id => snapshotId}) %>	
+      <% if (myDocApi.blank? || myDocApi == nil) %>
+	    <td align="right" id ="docApiValue" nowrap="" >-</td> 	  	    
+	  <% else %>
+	   <td align="right" id ="docApiValue" nowrap="" ><%= myDocApi[0].value-%>%</td>
+	  <% end %>
+	  
+	</tr>
+
 <% end %>
 <% end %>
 <% end %>
@@ -227,12 +228,14 @@ function getNumberOfColumnsInTable(){
 <!--Removes commas and percentage signs from a string-->
 function removeCommasOrPercentage(metricString) {
     var metricValueAsNumber;
-    	if(metricString.indexOf(',') != -1){  			
-  			metricValueAsNumber= metricString.replace(/,/g,'');  			
-		}else if(metricString.indexOf('%') != -1){
-			metricValueAsNumber = (metricString.replace(/%/g,'')) * 100 ;
-		}else{
-			metricValueAsNumber = metricString;
+    	if (metricString != 0 ){
+    	  if(metricString.indexOf(',') != -1){  			
+  			  metricValueAsNumber= metricString.replace(/,/g,'');  			
+		  }else if(metricString.indexOf('%') != -1){
+			  metricValueAsNumber = (metricString.replace(/%/g,'')) * 100 ;
+		  }else{
+			  metricValueAsNumber = metricString;
+		  }
 		}
    
     return metricValueAsNumber;
@@ -264,6 +267,9 @@ function showBars(metric, scale, noOfRows){
  		shortName = document.getElementById("truncName" + [i]).innerHTML;
  		//retrieves the metric value
  		var metricValue = document.getElementById(metric + [i]).innerHTML;
+ 		if (metricValue == "-"){
+ 			metricValue = 0;
+ 		} 		
  		//calculates the bar graph width 
  		var barWidth = removeCommasOrPercentage(metricValue) * scale; 		
  		//creates a span id to use to retrieve the project bar width
@@ -418,6 +424,10 @@ function getColor( row ){
    					//if the element's id is equal to the metric category selected and the selected metric hasn't been found yet
    					if (metricFound == false && (( elementId == metricValue)) ){
    						 metric = document.getElementById('metricsTable').getElementsByTagName('td')[i].innerHTML;
+   						 if (metric == "-"){
+   						 	metric = 0;
+   						 }
+   						 
    						 metricAsNumber = parseInt(removeCommasOrPercentage(metric)); 
    						 metricArray.push(metricAsNumber);
    						 idGenerator = idName + count;   			
