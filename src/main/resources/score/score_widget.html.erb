@@ -2,24 +2,23 @@
 	<div class="dashbox" style="float:left">
 		<!-- The uploaded project image/icon gets displayed here and if the project does not have an image/icon then the default image/icon is displayed -->
 		<p>
-			<span class="big" id="score_image"> <img id="project_image"
-				style="height: 100px; max-width: 150px"
-				src="/images/display?project_id=<%=@project.id -%>"
+			<div class="big" id="score_image" style="height: 100px; width: 150px; overflow:hidden">
+				<img id="project_image" class="project_image" style="visibility:hidden" 
+				src="/images/display?project_id=<%= @project.id -%>"
 				onerror="this.src='/images/profiles/projects/default.png'" />
-			</span>
+			</div>
 		</p>
 	</div>
-	<div id="score_table_1" style="word-wrap: break-word; float:left">	
+	<div id="score_table_1" style="word-wrap: break-word; float:left">
 		<!-- Displays project name -->
-		<h1><%=@project.long_name -%></h1>	
+		<h1><%= @project.long_name -%></h1>
 		<% points=measure('points') %>
 		<% if ( points ) %>
 		<div id="score_points">
 			<p
-				style="a .color: #994411; font-family: Comic Sans MS; font-size: 1.5em; font-weight: bold">
+			style="a .color: #994411; font-family: Comic Sans MS; font-size: 1.5em; font-weight: bold">
 				<!-- Displays points -->
-				<span id="score_points"> <%=format_measure('points', :suffix => ' Points ', :url =>url_for_drilldown('points'))-%>
-				</span>
+				<span id="score_points"> <%= format_measure('points', :suffix => ' Points ', :url =>url_for_drilldown('points'))-%> </span>
 			</p>
 		</div>
 		<% end %>
@@ -27,9 +26,21 @@
 </div>
 <script>
 	jQuery(document).ready(function() {
-		console.log("jQuery is working...");
-		//newWidth = jQuery('#score_table_1').css("width");
-		//console.log("newWidth: " + newWidth);
-		//jQuery('#score_points').css("width", newWidth);
-	});
+		
+			// make the project image fill the container without whitespace or skewing (chops off the excess)
+			var parentHeight = jQuery('#score_image').height();
+			var parentWidth = jQuery('#score_image').width();
+			jQuery('.project_image').each(function() {
+				if ((parentWidth * this.width) / (parentHeight * this.height) < 1) {
+					
+					jQuery(this).css('width', '100%');
+					jQuery(this).css('height', 'auto');
+				}
+				else{
+					jQuery(this).css('height', '100%');
+					jQuery(this).css('width', 'auto');
+				}
+				jQuery(this).css('visibility', 'visible');
+			});
+	}); 
 </script>
