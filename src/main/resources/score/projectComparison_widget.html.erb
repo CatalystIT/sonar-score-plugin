@@ -97,7 +97,7 @@ then set the projectGroup variable to the @Property variable.
 	<!--coverage value-->	
 	<% myCoverage = ProjectMeasure.find(:all, :conditions =>{:metric_id => coverageMetric, :snapshot_id => snapshotId}) %>
      <% if (myCoverage.blank? || myCoverage == nil)%>
-      <td id = "coverageValue" align="right" nowrap=""><%= @ProjectMeasure.value -%>%</td>
+       <td id ="coverageValue" class="coverageValue" align="right" nowrap="">-</td>
      <% else %>
       <td id = "coverageValue" align="right" nowrap=""><%= myCoverage[0].value-%>%</td>
      <% end %>	
@@ -248,6 +248,7 @@ function getBarGraphScale(metricsArray){
 	var barGraphWidth = tableWidth/2.5;
 	largestNumber= Math.max.apply(Math, metricsArray);
 	var scale = barGraphWidth/largestNumber;
+	console.log("this is the scale of the bar graph:  " + scale);
 	return scale; 
 }
 
@@ -273,13 +274,14 @@ function showBars(metric, scale, noOfRows){
  		//calculates the bar graph width 
  		var barWidth = removeCommasOrPercentage(metricValue) * scale; 		
  		//creates a span id to use to retrieve the project bar width
+ 		console.log("this is the barWidth in 'showBars':  " + barWidth);
  		var spanId = "span" + i;
  		//alternates color row based on the row number
  		var color = getColor(i);
- 			
+ 		 		
  		//create a bar based on the metric value.  Used to calculate the name width.
  		previousElement.innerHTML = "<span style='display:inline-block; overflow: hidden; '></span><span id = "+spanId+" style = 'display: inline-block; overflow: hidden; white-space:nowrap ;background-color: "+ color +"; width:"+ barWidth + "px';>"+names+"</span><span style='display:inline-block; width:6px'><span style = 'display:inline-block'>"+metricValue+"</span>";
- 	 	  	
+ 	 		
   	} 	 	
  	checkNameFormat(noOfRows, metric);	
 }
@@ -375,13 +377,13 @@ function getColor( row ){
     
     "<tbody id = 'barGraphBody' style = 'border: 0px; width: 100%' > ";      
      
-   //go through each element for each row in the metrics table, extracting the needed information
+   
    	var idGenerator = 0;
    	var imageIdGenerator = 0;
    	var nameIdGenerator = 0;
    	var divGenerator = 0;
    	var count = 0;
-   	
+   	//go through each element for each row in the metrics table, extracting the needed information
       for (var i = 0; i < elements; i ++){ 
       	newRow = false;
       	//row creation is based on the number of columns. Create a new row if the expression evaluates to true      	
