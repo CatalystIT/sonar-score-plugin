@@ -26,6 +26,7 @@ import com.catalyst.sonar.score.ui.ScoreRubyWidget;
 import com.catalyst.sonar.score.ui.TrophyPage;
 import com.catalyst.sonar.score.ui.TrophyWidget;
 import com.catalyst.sonar.score.ui.TitleCupWidget;
+import com.catalyst.sonar.score.ui.UserProfilePage;
 import com.catalyst.sonar.score.util.DateUtility;
 import com.catalyst.sonar.score.util.SnapshotValue;
 
@@ -104,7 +105,7 @@ public class ScorePlugin extends SonarPlugin{
 		
 		MetricBrackets.class, MetricBracketsParser.class, InvalidNumberOfDoublesException.class, 
 		
-		SnapShotDao.class, MetricDao.class, DateUtility.class, SnapshotValue.class, TrophiesHelper.class, TrophyPage.class//,
+		SnapShotDao.class, MetricDao.class, DateUtility.class, SnapshotValue.class, TrophiesHelper.class, TrophyPage.class, UserProfilePage.class//,
 		
 		//API
 //		AwardSet.class, Criterion.class, Group.class, Member.class,

@@ -71,7 +71,8 @@ public class ScorePluginTest {
 						DateUtility.class, 
 						SnapshotValue.class, 
 						TrophiesHelper.class,
-						TrophyPage.class
+						TrophyPage.class,
+						UserProfilePage.class
 						
 						
 						
