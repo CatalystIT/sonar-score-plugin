@@ -10,6 +10,7 @@ class UserprofilesController < ApplicationController
   def create   
      @image = Userprofile.new(params[:current_user_id],params[:userprofile])     
      @image.saveImage() 
+     redirect_to :controller => "userprofiles", :action => "index"    
   end
 
   #GET/Images

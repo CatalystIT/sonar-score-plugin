@@ -2,18 +2,18 @@ class Userprofile < ActiveRecord::Base
   attr_accessor :uploadedfile , :current_user_id, :path
   
   # Defines the path to store the image
-  def newPath(userprofile)
+  def newPath(image)
     File.join(Rails.root, '..','images','profiles','users', image)
   end
 
   # Initialize the params
-  def initialize(user_id, image=nil)
-    unless userprofile == nil
-      @uploadedfile = userprofile['uploadedfile']
+  def initialize(current_user_id, image=nil)
+    unless image == nil
+      @uploadedfile = image['uploadedfile']
     end
-    @user_id = user_id
+    @current_user_id = current_user_id
 
-    @path = newPath(@user_id + ".png")
+    @path = newPath(@current_user_id + ".png")
   end
 
   # Save the uploaded image to sonar file if a file has been selected.

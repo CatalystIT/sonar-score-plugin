@@ -12,7 +12,6 @@ public final class UserProfilePage implements Page{
 	public String getId() {
 		    // URL of the controller
 		   return "/userprofiles/index";
-		//return "trophy_page";
 	}
 	
 	public String getTitle() {
