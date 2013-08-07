@@ -8,15 +8,10 @@ import org.sonar.api.Property;
 import org.sonar.api.PropertyType;
 import org.sonar.api.SonarPlugin;
 
-import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.batch.SetupDecorator;
 import com.catalyst.sonar.score.batch.TitleCupDecorator;
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
-import com.catalyst.sonar.score.batch.points.*;
-import com.catalyst.sonar.score.batch.util.TrophiesHelper;
-import com.catalyst.sonar.score.dao.MetricDao;
-import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.EnhancedListFilterWidget;
 import com.catalyst.sonar.score.ui.ImageUploadPage;
@@ -27,8 +22,6 @@ import com.catalyst.sonar.score.ui.TrophyPage;
 import com.catalyst.sonar.score.ui.TrophyWidget;
 import com.catalyst.sonar.score.ui.TitleCupWidget;
 import com.catalyst.sonar.score.ui.UserProfilePage;
-import com.catalyst.sonar.score.util.DateUtility;
-import com.catalyst.sonar.score.util.SnapshotValue;
 
 /**
  * Creates a property in the database with the key, name, description and default value set
@@ -96,21 +89,18 @@ public class ScorePlugin extends SonarPlugin{
 	public List getExtensions() {
 		
 		return Arrays.asList(
-		// Definition of Score's points metric		
+		// Metrics added by Score		
 		ScoreMetrics.class,
-		//the decorator class (batch)
-		SetupDecorator.class, PointsDecorator.class, PointsCalculator.class, TrophiesDecorator.class, TitleCupDecorator.class,
-		// Score's ui/widgets
-		ScoreRubyWidget.class, EnhancedListFilterWidget.class, ProjectComparisonWidget.class, TrophyWidget.class, TitleCupWidget.class,ImageUploadPage.class, ProjectAwardsWidget.class,
+		// Decorators
+		SetupDecorator.class, PointsDecorator.class, TrophiesDecorator.class, TitleCupDecorator.class,
+		// Widgets
+		ScoreRubyWidget.class, ProjectComparisonWidget.class,
+		TrophyWidget.class, TitleCupWidget.class, ProjectAwardsWidget.class, 
+		EnhancedListFilterWidget.class,
+		// Pages
+		ImageUploadPage.class, TrophyPage.class, UserProfilePage.class
 		
-		MetricBrackets.class, MetricBracketsParser.class, InvalidNumberOfDoublesException.class, 
-		
-		SnapShotDao.class, MetricDao.class, DateUtility.class, SnapshotValue.class, TrophiesHelper.class, TrophyPage.class, UserProfilePage.class//,
-		
-		//API
-//		AwardSet.class, Criterion.class, Group.class, Member.class,
-//		ScoreProject.class, ScoreUser.class, SearchableHashSet.class,
-//		TitleCup.class		
+	
 		
 		);
 		

@@ -106,7 +106,7 @@ public class AbstractAwardDecorator {
 		snapshots.retainAllWithinDaysAgo(criterion.getDays());
 		for (SnapshotValue value : snapshots) {
 			LOG.log(value);
-			if (!SnapShotDao.isBetter(value.getMeasureValue().doubleValue(),
+			if (!isBetter(value.getMeasureValue().doubleValue(),
 					criterion.getAmount(), criterion.getMetric())) {
 				LOG.log("Doesn't meet Criterion").endMethod();
 				return false;
@@ -132,7 +132,7 @@ public class AbstractAwardDecorator {
 		ScoreProject projectToReturn;
 		double value1 = currentValue(project1, metric);
 		double value2 = currentValue(project2, metric);
-		if (SnapShotDao.isBetter(value1, value2, metric)) {
+		if (isBetter(value1, value2, metric)) {
 			projectToReturn = project1;
 		} else {
 			projectToReturn = project2;
@@ -163,6 +163,39 @@ public class AbstractAwardDecorator {
 				.doubleValue() : 0;
 		LOG.log("current value = " + value).endMethod();
 		return value;
+	}
+	
+	/**
+	 * Corrective for Metric Direction, since for some inexplicable reason
+	 * Sonar's size metrics are set to DIRECTION_WORSE. Also changes
+	 * DIRECTION_NONE to DIRECTION_BETTER.
+	 * 
+	 * @param metric
+	 * @return
+	 */
+	public static int getDirection(Metric metric) {
+		if (metric.getDomain().equals("Size")) {
+			return Metric.DIRECTION_BETTER;
+		} else if (metric.getDirection() == Metric.DIRECTION_NONE) {
+			return Metric.DIRECTION_BETTER;
+		}
+		return metric.getDirection();
+	}
+
+	/**
+	 * Checks if the double value is better than the double compare, given the
+	 * direction of the Metric.
+	 * 
+	 * @param value
+	 * @param compare
+	 * @param metric
+	 * @return
+	 */
+	public static boolean isBetter(double value, double compare, Metric metric) {
+		if (getDirection(metric) == Metric.DIRECTION_BETTER) {
+			return value > compare;
+		}
+		return compare < value;
 	}
 
 }

@@ -10,21 +10,12 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.catalyst.sonar.score.batch.PointsCalculator;
 import com.catalyst.sonar.score.batch.PointsDecorator;
 import com.catalyst.sonar.score.batch.SetupDecorator;
 import com.catalyst.sonar.score.batch.TitleCupDecorator;
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
-import com.catalyst.sonar.score.batch.points.InvalidNumberOfDoublesException;
-import com.catalyst.sonar.score.batch.points.MetricBrackets;
-import com.catalyst.sonar.score.batch.points.MetricBracketsParser;
-import com.catalyst.sonar.score.batch.util.TrophiesHelper;
-import com.catalyst.sonar.score.dao.MetricDao;
-import com.catalyst.sonar.score.dao.SnapShotDao;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
 import com.catalyst.sonar.score.ui.*;
-import com.catalyst.sonar.score.util.DateUtility;
-import com.catalyst.sonar.score.util.SnapshotValue;
 
 /**
  * @author JDunn
@@ -50,31 +41,16 @@ public class ScorePluginTest {
 	public void testGetExtensions() {
 		assertEquals(scorePlugin.getExtensions(),
 				Arrays.asList(
+						// Metrics added by Score		
 						ScoreMetrics.class,
-						SetupDecorator.class,
-						PointsDecorator.class,
-						PointsCalculator.class,
-						TrophiesDecorator.class,
-						TitleCupDecorator.class,
-						ScoreRubyWidget.class,
+						// Decorators
+						SetupDecorator.class, PointsDecorator.class, TrophiesDecorator.class, TitleCupDecorator.class,
+						// Widgets
+						ScoreRubyWidget.class, ProjectComparisonWidget.class,
+						TrophyWidget.class, TitleCupWidget.class, ProjectAwardsWidget.class, 
 						EnhancedListFilterWidget.class,
-						ProjectComparisonWidget.class,
-						TrophyWidget.class,
-						TitleCupWidget.class,
-						ImageUploadPage.class,
-						ProjectAwardsWidget.class,
-						MetricBrackets.class,
-						MetricBracketsParser.class,
-						InvalidNumberOfDoublesException.class,
-						SnapShotDao.class, 
-						MetricDao.class, 
-						DateUtility.class, 
-						SnapshotValue.class, 
-						TrophiesHelper.class,
-						TrophyPage.class,
-						UserProfilePage.class
-						
-						
+						// Pages
+						ImageUploadPage.class, TrophyPage.class, UserProfilePage.class						
 						
 		));
 	}
