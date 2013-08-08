@@ -1,4 +1,7 @@
 <div class="dashbox"><h1> The Awards Page </h1></div><br></br>	
+<% if flash[:repeatnotice] %>
+	<p style="color: red;"><%= flash[:repeatnotice] %></p>
+<% end %>
 <% form_for :trophy, :url =>{:controller => "trophies",:action => "create",:method => :post} do|f| %></br>	
 <span id = "trophyTypeButton" >
 <%= f.radio_button :type, "Trophy", :required => "required", :onclick => "return validateform();" %>
