@@ -23,9 +23,13 @@ class TrophiesController < ApplicationController
   def create 
     @trophy = Trophy.new(params[:trophy])
     
-    if @trophy.saveTrophy() 
+    returnvalue = @trophy.saveTrophy()
+    if ( returnvalue == Trophy::CRITERIA_CREATED)
       redirect_to :controller => "trophies", :action => "success"
-      else
+    elsif ( returnvalue == Trophy::CRITERIA_ALREADY_EXISTS) 
+      flash[:repeatnotice] = "That criteria already exists!"
+      redirect_to :controller => "trophies", :action => "index"
+    else
       redirect_to :controller => "trophies", :action => "index"
       
     end

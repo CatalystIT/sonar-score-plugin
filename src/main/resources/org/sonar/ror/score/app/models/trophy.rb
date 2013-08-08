@@ -1,6 +1,9 @@
 class Trophy < ActiveRecord::Base
   attr_accessor :name, :metric, :amount, :duration, :durationValue, :type
-    
+   
+  CRITERIA_ALREADY_EXISTS = 2
+  CRITERIA_CREATED = 1
+
    #initialize the variables 
   def initialize(trophy=nil)
     @type = trophy['type']
@@ -43,10 +46,16 @@ class Trophy < ActiveRecord::Base
       #if the trophy/title cup property was found, then add the additional criteria to the trophy/title cup 
         prop = Property.by_key(@currentProperty, nil, nil)           
            if (@validData && validate_number(@amount) && (@duration))
-             newTextValue = prop.text_value.to_s + ',' + @criteria           
-             prop.text_value = newTextValue
-             prop.save
-           
+             
+             if ( is_criteria_already_there(prop.text_value.to_s, @criteria))
+              #criteria already exists, explain to user here
+              return CRITERIA_ALREADY_EXISTS
+             else
+              newTextValue = prop.text_value.to_s + ',' + @criteria           
+              prop.text_value = newTextValue
+              prop.save
+              return CRITERIA_CREATED
+             end
           end
         end
       end
@@ -113,4 +122,8 @@ class Trophy < ActiveRecord::Base
      
    end
  
+  #see if this criteria already exists
+   def is_criteria_already_there(sourcestring, newstring)
+     return sourcestring.include? newstring
+   end
 end
