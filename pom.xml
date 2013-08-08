@@ -92,6 +92,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<pluginClass>com.catalyst.sonar.score.ScorePlugin</pluginClass>
+					<pluginKey>score</pluginKey>
 				</configuration>
 			</plugin>
 			<plugin>

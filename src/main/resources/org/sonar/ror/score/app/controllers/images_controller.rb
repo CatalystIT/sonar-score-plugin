@@ -1,4 +1,4 @@
-class ImagesController < ApplicationController
+class ImagesController < ScoreController
   # this is an administration console
   SECTION=Navigation::SECTION_CONFIGURATION
   def index

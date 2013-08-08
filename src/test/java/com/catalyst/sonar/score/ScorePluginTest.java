@@ -50,7 +50,7 @@ public class ScorePluginTest {
 						TrophyWidget.class, TitleCupWidget.class, ProjectAwardsWidget.class, 
 						EnhancedListFilterWidget.class,
 						// Pages
-						ImageUploadPage.class, TrophyPage.class, UserProfilePage.class						
+						ImageUploadPage.class, TrophyPage.class, UserProfilePage.class, UserListPage.class						
 						
 		));
 	}

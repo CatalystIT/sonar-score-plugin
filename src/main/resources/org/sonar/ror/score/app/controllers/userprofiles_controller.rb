@@ -1,23 +1,23 @@
-class UserprofilesController < ApplicationController
+class UserprofilesController < ScoreController
   # this is an administration console
   SECTION=Navigation::SECTION_CONFIGURATION
   def index
     # do not delete
   end
 
-  #POST/Images
-  #Redirects to the dashboard
+  #POST/Userprofiles
+  #Redirects to the itself (Refreshes Page)
   def create   
      @image = Userprofile.new(params[:current_user_id],params[:userprofile])     
      @image.saveImage() 
-     redirect_to :controller => "userprofiles", :action => "index"    
+     redirect_to :controller => "userprofiles", :action => "index", :userid => params[:current_user_id]     
   end
 
-  #GET/Images
-  #Displays the image uploaded on the widget
+  #GET/Userprofiles
+  #Displays the image uploaded on the page
   def display
     @image = Userprofile.new(params[:current_user_id])
-    response.headers["Content-Type"] = 'image/jpeg'
+    response.headers["Content-Type"] = 'image/png'
     response.headers["Content-Disposition"] = 'inline'
     render :text => @image.readImage()
   end

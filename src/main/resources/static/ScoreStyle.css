@@ -1,0 +1,26 @@
+	.score-small {
+		font-size:0.8em;
+	}
+	#score-nav {
+		padding:5px;
+		margin:0px;
+		margin-bottom:10px;
+		font-size:1.2em;
+		background-color: #CAE3F2;
+		border: 2px solid;
+		border-color: #4B9FD5;
+		vertical-align: middle;
+	}
+	.score-nav-current {
+		background-color: #4B9FD5;
+		color: #FFFFFF;
+	}
+	.score-page-content a:link {
+		text-decoration: none;
+	}
+	.score-page-content a:hover {
+		color: #111144;
+		background-color: #CAE3F2;
+		border-color: #4B9FD5;
+		text-decoration: underline;
+	}

@@ -13,15 +13,7 @@ import com.catalyst.sonar.score.batch.SetupDecorator;
 import com.catalyst.sonar.score.batch.TitleCupDecorator;
 import com.catalyst.sonar.score.batch.TrophiesDecorator;
 import com.catalyst.sonar.score.metrics.ScoreMetrics;
-import com.catalyst.sonar.score.ui.EnhancedListFilterWidget;
-import com.catalyst.sonar.score.ui.ImageUploadPage;
-import com.catalyst.sonar.score.ui.ProjectAwardsWidget;
-import com.catalyst.sonar.score.ui.ProjectComparisonWidget;
-import com.catalyst.sonar.score.ui.ScoreRubyWidget;
-import com.catalyst.sonar.score.ui.TrophyPage;
-import com.catalyst.sonar.score.ui.TrophyWidget;
-import com.catalyst.sonar.score.ui.TitleCupWidget;
-import com.catalyst.sonar.score.ui.UserProfilePage;
+import com.catalyst.sonar.score.ui.*;
 
 /**
  * Creates a property in the database with the key, name, description and default value set
@@ -98,7 +90,7 @@ public class ScorePlugin extends SonarPlugin{
 		TrophyWidget.class, TitleCupWidget.class, ProjectAwardsWidget.class, 
 		EnhancedListFilterWidget.class,
 		// Pages
-		ImageUploadPage.class, TrophyPage.class, UserProfilePage.class
+		ImageUploadPage.class, TrophyPage.class, UserProfilePage.class, UserListPage.class
 		
 	
 		

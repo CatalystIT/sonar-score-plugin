@@ -1,5 +1,5 @@
 class Userprofile < ActiveRecord::Base
-  attr_accessor :uploadedfile , :current_user_id, :path
+  attr_accessor :uploadedfile , :current_user_id, :path, :userid
   
   # Defines the path to store the image
   def newPath(image)
@@ -10,6 +10,7 @@ class Userprofile < ActiveRecord::Base
   def initialize(current_user_id, image=nil)
     unless image == nil
       @uploadedfile = image['uploadedfile']
+      @userid = :userid
     end
     @current_user_id = current_user_id
 
