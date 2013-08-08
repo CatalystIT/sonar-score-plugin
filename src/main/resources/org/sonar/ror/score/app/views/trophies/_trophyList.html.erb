@@ -4,22 +4,26 @@ properties = Property.find(:all, :conditions => ['prop_key LIKE ?','sonar.score.
 <h1> List of Trophies:</h1></br>
 <% for @Property in properties %>
  <% trophy = @Property.prop_key %> 
-   <div id= "trophyName" class = "nameClass">
-   <%=trophy[trophy.index(':') + 1, trophy.length]%>
-
-</div> 
+ <% metrics = @Property.text_value %>
+    <b><div id="trophyName" class = "nameClassTrophies">
+	   <%=trophy[trophy.index(':') + 1, trophy.length]%>
+	</div></b>
+	<div id="metricsName" class = "metricsClassTrophies">
+		<%=metrics%>	
+	</div> 
+	<br>
 <% end %>
 
 </br</br>
 </br></br>
 <%= link_to "Back", '/trophies/index' ,{:style=>'color: blue'} %>
 <script type="text/javascript">
-window.onload=formatName();
+window.onload=formatMetricsTrophies();formatNameTrophies();
 
 <!--Formats the trophy name-->
-function formatName(){
-	var names = document.getElementsByClassName("nameClass");
-	for (var i = 0; i < names.length; i ++){
+function formatNameTrophies(){
+	var names = document.getElementsByClassName("nameClassTrophies");
+	for (var i = 0; i < names.length; i++){
 		var name = names[i];
 		var formattedNameArray = name.textContent.split(/(?=[A-Z])/);
 		var formattedName = formattedNameArray.toString();
@@ -29,5 +33,83 @@ function formatName(){
 	}		
 
 }
+/* format the metrics for the trophies */
+function formatMetricsTrophies(){
+	var names = document.getElementsByClassName("metricsClassTrophies");
+	for (var i = 0; i < names.length; i ++){
+		var name = names[i];
+		var formattedNameArray = name.textContent.split(',');
+		names[i].textContent = "";
+		
+		for (var j = 0; j < formattedNameArray.length; j++) {
+			var formattedName = formattedNameArray[j];
+			formattedName = formattedName.replace(/;/g,',');
+			formattedName = formattedName.replace(/[\b{]/,'<p style="font-family:arial;font-size:11px;">&nbsp;&nbsp;&nbsp;&nbsp;');
+			formattedName = formattedName.replace(/[\b}]/,'');		
+			formattedName = formattedName.trim();
+	
+			/* now split the string again to format it more*/
+			metricsNameArray = formattedName.split(',');
+			formattedName = "";
+			for ( var k = 0; k < metricsNameArray.length; k++) {
+				var splitName = metricsNameArray[k];
+				switch (k) {
+					case 0:
+						formattedName += splitName + ",";
+						break;
+					case 1:
+						formattedName += "&nbsp;Value:&nbsp;" + splitName + ",";
+						break;
+					case 2:
+						formattedName += "&nbsp;Duration:&nbsp;" + splitName;
+						if ( formattedName[formattedName.length-1] == 'd') {
+							// Replace the last char with a space
+							var isPlural = checkIsPlural(formattedName);
+							formattedName = formattedName.replace(/.$/,"&nbsp;");
+							if ( isPlural) {
+								formattedName += "days</p>";
+							}
+							else {
+								formattedName += "day</p>";
+								
+							}
+						}
+						else {
+							// Replace the last char with a space
+							var isPlural = checkIsPlural(formattedName);
+							formattedName = formattedName.replace(/.$/,"&nbsp;");
+							if ( isPlural) {
+								formattedName += "weeks</p>";
+							}
+							else {
+								formattedName += "week</p>";
+							}
+						}
+						break;
+				}
+				
+				
+			}
+			
+			names[i].outerHTML += formattedName;
+		}	
 
+	}		
+
+}
+// string has a number at the end of it.  Is it 1?
+function checkIsPlural( name) {
+	if ( name[name.length-2] != '1') {
+		return true;
+	}
+	else {
+		var preNumber = name[name.length-3];
+		switch (preNumber) {
+			case '0','1','2','3','4','5','6','7','8','9':
+				return true;
+			default:
+				return false;
+		}
+	}
+}
 </script>	
