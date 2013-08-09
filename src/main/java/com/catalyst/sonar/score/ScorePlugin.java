@@ -90,7 +90,7 @@ public class ScorePlugin extends SonarPlugin{
 		TrophyWidget.class, TitleCupWidget.class, ProjectAwardsWidget.class, 
 		EnhancedListFilterWidget.class,
 		// Pages
-		ImageUploadPage.class, TrophyPage.class, UserProfilePage.class, UserListPage.class, TeamListPage.class
+		ImageUploadPage.class, TrophyPage.class, UserListPage.class, TeamListPage.class
 		
 	
 		

@@ -24,7 +24,7 @@ def renderLink (*names)
   end
   
   def renderScoreNavBar
-  	navOptions = Array[["Users", "userlists","user"], ["Teams", "teamlist","team"], ["Projects", "projectlist","project"]]
+  	navOptions = Array[["Users", "userlist","user"], ["Teams", "teamlist","team"], ["Awards", "awardlist","award"]]
   	openDiv = "<div id=\"score-nav\">\n"
   	divContents = ""
   	closeDiv = "\n</div>"

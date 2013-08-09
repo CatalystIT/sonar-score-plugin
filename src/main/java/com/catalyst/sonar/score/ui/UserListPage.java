@@ -7,7 +7,7 @@ public final class UserListPage implements Page{
 	
 	public String getId() {
 		    // URL of the controller
-		   return "/userlists/index";
+		   return "/userlist/index";
 	}
 	
 	public String getTitle() {
