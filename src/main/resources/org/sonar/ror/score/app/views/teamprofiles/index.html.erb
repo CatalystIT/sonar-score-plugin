@@ -1,0 +1,24 @@
+<%= renderLink "ScoreStyle.css" %>
+<%
+ selectedTeamId = request.url.split('teamid=')[1]
+	loggedIn = (current_user != nil)
+	selectedTeam = Group.find(:all, :conditions =>{:id => selectedTeamId})[0]
+	isMemberOfCurrentTeam = true #figure out how to do this, set to true for now
+	displayName = selectedTeam.name
+%>
+<div class = "score-page-content">
+    <%=renderScoreNavBar %>
+
+    <!-- The uploaded project image/icon gets displayed here and if the team does not have an image/icon then the default image/icon is displayed -->
+    <p>
+        <span class="big" id="score_image"> <img id= "team_logo" style ="height:100px; max-width:150px" src="/teamprofiles/display?current_team_id=<%= selectedTeam.id%>"  onerror="this.src='/images/profiles/teams/default.png'"/> </span>
+    </p>
+    <h1 style="font-size:1.5em"><%= selectedTeam.name %></h1></br></br>
+    <% if isMemberOfCurrentTeam %>
+    <!-- The image selected is uploaded and saved in the images folder as the project image/icon -->
+    	<% form_for :teamprofile,:url =>{:controller => "teamprofiles",:action => "create",:method => :post, :current_team_id => selectedTeam.id}, :html => {:multipart => true} do %>
+    		<%= file_field :teamprofile,:uploadedfile ,:required => true %></br></br>
+    		<%= submit_tag "Change Picture" %>
+    	<% end %>
+    <% end %>
+</div>

@@ -2,14 +2,13 @@
 <div class = "score-page-content">
 	<%=renderScoreNavBar %>
 	</br></br>
-	<h1>This will become the Teams page</h1>
-	<% selectedUsers = User.find(:all)%>
+	<% teams = Group.find(:all, :conditions => ['description LIKE ?','[Team]%'])%>
 	<div class="dashbox">
-		<% selectedUsers.each { |user|%>
-			<div class = "user-item">
-				<a href = "/userprofiles/index?userid=<%=user.id%>">
-					<img class= "profile_picture" style ="height:30px; max-width:45px" src="/userprofiles/display?current_user_id=<%=user.id%>"  onerror="this.src='/images/profiles/users/default.png'"/>
-					<span style = "font-size:1.5em"><%=user.name%></span>
+		<% teams.each { |team|%>
+			<div class = "team-item">
+				<a href = "/teamprofiles/index?teamid=<%=team.id%>">
+					<img class= "team_logo" style ="height:30px; max-width:45px" src="/teamprofiles/display?current_team_id=<%=team.id%>"  onerror="this.src='/images/profiles/teams/default.png'"/>
+					<span style = "font-size:1.5em"><%=team.name%></span>
 				</a>
 			</div>
 		<%}%>
