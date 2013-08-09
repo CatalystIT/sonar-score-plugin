@@ -4,11 +4,10 @@
 	loggedIn = (current_user != nil)
 	selectedUser = User.find(:all, :conditions =>{:id => selectedUserId})[0]
 	isCurrentUser = (current_user == selectedUser)
+	displayName = isCurrentUser ? "You" : selectedUser.name
 %>
 <div class = "score-page-content">
-    <div id="score-nav">
-        <a href="/userlists/index"> Users </a> &gt; <span class="score-small" style="font-size:0.8em"><b><%if isCurrentUser%>You<%else%><%= selectedUser.name %><%end%></b> </span><span> | </span><a>Teams</a><span> | </span><a>Projects</a>
-    </div>
+    <%=renderScoreNavBar %>
 
     <!-- The uploaded project image/icon gets displayed here and if the project does not have an image/icon then the default image/icon is displayed -->
     <p>

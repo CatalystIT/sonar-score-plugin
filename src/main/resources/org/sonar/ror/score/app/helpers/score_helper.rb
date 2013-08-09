@@ -22,4 +22,22 @@ def renderLink (*names)
   	}
   	return part1 + part2 + part3 + part4
   end
+  
+  def renderScoreNavBar
+  	navOptions = Array[["Users", "userlists","user"], ["Teams", "teamlist","team"], ["Projects", "projectlist","project"]]
+  	openDiv = "<div id=\"score-nav\">\n"
+  	divContents = ""
+  	closeDiv = "\n</div>"
+  	lastIndex = navOptions.length - 1
+  	i = 0
+  	navOptions.each { |option|
+  		isCurrent = request.url.include? option[2]
+  		divContents += "<a href=\"/#{option[1]}\"#{isCurrent ? "class=\"current\"><b>" : ">"} "
+  		divContents += "#{option[0]} #{isCurrent ? "</b>" : ""}</a>"
+  		if (i < lastIndex)
+  			divContents += "<span> | </span>"
+  		end
+  	}
+  	return openDiv + divContents + closeDiv
+  end
 end
