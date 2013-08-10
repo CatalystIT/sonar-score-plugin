@@ -1,24 +1,32 @@
+<!--USER PROFILE PAGE-->
 <%= renderLink "ScoreStyle.css" %>
 <%
  selectedUserId = request.url.split('userid=')[1]
-	loggedIn = (current_user != nil)
 	selectedUser = User.find(:all, :conditions =>{:id => selectedUserId})[0]
 	isCurrentUser = (current_user == selectedUser)
-	displayName = isCurrentUser ? "You" : selectedUser.name
 %>
-<div class = "score-page-content">
-    <%=renderScoreNavBar %>
+<%=renderScoreNavBar %>
+<div id = "score-page-content" class = "hidden">
 
     <!-- The uploaded project image/icon gets displayed here and if the project does not have an image/icon then the default image/icon is displayed -->
-    <p>
-        <span class="big" id="score_image"> <img id= "profile_picture" style ="height:100px; max-width:150px" src="/userprofiles/display?current_user_id=<%= selectedUser.id%>"  onerror="this.src='/images/profiles/users/default.png'"/> </span>
-    </p>
-    <h1 style="font-size:1.5em"><%= selectedUser.name %></h1></br></br>
-    <% if isCurrentUser %>
-    <!-- The image selected is uploaded and saved in the images folder as the project image/icon -->
-    <% form_for :userprofile,:url =>{:controller => "userprofiles",:action => "create",:method => :post, :current_user_id => current_user.id}, :html => {:multipart => true} do %>
-    <%= file_field :userprofile,:uploadedfile ,:required => true %></br></br>
-    <%= submit_tag "Change Picture" %>
-    <% end %>
-    <% end %>
+    <div id = "profile-info" class = "page-piece">
+        <p>
+            <span class="big" id="score_image">
+                <img id= "profile_picture" style ="height:100px; max-width:150px" src="/userprofiles/display?current_user_id=<%= selectedUser.id%>"  onerror="this.src='/images/profiles/users/default.png'"/>
+            </span>
+        </p>
+        <p style="font-size:1.5em"><%= selectedUser.name %></p></br></br>
+        <% if isCurrentUser || userIsAdmin(current_user)%>
+            <!-- The image selected is uploaded and saved in the images folder as the project image/icon -->
+            <% form_for :userprofile,:url =>{:controller => "userprofiles",:action => "create",:method => :post, :current_user_id => current_user.id}, :html => {:multipart => true} do %>
+                <%= file_field :userprofile,:uploadedfile ,:required => true %></br></br>
+                <%= submit_tag "Change Picture" %>
+            <% end %>
+        <% end %>
+    </div>
+    <div id = "item-lists" class = "page-piece">
+    	<p style="font-size:1.5em; margin:5px; text-decoration:underline">Teams</p>
+        <%=renderList selectedUser.groups%>
+    </div>
 </div>
+<%=unhidePage%>

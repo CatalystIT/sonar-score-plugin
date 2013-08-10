@@ -1,16 +1,9 @@
+<!--USER LIST PAGE-->
 <%= renderLink "ScoreStyle.css" %>
-<div class = "score-page-content">
+<div id = "score-page-content" class = "hidden">
 	<%=renderScoreNavBar %>
 	</br></br>
 	<% selectedUsers = User.find(:all)%>
-	<div class="dashbox">
-		<% selectedUsers.each { |user|%>
-			<div class = "user-item">
-				<a href = "/userprofiles/index?userid=<%=user.id%>">
-					<img class= "profile_picture" style ="height:30px; max-width:45px" src="/userprofiles/display?current_user_id=<%=user.id%>"  onerror="this.src='/images/profiles/users/default.png'"/>
-					<span style = "font-size:1.5em"><%=user.name%></span>
-				</a>
-			</div>
-		<%}%>
-	</div>
+	<%= renderList selectedUsers %>
 </div>
+<%=unhidePage%>

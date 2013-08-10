@@ -1,6 +1,25 @@
 .score-small {
 	font-size:0.8em;
 }
+img.thumbnail{
+	height:30px;
+	max-width:45px;
+}
+span.thumbnail {
+	font-size:1.5em;
+}
+.page-piece {
+	float:left;
+	margin:5px;
+	padding:5px;
+}
+#item-lists {
+}
+#profile-info {
+	width:300px;
+	max-width:300px;
+}
+
 #score-nav {
 	margin:0px;
 	margin-bottom:10px;
