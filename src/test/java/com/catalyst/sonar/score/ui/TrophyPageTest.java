@@ -25,7 +25,7 @@ public class TrophyPageTest {
 	 */
 	@Test
 	public void testGetId() {
-		assertEquals(trophypage.getId(), "/trophies/index");
+		assertEquals(trophypage.getId(), "/awards/index");
 	}
 
 	/**

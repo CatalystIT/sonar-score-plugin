@@ -1,20 +1,24 @@
-class Trophy < ActiveRecord::Base
-  attr_accessor :name, :metric, :amount, :duration, :durationValue, :type
+class Award < ActiveRecord::Base
+  attr_accessor :name, :metric, :amount, :duration, :durationValue, :type, :trophyselect, :titlecupselect, :newbutton 
    
   CRITERIA_ALREADY_EXISTS = 2
   CRITERIA_CREATED = 1
 
    #initialize the variables 
-  def initialize(trophy=nil)
-    @type = trophy['type']
-    @name = trophy['name']
-    @metric = trophy['metric']
-    @amount = trophy['amount']
-    @duration = trophy['duration']
-    @durationValue = trophy['durationValue']
+  def initialize(award=nil)
+    @type = award['type']
+    @name = award['name']
+    @metric = award['metric']
+    @amount = award['amount']
+    @duration = award['duration']
+    @durationValue = award['durationValue']
     @propertyValue =nil
     @currentProperty
     @criteria       
+    @trophyselect = award['trophyselect']
+    @cupselect = award['titlecupselect']
+    @currentExistingName
+    @existing = award['newbutton']
   end
     
    #saves Trophy(s) or Title Cup(s) created by the admin
@@ -22,12 +26,18 @@ class Trophy < ActiveRecord::Base
       unless(@type.blank?)
       if (@type == "Trophy")
         @propertyValue = "sonar.score.Trophy"
+        @currentExistingName = @trophyselect
       elsif (@type == "Title Cup")
         @propertyValue = "sonar.score.TitleCup"
+        @currentExistingName = @cupselect
       end
    
+      if (@existing == "New")
+        @name = formatName()        
+      elsif (@existing == "Existing")
+        @name = formatExistingName()
+      end
     
-      @name = formatName()
       #this is the property that will be persisted to the database
       @currentProperty =   @propertyValue + ':' + @name    
       @propertyFound = is_property_new?()
@@ -40,6 +50,7 @@ class Trophy < ActiveRecord::Base
       
           if (@validData && validate_number(@amount) && validate_number(@duration))    
              Property.set(@currentProperty , @criteria)
+            return CRITERIA_CREATED
           end
       
       else
@@ -70,6 +81,14 @@ class Trophy < ActiveRecord::Base
       @name = @name
     end 
    
+  end
+  
+  def formatExistingName() 
+    if (@currentExistingName.match(/\s/))
+      @name =  @currentExistingName.split(' ').map(&:capitalize).join(' ').delete(' ')
+    else
+      @name = @currentExistingName
+    end
   end
   
   #checks to see if the trophy/title cup property has been persisted

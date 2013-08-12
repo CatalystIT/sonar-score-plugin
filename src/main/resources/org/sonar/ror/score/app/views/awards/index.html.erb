@@ -1,0 +1,154 @@
+<div class="dashbox"><h1> The Awards Page </h1></div><br></br>	
+
+<% if flash[:repeatnotice] %>
+	<p style="color: red;"><%= flash[:repeatnotice] %></p>
+<% end %>
+<% form_for :award, :url =>{:controller => "awards",:action => "create",:method => :post} do|f| %></br>	
+
+<span id = "trophyTypeButton" >
+<%= f.radio_button :type, "Trophy", :required => "required", :onclick => "return validateform();", :checked => "checked" %>
+<%= f.label :type,'Trophy' %>
+<%= f.radio_button :type, "Title Cup" , :onclick => "return validateform();"%>
+<%= f.label :type,'Title Cup' %>
+</span>
+</br></br></br>	
+
+<span id = "newOrExistingButton" >
+<%= f.radio_button :newbutton, "New", :required => "required", :onclick => "return newOrExisting();", :checked => "checked" %>
+<%= f.label :newbutton,'New' %>
+<%= f.radio_button :newbutton, "Existing" , :onclick => "return newOrExisting();"%>
+<%= f.label :newbutton,'Existing' %>
+</span>
+
+
+
+	
+<%= f.label :name %>
+<%= f.text_field :name %>
+<%= select('award','trophyselect', options_from_collection_for_select(Property.find(:all, :conditions => ['prop_key LIKE ?','sonar.score.Trophy%'], :order => 'prop_key ASC'), :prop_key, :prop_key),{:prompt => 'Select Name'},{:class => 'trophyclassname'})%>
+<%= select('award','titlecupselect', options_from_collection_for_select(Property.find(:all, :conditions => ['prop_key LIKE ?','sonar.score.TitleCup%'], :order => 'prop_key ASC'), :prop_key, :prop_key),{:prompt => 'Select Name'},{:class => 'cupclassname'})%>
+<%= link_to_remote( "Criteria",
+                          :update => "metric_div",
+                          :method => 'get',
+                          :with   => 'serialize_fields()',
+                          :url =>{ :action => :update_metrics }) %>
+ <div id='metric_div'>
+                                                    
+ </div>  
+
+<br><br>
+<%= f.label :metric %>	
+<%= select('award','metric', options_from_collection_for_select(Metric.find(:all, :conditions => {:enabled => 1}, :order => 'short_name ASC'), :short_name, :short_name),{:prompt => 'Select Metric'},{:required => true})%>
+<%= f.label :amount %>                                                               
+<%= f.text_field :amount,:size => 15, :class => 'someClass',:required => "required", :pattern => '^[0-9]\d*(\.\d+)?$', :title => 'Enter a positive number'%>
+<%= f.label :duration %>	
+<%= f.text_field :duration, :size => 15, :required => "required", :pattern => '^[0-9]\d*(\.\d+)?$', :title => 'Enter a positive number' %> 
+<%= f.select(:durationValue, [['Days', 'd'],['Weeks', 'w']],{ :prompt => "Weeks or Days?"},{:required => 'select'})%>
+
+</br></br>	
+<%= f.submit :"Save"%>
+<% end %> 
+</br></br>
+
+<%= link_to "List of Trophies", '/awards/_trophyList' ,{:style=>'color: blue'} %>
+<%= link_to "List of Title Cups", '/awards/_cupList' ,{:style=>'color: blue'} %>
+
+
+
+
+<script type="text/javascript">
+window.onload=formatNameTrophies();formatNameCups();newOrExisting();validateform();
+
+
+function serialize_fields(){
+  var fields = new Array();
+  fields.push(Form.Element.serialize('award_trophyselect'));
+  fields.push(Form.Element.serialize('award_titlecupselect'));
+  fields.push(Form.Element.serialize('award_name'));
+  return fields.join('&');
+}
+
+
+function newOrExisting() {
+	var newButton = award_newbutton_new.checked;
+	var existingButton = award_newbutton_existing.checked;
+	
+	if ( newButton) {
+		jQuery("#award_name").show();
+		jQuery("#award_trophyselect").hide();
+		jQuery("#award_titlecupselect").hide();
+
+	}
+	else {
+		jQuery("#award_name").hide();		
+		validateform();
+	}
+	
+}
+
+function validateform(){
+	var titleCup = award_type_title_cup.checked;
+	var trophy = award_type_trophy.checked;
+	var existingButton = award_newbutton_existing.checked;
+	
+	if (titleCup){
+		document.getElementById("award_amount").removeAttribute("required");
+		document.getElementById("award_durationValue").removeAttribute("required");
+		document.getElementById("award_duration").removeAttribute("required");	
+		
+		jQuery("#award_trophyselect").hide();
+		if ( existingButton) {
+			jQuery("#award_titlecupselect").show();
+		}
+	}else{		
+		document.getElementById("award_amount").setAttribute("required","required");
+		document.getElementById("award_durationValue").setAttribute("required","required");
+		document.getElementById("award_duration").setAttribute("required","required");
+		
+		if ( existingButton) {
+			jQuery("#award_trophyselect").show();
+		}
+		jQuery("#award_titlecupselect").hide();
+	}
+
+}
+
+<!--Formats the trophy name-->
+function formatNameTrophies(){
+	jQuery(document).ready(function(){
+		jQuery('.trophyclassname option').each( function() {
+			var mytext = this.text;
+			var myindex = mytext.indexOf(":") + 1;
+			var slicedName = mytext.slice(myindex);
+		 	var formattedNameArray = slicedName.split(/(?=[A-Z])/);
+		 	var formattedName = formattedNameArray.toString();
+		 	var goodName = formattedName.replace(/,/g,' ');
+			this.text = goodName;
+			this.value = goodName;
+		});		
+	});	
+
+}
+function formatNameCups(){
+	jQuery(document).ready(function(){
+		jQuery('.cupclassname option').each( function() {
+			var mytext = this.text;
+			var myindex = mytext.indexOf(":") + 1;
+			var slicedName = mytext.slice(myindex);
+		 	var formattedNameArray = slicedName.split(/(?=[A-Z])/);
+		 	var formattedName = formattedNameArray.toString();
+		 	var goodName = formattedName.replace(/,/g,' ');
+			this.text = goodName;
+			this.value = goodName;
+
+
+		});		
+	});	
+
+}
+
+</script>
+
+
+
+	

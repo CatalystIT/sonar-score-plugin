@@ -20,7 +20,7 @@ public final class TrophyPage implements Page {
 	 * @return the URL of the Awards Page
 	 */
 	public String getId() {
-		return "/trophies/index";
+		return "/awards/index";
 	}
 
 	/**
