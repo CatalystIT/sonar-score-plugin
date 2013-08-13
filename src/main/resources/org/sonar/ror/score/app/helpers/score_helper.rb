@@ -33,7 +33,7 @@ module ScoreHelper
 	end
   
 	def renderScoreNavBar
-		navOptions = Array[["Users", "userlist","user"], ["Teams", "teamlist","team"], ["Awards", "awardlist","award"]]
+		navOptions = Array[["Users", "userlist","user"], ["Teams", "teamlist","team"]]
 	  	openDiv = "<div id=\"score-nav\">\n"
 	  	divContents = ""
 	  	closeDiv = "\n</div>"
