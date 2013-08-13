@@ -57,36 +57,6 @@ class AwardsController < ApplicationController
     end
   end
  
-  # ajax callback
-  def update_metrics()
-   
-    
-    titlecupstr = params[:award][:titlecupselect].gsub!(' ', '_')
-    titlecupstr = 'sonar.score.TitleCup:' + titlecupstr.camelize()
-    properties = Property.find(:all, :conditions => ['prop_key = ?',titlecupstr])
-    for property in properties
-      titlecupstrfinal = formatMetrics(property.text_value) 
-    end
-    
-    
-    trophystr = params[:award][:trophyselect].gsub!(' ', '_')
-    trophystr = 'sonar.score.Trophy:' + trophystr.camelize()
-    properties = Property.find(:all, :conditions => ['prop_key = ?',trophystr])
-    for property in properties
-      trophystrfinal = formatMetrics(property.text_value) 
-    end
-    
-    if ( titlecupstrfinal == nil) 
-      titlecupstrfinal = ''
-    end
-    if ( trophystrfinal == nil) 
-      trophystrfinal = ''
-    end
-    
-    render :text => "<p><b>" + titlecupstrfinal + trophystrfinal + "</b></p>"
-    
-    
-  end
 
   
   # {Unit tests success (%);100;2w}
@@ -110,8 +80,35 @@ class AwardsController < ApplicationController
    
   end
   
+  # ajax callback
+  def update_metrics_cup() 
+    myparams = params[:selected]
+
+    titlecupstr = myparams.gsub!(' ', '_')
+    titlecupstr = 'sonar.score.TitleCup:' + titlecupstr.camelize()
+    properties = Property.find(:all, :conditions => ['prop_key = ?',titlecupstr])
+    for property in properties
+      titlecupstrfinal = formatMetrics(property.text_value) 
+    end
+
+    render (:update) { |page| page.replace_html 'metric_div',  "<p><b>" + titlecupstrfinal + "</b></p>" }       
+    
+  end
   
-  
+  # ajax callback
+  def update_metrics_trophy()
+    myparams = params[:selected]
+     
+    trophystr = myparams.gsub!(' ', '_')
+    trophystr = 'sonar.score.Trophy:' + trophystr.camelize()
+    properties = Property.find(:all, :conditions => ['prop_key = ?',trophystr])
+    for property in properties
+      trophystrfinal = formatMetrics(property.text_value) 
+    end
+        
+    render (:update) { |page| page.replace_html 'metric_div',  "<p><b>" + trophystrfinal + "</b></p>" }       
+        
+  end
   
   
   
