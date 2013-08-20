@@ -33,7 +33,7 @@
         <p style="font-size:1.5em"><%= selectedUser.name %></p></br></br>
         <% if isCurrentUser || userIsAdmin(current_user)%>
             <!-- The image selected is uploaded and saved in the images folder as the project image/icon -->
-            <% form_for :userprofile,:url =>{:controller => "userprofiles",:action => "create",:method => :post, :current_user_id => current_user.id}, :html => {:multipart => true} do %>
+            <% form_for :userprofile,:url =>{:controller => "userprofiles",:action => "create",:method => :post, :current_user_id => selectedUser.id}, :html => {:multipart => true} do %>
                 <%= file_field :userprofile,:uploadedfile ,:required => true %></br></br>
                 <%= submit_tag "Change Picture" %>
             <% end %>
