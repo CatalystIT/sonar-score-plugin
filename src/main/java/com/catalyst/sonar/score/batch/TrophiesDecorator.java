@@ -13,10 +13,10 @@
  */
 package com.catalyst.sonar.score.batch;
 
-import static com.catalyst.sonar.score.log.Logger.LOG;
-
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.measures.Metric;
@@ -46,6 +46,8 @@ import org.sonar.api.config.Settings;
  * 
  */
 public class TrophiesDecorator implements Decorator {
+	
+	private final Logger logger = LoggerFactory.getLogger(TrophiesDecorator.class);
 
 	private final DatabaseSession session;
 	private Project project;
@@ -106,54 +108,52 @@ public class TrophiesDecorator implements Decorator {
 			if(!resource.getScope().equals("PRJ")) {
 				return;
 			}
-			LOG.beginMethod("TrophiesDecorator.decorate()");
+			logger.debug("TrophiesDecorator.decorate()");
 			TrophyDao trophyDao = new TrophyDao(session);
 			AwardSet<Trophy> trophies = trophyDao.getAll();
 			if(trophies == null) {
-				LOG.endMethod();
 				return;
 			}
-			LOG.logEmf("There are " + trophies.size() + " Trophies");
+			logger.info("There are " + trophies.size() + " Trophies");
 			ScoreProjectDao projectDao = new ScoreProjectDao(session);
 			ScoreProject thisProject = projectDao.getProjectById(project
 					.getId());
 			for (Trophy trophy : trophies) {
-				LOG.logEmf("Trophy = " + trophy.getName());
+				logger.info("Trophy = " + trophy.getName());
 				if (criteriaMet(trophy)) {					
 					trophyDao.assign(trophy, thisProject);
 				}
 			}
 		} catch (RuntimeException e) {
-			LOG.log(e);
+			logger.warn(e.getStackTrace().toString());
 		}
-		LOG.endMethod();
-
 	}
 	
 	private boolean criteriaMet(Award award) {
-		LOG.beginMethod("criteriaMet()");
-		LOG.log(award + " has "
+		logger.debug("criteriaMet()");
+		logger.debug(award + " has "
 				+ award.getCriteria().size() + " Criteria:");
 		try {
 			for (Criterion criterion : award.getCriteria()) {
-				LOG.log(criterion);
+				logger.debug(criterion.toString());
 				if (criterion.getType() == Criterion.Type.BEST) {
 					continue;
 				}
 				Metric metric = criterion.getMetric();
 				List<SnapshotValue> entries = measuresHelper
 						.getMeasureCollection(metric.getName());
-				LOG.log("SnapshotHistories:").log(entries);
+				logger.debug("SnapshotHistories:");
+				logger.debug("{}", entries);
 				if (!trophiesHelper.criteriaMet(entries, criterion.getAmount(),
 						criterion.getDays(), metric.getName(), session)) {
-					LOG.log("Leaving criteriaMet(), returning false").endMethod();
+					logger.debug("Leaving criteriaMet(), returning false");
 					return false;
 				}
 			}
 		} catch (RuntimeException e) {
-			LOG.log(e);
+			logger.warn(e.getStackTrace().toString());
 		}
-		LOG.log("Leaving criteriaMet(), returning true").endMethod();
+		logger.debug("Leaving criteriaMet(), returning true");
 		return true;
 	}
 	

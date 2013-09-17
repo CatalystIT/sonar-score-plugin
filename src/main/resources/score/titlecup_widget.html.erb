@@ -27,18 +27,18 @@
 		<% for @Property in properties %>
 			<% if(@Property.resource_id == @project.id) %>
 				<% titleCup = @Property.prop_key %>
-				<div class="cup">
-					<div>
-						<div style="float:left; margin:10px">
+				<span class="cup">
+					<span>
+						<span style="float:left; margin:10px">
 							<div align="center">
 								<img src="/images/profiles/awards/titlecups/TitleCupGold.png"; height="100"/>
 							</div>
 							<div id = "titleCupName" class = "nameClass" style = "text-align:center">
 								<%= titleCup[titleCup.index('=') + 1, titleCup.length]%>
 							</div>
-						</div>
-					</div>
-				</div>
+						</span>
+					</span>
+				</span>
 			<% end %>
 		<% end %>
 	</div>

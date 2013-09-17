@@ -14,11 +14,12 @@
 package com.catalyst.sonar.score.dao;
 
 import static com.catalyst.sonar.score.ScorePlugin.TITLECUP;
-import static com.catalyst.sonar.score.log.Logger.LOG;
 
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.configuration.Property;
 
@@ -27,6 +28,7 @@ import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.ScoreUser;
 import com.catalyst.sonar.score.api.TitleCup;
+import com.catalyst.sonar.score.batch.AbstractAwardDecorator;
 
 /**
  * The {@link TitleCupDao} class implements methods from {@link AwardDao}{@code <}
@@ -37,6 +39,9 @@ import com.catalyst.sonar.score.api.TitleCup;
  * 
  */
 public class TitleCupDao extends AwardDao<TitleCup> {
+	
+	private final Logger logger = LoggerFactory.getLogger(TitleCupDao.class);
+	
 
 	/**
 	 * @param session
@@ -65,18 +70,18 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 * @see {@link AwardDao#assignToProject(Award, ScoreUser)	
 	 */
 	protected boolean assignToProject(TitleCup cup, ScoreProject project) {
-		LOG.beginMethod("assignToProject");
+		logger.debug("assignToProject()");
 		Integer projectId = (project != null) ? project.getId() : null;
 		String cupName = (cup != null) ? cup.getName() : null;
-		LOG.log("Cup name = " + cupName + ", ResourceId = " + projectId);
+		logger.debug("Cup name = " + cupName + ", ResourceId = " + projectId);
 		Property property = getTitleCupProperty(cupName);
-		LOG.log(property);
+		logger.debug(property.toString());
 		property.setResourceId(projectId);
-		LOG.log(property);
+		logger.debug(property.toString());
 		property.setValue(Long.toString(new Date().getTime()));
-		LOG.log(property);
+		logger.debug(property.toString());
 		getSession().save(property);
-		LOG.endMethod();
+		logger.debug("finished assignToProject()");
 		return true;
 	}
 
@@ -88,15 +93,15 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 * @return the property that assigns the TitleCup.
 	 */
 	public Property getTitleCupProperty(String name) {
-		LOG.beginMethod("Getting " + entityTypeKey() + " Property");
+		logger.debug("Getting " + entityTypeKey() + " Property");
 		String key = this.entityTypeKey() + "=" + name;
 		Property property = getSession().getSingleResult(Property.class, "key",
 				key);
-		LOG.log(property);
 		if (property == null) {
 			property = new Property(key, null, null);
 		}
-		LOG.log(property).endMethod();
+		logger.debug(property.toString());
+		logger.debug(property.toString());
 		return property;
 	}
 
@@ -159,11 +164,10 @@ public class TitleCupDao extends AwardDao<TitleCup> {
 	 */
 	@Override
 	public TitleCup create(TitleCup cup) {
-		LOG.beginMethod("creating a new cup: " + cup.getName());
+		logger.debug("creating a new cup: " + cup.getName());
 		Property property = new Property("sonar.score.TitleCup:"
 				+ cup.getName(), null, null);
 		getSession().save(property);
-		LOG.endMethod();
 		return cup;
 	}
 

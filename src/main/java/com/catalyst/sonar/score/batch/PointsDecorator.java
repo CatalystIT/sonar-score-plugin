@@ -13,7 +13,6 @@
  */
 package com.catalyst.sonar.score.batch;
 
-import static com.catalyst.sonar.score.log.Logger.LOG;
 import static org.sonar.api.resources.Scopes.PROJECT;
 
 import com.catalyst.sonar.score.dao.PropertyDao;
@@ -75,26 +74,17 @@ public class PointsDecorator implements Decorator {
 	 */
 	private boolean pointsAreDisabled(@SuppressWarnings("rawtypes") Resource resource) {
 		boolean disabled = false;
-		LOG.beginMethod("pointsAreDisabled", isProject(resource));
-		LOG.log("Project Scope = " + resource.getScope());
-		LOG.log("Project Name = " + resource.getName());
 		Property projectProperty = propertyDao.getForResource(PropertyDao.POINTS_DISABLED, project);
 		Property globalProperty = propertyDao.getForGlobal(PropertyDao.POINTS_DISABLED);
 		if(projectProperty == null) {
-			LOG.log("projectProperty = " + projectProperty);
 			if(globalProperty == null) {
-				LOG.log("globalProperty = " + globalProperty);
-				LOG.returning(false).endMethod();
 				return false;
 			} else {
-				LOG.log("globalProperty = " + globalProperty.getValue());
 				disabled = globalProperty.getValue().equals(Boolean.toString(true));
-				LOG.returning("globalProperty = " + disabled).endMethod();
 				return disabled;
 			}
 		} else {
 			disabled = projectProperty.getValue().equals(true);
-			LOG.returning("projectProperty = " + disabled).endMethod();
 			return disabled;
 		}
 	}
@@ -149,8 +139,6 @@ public class PointsDecorator implements Decorator {
 	 * for a particular project.
 	 */
 	public void decorate(@SuppressWarnings("rawtypes") final Resource resource, final DecoratorContext context) {		
-		LOG.beginMethod("PointsDecorator.decorate()", isProject(resource));
-		LOG.log("Point Earning is " + ((pointsAreDisabled(resource)) ? "dis" : "en") + "abled.");
 		/*
 		 * if the resource to decorate is not a unit test class, then retrieve
 		 * the various code metrics and calculate the points for a given
@@ -163,7 +151,6 @@ public class PointsDecorator implements Decorator {
 			// resource/project
 			context.saveMeasure(ScoreMetrics.POINTS, value);
 		}
-		LOG.endMethod();
 	}
 
 	/**

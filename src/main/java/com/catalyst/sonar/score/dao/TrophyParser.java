@@ -13,12 +13,13 @@
  */
 package com.catalyst.sonar.score.dao;
 
-import static com.catalyst.sonar.score.log.Logger.LOG;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.database.DatabaseSession;
 
 import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.Trophy;
+import com.catalyst.sonar.score.batch.AbstractAwardDecorator;
 
 /**
  * An implementation of {@link AwardParser}{@code <}{@link Trophy}{@code >},
@@ -27,6 +28,9 @@ import com.catalyst.sonar.score.api.Trophy;
  * @author JDunn
  */
 public class TrophyParser extends AwardParser<Trophy> {
+	
+	private final Logger logger = LoggerFactory.getLogger(TrophyParser.class);
+	
 
 	/**
 	 * @see {@link AwardParser#AwardParser(DatabaseSession, String)}
@@ -46,15 +50,15 @@ public class TrophyParser extends AwardParser<Trophy> {
 	 */
 	@Override
 	public Trophy parse() {
-		LOG.beginMethod("PARSING TROPHY");
+		logger.debug("PARSING TROPHY");
 		Trophy trophy = new Trophy(getName());
 		for (int index = 0; index < fieldsLength(); index++) {			
 			CriterionParser cParser = new CriterionParser(getSession(), get(index));
 			Criterion criterion = cParser.parse();
 			trophy.addCriterion(criterion);
 		}
-		LOG.log("Name = " + trophy + "; Criteria = ").log(trophy.getCriteria())
-				.endMethod();
+		logger.debug("Name = " + trophy + "; Criteria = ");
+		logger.debug("{}", trophy.getCriteria());
 		return trophy;
 	}
 }

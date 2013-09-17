@@ -13,8 +13,6 @@
  */
 package com.catalyst.sonar.score.dao;
 
-import static com.catalyst.sonar.score.log.Logger.LOG;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,21 +52,15 @@ public abstract class AwardDao<A extends Award> extends
 	 */
 	@Override
 	public AwardSet<A> getAll() {
-		LOG.beginMethod("Get All " + entityTypeKey() + "s");
 		List<Property> properties = getAllAsProperties();
 		if (properties == null || properties.size() == 0) {
-			LOG.warn("There are no " + entityTypeKey() + "!").endMethod();
 			return null;
 		}
 		AwardSet<A> awards = new AwardSet<A>();
 		for (Property property : properties) {
-			LOG.log(property.getValue());
 			A award = makeParser(property).parse();
-			LOG.log(award);
 			awards.add(award);
 		}
-		LOG.log("There are " + awards.size() + " " + entityTypeKey() + "s")
-				.log(awards).endMethod();
 		return awards;
 	}
 

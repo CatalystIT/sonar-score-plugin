@@ -13,8 +13,6 @@
  */
 package com.catalyst.sonar.score.dao;
 
-import static com.catalyst.sonar.score.log.Logger.LOG;
-
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.measures.Metric;
 
@@ -60,7 +58,6 @@ public class CriterionParser extends Parser<Criterion> {
 	 */
 	@Override
 	public Criterion parse() {
-		LOG.beginMethod("Parsing Criterion");
 		Criterion criterion;
 		Metric metric = parseMetric();
 		double amount = 0;
@@ -70,10 +67,8 @@ public class CriterionParser extends Parser<Criterion> {
 			days = parseDays();
 			criterion = new Criterion(metric, amount, days);
 		} catch (IndexOutOfBoundsException e) {
-			LOG.log("Creating a " + ((metric != null) ? "\"BEST\"" : null) + " Criterion");
 			criterion = (metric != null) ? new Criterion(metric): null;
 		}
-		LOG.log("Criterion = " + criterion).endMethod();
 		return criterion;
 	}
 
@@ -81,15 +76,8 @@ public class CriterionParser extends Parser<Criterion> {
 	 * Parses out a {@link Metric} from the criterionString.
 	 */
 	public Metric parseMetric() {
-		LOG.beginMethod("Parsing Metric");
 		String metricName = get(METRIC_INDEX);
-		LOG.log("Metric Name = " + metricName);
 		Metric metric = metricDao.findMetricByName(metricName);
-		if(metric != null) {
-			LOG.log("Returning = Metric[" + metric.getName() + " " + metric.getKey() + "]").endMethod();
-		} else {
-			LOG.log("Returning null").endMethod();
-		}
 		return metric;
 	}
 

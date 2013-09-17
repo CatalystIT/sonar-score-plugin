@@ -48,6 +48,7 @@ public class ProjectAwardsWidget extends AbstractRubyTemplate implements RubyRai
 	@Override
 	protected String getTemplatePath() {
 		return "/score/project_awards_widget.html.erb";
+		//return "C:/Users/JDunn/Dropbox/workspace/SonarScore/src/main/resources/score/project_awards_widget.html.erb";
 	}
 
 

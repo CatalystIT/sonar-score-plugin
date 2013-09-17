@@ -14,11 +14,12 @@
 package com.catalyst.sonar.score.dao;
 
 import static com.catalyst.sonar.score.ScorePlugin.TROPHY;
-import static com.catalyst.sonar.score.log.Logger.LOG;
 
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.configuration.Property;
 
@@ -26,6 +27,7 @@ import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.ScoreUser;
 import com.catalyst.sonar.score.api.Trophy;
+import com.catalyst.sonar.score.batch.AbstractAwardDecorator;
 
 /**
  * The {link TrophyDao} class implements methods from {@link AwardDao}{@code <}
@@ -36,6 +38,9 @@ import com.catalyst.sonar.score.api.Trophy;
  * 
  */
 public class TrophyDao extends AwardDao<Trophy> {
+	
+	private final Logger logger = LoggerFactory.getLogger(TrophyDao.class);
+	
 
 	private PropertyDao propertyDao;
 
@@ -75,7 +80,7 @@ public class TrophyDao extends AwardDao<Trophy> {
 			getSession().save(property);
 			return true;
 		}
-		LOG.warn(trophy + " is Already Assigned to " + project.getName());
+		logger.warn(trophy + " is Already Assigned to " + project.getName());
 		return false;
 	}
 
@@ -89,14 +94,13 @@ public class TrophyDao extends AwardDao<Trophy> {
 	 */
 	// TODO update javadoc
 	public Property getEarnedTrophyProperty(Trophy trophy, Integer projectId) {
-		LOG.beginMethod("Getting " + entityTypeKey() + " Property");
+		logger.debug("Getting " + entityTypeKey() + " Property");
 		String key = this.entityTypeKey() + "=" + trophy.getName();
 		Property property = getSession().getSingleResult(Property.class, "key",
 				key, "resourceId", projectId);
 		if (property == null) {
 			property = new Property(key, null, null);
 		}
-		LOG.endMethod();
 		return property;
 	}
 
@@ -174,9 +178,8 @@ public class TrophyDao extends AwardDao<Trophy> {
 	// TODO: this method should go
 	@Override
 	public Trophy create(Trophy trophy) {
-		LOG.beginMethod("Creating a new trophy: " + trophy.getName());
+		logger.debug("Creating a new trophy: " + trophy.getName());
 		propertyDao.create("sonar.score.Trophy:" + trophy.getName(), trophy.getCriteria());
-		LOG.endMethod();
 		return trophy;
 	}
 

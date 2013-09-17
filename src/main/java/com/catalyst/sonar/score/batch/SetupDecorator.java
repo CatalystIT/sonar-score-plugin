@@ -13,8 +13,8 @@
  */
 package com.catalyst.sonar.score.batch;
 
-import static com.catalyst.sonar.score.log.Logger.LOG;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.config.Settings;
@@ -44,6 +44,9 @@ import com.catalyst.sonar.score.dao.PropertyDao;
  */
 public class SetupDecorator implements Decorator {
 
+	private final Logger logger = LoggerFactory.getLogger(SetupDecorator.class);
+	
+	
 	public static final String SETUP = "sonar.score.setup";
 
 	/*
@@ -84,7 +87,7 @@ public class SetupDecorator implements Decorator {
 			return false;
 		}
 		boolean should = !Boolean.parseBoolean(getSetUpProperty().getValue());
-		LOG.log("System is " + ((should) ? "not " : "") + "setup");
+		logger.info("System is " + ((should) ? "not " : "") + "setup");
 		return should;
 	}
 
@@ -100,12 +103,11 @@ public class SetupDecorator implements Decorator {
 		if (!shouldExecuteOnProject(project) || !project.getScope().equals("PRJ")) {
 			return;
 		} else {
-			LOG.log("Project Scope = " + project.getScope() + ", Project = "
+			logger.info("Project Scope = " + project.getScope() + ", Project = "
 					+ project.getKey());
-			LOG.beginMethod("Setting Up System");
+			logger.info("Setting Up System");
 			SetupExecuter executer = new SetupExecuter(propertyDao);
 			setSetUpProperty(executer.execute());
-			LOG.endMethod();
 			tries++;
 		}
 	}

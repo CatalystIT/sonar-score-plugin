@@ -13,7 +13,6 @@
  */
 package com.catalyst.sonar.score.batch.util;
 
-import static com.catalyst.sonar.score.log.Logger.LOG;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,6 +28,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The FileInstaller class is designed to copy a directory from inside the jar
@@ -48,6 +49,9 @@ import org.apache.commons.lang3.StringUtils;
  * 
  */
 public class FileInstaller {
+	
+	private static final Logger logger = LoggerFactory.getLogger(FileInstaller.class);
+	
 
 	private String sourcePath;
 	private String destinationPath;
@@ -71,17 +75,17 @@ public class FileInstaller {
 	 * @return true if copy is successful, false otherwise.
 	 */
 	public static boolean copyFile(final File toCopy, final File destFile) {
-		LOG.beginMethod("copyFile()");
+		logger.debug("copyFile()");
 		boolean success = false;
 		try {
 			success = FileInstaller.copyStream(new FileInputStream(toCopy),
 					new FileOutputStream(destFile));
-			LOG.log("returning " + success).endMethod();
+			logger.debug("returning " + success);
 			return success;
 		} catch (final FileNotFoundException e) {
-			LOG.log(e);
+			logger.debug(e.getStackTrace().toString());
 		}
-		LOG.log("returning " + success).endMethod();
+		logger.debug("returning " + success);
 		return success;
 	}
 
@@ -96,29 +100,29 @@ public class FileInstaller {
 	private static boolean copyFilesRecusively(final File toCopy,
 			final File destDir) {
 		assert destDir.isDirectory();
-		LOG.beginMethod("copyFilesRecursively()");
+		logger.debug("copyFilesRecursively()");
 		boolean success = true;
 		if (!toCopy.isDirectory()) {
 			success = FileInstaller.copyFile(toCopy,
 					new File(destDir, toCopy.getName()));
-			LOG.log("returning " + success).endMethod();
+			logger.debug("returning " + success);
 			return success;
 		} else {
 			final File newDestDir = new File(destDir, toCopy.getName());
 			if (!newDestDir.exists() && !newDestDir.mkdir()) {
 				success = false;
-				LOG.log("returning " + success).endMethod();
+				logger.debug("returning " + success);
 				return success;
 			}
 			for (final File child : toCopy.listFiles()) {
 				if (!FileInstaller.copyFilesRecusively(child, newDestDir)) {
 					success = false;
-					LOG.log("returning " + success).endMethod();
+					logger.debug("returning " + success);
 					return success;
 				}
 			}
 		}
-		LOG.log("returning " + success).endMethod();
+		logger.debug("returning " + success);
 		return success;
 	}
 
@@ -133,7 +137,7 @@ public class FileInstaller {
 	 */
 	public static boolean copyJarResourcesRecursively(final File destDir,
 			final JarURLConnection jarConnection) throws IOException {
-		LOG.beginMethod("copyJarResourcesRecursively()");
+		logger.debug("copyJarResourcesRecursively()");
 		boolean success = true;
 		final JarFile jarFile = jarConnection.getJarFile();
 
@@ -151,20 +155,20 @@ public class FileInstaller {
 							.getInputStream(entry);
 					if (!FileInstaller.copyStream(entryInputStream, f)) {
 						success = false;
-						LOG.log("returning " + success).endMethod();
+						logger.debug("returning " + success);
 						return success;
 					}
 					entryInputStream.close();
 				} else {
 					if (!FileInstaller.ensureDirectoryExists(f)) {
-						LOG.log("throwing an IOException").endMethod();
+						logger.debug("throwing an IOException");
 						throw new IOException("Could not create directory: "
 								+ f.getAbsolutePath());
 					}
 				}
 			}
 		}
-		LOG.log("returning " + success).endMethod();
+		logger.debug("returning " + success);
 		return success;
 	}
 
@@ -176,28 +180,28 @@ public class FileInstaller {
 	 * @return true if copy is successful, false otherwise.
 	 */
 	public boolean copyResourcesRecursively() {
-		LOG.beginMethod("copyResourcesRecursively()");
+		logger.debug("copyResourcesRecursively()");
 		URL originUrl = getClass().getResource(sourcePath);
 		File destination = new File(destinationPath);
 		boolean success = false;
 		try {
 			final URLConnection urlConnection = originUrl.openConnection();
-			LOG.log(originUrl);
+			logger.debug("{}", originUrl);
 			if (urlConnection instanceof JarURLConnection) {
 				success = FileInstaller.copyJarResourcesRecursively(
 						destination, (JarURLConnection) urlConnection);
-				LOG.log("returning " + success).endMethod();
+				logger.debug("returning " + success);
 				return success;
 			} else {
 				success = FileInstaller.copyFilesRecusively(
 						new File(originUrl.getPath()), destination);
-				LOG.log("returning " + success).endMethod();
+				logger.debug("returning " + success);
 				return success;
 			}
 		} catch (final IOException e) {
-			LOG.log(e);
+			logger.debug(e.getStackTrace().toString());
 		}
-		LOG.log("returning " + success).endMethod();
+		logger.debug("returning " + success);
 		return success;
 	}
 
@@ -209,16 +213,16 @@ public class FileInstaller {
 	 * @return true if copy is successful, false otherwise.
 	 */
 	private static boolean copyStream(final InputStream is, final File f) {
-		LOG.beginMethod("copyStream(InputStream is, File f)");
+		logger.debug("copyStream(InputStream is, File f)");
 		boolean success = false;
 		try {
 			success = FileInstaller.copyStream(is, new FileOutputStream(f));
-			LOG.log("returning " + success).endMethod();
+			logger.debug("returning " + success);
 			return success;
 		} catch (final FileNotFoundException e) {
-			LOG.log(e);
+			logger.debug(e.getStackTrace().toString());
 		}
-		LOG.log("returning " + success).endMethod();
+		logger.debug("returning " + success);
 		return success;
 	}
 
@@ -231,7 +235,7 @@ public class FileInstaller {
 	 */
 	private static boolean copyStream(final InputStream is,
 			final OutputStream os) {
-		LOG.beginMethod("copyStream(InputStream is, OutputStream os)");
+		logger.debug("copyStream(InputStream is, OutputStream os)");
 		boolean success = false;
 		try {
 			final byte[] buf = new byte[1024];
@@ -243,12 +247,12 @@ public class FileInstaller {
 			is.close();
 			os.close();
 			success = true;
-			LOG.log("returning " + success).endMethod();
+			logger.debug("returning " + success);
 			return success;
 		} catch (final IOException e) {
-			LOG.log(e);
+			logger.debug(e.getStackTrace().toString());
 		}
-		LOG.log("returning " + success).endMethod();
+		logger.debug("returning " + success);
 		return false;
 	}
 
@@ -260,16 +264,16 @@ public class FileInstaller {
 	 *         otherwise.
 	 */
 	private static boolean ensureDirectoryExists(final File directory) {
-		LOG.beginMethod("ensureDirectoryExists)");
-		LOG.log("Name = " + directory.getName());
-		LOG.log("AbsolutePath = " + directory.getAbsolutePath());
+		logger.debug("ensureDirectoryExists)");
+		logger.debug("Name = " + directory.getName());
+		logger.debug("AbsolutePath = " + directory.getAbsolutePath());
 		try {
-			LOG.log("CanonicalPath = " + directory.getCanonicalPath());
+			logger.debug("CanonicalPath = " + directory.getCanonicalPath());
 		} catch (IOException e) {
-			LOG.log(e);
+			logger.debug(e.getStackTrace().toString());
 		}
 		boolean success = directory.exists() || directory.mkdir();
-		LOG.log("returning " + success).endMethod();
+		logger.debug("returning " + success);
 		return success;
 	}
 

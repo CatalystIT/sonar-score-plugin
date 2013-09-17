@@ -13,18 +13,22 @@
  */
 package com.catalyst.sonar.score.dao;
 
-import static com.catalyst.sonar.score.log.Logger.LOG;
-
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.model.ResourceModel;
 
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.SearchableHashSet;
+import com.catalyst.sonar.score.batch.AbstractAwardDecorator;
 
 //TODO javadoc
 public class ScoreProjectDao extends SonarModelDao<ScoreProject> {
+	
+	private final Logger logger = LoggerFactory.getLogger(ScoreProjectDao.class);
+	
 
 	/**
 	 * Constructor with a parameter for the session to set the session.
@@ -47,7 +51,7 @@ public class ScoreProjectDao extends SonarModelDao<ScoreProject> {
 
 	// TODO javadoc
 	public ScoreProject getProjectById(Integer id) {
-		LOG.beginMethod("getProjectById()");
+		logger.debug("getProjectById()");
 		if (id == null) {
 			return null;
 		}
@@ -56,26 +60,27 @@ public class ScoreProjectDao extends SonarModelDao<ScoreProject> {
 		List<ResourceModel> models = getSession().getResults(
 				ResourceModel.class, "id", id);
 		if (models == null) {
-			LOG.warn("models is null!!!!");
+			logger.warn("models is null!!!!");
 		} else if (models.size() < 1) {
-			LOG.warn("models.size() = " + models.size());
+			logger.warn("models.size() = " + models.size());
 		} else {
-			LOG.log("We are only here because models.size() = " + models.size())
-					.log("\tThere are " + models.size() + " Projects:");
+			logger.info("We are only here because models.size() = " + models.size());
+			logger.info("\tThere are " + models.size() + " Projects:");
 			for (ResourceModel model : models) {
-				LOG.log(model.getName() + " (" + model.getKey() + ")");
+				logger.info(model.getName() + " (" + model.getKey() + ")");
 			}
 			ResourceModel model = models.get(0);
 			if (model != null) {
-				LOG.warn("model is null!!!!").log("Here is the first Project:")
-						.log(model.getName() + " (" + model.getKey() + ")");
+				logger.info("model is null!!!!");
+				logger.info("Here is the first Project:");
+				logger.info(model.getName() + " (" + model.getKey() + ")");
 				scoreProject = new ScoreProject(model);
-				LOG.log("Converted to a ScoreProject:")
-						.log(scoreProject.getName() + " ("
+				logger.info("Converted to a ScoreProject:");
+				logger.info(scoreProject.getName() + " ("
 								+ scoreProject.getKey() + ")");
 			}
 		}
-		LOG.log("returning " + scoreProject).endMethod();
+		logger.info("returning " + scoreProject);
 		return scoreProject;
 	}
 

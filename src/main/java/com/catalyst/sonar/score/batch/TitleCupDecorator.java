@@ -13,8 +13,8 @@
  */
 package com.catalyst.sonar.score.batch;
 
-import static com.catalyst.sonar.score.log.Logger.LOG;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.measures.Metric;
@@ -43,6 +43,9 @@ import com.catalyst.sonar.score.dao.*;
  */
 public class TitleCupDecorator extends AbstractAwardDecorator implements
 		Decorator {
+	
+	private final Logger logger = LoggerFactory.getLogger(TitleCupDecorator.class);
+	
 
 	/**
 	 * 
@@ -95,23 +98,22 @@ public class TitleCupDecorator extends AbstractAwardDecorator implements
 			if (!resource.getScope().equals("PRJ")) {
 				return;
 			}
-			LOG.beginMethod("TitleCupDecorator.decorate()");
+			logger.debug("TitleCupDecorator.decorate()");
 			TitleCupDao cupDao = new TitleCupDao(session);
 			AwardSet<TitleCup> cups = cupDao.getAll();
 			if (cups == null) {
-				LOG.endMethod();
 				return;
 			}
-			LOG.logEmf("There are " + cups.size() + " TitleCups");
+			logger.info("There are " + cups.size() + " TitleCups");
 			ScoreProjectDao projectDao = new ScoreProjectDao(session);
 			ScoreProject thisProject = projectDao.getProjectById(resource
 					.getId());
 			for (TitleCup cup : cups) {
-				LOG.logEmf("Cup = " + cup.getName());
+				logger.info("Cup = " + cup.getName());
 				Property titleCupProperty = cupDao.getTitleCupProperty(cup
 						.getName());
 				Integer resourceId = titleCupProperty.getResourceId();
-				LOG.logEmf("resourceId = " + resourceId);
+				logger.info("resourceId = " + resourceId);
 				ScoreProject currentHolder = projectDao
 						.getProjectById(resourceId);
 				ScoreProject winner;
@@ -124,48 +126,45 @@ public class TitleCupDecorator extends AbstractAwardDecorator implements
 					currentHolderName = currentHolder.getName();
 					currentHolderKey = currentHolder.getKey();
 				}
-				LOG.logEmf("currentHolder = " + currentHolderName + " ("
+				logger.info("currentHolder = " + currentHolderName + " ("
 						+ currentHolderKey + ")");
-				LOG.logEmf(currentHolderName + " currently Holds the "
+				logger.info(currentHolderName + " currently Holds the "
 						+ cup.getName() + " cup.");
-				LOG.logEmf("The Challenger is " + thisProject.getName());
+				logger.info("The Challenger is " + thisProject.getName());
 				winner = whoShouldEarnCup(cup, thisProject, currentHolder);
 				if (winner != null) {
-					LOG.logEmf("The Winner is " + winner.getName());
+					logger.info("The Winner is " + winner.getName());
 				} else {
-					LOG.logEmf("Woops!! The Winner is null, so neither project earned "
+					logger.info("Woops!! The Winner is null, so neither project earned "
 							+ cup + ".");
 				}
 				cupDao.assign(cup, winner);
 			}
 		} catch (RuntimeException e) {
-			LOG.log(e);
+			logger.info(e.getStackTrace().toString());
 		}
-		LOG.endMethod();
-
 	}
 
 	private ScoreProject whoShouldEarnCup(TitleCup cup,
 			ScoreProject thisProject, ScoreProject currentHolder) {
-		LOG.beginMethod("whoShouldEarnCup()");
+		logger.debug("whoShouldEarnCup()");
 		if (!typeGoodCriteriaMet(cup)) {
-			LOG.log(project.getName() + " no long meets Criteria.").endMethod();
+			logger.debug(project.getName() + " no long meets Criteria.");
 			return null;
 		} else if (currentHolder == null || currentHolder.equals(thisProject)) {
-			LOG.log(project.getName()
+			logger.debug(project.getName()
 					+ " meets Criteria, and currentHolder is "
-					+ ((currentHolder != null) ? currentHolder.getName() : null))
-					.endMethod();
+					+ ((currentHolder != null) ? currentHolder.getName() : null));
 			return thisProject;
 		}
 		ScoreProject projectToReturn = null;
 		ScoreProject potential;
 		SearchableHashSet<Criterion> criteria = cup.getCriteria();
-		LOG.log("There are " + criteria.size() + " Criteria in " + cup + ":");
+		logger.info("There are " + criteria.size() + " Criteria in " + cup + ":");
 		for (Criterion criterion : cup.getCriteria()) {
-			LOG.log("Criterion = " + criterion);
+			logger.debug("Criterion = " + criterion);
 			if (criterion.getType() == Criterion.Type.BEST) {
-				LOG.log("Who has the best score for "
+				logger.debug("Who has the best score for "
 						+ criterion.getMetric().getName() + "?");
 				Metric metric = criterion.getMetric();
 				potential = better(thisProject, currentHolder, metric);
@@ -173,17 +172,16 @@ public class TitleCupDecorator extends AbstractAwardDecorator implements
 					// If we get here, than one project is best at one
 					// criterion, but the other project is better at another,
 					// so neither project should earn this TitleCup.
-					LOG.log("Potential Winner and ProjectToReturn do not match: Each project is better than the other at a metric.");
-					LOG.log("Leaving whoShouldEarnCup(), returning null")
-							.endMethod();
+					logger.debug("Potential Winner and ProjectToReturn do not match: Each project is better than the other at a metric.");
+					logger.debug("Leaving whoShouldEarnCup(), returning null");
 					return null;
 				} else {
 					projectToReturn = potential;
 				}
 			}
 		}
-		LOG.log("Leaving whoShouldEarnCup(), returning "
-				+ projectToReturn.getName()).endMethod();
+		logger.debug("Leaving whoShouldEarnCup(), returning "
+				+ projectToReturn.getName());
 		return projectToReturn;
 	}
 

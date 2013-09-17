@@ -13,8 +13,6 @@
  */
 package com.catalyst.sonar.score.dao;
 
-import static com.catalyst.sonar.score.log.Logger.LOG;
-
 import org.sonar.api.database.DatabaseSession;
 
 import com.catalyst.sonar.score.api.Award;
@@ -41,7 +39,6 @@ public abstract class AwardParser<A extends Award> extends Parser<A> {
 	 */
 	private static String[] spliceValueToCriteria(String value) {
 		String[] criteriaStrings = value.split("\\{|,|\\}");
-		LOG.log(criteriaStrings);
 		return criteriaStrings;
 	}
 

@@ -13,11 +13,11 @@
  */
 package com.catalyst.sonar.score.batch;
 
-import static com.catalyst.sonar.score.log.Logger.LOG;
-
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.config.Settings;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.measures.Metric;
@@ -39,6 +39,8 @@ import com.catalyst.sonar.score.util.SnapshotValues;
  */
 public class AbstractAwardDecorator {
 
+	private final Logger logger = LoggerFactory.getLogger(AbstractAwardDecorator.class);
+	
 	protected final DatabaseSession session;
 	protected Project project;
 	protected Settings settings;
@@ -72,11 +74,10 @@ public class AbstractAwardDecorator {
 	// caught? Or is the try catch left over from debugging? If so it should be
 	// removed.
 	protected boolean typeGoodCriteriaMet(Award award) {
-		LOG.beginMethod("criteriaMet()");
-		LOG.log(award + " has " + award.getCriteria().size() + " Criteria:");
+		logger.info("{} has {} Criteria:", award, award.getCriteria().size());
 		try {
 			for (Criterion criterion : award.getCriteria()) {
-				LOG.log(criterion);
+				logger.info("{}", criterion);
 				if (criterion.getType() == Criterion.Type.BEST) {
 					/*
 					 * We don't want to process Criterion of type BEST, only of
@@ -87,18 +88,16 @@ public class AbstractAwardDecorator {
 				Metric metric = criterion.getMetric();
 				List<SnapshotValue> entries = measuresHelper
 						.getMeasureCollection(metric.getName());
-				LOG.log("SnapshotHistories:").log(entries);
+				logger.info("SnapshotHistories:");
+				logger.info(entries.toString());
 				if (!typeGoodCriterionMet(new SnapshotValues(entries),
 						criterion)) {
-					LOG.log("Leaving criteriaMet(), returning false")
-							.endMethod();
 					return false;
 				}
 			}
 		} catch (RuntimeException e) {
-			LOG.log(e);
+			logger.info(e.getStackTrace().toString());
 		}
-		LOG.log("Leaving criteriaMet(), returning true").endMethod();
 		return true;
 	}
 
@@ -112,18 +111,17 @@ public class AbstractAwardDecorator {
 	 */
 	protected boolean typeGoodCriterionMet(SnapshotValues snapshots,
 			Criterion criterion) {
-		LOG.beginMethod("Meets Criterion " + criterion);
 		snapshots.retainAllWithinDaysAgo(criterion.getDays());
 		for (SnapshotValue value : snapshots) {
-			LOG.log(value);
+			logger.info("Value = {}", value);
 			if (!isBetter(value.getMeasureValue().doubleValue(),
 					criterion.getAmount(), criterion.getMetric())) {
-				LOG.log("Doesn't meet Criterion").endMethod();
+				logger.info("Doesn't meet Criterion");
 				return false;
 			}
 		}
 		snapshots.restore();
-		LOG.log("Meets Criterion").endMethod();
+		logger.info("Meets Criterion");
 		return true;
 	}
 
@@ -138,7 +136,7 @@ public class AbstractAwardDecorator {
 	 */
 	protected ScoreProject better(ScoreProject project1, ScoreProject project2,
 			Metric metric) {
-		LOG.beginMethod("Which project is better?");
+		logger.info("Which project is better?");
 		ScoreProject projectToReturn;
 		double value1 = currentValue(project1, metric);
 		double value2 = currentValue(project2, metric);
@@ -147,9 +145,9 @@ public class AbstractAwardDecorator {
 		} else {
 			projectToReturn = project2;
 		}
-		LOG.log(project1.getName() + " has " + value1 + ", "
+		logger.info(project1.getName() + " has " + value1 + ", "
 				+ project2.getName() + " has " + value2 + ", so:");
-		LOG.log(projectToReturn.getName() + " is better.").endMethod();
+		logger.info(projectToReturn.getName() + " is better.");
 		return projectToReturn;
 	}
 
@@ -160,18 +158,18 @@ public class AbstractAwardDecorator {
 	 * @return the latest value for the metric attained by the ScoreProject.
 	 */
 	private double currentValue(ScoreProject thisProject, Metric metric) {
-		LOG.beginMethod("Current Value");
+		logger.info("Current Value");
 		SnapShotDao helper = new SnapShotDao(session, thisProject);
 		List<SnapshotValue> history = helper.getMeasureCollection(metric
 				.getName());
 		Collections.sort(history);
 		SnapshotValue lastSnapshot = (history.size() > 0) ? history.get(history
 				.size() - 1) : null;
-		LOG.log("Last Snapshot for " + thisProject.getName() + " = "
+		logger.info("Last Snapshot for " + thisProject.getName() + " = "
 				+ lastSnapshot);
 		double value = (lastSnapshot != null) ? lastSnapshot.getMeasureValue()
 				.doubleValue() : 0;
-		LOG.log("current value = " + value).endMethod();
+		logger.info("current value = " + value);
 		return value;
 	}
 	

@@ -15,7 +15,7 @@
 -->
 <% 
 	#finds all the properties that assign a Trophy to this Project
-	properties = Property.find(:all, :conditions => ['prop_key LIKE ? OR prop_key LIKE ? ','sonar.score.Trophy=%' ,'sonar.score.TitleCup=%'], :order => 'text_value DESC', :limit => 7)
+	properties = Property.find(:all, :conditions => ['prop_key LIKE ? OR prop_key LIKE ? ','sonar.score.Trophy=%' ,'sonar.score.TitleCup=%'], :order => 'text_value DESC')
 	
 %>
 <% if properties != nil %>
@@ -46,7 +46,7 @@
 	</div>
 <% end %>
 
-<% if award == nil %>
+<% if false  %>
 	<div class="dashbox">
 		<h1 style="font-family: Comic Sans MS; font-size: 1.0em; font-weight: bold"> No Awards have been earned. </h1>
 	</div>

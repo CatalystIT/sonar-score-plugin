@@ -13,11 +13,12 @@
  */
 package com.catalyst.sonar.score.dao;
 
-import static com.catalyst.sonar.score.log.Logger.LOG;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.database.DatabaseSession;
 
 import com.catalyst.sonar.score.api.TitleCup;
+import com.catalyst.sonar.score.batch.AbstractAwardDecorator;
 
 /**
  * An implementation of {@link AwardParser}{@code <}{@link TitleCup}{@code >},
@@ -26,6 +27,9 @@ import com.catalyst.sonar.score.api.TitleCup;
  * @author JDunn
  */
 public class TitleCupParser extends AwardParser<TitleCup> {
+	
+	private final Logger logger = LoggerFactory.getLogger(TitleCupParser.class);
+	
 
 	/**
 	 * @see {@link AwardParser#AwardParser(DatabaseSession, String)}
@@ -45,14 +49,13 @@ public class TitleCupParser extends AwardParser<TitleCup> {
 	 */
 	@Override
 	public TitleCup parse() {
-		LOG.beginMethod("PARSING TITLECUP");
+		logger.debug("PARSING TITLECUP");
 		TitleCup cup = new TitleCup(getName());
 		for (int index = 0; index < fieldsLength(); index++) {			
 			CriterionParser cParser = new CriterionParser(getSession(), get(index));
 			cup.addCriterion(cParser.parse());
 		}
-		LOG.log("CUP = " + cup + "; CRITERIA = " + cup.getCriteria())
-				.endMethod();
+		logger.debug("CUP = " + cup + "; CRITERIA = " + cup.getCriteria());
 		return cup;
 	}
 }
