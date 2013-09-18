@@ -17,6 +17,8 @@ public interface SearchableSet<E> extends Set<E> {
 	 * @param entity
 	 * @return
 	 */
-	public E get(Object entity);
+	E get(Object entity);
+	
+	SearchableSetIterable<E> iterable();
 	
 }

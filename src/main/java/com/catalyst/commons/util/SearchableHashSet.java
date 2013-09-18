@@ -60,124 +60,12 @@ public class SearchableHashSet<E> extends HashSet<E> implements SearchableSet<E>
 	 * 
 	 * @return
 	 */
-	public ImmutableSearchableHashSet<E> immutableCopy() {
-		return new ImmutableSearchableHashSet<E>(this);
+	public SearchableSetIterable<E> iterable() {
+		return new SearchableSetIterable<E>(this);
 	}
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6220028023304257059L;
-
-	/**
-	 * Extends {@link SearchableHashSet}{@code <E>}, enforcing immutability by
-	 * overriding all methods that would modify this Set.
-	 * 
-	 * @author JDunn
-	 * 
-	 * @param <E>
-	 */
-	private static final class ImmutableSearchableHashSet<E> extends
-			SearchableHashSet<E> {
-
-		public static final String EXCEPTION_MESSAGE = "This SearchableHashSet is immutable and cannot be modified.";
-
-		private SearchableHashSet<E> set;
-
-		/**
-		 * Creates an {@code ImmutableSearchableHashSet}, sets the {@code set}
-		 * field to the {@code set} argument, and populates this
-		 * {@code ImmutableSearchableHashSet} with it.
-		 * 
-		 * @param set
-		 */
-		private ImmutableSearchableHashSet(SearchableHashSet<E> set) {
-			this.set = set;
-			addAllAnyway(set);
-		}
-
-		/**
-		 * @throws {@link UnsupportedOperationException} to enforce
-		 *         immutability.
-		 */
-		@Override
-		public boolean add(E e) {
-			throw new UnsupportedOperationException(EXCEPTION_MESSAGE);
-		}
-
-		/**
-		 * @throws {@link UnsupportedOperationException} to enforce
-		 *         immutability.
-		 */
-		@Override
-		public boolean remove(Object o) {
-			throw new UnsupportedOperationException(EXCEPTION_MESSAGE);
-		}
-
-		/**
-		 * @throws {@link UnsupportedOperationException} to enforce
-		 *         immutability.
-		 */
-		@Override
-		public void clear() {
-			throw new UnsupportedOperationException(EXCEPTION_MESSAGE);
-		}
-
-		/**
-		 * @throws {@link UnsupportedOperationException} to enforce
-		 *         immutability.
-		 */
-		@Override
-		public boolean removeAll(Collection<?> c) {
-			throw new UnsupportedOperationException(EXCEPTION_MESSAGE);
-		}
-
-		/**
-		 * @throws {@link UnsupportedOperationException} to enforce
-		 *         immutability.
-		 */
-		@Override
-		public boolean addAll(Collection<? extends E> c) {
-			throw new UnsupportedOperationException(EXCEPTION_MESSAGE);
-		}
-
-		/**
-		 * @throws {@link UnsupportedOperationException} to enforce
-		 *         immutability.
-		 */
-		@Override
-		public boolean retainAll(Collection<?> c) {
-			throw new UnsupportedOperationException(EXCEPTION_MESSAGE);
-		}
-
-		/**
-		 * Ensures that if the original set.toString() was overridden, this set
-		 * will override in the same way.
-		 */
-		@Override
-		public String toString() {
-			return set.toString();
-		}
-
-		/**
-		 * calls {@code super.addAll(set)} to allow the contents to be set
-		 * within the {@link SearchableHashSet} class.
-		 * 
-		 * @param set
-		 * 
-		 * @return this
-		 */
-		private ImmutableSearchableHashSet<E> addAllAnyway(
-				SearchableHashSet<E> set) {
-			for (E e : set) {
-				super.add(e);
-			}
-			return this;
-		}
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 2323258698323274104L;
-	}
 }

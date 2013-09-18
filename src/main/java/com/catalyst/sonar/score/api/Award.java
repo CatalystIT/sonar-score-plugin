@@ -18,6 +18,7 @@ import java.util.Iterator;
 
 import com.catalyst.commons.util.Mergeable;
 import com.catalyst.commons.util.SearchableHashSet;
+import com.catalyst.commons.util.SearchableSetIterable;
 
 /**
  * The {@link Award} class represents an award in Sonar for projects to earn,
@@ -140,11 +141,11 @@ public abstract class Award implements Iterable<Criterion>, Mergeable<Award>,
 	}
 
 	/**
-	 * @return an immutable copy of the criteria
+	 * @return a searchable iterable of the criteria
 	 * @see {@link SearchableHashSet#immutableCopy()}
 	 */
-	public SearchableHashSet<Criterion> getCriteria() {
-		return criteria.immutableCopy();
+	public SearchableSetIterable<Criterion> getCriteria() {
+		return criteria.iterable();
 	}
 
 	/**

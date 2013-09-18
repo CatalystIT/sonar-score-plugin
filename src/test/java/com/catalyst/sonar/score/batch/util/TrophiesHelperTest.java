@@ -17,7 +17,6 @@ import org.sonar.api.config.Settings;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.measures.Metric;
 
-import com.catalyst.sonar.score.ScorePlugin;
 import com.catalyst.sonar.score.batch.util.TrophiesHelper;
 import com.catalyst.sonar.score.util.SnapshotValue;
 

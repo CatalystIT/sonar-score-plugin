@@ -24,7 +24,7 @@ import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.configuration.Property;
 
-import com.catalyst.commons.util.SearchableHashSet;
+import com.catalyst.commons.util.SearchableSetIterable;
 import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.ScoreProject;
@@ -159,7 +159,7 @@ public class TitleCupDecorator extends AbstractAwardDecorator implements
 		}
 		ScoreProject projectToReturn = null;
 		ScoreProject potential;
-		SearchableHashSet<Criterion> criteria = cup.getCriteria();
+		SearchableSetIterable<Criterion> criteria = cup.getCriteria();
 		logger.info("There are " + criteria.size() + " Criteria in " + cup + ":");
 		for (Criterion criterion : cup.getCriteria()) {
 			logger.debug("Criterion = " + criterion);

@@ -125,7 +125,7 @@ public class Group<M extends Member> extends SearchableHashSet<M> implements
 	 * 
 	 * @see {@link Member#setName(String)}
 	 */
-	public Group setName(String name) {
+	public Group<M> setName(String name) {
 		this.name = name;
 		return this;
 	}
