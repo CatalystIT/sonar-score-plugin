@@ -16,8 +16,8 @@ package com.catalyst.sonar.score.dao;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.jpa.dao.BaseDao;
 
+import com.catalyst.commons.util.SearchableHashSet;
 import com.catalyst.sonar.score.api.Entity;
-import com.catalyst.sonar.score.api.SearchableHashSet;
 
 /**
  * @author JDunn

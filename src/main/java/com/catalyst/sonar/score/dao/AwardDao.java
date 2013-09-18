@@ -19,13 +19,13 @@ import java.util.List;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.configuration.Property;
 
+import com.catalyst.commons.util.SearchableHashSet;
 import com.catalyst.sonar.score.api.AssignableScoreEntity;
 import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.ReceiverEntity;
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.ScoreUser;
-import com.catalyst.sonar.score.api.SearchableHashSet;
 
 /**
  * The {@link AwardsDao}{@code <A>} class defines methods, mostly abstract,

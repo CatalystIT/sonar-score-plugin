@@ -31,11 +31,7 @@ public class AwardSetTest {
 	public void setUp() throws Exception {
 		testSet = new AwardSet<Award>();
 		award1.addCriteria(c1a);
-		award1.addMembersToInclude(USER1);
-		award1.addMembersToExclude(USER3);
 		award1Copy.addCriteria(c1a);
-		award1Copy.addMembersToInclude(USER1);
-		award1Copy.addMembersToExclude(USER3);
 		award2.addCriteria(c2a);
 		testSet.add(award1);
 	}
@@ -62,35 +58,6 @@ public class AwardSetTest {
 		award1Copy.addCriterion(c1b);
 		assertTrue(testSet.add(award1Copy));
 		assertTrue(award1.getCriteria().contains(c1b));
-	}
-
-	/**
-	 * Test method for {@link AwardSet#add(Award)}. Asserts that {@code add()}
-	 * returns true if the {@code Award} passed in as the argument has the same
-	 * name as an {@code Award} already in this {@code AwardSet} but also has a
-	 * new {@code Member} to include, and that the {@code Award} with the same
-	 * name in this {@code AwardSet} now contains the new {@code Member}.
-	 */
-	@Test
-	public void testAddA_AddAwardWithSameNameAndExtraMemberToInclude_true() {
-		award1Copy.addMembersToInclude(USER2);
-		assertTrue(testSet.add(award1Copy));
-		assertTrue(award1.getMembersToInclude().contains(USER2));
-	}
-
-	/**
-	 * Test method for {@link AwardSet#add(Award)}. Asserts that {@code add()}
-	 * returns true if the {@code Award} passed in as the argument has the same
-	 * name as an {@code Award} already in this {@code AwardSet} but also has a
-	 * new {@code Member} to exclude, and that the {@code Award} with the same
-	 * name in this {@code AwardSet} now contains the new {@code Member}.
-	 */
-	@Test
-	public void testAddA_AddAwardWithSameNameAndExtraMemberToExclude_true() {
-		award1Copy.addMembersToExclude(USER4);
-		assertTrue(testSet.add(award1Copy));
-		assertTrue(award1.getMembersToExclude().contains(USER4));
-
 	}
 
 	/**

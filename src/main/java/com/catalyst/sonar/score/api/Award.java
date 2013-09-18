@@ -14,6 +14,10 @@
 package com.catalyst.sonar.score.api;
 
 import java.util.Arrays;
+import java.util.Iterator;
+
+import com.catalyst.commons.util.Mergeable;
+import com.catalyst.commons.util.SearchableHashSet;
 
 /**
  * The {@link Award} class represents an award in Sonar for projects to earn,
@@ -21,25 +25,11 @@ import java.util.Arrays;
  * 
  * @author JDunn
  */
-public abstract class Award implements AssignableScoreEntity {
-
-	public static final String UNNAMED_AWARD = "Unnamed Award";
+public abstract class Award implements Iterable<Criterion>, Mergeable<Award>,
+		AssignableScoreEntity {
 
 	private String name;
 	private CriterionSet criteria;
-	@SuppressWarnings(RAWTYPE_WARNING)
-	private Group membersToInclude;
-	@SuppressWarnings(RAWTYPE_WARNING)
-	private Group membersToExclude;
-
-	/**
-	 * Default Constructor, necessary for the SCORE plugin to work, calls
-	 * {@code this({@link UNNAMED_AWARD})}, preventing any fields from being
-	 * {@code null}.
-	 */
-	public Award() {
-		this(UNNAMED_AWARD);
-	}
 
 	/**
 	 * Constructs an {@code Award}, setting the name to equal the {@code String}
@@ -48,12 +38,31 @@ public abstract class Award implements AssignableScoreEntity {
 	 * 
 	 * @param name
 	 */
-	@SuppressWarnings(RAWTYPE_WARNING)
 	public Award(String name) {
 		this.name = name;
 		this.criteria = new CriterionSet();
-		this.membersToInclude = new Group();
-		this.membersToExclude = new Group();
+	}
+
+	/**
+	 * @see Iterable#iterator()
+	 */
+	public Iterator<Criterion> iterator() {
+		return this.criteria.iterator();
+	}
+
+	/**
+	 * @see Mergeable#merge(Object)
+	 */
+	public boolean merge(Award other) {
+		boolean added = false;
+		if (this.equals(other)) {
+			for (Criterion criterion : other) {
+				if (this.criteria.add(criterion)) {
+					added = true;
+				}
+			}
+		}
+		return added;
 	}
 
 	/**
@@ -73,32 +82,6 @@ public abstract class Award implements AssignableScoreEntity {
 	 */
 	public boolean addCriteria(Criterion... criteria) {
 		return this.criteria.addAll(Arrays.asList(criteria));
-	}
-
-	/**
-	 * Adds {@link Member}s to include in receiving this {@code Award}. When
-	 * using this field, to determine who should be eligible to receive this
-	 * award, implement your logic in such a way that all {@link Member}s are
-	 * included by default if the {@link SearchableHashSet} of {@link Member}s
-	 * is empty.
-	 * 
-	 * @param members
-	 * @return this.membersToInclude.addAll(Arrays.asList(members));
-	 */
-	@SuppressWarnings(UNCHECKED_WARNING)
-	public boolean addMembersToInclude(Member... members) {
-		return this.membersToInclude.addAll(Arrays.asList(members));
-	}
-
-	/**
-	 * Adds {@link Member}s to exclude from receiving this {@code Award}.
-	 * 
-	 * @param members
-	 * @return this.membersToExclude.addAll(Arrays.asList(members));
-	 */
-	@SuppressWarnings(UNCHECKED_WARNING)
-	public boolean addMembersToExclude(Member... members) {
-		return this.membersToExclude.addAll(Arrays.asList(members));
 	}
 
 	/**
@@ -165,24 +148,6 @@ public abstract class Award implements AssignableScoreEntity {
 	}
 
 	/**
-	 * @return an immutable copy of the membersToInclude
-	 * @see {@link SearchableHashSet#immutableCopy()}
-	 */
-	@SuppressWarnings(UNCHECKED_WARNING)
-	public SearchableHashSet<Member> getMembersToInclude() {
-		return membersToInclude.immutableCopy();
-	}
-
-	/**
-	 * @return an immutable copy of the membersToExclude
-	 * @see {@link SearchableHashSet#immutableCopy()}
-	 */
-	@SuppressWarnings(UNCHECKED_WARNING)
-	public SearchableHashSet<Member> getMembersToExclude() {
-		return membersToExclude.immutableCopy();
-	}
-	
-	/**
 	 * Gets the uniqueId, which for an {@link Award} is the same as the name.
 	 * 
 	 * @see {@link Member#getUniqueId()}
@@ -190,10 +155,13 @@ public abstract class Award implements AssignableScoreEntity {
 	public String getUniqueId() {
 		return this.name;
 	}
-	
+
+	/**
+	 * @see {@link Object#toString()}
+	 */
 	@Override
 	public String toString() {
-		return "The " + this.name + " " + this.getClass().getSimpleName(); 
+		return this.name + " " + this.getClass().getSimpleName();
 	}
 
 }

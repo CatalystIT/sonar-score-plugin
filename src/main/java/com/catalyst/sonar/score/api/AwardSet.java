@@ -13,6 +13,8 @@
  */
 package com.catalyst.sonar.score.api;
 
+import com.catalyst.commons.util.SearchableHashSet;
+
 /**
  * {@code AwardSet} extends {@code SearchableHashSet<Award>}, overriding {@code add()}.
  */
@@ -27,7 +29,7 @@ public class AwardSet<A extends Award> extends SearchableHashSet<A> {
 	 * If a new {@code Award} is not added, or if the {@code Award}
 	 * already in this {@code AwardSet} receives no new {@code Criterion},
 	 * false is returned.
-	 * @see {@link com.catalyst.sonar.score.api.SearchableHashSet#add(E e)}
+	 * @see {@link com.catalyst.commons.util.SearchableHashSet#add(E e)}
 	 */
 	@Override
 	public boolean add(A award) {
@@ -38,12 +40,6 @@ public class AwardSet<A extends Award> extends SearchableHashSet<A> {
 			anyInfoAdded = false;
 			for(Criterion criterion : award.getCriteria()) {
 				anyInfoAdded = (this.get(award).addCriterion(criterion)) ? true : anyInfoAdded;
-			}
-			for(Member member : award.getMembersToInclude()) {
-				anyInfoAdded = (this.get(award).addMembersToInclude(member)) ? true : anyInfoAdded;
-			}
-			for(Member member : award.getMembersToExclude()) {
-				anyInfoAdded = (this.get(award).addMembersToExclude(member)) ? true : anyInfoAdded;
 			}
 		}
 		return anyInfoAdded;

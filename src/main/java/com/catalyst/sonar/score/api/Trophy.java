@@ -21,13 +21,6 @@ package com.catalyst.sonar.score.api;
 public class Trophy extends Award {
 	
 	/**
-	 * Default Constructor, necessary for the SCORE plugin to work, calls {@code super()}.
-	 */
-	public Trophy(){
-		super();
-	}
-	
-	/**
 	 * Constructs a {@code Trophy}, setting the name
 	 * to equal the {@code String} name argument.
 	 * @param name

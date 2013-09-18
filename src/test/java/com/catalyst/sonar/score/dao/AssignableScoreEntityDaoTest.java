@@ -10,9 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.database.DatabaseSession;
 
+import com.catalyst.commons.util.SearchableHashSet;
 import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.ReceiverEntity;
-import com.catalyst.sonar.score.api.SearchableHashSet;
 
 /**
  * Test Class for {@link AssignableScoreEntityDao}.

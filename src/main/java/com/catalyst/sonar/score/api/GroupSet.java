@@ -13,6 +13,8 @@
  */
 package com.catalyst.sonar.score.api;
 
+import com.catalyst.commons.util.SearchableHashSet;
+
 /**
  * {@link GroupSet} extends {@link SearchableHashSet}{@code <}{@link Group}
  * {@code >}, overriding {@code add()}.
@@ -41,7 +43,7 @@ public class GroupSet<G extends Group> extends SearchableHashSet<G> {
 		// and the group was added.
 		if (!super.add(group)) {
 			anyMembersAdded = false;
-			for (Object member : group.immutableCopy()) {
+			for (Object member : group) {
 				anyMembersAdded = (this.get(group).add(member)) ? true
 						: anyMembersAdded;
 			}

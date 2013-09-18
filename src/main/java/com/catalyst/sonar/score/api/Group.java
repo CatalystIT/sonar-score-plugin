@@ -15,13 +15,14 @@ package com.catalyst.sonar.score.api;
 
 import java.util.Arrays;
 
+import com.catalyst.commons.util.SearchableHashSet;
+
 /**
  * {@link Group} extends {@link SearchableHashSet} where the type must extend
  * {@link Member}.
  * 
  * @author JDunn
  */
-@SuppressWarnings("rawtypes")
 public class Group<M extends Member> extends SearchableHashSet<M> implements
 		Member, AssignableScoreEntity {
 

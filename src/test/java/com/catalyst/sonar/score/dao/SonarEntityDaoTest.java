@@ -16,8 +16,8 @@ import org.junit.Test;
 import org.sonar.api.database.BaseIdentifiable;
 import org.sonar.api.database.DatabaseSession;
 
+import com.catalyst.commons.util.SearchableHashSet;
 import com.catalyst.sonar.score.ScoreTest;
-import com.catalyst.sonar.score.api.SearchableHashSet;
 
 /**
  * @author JDunn

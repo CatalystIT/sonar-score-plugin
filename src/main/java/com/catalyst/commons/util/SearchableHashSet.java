@@ -11,7 +11,7 @@
  * limitations under the License.
  * 
  */
-package com.catalyst.sonar.score.api;
+package com.catalyst.commons.util;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -22,7 +22,7 @@ import java.util.HashSet;
  * {@code null}. It also adds a method to return an immutable copy of
  * {@code this}.
  */
-public class SearchableHashSet<E> extends HashSet<E> {
+public class SearchableHashSet<E> extends HashSet<E> implements SearchableSet<E> {
 
 	/**
 	 * @param o

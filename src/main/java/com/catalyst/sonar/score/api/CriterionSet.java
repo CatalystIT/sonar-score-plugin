@@ -13,6 +13,8 @@
  */
 package com.catalyst.sonar.score.api;
 
+import com.catalyst.commons.util.SearchableHashSet;
+
 /**
  * CriterionSet extends {@link SearchableHashSet}{@code <}{@link Criterion}
  * {@code >}, overriding add such that any {@code Criterion} with a null metric

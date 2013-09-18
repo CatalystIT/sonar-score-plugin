@@ -9,6 +9,8 @@ import static com.catalyst.sonar.score.api.ApiTestConstants.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.catalyst.commons.util.SearchableHashSet;
+
 /**
  * Test Class for {@link Award}.
  * 
@@ -66,16 +68,6 @@ public class AwardTest {
 	}
 
 	/**
-	 * Test method for {@link Award#Award()}. Asserts that the name of an
-	 * {@link Award} constructed without a name parameter will be instantiated
-	 * to equal {@code UNNAMED_AWARD}.
-	 */
-	@Test
-	public void testAward() {
-		assertEquals(Award.UNNAMED_AWARD, new TitleCup().getName());
-	}
-
-	/**
 	 * Test method for {@link Award#Award(java.lang.String)}. Asserts that the
 	 * name field was instantiated accordingly.
 	 */
@@ -114,30 +106,6 @@ public class AwardTest {
 		testAward.addCriteria(criterion1, criterion2);
 		assertTrue(testAward.getCriteria().contains(criterion1));
 		assertTrue(testAward.getCriteria().contains(criterion2));
-	}
-
-	/**
-	 * Test method for {@link Award#addMembers(Member)} . Asserts that
-	 * {@code addMembersToInclude(members...)} adds the members.
-	 */
-	@Test
-	public void testAddMembersToInclude() {
-		setField(testAward, "membersToInclude", GROUP1);
-		testAward.addMembersToInclude(USER1, USER2);
-		assertTrue(testAward.getMembersToInclude().contains(USER1));
-		assertTrue(testAward.getMembersToInclude().contains(USER2));
-	}
-
-	/**
-	 * Test method for {@link Award#addCriteria(Member)} . Asserts that
-	 * {@code addMembersToExclude(members...)} adds the members.
-	 */
-	@Test
-	public void testAddMembersToExclude() {
-		setField(testAward, "membersToExclude", GROUP2);
-		testAward.addMembersToExclude(USER1, USER2);
-		assertTrue(testAward.getMembersToExclude().contains(USER1));
-		assertTrue(testAward.getMembersToExclude().contains(USER2));
 	}
 
 	/**

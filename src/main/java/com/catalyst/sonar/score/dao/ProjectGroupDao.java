@@ -20,11 +20,11 @@ import java.util.List;
 import org.sonar.api.database.configuration.Property;
 import org.sonar.api.database.DatabaseSession;
 
+import com.catalyst.commons.util.SearchableHashSet;
 import com.catalyst.sonar.score.api.GroupSet;
 import com.catalyst.sonar.score.api.ProjectGroup;
 import com.catalyst.sonar.score.api.ReceiverEntity;
 import com.catalyst.sonar.score.api.ScoreProject;
-import com.catalyst.sonar.score.api.SearchableHashSet;
 
 /**
  * @author JDunn

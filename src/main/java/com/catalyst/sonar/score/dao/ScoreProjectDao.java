@@ -20,8 +20,8 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.model.ResourceModel;
 
+import com.catalyst.commons.util.SearchableHashSet;
 import com.catalyst.sonar.score.api.ScoreProject;
-import com.catalyst.sonar.score.api.SearchableHashSet;
 import com.catalyst.sonar.score.batch.AbstractAwardDecorator;
 
 //TODO javadoc

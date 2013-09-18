@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.catalyst.sonar.score.api;
+package com.catalyst.commons.util;
 
 import static org.junit.Assert.*;
-import static com.catalyst.sonar.score.api.ApiTestConstants.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
 
 /**
  * Test Cases for all possible outcomes of
@@ -16,17 +16,22 @@ import org.junit.Test;
  * @author JDunn
  */
 public class SearchableHashSet_ImmutableCopyTest {
-	SearchableHashSet<ScoreUser> testSet;
-	SearchableHashSet<ScoreUser> immutableCopy;
+	
+	private static final String STRING1 = "String One";
+	private static final String STRING2 = "String Two";
+	private static final String STRING3 = "String Three";
+	
+	SearchableHashSet<String> testSet;
+	SearchableHashSet<String> immutableCopy;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		testSet = new SearchableHashSet<ScoreUser>();
-		testSet.add(USER1);
-		testSet.add(USER2);
+		testSet = new SearchableHashSet<String>();
+		testSet.add(STRING1);
+		testSet.add(STRING2);
 		immutableCopy = testSet.immutableCopy();
 	}
 
@@ -45,7 +50,7 @@ public class SearchableHashSet_ImmutableCopyTest {
 	 */
 	@Test
 	public void testImmutableCopy_Contains_Works() {
-		assertEquals(testSet.contains(USER1), immutableCopy.contains(USER1));
+		assertEquals(testSet.contains(STRING1), immutableCopy.contains(STRING1));
 	}
 
 	/**
@@ -54,7 +59,7 @@ public class SearchableHashSet_ImmutableCopyTest {
 	 */
 	@Test
 	public void testImmutableCopy_Get_Works() {
-		assertEquals(testSet.get(USER1), immutableCopy.get(USER1));
+		assertEquals(testSet.get(STRING1), immutableCopy.get(STRING1));
 	}
 
 	/**
@@ -63,7 +68,7 @@ public class SearchableHashSet_ImmutableCopyTest {
 	 */
 	@Test(expected = UnsupportedOperationException.class)
 	public void testImmutableCopy_Add_ThrowsException() {
-		immutableCopy.add(USER3);
+		immutableCopy.add(STRING3);
 	}
 
 	/**
@@ -72,7 +77,7 @@ public class SearchableHashSet_ImmutableCopyTest {
 	 */
 	@Test(expected = UnsupportedOperationException.class)
 	public void testImmutableCopy_Remove_ThrowsException() {
-		immutableCopy.remove(USER2);
+		immutableCopy.remove(STRING2);
 	}
 
 	/**

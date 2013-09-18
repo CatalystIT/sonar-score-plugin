@@ -15,8 +15,8 @@ package com.catalyst.sonar.score.dao;
 
 import org.sonar.api.database.DatabaseSession;
 
+import com.catalyst.commons.util.SearchableHashSet;
 import com.catalyst.sonar.score.api.ScoreEntity;
-import com.catalyst.sonar.score.api.SearchableHashSet;
 
 /**
  * The {@link ScoreEntityDao} class defines methods, mostly abstract, that will

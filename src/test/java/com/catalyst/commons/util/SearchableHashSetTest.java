@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.catalyst.sonar.score.api;
+package com.catalyst.commons.util;
 
 import static org.junit.Assert.*;
 

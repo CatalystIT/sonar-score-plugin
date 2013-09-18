@@ -11,12 +11,12 @@ import org.junit.Test;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.configuration.Property;
 
+import com.catalyst.commons.util.SearchableHashSet;
 import com.catalyst.sonar.score.api.Award;
 import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.ReceiverEntity;
 import com.catalyst.sonar.score.api.ScoreProject;
 import com.catalyst.sonar.score.api.ScoreUser;
-import com.catalyst.sonar.score.api.SearchableHashSet;
 
 /**
  * Test Class for {@link AwardDao}.
@@ -26,6 +26,10 @@ import com.catalyst.sonar.score.api.SearchableHashSet;
 public class AwardDaoTest {
 
 	private static class NewAward extends Award {
+
+		public NewAward(String name) {
+			super(name);
+		}
 		
 	}
 	
@@ -119,7 +123,7 @@ public class AwardDaoTest {
 	 */
 	@Test
 	public void testAssign_User_true() {
-		assertTrue(testDao.assign(new NewAward(), new ScoreUser()));
+		assertTrue(testDao.assign(new NewAward("Hi"), new ScoreUser()));
 	}
 	
 	/**
@@ -127,7 +131,7 @@ public class AwardDaoTest {
 	 */
 	@Test
 	public void testAssign_Project_true() {
-		assertTrue(testDao.assign(new NewAward(), new ScoreProject("hi")));
+		assertTrue(testDao.assign(new NewAward("Hi"), new ScoreProject("hi")));
 	}
 	
 	/**
@@ -135,7 +139,7 @@ public class AwardDaoTest {
 	 */
 	@Test
 	public void testAssign_Neither_false() {
-		assertFalse(testDao.assign(new NewAward(), new ReceiverEntity() {
+		assertFalse(testDao.assign(new NewAward("Hi"), new ReceiverEntity() {
 
 			public String getUniqueId() {
 				return null;

@@ -17,7 +17,7 @@ import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.configuration.Property;
 import org.sonar.api.resources.Resource;
 
-import com.catalyst.sonar.score.api.SearchableHashSet;
+import com.catalyst.commons.util.SearchableHashSet;
 
 /**
  * Accesses Properties in the Properties table in the database.

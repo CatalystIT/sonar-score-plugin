@@ -9,6 +9,8 @@ import static com.catalyst.sonar.score.api.ApiTestConstants.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.catalyst.commons.util.SearchableHashSet;
+
 /**
  * Test Class for {@link Group}.
  * 

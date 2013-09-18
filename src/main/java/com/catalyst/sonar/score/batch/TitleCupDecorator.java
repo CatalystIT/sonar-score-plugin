@@ -24,10 +24,10 @@ import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.configuration.Property;
 
+import com.catalyst.commons.util.SearchableHashSet;
 import com.catalyst.sonar.score.api.AwardSet;
 import com.catalyst.sonar.score.api.Criterion;
 import com.catalyst.sonar.score.api.ScoreProject;
-import com.catalyst.sonar.score.api.SearchableHashSet;
 import com.catalyst.sonar.score.api.TitleCup;
 
 import org.sonar.api.config.Settings;
