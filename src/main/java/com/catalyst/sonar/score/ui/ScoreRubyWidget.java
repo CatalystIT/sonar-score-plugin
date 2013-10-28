@@ -50,5 +50,7 @@ public class ScoreRubyWidget extends AbstractRubyTemplate implements RubyRailsWi
 	@Override
 	public String getTemplatePath(){
 		return "/score/score_widget.html.erb";
+		//return "C:/Users/mwomack/Sonar Score IDeA project Git repository/sonar-score-plugin/src/main/resources/score_widget.html.erb";
+		
 	}
 }

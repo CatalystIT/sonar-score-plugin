@@ -1,0 +1,189 @@
+<!--
+	Copyright 2013 Catalyst IT Services
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<%
+#project id of the selected project
+projectId = @blame.currentProjectId
+
+#scm available for selected project
+scmAvailable = Property.find(:all, :conditions => {:resource_id => projectId, :prop_key => 'sonar.scm.url'})
+
+#metric id of the selected metric
+metricId = @blame.metricId
+
+#selected project's last snapshot
+lastSnapshot = Snapshot.find(:all, :conditions => {:project_id => projectId, :islast => 1})[0].id
+
+#total for selected project and metric
+totalMetricValue = ProjectMeasure.find(:all, :conditions => {:metric_id => metricId, :snapshot_id => lastSnapshot})[0].value
+
+#array that holds all the project ids for a given project
+projects = Project.find(:all, :conditions => {:root_id => projectId})
+  
+#all snapshots for all packages
+allSnapshots = Snapshot.find(:all, :conditions => {:scope => "DIR", :qualifier => "PAC", :islast => 1})  
+  
+#last snapshot for a given project
+snapshotId = Snapshot.find(:all, :conditions =>{:islast => "1", :project_id => projectId})[0]
+
+#metric id for authors by line metric
+authorsByLineMetricId = Metric.find(:all, :conditions =>{:name =>"authors_by_line"})
+
+#metric name to display
+metricNameToDisplay = Metric.find(:all, :conditions =>{:id =>metricId})[0].short_name
+  
+#all major violation project measures
+allMeasuresForSelectedMetric = ProjectMeasure.find(:all, :conditions => {:metric_id => metricId})  
+
+ #variables
+ currentSnapshot = nil  
+ ruleId = nil
+ classSnapshot = nil
+ authorsByLineSnapshot = nil
+ measuresId = nil
+ blameLine = nil
+ nextSnapshot = nil
+ failureLevel = nil
+ lineNumbers = nil
+ developerString = nil
+ allInfo = nil
+ developerName = nil
+ blameHash = nil
+ specificProjectId = nil
+ classNameId = nil
+ className = nil
+ allBlameInfo = []
+ x = nil
+ packageSnapshotId = nil
+ ruleId = nil
+ measureId = nil
+ developer = nil
+ developerArray = []
+ arrayOfMeasuresForSelectedMetric = nil
+ currentRuleId = nil
+ blameArray = nil
+
+%>
+<% if !(scmAvailable.empty?)%>
+<div >
+<h1>Blame Information:</h1>
+</br></br>
+<h2><%=metricNameToDisplay%> for <%=@projectName%></h2>
+</br>
+
+<!--Get all the project measures for the selected metric and project-->
+<% for @Project in projects %>
+  <% for @Snapshot in allSnapshots %>  
+    <% if (@Project.id == @Snapshot.project_id)%>      
+      <% for @ProjectMeasure in allMeasuresForSelectedMetric %>        
+          <% if (@ProjectMeasure.snapshot_id == @Snapshot.id && @ProjectMeasure.rule_id == currentRuleId )%>
+            <% currentSnapshot = @ProjectMeasure.snapshot_id %>            
+            <!--Get all the class snapshot id's for the selected project and metric -->
+            <% classSnapshot = Snapshot.find(:all, :conditions =>{:parent_snapshot_id => currentSnapshot})%>           
+            <% for @ClassSnapshot in classSnapshot %>
+            <%classNameId =@ClassSnapshot.project_id%>
+            <% className = Project.find(:all, :conditions =>{:id => classNameId})%>
+                 <% arrayOfMeasuresForSelectedMetric = ProjectMeasure.find(:all, :conditions =>{:snapshot_id => @ClassSnapshot.id, :metric_id => metricId})%>                 
+                 <!--Array that contains all the measure values for the selected metric and project -->
+                 <% if !(arrayOfMeasuresForSelectedMetric.empty?)%> 
+                 <!--Retrieve the measure id of the author's by line metric for each snapshot -->                                        	
+                  <% measureId = ProjectMeasure.find(:all, :conditions =>{:snapshot_id => @ClassSnapshot.id, :metric_id => authorsByLineMetricId }) %>            
+               	     <%if (@metricName == 'major_violations'|| @metricName == 'minor_violations') %>
+                      <% ruleId = @ProjectMeasure.rule_id %>
+                       <% if (@metricName == 'major_violations')%>
+                         <% failureLevel = 2%>
+                      <% else %>
+                        <% failureLevel = 1%>
+                     <% end %>
+                  <% end %>    	  
+               	  <!--If the metric selected is either minor/major violation, retrieve the line number of the violation -->
+               	  <%if (@metricName == 'major_violations'|| @metricName == 'minor_violations') %>
+               	    <!--Retrieve line numbers for all violations -->
+               	    <% lineNumbers = RuleFailure.find(:all, :conditions =>{:snapshot_id => @ClassSnapshot.id, :failure_level => failureLevel})%>           	   		
+              	      <!--Loop through line numbers and retrieve authors by line info to compare to the developer string to retrieve blame information -->
+              	       <% for @ViolationLineNumber in lineNumbers %>
+               	         <%developerString = MeasureData.find(:all, :conditions =>{:measure_id => measureId[0].id.to_i})%>
+               	         <%developerName =parseAuthorsByLine(@ViolationLineNumber.line, developerString[0].data.to_s)%>              	               	     
+               	         <%developerArray.push(developerName)%>
+               	  <% end %>
+               	  
+             	<% end %>       	
+              <% end %>
+           <% end %>
+         <% end %>
+       <%end %>  
+    <% end %>
+  <%end %>  
+<% end %>
+
+
+<%blameArray=getDeveloperBlameStats(developerArray).to_a%>
+
+
+</br>
+<table id = "blameTable" class ="data" style='table-layout: auto; width: 50%' >
+<thead> 
+  <tr valign ="top" >
+    <th class="left" >Developer</th>
+    <th class="left" >Number of Occurrences</th>
+  </tr>    
+ </thead>
+  <tbody id = "tableBody" class = "tableBodyClass" >
+  <% blameArray.each do |name, occurences|%>
+  <tr class="<%= cycle('even', 'odd') -%>">     
+     <td width = '200px'><%=name%></td>
+	 <td width = '200px'><%=occurences%></td>
+  </tr>
+  <% end %>
+    
+</tbody>
+</table>
+
+<table id = "totalTable" class ="data" style='table-layout: auto; width: 50%; border: 0px' >
+<thead style ='border:0px'> 
+  <tr valign ="top" style ='border:0px'>
+    <th class="left" width = '200px' style ='border:0px'>Total <%=metricNameToDisplay%></th>
+    <th class="left" width = '200px' style ='border:0px'><%=totalMetricValue.to_i%></th>
+  </tr>    
+ </thead >
+  <tbody id = "tableBody" class = "tableBodyClass" style ='border:0px' >
+  
+    
+</tbody>
+</table>
+
+</div>
+
+</br></br></br>
+<%= link_to "Back", '/blame/index' ,{:style=>'color: blue'} %>
+
+</div>
+<%end%>
+
+<% if (scmAvailable.empty?)%>
+<div >
+<h1>Blame Information:</h1>
+</br></br>
+<h2>There is no blame information for <%=@projectName%>!</h2>
+</br></br>
+<%= link_to "Back", '/blame/index' ,{:style=>'color: blue'} %>
+</div>
+<%end%>
+
+
+
+
+
+
